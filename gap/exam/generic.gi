@@ -1,0 +1,194 @@
+#############################################################################
+##
+#W  generic.gi                   Polycyc                         Bettina Eick
+##
+
+#############################################################################
+##
+#M AbelianPcpGroup
+##
+InstallGlobalFunction( AbelianPcpGroup, function( n, rels )
+    local coll, i;
+    coll := FromTheLeftCollector( n );
+    for i in [1..n] do
+        if IsBound( rels[i] ) and rels[i] > 0 then
+            SetRelativeOrder( coll, i, rels[i] );
+        fi;
+    od;
+    return PcpGroupByCollector( coll );
+end );
+
+#############################################################################
+##
+#M DihedralPcpGroup
+##
+InstallGlobalFunction( DihedralPcpGroup, function( n )
+    local coll, m;
+    coll := FromTheLeftCollector( 2 );
+    SetRelativeOrder( coll, 1, 2 );
+    if IsInt( n ) then 
+        m := n/2;
+        if not IsInt( m ) then return fail; fi;
+        SetRelativeOrder( coll, 2, m ); 
+        SetConjugate( coll, 2,  1, [2,m-1] );
+    else
+        SetConjugate( coll, 2,  1, [2,-1] );
+        SetConjugate( coll, 2, -1, [2,-1] );
+    fi;
+    return PcpGroupByCollector( coll );
+end );
+
+#############################################################################
+##
+#M UnitriangularPcpGroup( n, p ) . . . . . . . . for p = 0 we take UT( n, Z )
+##
+InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
+    local l, c, g, r, i, j, h, f, k, v, o, G;
+
+    if not IsInt(n) or n <= 1 then return fail; fi;
+    if not (IsPrimeInt(p) or p=0) then return fail; fi;
+
+    l := n*(n-1)/2;
+    c := FromTheLeftCollector( l );
+
+    # compute matrix generators
+    g := [];
+    for i in [1..n-1] do
+        for j in [1..n-i] do
+            r := IdentityMat( n );
+            r[j][i+j] := 1;
+            Add( g, r );
+        od;
+    od;
+
+    # mod out p if necessary
+    if p > 0 then g := List( g, x -> x * One( GF(p) ) ); fi;
+
+    # get inverses
+    h := List( g, x -> x^-1 );
+
+    # read of pc presentation
+    for i in [1..l] do
+  
+        # commutators
+        for j in [i+1..l] do
+            v := Comm( g[j], g[i] );
+            if v <> v^0 then
+                if v in g then
+                    k := Position( g, v );
+                    o := [j,1,k,1];
+                elif v in h then
+                    k := Position( h, v );
+                    o := [j,1,k,-1];
+                    if p > 0 then o[4] := o[4] mod p; fi;
+                else
+                    Error("commutator out of range"); 
+                fi;
+
+                SetConjugate( c, j, i, o );
+            fi;
+        od;
+
+        # powers
+        if p > 0 then 
+            SetRelativeOrder( c, i, p ); 
+            v := g[i]^p;
+            if v <> v^0 then Error("power out of range"); fi;
+        fi;
+    od;
+    UpdatePolycyclicCollector( c );
+
+    # translate from collector to group
+    G := PcpGroupByCollectorNC( c );
+    G!.mats := g;
+    G!.isomorphism := GroupHomomorphismByImagesNC( G, Group(g), Igs(G), g);
+
+    # check
+    # IsConfluent(c);
+    
+    return G;
+end );
+
+#############################################################################
+##
+#M SubgroupUnitriangularPcpGroup( mats )
+##
+InstallGlobalFunction( SubgroupUnitriangularPcpGroup, function( mats )
+    local n, p, G, g, i, j, r, h, m, e, v, c;
+
+    # get the dimension, the char and the full unitriangluar group
+    n := Length( mats[1] );
+    p := Characteristic( mats[1][1][1] );
+    G := UnitriangularPcpGroup( n, p );
+
+    # compute corresponding generators
+    g := [];
+    for i in [1..n-1] do
+        for j in [1..n-i] do
+            r := IdentityMat( n );
+            r[j][i+j] := 1;
+            Add( g, r );
+        od;
+    od;
+
+    # get exponents for each matrix
+    h := [];
+    for m in mats do
+        e := [];
+        c := 0;
+        for i in [1..n-1] do
+            v := List( [1..n-i], x -> m[x][x+i] );
+            r := MappedVector( v, g{[c+1..c+n-i]} );
+            m := r^-1 * m;
+            c := c + n-i;
+            Append( e, v ); 
+        od;
+        Add( h, MappedVector( e, Pcp(G) ) );
+    od;
+
+    return Subgroup( G, h );
+end );
+
+#############################################################################
+##
+#M HeisenbergPcpGroup( m )
+##
+InstallGlobalFunction( HeisenbergPcpGroup, function( m )
+    local FLT, i;
+    FLT := FromTheLeftCollector( 2*m+1 );
+    for i in [1..m] do
+        SetConjugate( FLT, m+i, i, [m+i, 1, 2*m+1, 1] );
+    od;
+    return PcpGroupByCollector( FLT );
+end );
+
+#############################################################################
+##
+#M MaximalOrderByUnitsPcpGroup(f)
+##
+InstallGlobalFunction( MaximalOrderByUnitsPcpGroup, function(f)
+    local m, F, O, U, i, G, u, a;
+
+    # check
+    if Length(Factors(f)) > 1 then return fail; fi;
+
+    # create field
+    m := CompanionMat(f);
+    F := FieldByMatricesNC([m]);
+
+    # get order and units
+    O := MaximalOrderBasis(F);
+    U := UnitGroup(F);
+
+    # get pcp groups
+    i := IsomorphismPcpGroup(U);
+    G := Image(i);
+
+    # get action of U on O
+    u := List( Pcp(G), x -> PreImagesRepresentative(i,x) );
+    a := List( u, x -> List( O, y -> Coefficients(O, y*x)));
+
+    # return split extension
+    return SplitExtensionPcpGroup( G, a );
+end);
+

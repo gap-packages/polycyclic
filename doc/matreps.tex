@@ -1,0 +1,26 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%W  matreps.tex           GAP documentation                  Bettina Eick
+%W                                                          Werner Nickel
+%%
+%H  $Id: matreps.tex,v 1.4 2003/10/24 12:05:36 werner Exp $
+%%
+
+\Chapter{Matrix Representations}
+
+This chapter describes functions which compute matrix representations
+for pcp-groups.  So far the routines in this package are only able to
+compute matrix representations for torsion-free nilpotent groups.
+
+\>UnitriangularMatrixRepresentation( G )
+
+computes a faithful representation of a torsion-free nilpotent group
+<G> as unipotent lowertriangular matrices over the integers.  The
+pc-presentation for <G> must not contain any power relations.  The
+algorithm is described in \cite{dGN02}.
+
+\>IsMatrixRepresentation( <G>, <matrices> )
+
+checks if the map defined by maping the i-th generator of the
+pcp-group <G> to the i-th matrix of <matrices> defines a homomorphism.
+
