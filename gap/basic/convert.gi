@@ -46,6 +46,7 @@ function( G )
     hom := GroupHomomorphismByImagesNC( G, H, 
            AsList(Pcp(G)), AsList(Pcgs(H)) );
     SetIsInjective( hom, true );
+    SetIsBijective( hom, true );
     return hom;
 end );
 
@@ -96,6 +97,7 @@ function( G )
     hom := GroupHomomorphismByImagesNC( G, H, AsList(Pcp(G)), 
            GeneratorsOfGroup(H));
     SetIsInjective( hom, true );
+    SetIsBijective( hom, true );
     return hom;
 end );
 
@@ -143,6 +145,7 @@ function( G )
     H := PcGroupToPcpGroup( G );
     hom := GroupHomomorphismByImagesNC( G, H, AsList(Pcgs(G)), AsList(Pcp(H)));
     SetIsInjective( hom, true );
+    SetIsBijective( hom, true );
     return hom;
 end );
 
@@ -156,6 +159,7 @@ function( G )
     gens := List( Pcgs(F), x -> PreImagesRepresentative( iso, x ) );
     hom  := GroupHomomorphismByImagesNC( G, H, gens, AsList(Pcp(H)) );
     SetIsInjective( hom, true );
+    SetIsBijective( hom, true );
     return hom;
 end );
                       

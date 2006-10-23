@@ -73,6 +73,38 @@ end );
 
 #############################################################################
 ##
+#F  CompositionSeries(G)
+##
+InstallMethod( CompositionSeries, true, [IsPcpGroup], 0,
+function(G)
+    local g, r, n, s, i, f, m, j, e, U;
+ 
+    if not IsFinite(G) then Error("composition series is infinite"); fi;
+
+    # set up
+    g := Pcp(G);
+    r := RelativeOrdersOfPcp(g);
+    n := Length(g);
+
+    # construct series
+    s := [G];
+    for i in [1..n] do
+        if r[i] > 1 then 
+            f := Factors(r[i]);
+            m := Length(f);
+            for j in [1..m-1] do
+                e := Product(f{[1..j]});
+                U := SubgroupByIgs(G, Concatenation([g[i]^e], g{[i+1..n]}));
+                Add(s, U);
+            od;
+            Add(s, SubgroupByIgs(G, g{[i+1..n]}));
+        fi;
+    od;
+    return s;
+end );
+
+#############################################################################
+##
 #M  EfaSeries( G )
 ##
 ##  Computes a normal series of G whose factors are elementary or free

@@ -13,6 +13,7 @@ ReadPkg( PolycyclicPkgName, "gap/matrix/latbases.gi");
 ReadPkg( PolycyclicPkgName, "gap/matrix/lattices.gi");
 ReadPkg( PolycyclicPkgName, "gap/matrix/modules.gi");
 ReadPkg( PolycyclicPkgName, "gap/matrix/triangle.gi");
+ReadPkg( PolycyclicPkgName, "gap/matrix/hnf.gi");
 
 ##  
 ##
@@ -78,12 +79,15 @@ ReadPkg( PolycyclicPkgName, "gap/pcpgrp/wreath.gi");
 ReadPkg( PolycyclicPkgName, "gap/pcpgrp/fitting.gi");
 ReadPkg( PolycyclicPkgName, "gap/pcpgrp/centcon.gi");
 ReadPkg( PolycyclicPkgName, "gap/pcpgrp/normcon.gi");
+ReadPkg( PolycyclicPkgName, "gap/pcpgrp/schur.gi");
+ReadPkg( PolycyclicPkgName, "gap/pcpgrp/tensor.gi");
 
 ##
 ## matrep -- computing a matrix representation
 ##
 ReadPkg( PolycyclicPkgName, "gap/matrep/matrep.gi");
 ReadPkg( PolycyclicPkgName, "gap/matrep/affine.gi");
+ReadPkg( PolycyclicPkgName, "gap/matrep/unitri.gi");
 
 ##
 ## examples - generic groups and an example list

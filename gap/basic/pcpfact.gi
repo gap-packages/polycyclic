@@ -43,7 +43,7 @@ InstallGlobalFunction( NaturalHomomorphismByPcp, function( pcp )
     Append( imgs, List( DenominatorOfPcp( pcp ), x -> One(F) ) );
 
     # set up homomorphism
-    hom := GroupHomomorphismByImages( G, F, gens, imgs );
+    hom := GroupHomomorphismByImagesNC( G, F, gens, imgs );
     SetKernelOfMultiplicativeGeneralMapping( hom, N );
     return hom;
 end );
@@ -52,7 +52,9 @@ end );
 ##
 #F NaturalHomomorphism( G, N )
 ##
-InstallGlobalFunction( NaturalHomomorphism, function( G, N )
+InstallMethod( NaturalHomomorphism, 
+        "for pcp groups", true, [IsPcpGroup, IsPcpGroup], 0,
+function( G, N )
     if Size(N) = 1 then return IdentityMapping( G ); fi;
     return NaturalHomomorphismByPcp( Pcp( G, N ) );
 end );

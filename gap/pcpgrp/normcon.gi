@@ -308,11 +308,6 @@ end;
 NormalizerPcpGroup := function( G, U )
     local GG, UU, NN;
 
-    # check
-    if not IsSubgroup( Parent(G), U ) then
-        Error("arguments must have a common parent group");
-    fi;
-
     # translate
     GG  := PcpGroupByEfaSeries(G);
     UU  := PreImage(GG!.bijection,U);
@@ -326,7 +321,23 @@ end;
 
 InstallMethod( NormalizerOp, "for a pcp group", true,
         [IsPcpGroup, IsPcpGroup], 0,
-function( G, U ) return NormalizerPcpGroup( G, U ); end );
+function( G, U ) 
+    local H;
+
+    # check
+    if not IsSubgroup( Parent(G), U ) then
+        Error("arguments must have a common parent group");
+    fi;
+
+    # catch a special case
+    if not IsSubgroup( G, U ) then 
+        H := SubgroupByIgs( Parent(G), Igs(G), Igs(U) );
+        return Intersection( G, NormalizerPcpGroup( H, U ) );
+    fi;
+
+    # treat the general case
+    return NormalizerPcpGroup( G, U ); 
+end );
 
 #############################################################################
 ##

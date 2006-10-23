@@ -1,4 +1,3 @@
-
 #############################################################################
 ##
 ##  This defines the operation for computing (lower) unitriangular

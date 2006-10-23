@@ -134,3 +134,70 @@ AbelianIntersection := function( baseN, baseU )
     return Filtered( is, x -> x <> id );
 end;
 
+#############################################################################
+##
+#F FrattiniSubgroup( G )
+##
+InstallMethod( FrattiniSubgroup, "for pcp groups", true, [IsPcpGroup], 0, 
+function( G )
+    local H, K, F, f, h;
+    
+    if not IsFinite(G) then 
+        Error("Sorry - no algorithm available");
+    fi;
+
+    H := RefinedPcpGroup(G);
+    K := PcpGroupToPcGroup(H);
+    F := FrattiniSubgroup(K);
+    f := List( GeneratorsOfGroup(F), x -> 
+         MappedVector( ExponentsOfPcElement(Pcgs(K), x), Igs(H) ) );
+    h := List( f, x -> PreImagesRepresentative(H!.bijection,x));
+    return Subgroup( G, h );
+end );
+
+#############################################################################
+##
+#F NormalMaximalSubgroups(G)
+##
+InstallMethod( NormalMaximalSubgroups, "for pcp groups", true, 
+[IsPcpGroup], 0, function(G)
+    local D, nat, H, prm, max, p, rep;
+    D := DerivedSubgroup(G);
+    if Index(G,D) = infinity then return fail; fi;
+    nat := NaturalHomomorphism(G,D);
+    H := Image(nat);
+    prm := Set(Factors(Size(H)));
+    max := [];
+    for p in prm do
+        rep := MaximalSubgroupClassesByIndex(H,p);
+        rep := List(rep, Representative);
+        Append(max,rep);
+    od;
+    return List(max, x -> PreImage(nat,x));
+end);
+        
+#############################################################################
+##
+#F Elements(G)
+##
+InstallMethod( AsSSortedList, "for pcp groups", true, [IsPcpGroup], 0, 
+function(G)
+    local pcp, exp, elm;
+    if Size(G) = infinity then 
+        Error("group has infinitely many elements"); 
+    fi;
+    pcp := Pcp(G); 
+    exp := ExponentsByRels( RelativeOrdersOfPcp(pcp));
+    elm := List(exp, x -> MappedVector(x, pcp));
+    Sort(elm);
+    return elm;
+end);
+
+InstallMethod( AsList, "for pcp groups", true, [IsPcpGroup], 0, 
+function(G)
+    local pcp, exp;
+    if Size(G) = infinity then return fail; fi;
+    pcp := Pcp(G); 
+    exp := ExponentsByRels( RelativeOrdersOfPcp(pcp));
+    return List(exp, x -> MappedVector(x, pcp));
+end);

@@ -28,9 +28,9 @@ function( G, H, gens, imgs )
         new := [gens, imgs];
     fi;
 
-    filt := IsGroupGeneralMappingByImages and IsMapping and IsTotal
-            and IsPcpGHBI and IsToPcpGHBI and HasSource and HasRange
-            and HasMappingGeneratorsImages;
+    filt := IsGroupGeneralMappingByImages and IsTotal
+            and IsPcpGHBI and IsToPcpGHBI and HasSource 
+            and HasRange and HasMappingGeneratorsImages;
 
     type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                      ElementsFamily( FamilyObj( H ) ) ), filt );
@@ -48,7 +48,6 @@ function( G, H, gens, imgs )
 
     ObjectifyWithAttributes( hom, type, Source, G, Range, H,
                              MappingGeneratorsImages, new );
-    SetIsMapping( hom, true );
     return hom;
 end );
 
@@ -65,7 +64,7 @@ function( G, H, gens, imgs )
         Error("gens and imgs must have same length");
     fi;
 
-    filt := IsGroupGeneralMappingByImages and IsMapping and IsTotal
+    filt := IsGroupGeneralMappingByImages and IsTotal
             and IsToPcpGHBI and HasSource and HasRange
             and HasMappingGeneratorsImages;
 
@@ -86,40 +85,8 @@ function( G, H, gens, imgs )
     ObjectifyWithAttributes( hom, type, Source, G, Range, H,
                              MappingGeneratorsImages, [ gens, imgs ] );
 
-    SetIsMapping( hom, true );
     return hom;
 end );
-
-#############################################################################
-##
-#M IsGroupHomomorphism( <map> )
-##
-#InstallMethod( IsGroupHomomorphism, true, [IsPcpGHBI], 0,
-#function( hom )
-#    local gens, imgs, i, a, b, j;
-#
-#    # check relators 
-#    gens := MappingGeneratorsImages( hom )[1];
-#    imgs := MappingGeneratorsImages( hom )[2];
-#   
-#    for i in [1..Length( gens )] do
-#        if RelativeOrderPcp( gens[i] ) > 0 then
-#            a := gens[i]^RelativeOrderPcp( gens[i] );
-#            b := imgs[i]^RelativeOrderPcp( gens[i] );
-#            if Image(hom, a) <> b then return false; fi;
-#        fi;
-#        for j in [1..i-1] do
-#            a := gens[i] ^ gens[j];
-#            b := imgs[i] ^ imgs[j];
-#            if Image(hom, a) <> b then return false; fi;
-#
-#            a := gens[i] ^ (gens[j]^-1);
-#            b := imgs[i] ^ (imgs[j]^-1);
-#            if Image(hom, a) <> b then return false; fi;
-#        od;
-#    od;
-#    return true;
-#end );
 
 #############################################################################
 ##
@@ -130,9 +97,42 @@ InstallMethod( GroupHomomorphismByImagesNC,
 function( G, H, gens, imgs )
     local hom;
     hom := GroupGeneralMappingByImages( G, H, gens, imgs );
-    SetIsGroupHomomorphism( hom, true );
+    SetIsMapping(hom, true);
     return hom;
 end );
+
+#############################################################################
+##
+#M IsPcpGroupHomomorphism( <map> )
+##
+IsPcpGroupHomomorphism := function(hom)
+    local gens, imgs, i, a, b, j;
+
+    # check relators 
+    gens := MappingGeneratorsImages( hom )[1];
+    imgs := MappingGeneratorsImages( hom )[2];
+   
+    for i in [1..Length( gens )] do
+        if RelativeOrderPcp( gens[i] ) > 0 then
+            a := gens[i]^RelativeOrderPcp( gens[i] );
+            a := MappedVector(ExponentsByIgs(gens, a),imgs);
+            b := imgs[i]^RelativeOrderPcp( gens[i] );
+            if a <> b then return false; fi;
+        fi;
+        for j in [1..i-1] do
+            a := gens[i] ^ gens[j];
+            a := MappedVector(ExponentsByIgs(gens, a),imgs);
+            b := imgs[i] ^ imgs[j];
+            if a <> b then return false; fi;
+
+            a := gens[i] ^ (gens[j]^-1);
+            a := MappedVector(ExponentsByIgs(gens, a),imgs);
+            b := imgs[i] ^ (imgs[j]^-1);
+            if a <> b then return false; fi;
+        od;
+    od;
+    return true;
+end;
 
 #############################################################################
 ##
@@ -186,13 +186,15 @@ InstallMethod( ImagesRepresentative,
                FamSourceEqFamElm,
                [ IsPcpGHBI, IsMultiplicativeElementWithInverse ], 0,
 function( hom, elm )
-    if MappingGeneratorsImages( hom )[1] = Igs(Parent(hom!.Source)) then
-        return MappedVector( Exponents(elm), 
-                             MappingGeneratorsImages( hom )[2] );
+    local g, h, e;
+    g := MappingGeneratorsImages(hom)[1];
+    h := MappingGeneratorsImages(hom)[2];
+    e := Exponents(elm);
+
+    if g = Igs(Parent(hom!.Source)) and Length(g) = Length(e) then
+        return MappedVector( e, h);
     fi;
-    return MappedVector( ExponentsByIgs( MappingGeneratorsImages(hom)[1], 
-                                         elm ), 
-                         MappingGeneratorsImages(hom)[2] );
+    return MappedVector( ExponentsByIgs( g, elm ), h);
 end );
 
 #############################################################################

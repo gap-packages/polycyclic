@@ -3,19 +3,19 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.13 2004/03/31 07:18:22 werner Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.16 2006/10/23 11:20:40 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "1.1",
-Date        := "15/10/2003",
+Version     := "2.0",
+Date        := "23/10/2006",
 
 ArchiveFormats := ".tar .tar.gz",
 ArchiveURL     := 
-  "http://cayley.math.nat.tu-bs.de/software/eick/polycyclic/polycyclic-1.1",
+  "http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.0.tar",
 
 Persons          := [ 
   rec( LastName      := "Eick",
@@ -79,7 +79,28 @@ AvailabilityTest := ReturnTrue,
 BannerString     := Concatenation( "Loading polycyclic ",
                             String( ~.Version ), " ...\n" ),
 Autoload         := true,
-Keywords         := [ "polycyclic group", "polycyclically presented group",
-                      "polycyclic presentation" ]
+Keywords         := [ 
+ "finitely generated nilpotent groups",
+ "metacyclic groups",
+ "collection",
+ "consistency check",
+ "solvable word problem",
+ "normalizers","centralizers", "intersection",
+ "conjugacy problem",
+ "subgroups of finite index",
+ "torsion subgroup", "finite subgroups",
+ "extensions",
+ "complements",
+ "cohomology groups",
+ "orbit-stabilizer algorithms",
+ "fitting subgroup",
+ "center",
+ "infinite groups",
+ "polycyclic generating sequence",
+ "polycyclic presentation",
+ "polycyclic group",
+ "polycyclically presented group",
+ "polycyclic presentation",
+ "maximal subgroups" ]
 ));
 

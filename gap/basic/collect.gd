@@ -46,7 +46,7 @@ DeclareProperty( "UseLibraryCollector", IsFromTheLeftCollectorRep  );
 ##
 BindGlobal( "USE_LIBRARY_COLLECTOR", false );
 BindGlobal( "DEBUG_COMBINATORIAL_COLLECTOR", false );
-BindGlobal( "USE_COMBINATORIAL_COLLECTOR", true );
+BindGlobal( "USE_COMBINATORIAL_COLLECTOR", false );
 
 #############################################################################
 ##

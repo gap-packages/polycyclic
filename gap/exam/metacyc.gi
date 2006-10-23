@@ -52,7 +52,11 @@ InstallGlobalFunction( InfiniteMetacyclicPcpGroup, function( n, m, r )
     coll := FromTheLeftCollector( 2 );
     SetRelativeOrder( coll, 1, n );
     SetRelativeOrder( coll, 2, m );
-    SetConjugate( coll, 2, 1, [2,r] );
+
+    if m <> 0 then
+        r := r mod m;
+        SetConjugate( coll, 2, 1, [2,r] );
+    fi;
 
     UpdatePolycyclicCollector( coll );
     return PcpGroupByCollector( coll );

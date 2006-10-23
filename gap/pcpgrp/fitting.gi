@@ -214,7 +214,7 @@ FCCentrePcpGroup := function( G )
 
     # compute Z(Fit(H))
     F := FittingSubgroup( H );
-    C := Centre( H );
+    C := Centre( F );
     if Size(C) = 1 then return N; fi;
 
     # find iterated centralizer under action of K_p(G)

@@ -101,7 +101,7 @@ end );
 
 InstallMethod( Tail,
         "for pcp elements",
-        [ IsPcpElementRep ],
+        [ IsPcpElement and IsPcpElementRep ],
         
 function( elm )
     if Length( elm!.word ) = 0 then

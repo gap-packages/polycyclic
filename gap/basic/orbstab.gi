@@ -150,6 +150,7 @@ PcpOrbitsStabilizers := function( dom, pcp, act, op )
         e := dom[todo[1]];
         o := PcpOrbitStabilizer( e, pcp, act, op );
         Add( orbs, rec( repr := o.orbit[1], 
+                        leng := Length(o.orbit),
                         stab := o.stab,
                         word := o.word ) );
         todo := Difference( todo, List( o.orbit, x -> Position(dom,x)));

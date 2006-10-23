@@ -11,8 +11,7 @@ DeclareGlobalFunction( "NilpotentByAbelianByFiniteSeries" );
 
 # maxsub.gi
 KeyDependentOperation( "MaximalSubgroupClassesByIndex", 
-                       IsGroup, IsPosInt, "prime" );
-
+                       IsGroup, IsPosInt, ReturnTrue );
 # findex/nindex.gi
 KeyDependentOperation( "LowIndexSubgroupClasses", 
                        IsGroup, IsPosInt, ReturnTrue );
@@ -29,4 +28,7 @@ DeclareAttribute( "NormalTorsionSubgroup", IsGroup );
 DeclareProperty(  "IsTorsionFree", IsGroup );
 DeclareAttribute( "FiniteSubgroupClasses", IsGroup );
 DeclareGlobalFunction( "RootSet" );
+
+# schur
+DeclareAttribute( "SchurMultiplicator", IsPcpGroup );
 

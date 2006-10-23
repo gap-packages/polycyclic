@@ -103,7 +103,7 @@ RefinedPcpGroup := function( G )
 
     # create group and add a bijection
     H := PcpGroupByCollector( c );
-    h := GroupHomomorphismByImages( G, H, new, Igs(H) );
+    h := GroupHomomorphismByImagesNC( G, H, new, Igs(H) );
     H!.bijection := h;
     UseIsomorphismRelation( G, H );
     return H;

@@ -37,8 +37,9 @@ PreImageSubspaceIntMats := function( mats, D )
     E := mats[1]^0;
     for M in mats do
         N := PreImageSubspaceIntMat( E * M, D );
+	if N = [] then break; fi;
         E := N * E;
-        if E = [] then break; fi;
+        #if E = [] then break; fi;
     od;
 
     return E;

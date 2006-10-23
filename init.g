@@ -33,6 +33,7 @@ ReadPkg( PolycyclicPkgName, "gap/basic/grphoms.gd");
 ReadPkg( PolycyclicPkgName, "gap/basic/basic.gd");
 ReadPkg( PolycyclicPkgName, "gap/cohom/cohom.gd");
 ReadPkg( PolycyclicPkgName, "gap/matrep/matrep.gd");
+ReadPkg( PolycyclicPkgName, "gap/matrep/unitri.gd");
 ReadPkg( PolycyclicPkgName, "gap/pcpgrp/pcpgrp.gd");
 ReadPkg( PolycyclicPkgName, "gap/exam/exam.gd");
 

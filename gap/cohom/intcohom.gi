@@ -58,7 +58,7 @@ IntTwoCocycleSystemCR := function( A )
     gn := List( id, x -> rec( word := x, tail := [] ) );
 
     # precompute (ij) for i > j
-    Print("  precompute \n");
+    #Print("  precompute \n");
     pairs := List( [1..n], x -> [] );
     for i  in [1..n]  do
         if e[i] > 0 then
@@ -71,7 +71,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 1:  k(ji) = (kj)i
-    Print("  consistency 1 \n");
+    #Print("  consistency 1 \n");
     for i  in [ n, n-1 .. 1 ]  do
         for j  in [ n, n-1 .. i+1 ]  do
             for k  in [ n, n-1 .. j+1 ]  do
@@ -87,7 +87,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 2: j^(p-1) (ji) = j^p i
-    Print("  consistency 2 \n");
+    #Print("  consistency 2 \n");
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
             if e[j] > 0 then
@@ -104,7 +104,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 3: k (i i^(p-1)) = (ki) i^p-1
-    Print("  consistency 3 \n");
+    #Print("  consistency 3 \n");
     for i  in [n,n-1..1]  do
         if e[i] > 0 then
             h := rec( word := (e[i] - 1) * id[i], tail := [] );
@@ -122,7 +122,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 4: (i i^(p-1)) i = i (i^(p-1) i)
-    Print("  consistency 4 \n");
+    #Print("  consistency 4 \n");
     for i  in [ n, n-1 .. 1 ]  do
         if e[i] > 0 then
             h := rec( word := (e[i] - 1) * id[i], tail := [] );
@@ -138,11 +138,11 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 5: j = (j -i) i   
-    Print("  consistency 5 \n");
+    #Print("  consistency 5 \n");
     gi := List( id, x -> rec( word := -x, tail := [] ) );
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
-            #if e[i] = 0 then
+            if e[i] = 0 then
                 w1 := CollectedTwoCR( A, gn[j], gi[i] );
                 w2 := CollectedTwoCR( A, w1, gn[i] );
                 if w2.word <> id[j] then
@@ -150,12 +150,12 @@ IntTwoCocycleSystemCR := function( A )
                 else
                     AddEquationsCR( sys, w2.tail, [], true );
                 fi;
-            #fi;
+            fi;
         od;
     od;
             
     # consistency 6: i = -j (j i)   
-    Print("  consistency 6 \n");
+    #Print("  consistency 6 \n");
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
             if e[j] = 0 then
@@ -170,7 +170,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # consistency 7: -i = -j (j -i) 
-    Print("  consistency 7 \n");
+    #Print("  consistency 7 \n");
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
             if e[i] = 0 and e[j] = 0 then
@@ -186,7 +186,7 @@ IntTwoCocycleSystemCR := function( A )
     od;
 
     # add a check ((j ^ i) ^-i ) = j 
-    Print("  consistency 8 \n");
+    #Print("  consistency 8 \n");
     for i in [1..n] do
         for j in [1..i-1] do
             w1 := CollectedTwoCR( A, gi[j], pairs[i][j] );

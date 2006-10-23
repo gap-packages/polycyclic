@@ -233,7 +233,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
     gi := List( id, x -> rec( word := -x, tail := [] ) );
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
-            #if e[i] = 0 then
+            if e[i] = 0 then
                 w1 := CollectedTwoCR( A, gn[j], gi[i] );
                 w2 := CollectedTwoCR( A, w1, gn[i] );
                 if w2.word <> id[j] then
@@ -241,7 +241,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
                 else
                     AddEquationsCR( sys, w2.tail, [], true );
                 fi;
-            #fi;
+            fi;
         od;
     od;
             

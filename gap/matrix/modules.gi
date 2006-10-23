@@ -124,7 +124,7 @@ RadicalOfRationalModule := function( mats, d )
 
     # get base
     base := AlgebraBase( mats );
-    if Length(base) = 0 then return []; fi;
+    if Length(base) = 0 then return rec( radical := [] ); fi;
     
     # set up system of linear equations ( Tr( ai * aj ) )
     trac := List( base, b -> List( base, c -> TraceMatProd( b, c, d ) ) );

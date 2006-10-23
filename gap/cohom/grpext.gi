@@ -154,37 +154,31 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
 
     # the relators of G
     for i in [1..n] do
-        for j in [i..n] do
-            if i = j then 
-                if rg[i] > 0 then
-                    o := Exponents( g[i]^rg[i] );
-                    o := ObjByExponents( coll, Concatenation( zm, o ) );
-                    SetRelativeOrder( coll, m+i, rg[i] );
-                    SetPower( coll, m+i, o );
-                fi;
-            else
-                o := Exponents( g[j]^g[i] );
-                o := ObjByExponents( coll, Concatenation( zm, o ) );
-                SetConjugate( coll, m+j, m+i, o );
-            fi;
+        if rg[i] > 0 then
+            o := Exponents( g[i]^rg[i] );
+            o := ObjByExponents( coll, Concatenation( zm, o ) );
+            SetRelativeOrder( coll, m+i, rg[i] );
+            SetPower( coll, m+i, o );
+        fi;
+        for j in [i+1..n] do
+            o := Exponents( g[j]^g[i] );
+            o := ObjByExponents( coll, Concatenation( zm, o ) );
+            SetConjugate( coll, m+j, m+i, o );
         od;
     od;
    
     # the relators of H
     for i in [1..m] do
-        for j in [i..m] do
-            if i = j then 
-                if rh[i] > 0 then 
-                    o := Exponents( h[i]^rh[i] );
-                    o := ObjByExponents( coll, Concatenation( o, zn ) );
-                    SetRelativeOrder( coll, i, rh[i] );
-                    SetPower( coll, i, o );
-                fi;
-            else
-                o := Exponents( h[j]^h[i] );
-                o := ObjByExponents( coll, Concatenation( o, zn ) );
-                SetConjugate( coll, j, i, o );
-            fi;
+        if rh[i] > 0 then 
+            o := Exponents( h[i]^rh[i] );
+            o := ObjByExponents( coll, Concatenation( o, zn ) );
+            SetRelativeOrder( coll, i, rh[i] );
+            SetPower( coll, i, o );
+        fi;
+        for j in [i+1..m] do
+            o := Exponents( h[j]^h[i] );
+            o := ObjByExponents( coll, Concatenation( o, zn ) );
+            SetConjugate( coll, j, i, o );
         od;
     od;
 
@@ -202,4 +196,38 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
     G := PcpGroupByCollectorNC( coll );
     return G;
 end;
+
+#############################################################################
+##
+#M  DirectProductOp( <groups>, <onegroup> ) . . . . . . . . .  for pcp groups
+##
+InstallMethod( DirectProductOp,
+                "for pcp groups", ReturnTrue,
+                [ IsList, IsPcpGroup ], 0,
+
+   function ( groups, onegroup )
+
+     local  D, info, first, auts, i;
+
+     if   IsEmpty(groups) or not ForAll(groups,IsPcpGroup)
+     then TryNextMethod(); fi;
+
+     D := groups[1]; first := [1,Length(GeneratorsOfGroup(D))+1];
+     for i in [2..Length(groups)] do
+       auts := List(Igs(groups[i]), x -> IdentityMapping(D));
+       D    := SplitExtensionByAutomorphisms(D,groups[i],auts);
+       Add(first,Length(Igs(D))+1);
+     od;
+
+     info := rec(groups := groups, first := first,
+                 embeddings := [ ], projections := [ ]);
+     SetDirectProductInfo(D,info);
+
+     if   ForAny(groups,grp->HasSize(grp) and not IsFinite(grp))
+     then SetSize(D,infinity); fi;
+     if   ForAll(groups,grp->HasSize(grp) and IsInt(Size(grp)))
+     then SetSize(D,Product(List(groups,Size))); fi;
+
+     return D;
+   end );
 

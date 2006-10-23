@@ -314,7 +314,6 @@ function( coll, h, g, w )
             fi;
         fi;
     fi;
-    OutdatePolycyclicCollector( coll );
 end );
 
 InstallMethod( SetConjugate,
@@ -637,7 +636,8 @@ end );
 ##
 #F  FromTheLeftCollector_CompleteConjugate
 ##
-##        # This only works if the presentation is nilpotent.
+##        # The following approach only works if the presentation is
+##        # nilpotent. 
 ##        # [b,a^-1] = a * [a,b] * a^-1;
 ##        cnj := coll![ PC_CONJUGATES ][j][i];
 ##        comm := cnj{[3..Length(cnj)]};

@@ -25,7 +25,7 @@ end;
 ## normal series with free abelian factors. 
 ##
 InstallGlobalFunction( PolyZNormalSubgroup, function( G )
-    local N, ser, nat, F, pcps, m, i, free, j, p, gens, U;
+    local N, F, U, ser, nat, pcps, m, i, free, j, p;
 
     # set up
     N   := TrivialSubgroup( G );
@@ -48,9 +48,9 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
             free := GeneratorsOfCentralizerOfPcp( free, pcps[j] );
             p    := RelativeOrdersOfPcp( pcps[j] )[1];
             if p = 2 then
-                gens := List( free, x -> x^4 );
+                free := List( free, x -> x^4 );
             else
-                gens := List( free, x -> x^p );
+                free := List( free, x -> x^p );
             fi;
         od;
 

@@ -288,11 +288,12 @@ InduceMatricesAndExtension := function( C, sub )
     e := Length( sub );
     l := Length( sub[1] );
     all := Concatenation( C.mats, C.smats );
+    Add(all, IdentityMat(l, C.field));
     new := SMTX.SubQuotActions( all, sub, l, e, C.field, 2 );
 
     # get induced matrices
     C.mats := new.qmatrices{[1..Length(C.mats)]};
-    C.smats := new.qmatrices{[Length(C.mats)+1..Length(all)]};
+    C.smats := new.qmatrices{[Length(C.mats)+1..Length(all)-1]};
 
     # induce extension
     A := new.nbasis^-1;

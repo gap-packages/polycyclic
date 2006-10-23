@@ -15,7 +15,8 @@ InstallGlobalFunction( AbelianPcpGroup, function( n, rels )
             SetRelativeOrder( coll, i, rels[i] );
         fi;
     od;
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector(coll);
+    return PcpGroupByCollectorNC( coll );
 end );
 
 #############################################################################
@@ -35,7 +36,8 @@ InstallGlobalFunction( DihedralPcpGroup, function( n )
         SetConjugate( coll, 2,  1, [2,-1] );
         SetConjugate( coll, 2, -1, [2,-1] );
     fi;
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector(coll);
+    return PcpGroupByCollectorNC( coll );
 end );
 
 #############################################################################
@@ -96,9 +98,9 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
             if v <> v^0 then Error("power out of range"); fi;
         fi;
     od;
-    UpdatePolycyclicCollector( c );
 
     # translate from collector to group
+    UpdatePolycyclicCollector( c );
     G := PcpGroupByCollectorNC( c );
     G!.mats := g;
     G!.isomorphism := GroupHomomorphismByImagesNC( G, Group(g), Igs(G), g);
@@ -159,7 +161,8 @@ InstallGlobalFunction( HeisenbergPcpGroup, function( m )
     for i in [1..m] do
         SetConjugate( FLT, m+i, i, [m+i, 1, 2*m+1, 1] );
     od;
-    return PcpGroupByCollector( FLT );
+    UpdatePolycyclicCollector( FLT );
+    return PcpGroupByCollectorNC( FLT );
 end );
 
 #############################################################################
@@ -191,4 +194,53 @@ InstallGlobalFunction( MaximalOrderByUnitsPcpGroup, function(f)
     # return split extension
     return SplitExtensionPcpGroup( G, a );
 end);
+
+#############################################################################
+##
+#F PDepth(G, e) 
+##
+PDepth := function(G, e)
+    local l, i;
+    l := PCentralSeries(G);
+    for i in Reversed([1..Length(l)]) do
+        if e in l[i] then
+            return i;
+        fi;
+    od;
+end;
+
+#############################################################################
+##
+#F BlowUpPcpPGroup(G)
+##
+BlowUpPcpPGroup := function(G)
+    local p, e, f, c, i, j, k;
+
+    # set up
+    p := PrimePGroup(G);
+    e := ShallowCopy(AsList(G));
+    f := function(a,b) return PDepth(G,a)<PDepth(G,b); end;
+    Sort(e, f);
+
+    # fill up collector
+    c := FromTheLeftCollector(Length(e)-1);
+    for i in [1..Length(e)-1] do
+        SetRelativeOrder(c,i,p);
+
+        # power
+        j := Position(e, e[i]^p);
+        if j < Length(e) then
+            SetPower(c,i,[j,1]);
+        fi;
+
+        # commutators
+        for k in [1..i-1] do
+            j := Position(e, Comm(e[i], e[k]));
+            if j < Length(e) then
+                SetCommutator(c,i,k,[j,1]);
+            fi;
+        od;
+    od;
+    return PcpGroupByCollector(c);
+end;
 

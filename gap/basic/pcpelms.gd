@@ -20,7 +20,6 @@ DeclareOperation( "Exponents",       [ IsObject ] );
 DeclareOperation( "NameTag",         [ IsObject ] );
 DeclareOperation( "GenExpList",      [ IsObject ] );
 DeclareOperation( "Depth",           [ IsObject ] );
-DeclareOperation( "Tail",            [ IsObject ] );
 DeclareOperation( "LeadingExponent", [ IsObject ] );
 
 
@@ -50,8 +49,9 @@ DeclareGlobalFunction( "PcpElementByGenExpList" );
 ##
 ## Some attributes
 ##
+DeclareAttribute( "Tail",             IsPcpElement );
 DeclareAttribute( "RelativeOrderPcp", IsPcpElement );
-DeclareAttribute( "RelativeIndex", IsPcpElement );
-DeclareAttribute( "FactorOrder",   IsPcpElement );
+DeclareAttribute( "RelativeIndex",    IsPcpElement );
+DeclareAttribute( "FactorOrder",      IsPcpElement );
  
 

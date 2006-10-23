@@ -34,26 +34,27 @@ There are the following generic pcp-groups available.
 
 \>InfiniteMetacyclicPcpGroup( <n>, <m>, <r> )
 
-      Infinite metacyclic groups are classified in \cite{BK00}. Every 
+      Infinite metacyclic groups are classified in \cite{B-K00}. Every 
       infinite metacyclic group $G$ is isomorphic to a finitely presented 
       group $G(m,n,r)$ with two generators $a$ and $b$ and relations of the 
-      form $a^n = b^n = 1$ and $[a,b] = a^{1-r}$, where $m,n,r$ are three
+      form $a^n = b^m = 1$ and $[a,b] = a^{1-r}$, where $m,n,r$ are three
       non-negative integers with $mn=0$ and $r$ relatively prime to $m$. 
-      If $r\equiv -1$ mod $m$ then $n$ is even, and if $r\equiv 1$ mod 
+      If $r \equiv -1$ mod $m$ then $n$ is even, and if $r \equiv 1$ mod 
       $m$ then $m=0$. Also $m$ and $n$ must not be $1$.
 
       Moreover, $G(m,n,r)\cong G(m',n',s)$ if and only if $m=m'$, $n=n'$, 
-      and either $r\equiv s$ or $r\equiv s^{-1}$ mod $m$. 
+      and either $r \equiv s$ or $r \equiv s^{-1}$ mod $m$. 
 
       This function returns the metacyclic group with parameters <n>,
       <m> and <r> as a pcp-group with the pc-presentation $\langle
       x,y | x^n, y^m, y^x = y^r\rangle$.  This presentation is easily
-      transformed into the one above via the mapping $x\mapsto b^{-1},
+      transformed into the one above via the mapping $x \mapsto b^{-1},
       y \mapsto a$. 
 
 \>HeisenbergPcpGroup( <n> )
 
-      returns the Heisenberg group on <n> generators as pcp-group.
+      returns the Heisenberg group on 2*<n> generators as pcp-group.
+      This gives a group of Hirsch length 3*<n>.
 
 \>MaximalOrderByUnitsPcpGroup( <f> )
 
