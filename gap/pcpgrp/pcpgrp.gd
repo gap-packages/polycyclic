@@ -29,6 +29,12 @@ DeclareProperty(  "IsTorsionFree", IsGroup );
 DeclareAttribute( "FiniteSubgroupClasses", IsGroup );
 DeclareGlobalFunction( "RootSet" );
 
-# schur
-DeclareAttribute( "SchurMultiplicator", IsPcpGroup );
+# schur and tensor
+DeclareGlobalFunction("CompleteConjugatesInCentralCover");
+DeclareGlobalFunction("EvalConsistency");
+DeclareGlobalFunction("QuotientBySystem");
+
+DeclareAttribute( "SchurMultiplicator", IsGroup );
+DeclareAttribute("TensorSquare", IsGroup);
+DeclareAttribute("ExteriorSquare", IsGroup);
 

@@ -5,6 +5,14 @@
 ##
 
 ##
+## dummy function name
+##
+
+if RequirePackage("nq") = fail then
+    NqEpimorphismNilpotentQuotient := fail; 
+fi;
+
+##
 ## matrix -- basics about matrices, rational spaces, lattices and modules
 ##
 ReadPkg( PolycyclicPkgName, "gap/matrix/intmat.gi");
@@ -33,8 +41,8 @@ ReadPkg( PolycyclicPkgName, "gap/basic/pcpexpo.gi");
 ReadPkg( PolycyclicPkgName, "gap/basic/pcpsers.gi");
 ReadPkg( PolycyclicPkgName, "gap/basic/grphoms.gi");
 ReadPkg( PolycyclicPkgName, "gap/basic/pcpfact.gi");
-ReadPkg( PolycyclicPkgName, "gap/basic/convert.gi");
 ReadPkg( PolycyclicPkgName, "gap/basic/chngpcp.gi");  
+ReadPkg( PolycyclicPkgName, "gap/basic/convert.gi");
 ReadPkg( PolycyclicPkgName, "gap/basic/orbstab.gi");   
 
 ##

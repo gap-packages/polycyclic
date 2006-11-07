@@ -40,13 +40,16 @@ end;
 
 InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup], 0, 
 function( G )
-    local H, hom;
-    H := PcpGroupToPcGroup( G );
-    if H = fail then return fail; fi;
-    hom := GroupHomomorphismByImagesNC( G, H, 
-           AsList(Pcp(G)), AsList(Pcgs(H)) );
+    local K, H, g, k, h, hom;
+    K := RefinedPcpGroup(G);
+    H := PcpGroupToPcGroup(K);
+    g := Igs(G);
+    k := List(g, x -> Image(K!.bijection,x));
+    h := List(k, x -> MappedVector(Exponents(x), Pcgs(H)));
+    hom := GroupHomomorphismByImagesNC( G, H, g, h);
     SetIsInjective( hom, true );
     SetIsBijective( hom, true );
+    SetIsGroupHomomorphism( hom, true );
     return hom;
 end );
 

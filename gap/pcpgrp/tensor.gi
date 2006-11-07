@@ -132,8 +132,8 @@ end;
 TensorSquareViaNq := function( G )
     local   tsfp,  phi;
 
-    if not RequirePackage( "nq" ) then
-        Error( "package nq not installed" );
+    if RequirePackage("nq") = fail then 
+        Error( "NQ package is not installed" );
     fi;
 
     if not IsNilpotent( G ) then 
@@ -151,7 +151,7 @@ end;
 ##
 #F EvalConsistency( coll, sys )
 ## 
-EvalConsistency := function( coll, sys )
+InstallGlobalFunction( EvalConsistency, function( coll, sys )
     local y, x, e, z, gn, gi, ps, a, w1, w2, i, j, k;
 
     # set up 
@@ -328,7 +328,7 @@ EvalConsistency := function( coll, sys )
     od;
 
     return sys;
-end;
+end );
 
 #############################################################################
 ##
@@ -436,15 +436,16 @@ end;
 ##
 ## This function takes the collector <coll> which is constructed from the
 ## collector <oldcoll> by adding new central generators to the right hand
-## sides of (positive) conjugate relations and power relations.  It computes
-## the correct tails for the three types of negative conjugate relations.
+## sides of each power relation and each positive conjugate relation.  It
+## computes the correct tails for the negative conjugate relations.
 ##
 
 if not IsBound( CHECKCONS ) then
     CHECKCONS := true;
 fi;
 
-CompleteConjugatesInCentralCover := function( coll, oldcoll )
+InstallGlobalFunction( CompleteConjugatesInCentralCover,
+function( coll, oldcoll )
     local   n,  m,  ro,  i,  j,  rhs,  w;
 
     n  := NumberOfGenerators( oldcoll );
@@ -460,39 +461,73 @@ CompleteConjugatesInCentralCover := function( coll, oldcoll )
 
         if ro[i] = 0 then
 
+            ## we assume that coll is complete for <i+1,..,n> and that 
+            ## we have the conjugates with i.
+
             for j in [n,n-1..i+1] do
-                ## we assume that coll is complete for <i+1,..,n> and that 
-                ## we have the conjugates with i.  Need to compute the
-                ## conjugates with -i
+                # Compute the inverses of conjugates by generator i.
+                # We need to do this for all generators i+1,..,n because 
+                # collecting generator i in the next part of the tail
+                # computation might need these conjugates
+                # Note that collection here happens only within <i+1..n>
 
+                if ro[j] = 0 then
+                    # Compute the inverse of conjugate by generator i
+                    rhs  := GetConjugate( oldcoll, -j, i );
+                    repeat 
+                        w := ExponentsByObj( coll, GetConjugate( coll,j,i ) );
+                    until CollectWordOrFail( coll, w, rhs ) <> fail;
+
+                    if CHECKCONS and 
+                       Number( w{[1..n]}, x->x<>0 ) <> 0  then
+                        Error( "Tail: j^i -j^i" );
+                    fi;
+
+                    Append( rhs, ObjByExponents( coll, -w ) );
+                    SetConjugateNC( coll, -j, i, rhs );
+
+                fi;
+            od;
+
+            for j in [n,n-1..i+1] do
+
+                # Compute the conjugate by the inverse of generator i
                 rhs  := GetConjugate( oldcoll, j, -i );
-
                 repeat 
-                    w := [1..m] * 0;
-                    w[i] := -1;
-                until CollectWordOrFail( coll, w, rhs )   <> fail and
-                      CollectWordOrFail( coll, w, [i,1] ) <> fail;
+                    w := ExponentsByObj( coll, rhs );
+                until CollectWordOrFail( coll, w, [i,1] ) <> fail;
 
                 if CHECKCONS and 
-                   ( w[j] <> 1 or Number( w{[1..n]}, x->x<>0 ) <> 1 ) then
+                   ( w[i] <> 1 or w[j] <> 1 or 
+                     Number( w{[1..n]}, x->x<>0 ) <> 2 ) then
                     Error( "Tail: j <> (j -i) i" );
                 fi;
 
-                w[j] := 0;
+                w[i] := 0; w[j] := 0;
                 Append( rhs, ObjByExponents( coll, -w ) );
                 SetConjugateNC( coll, j, -i, rhs );
-                
+
                 if ro[j] = 0 then
-                    # The conjugate of -j gets the inverse tail.
-                    rhs := GetConjugate( oldcoll, -j, -i );
-                    Append( rhs, ObjByExponents( coll, w ) ); 
+
+                    # Compute the inverse of conjugate by generator -i 
+                    rhs  := GetConjugate( oldcoll, -j, -i );
+                    repeat 
+                        w := ExponentsByObj( coll, GetConjugate( coll,j,-i ) );
+                    until CollectWordOrFail( coll, w, rhs ) <> fail;
+
+                    if CHECKCONS and 
+                       Number( w{[1..n]}, x->x<>0 ) <> 0  then
+                        Error( "Tail: j^-i -j^-i" );
+                    fi;
+
+                    Append( rhs, ObjByExponents( coll, -w ) );
                     SetConjugateNC( coll, -j, -i, rhs );
                 fi;
             od;
         fi;
     od;
     OutdatePolycyclicCollector(coll);
-end;
+end );
 
 
 #############################################################################
@@ -517,8 +552,8 @@ CollectorCentralCover:= function(S)
          - n*(n-1);   # but not for the two copies of relations of the
                       # original group.
 
-    Print( "#  CollectorCentralCover: Setting up collector with ", x+y, 
-           " generators\n" );
+#    Print( "#  CollectorCentralCover: Setting up collector with ", x+y, 
+#           " generators\n" );
 
     # set up
     coll := FromTheLeftCollector(x+y);
@@ -540,17 +575,6 @@ CollectorCentralCover:= function(S)
                 k := k+1; Append(e, [k,1]); 
             fi;
             SetConjugate(coll,i,j,e);
-
-            if r[i] = 0 then
-                e := ObjByExponents(coll, Exponents((s[i]^s[j])^-1));
-                if (i>n) and (i>2*n or not (j in [n+1..2*n])) then
-                    # The conjugate of -j gets the inverse tail.
-                    Append( e, [k,-1] ); 
-                fi;
-                SetConjugate(coll,-i,j,e);
-            fi;
-
-
         od;
     od;
 
@@ -564,7 +588,7 @@ end;
 ##
 #F QuotientBySystem( coll, sys, n )
 ##
-QuotientBySystem := function(coll, sys, n)
+InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
     local y, x, e, z, M, D, P, Q, d, f, l, c, i, k, j, a, b;
  
     # set up 
@@ -580,10 +604,10 @@ QuotientBySystem := function(coll, sys, n)
          for i in [1..Length(M[1])-Length(M)] do Add(M, 0*M[1]); od;
     fi;
 
-    Print( "#  QuotientBySystem: Dealing with ",
-           Length(M), "x", Length(M[1]), "-matrix\n" );
+#    Print( "#  QuotientBySystem: Dealing with ",
+#           Length(M), "x", Length(M[1]), "-matrix\n" );
 
-    if USE_NFMI then
+    if M = 0*M or USE_NFMI then
         D := NormalFormIntMat(M,13);
         Q := D.coltrans;
         D := D.normal;
@@ -601,10 +625,9 @@ QuotientBySystem := function(coll, sys, n)
     f := Filtered([1..Length(d)], x -> d[x] <> 1);
     l := Length(f);
 
-
     # inialize new collector for extension
-    Print( "#  QuotientBySystem: Setting up collector with ", x+l, 
-           " generators\n" );
+#    Print( "#  QuotientBySystem: Setting up collector with ", x+l, 
+#           " generators\n" );
     c := FromTheLeftCollector(x+l);
 
     # add relative orders of module
@@ -643,7 +666,7 @@ QuotientBySystem := function(coll, sys, n)
         UpdatePolycyclicCollector(c);
         return PcpGroupByCollectorNC(c);
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -651,6 +674,8 @@ end;
 ##
 TensorSquarePlus := function(G)
     local n, S, coll, y, sys, T;
+
+    if Size(G) = 1 then return G; fi;
  
     # some info
     n := Length(Igs(G));
@@ -682,8 +707,10 @@ end;
 ##
 #F TensorSquare(G). . . . . . . . . . . . . . . . . . . . . . . .(G otimes G)
 ##
-TensorSquare := function(G)
+InstallMethod( TensorSquare, true, [IsPcpGroup], 0, function(G)
     local n, T, U, t, r, c, i, j;
+
+    if Size(G) = 1 then return G; fi;
 
     # set up
     n := Length(Pcp(G));
@@ -705,7 +732,7 @@ TensorSquare := function(G)
         od;
     od;
     return Subgroup(U, c);
-end;
+end );
 
 #############################################################################
 ##
@@ -725,9 +752,9 @@ CheckGroupsByOrder := function(n,full)
                 t := Runtime();
                 B := TensorSquareFp(G); Size(B);
                 Print(" ",Runtime() - t, " for fp method \n");
-                if Size(A) <> Size(B) then Print(n," ",i,"\n"); fi;
+                if Size(A) <> Size(B) then Error(n," ",i,"\n"); fi;
             fi;
-            Print(" got group of order ",Size(A),"\n");
+            Print(" got group of order ",Size(A),"\n\n");
         fi;
     od;
 end;

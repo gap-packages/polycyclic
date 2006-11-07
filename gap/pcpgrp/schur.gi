@@ -10,46 +10,6 @@ fi;
 
 #############################################################################
 ##
-#A SchurMultiplicator(G) . . . . . . . . . . . . . . . . . . . . . . . . M(G)
-##
-InstallMethod( SchurMultiplicator, true, [IsPcpGroup], 0,
-function(G)
-    local C, c, d, f, l, D, e, m;
-
-    if Size(G) = 1 or IsCyclic(G) then return []; fi;
-    
-    # cohomology record for trivial module
-    C := CRRecordByMats(G, List(Igs(G), x -> IdentityMat(1)));
-
-    # cohomology system
-    c := IntTwoCocycleSystemCR(C); 
-    m := TransposedMat(c.base);
-
-    # Elementary divisors = Invariants of R/[R,F]
-    d := DiagonalOfMat( NormalFormIntMat(m, 1).normal ){[1..Length(m)]};
-
-    # the torsion part
-    f := Collected( Filtered( d, x -> x > 1 ) );
-
-    # get hirsch length of G/G'
-    if IsFinite(G) then 
-        e := 0;
-    else
-        D := DerivedSubgroup(G);
-        e := Length(Filtered( RelativeOrdersOfPcp(Pcp(G,D)), x -> x=0));
-    fi;
-
-    # subtract F'R/F' = R/(R cap F') from the torsion-free part
-    l := Length( Filtered( d, x -> x = 0 ) ) - Length(Igs(G)) + e; 
-
-    # this is it
-    if l > 0 then Add( f, [0,l]); fi;
-    return f;
-end);
-
-
-#############################################################################
-##
 #A ReduceVector 
 ##
 ReduceVector := function( v, d, f )
@@ -85,15 +45,13 @@ ReduceTail := function( w, n, Q, d, f )
     return a;
 end;
 
-
-
 #############################################################################
 ##
-#A SchurExtension(G) . . . . . . . . . . . . . . . . . . . . . . . . .F/[R,F]
+#A OldSchurExtension(G) .. . . . . . . . . . . . . . . . . . . . . . .F/[R,F]
 ##
-SchurExtension := function(G)
+OldSchurExtension := function(G)
     local g, r, n, C, c, M, D, P, Q, d, f, l, I, coll, i, j, e, a, b,
-          ocoll;
+          ocoll, H, U;
 
     # set up
     g := Igs(G);
@@ -122,16 +80,15 @@ SchurExtension := function(G)
     if USE_NFMI then
         D := NormalFormIntMat(M,13);
         Q := D.coltrans;
-        D := D.normal;
-        # filter info
-        d := DiagonalOfMat( D );
+        P := D.rowtrans;
+        d := DiagonalOfMat( D.normal );
     else
         D := NormalFormConsistencyRelations(M);
         Q := D.coltrans;
-        D := D.normal;
+        P := D.rowtrans;
         d := [1..Length(M[1])] * 0;
-        d{List( D, r->PositionNot( r, 0 ) )} := 
-          List( D, r->First( r, e->e<>0 ) ); 
+        d{List( D.normal, r->PositionNot( r, 0 ) )} := 
+          List( D.normal, r->First( r, e->e<>0 ) ); 
     fi;    
 
     f := Filtered([1..Length(d)], x -> d[x] <> 1);
@@ -171,9 +128,94 @@ SchurExtension := function(G)
         fi;
     od;
 
+    # set up group 
     UpdatePolycyclicCollector( coll );
-    return PcpGroupByCollectorNC(coll);
+    H := PcpGroupByCollectorNC(coll);
+
+    # enforce surjectivity
+    U := Subgroup(H, Cgs(H){[1..Length(Igs(G))]}); 
+    Cgs(U);
+    return U;
 end;
+
+#############################################################################
+##
+#A SchurExtension(G) . . . . . . . . . . . . . . . . . . . . . . . .  F/[R,F]
+##
+SchurExtension := function(G)
+    local g, r, n, y, coll, k, i, j, e, sys, T;
+
+    # set up
+    g := Igs(G);
+    r := List(g, x -> RelativeOrderPcp(x));
+    n := Length(Igs(G));
+
+    # get collector for extension
+    y := n*(n-1)/2 + Length(Filtered(r, x -> x>0));
+    coll := FromTheLeftCollector(n+y);
+
+    # add a tail to each power and each positive conjugate relation
+    k := n;
+    for i in [1..n] do
+        SetRelativeOrder(coll, i, r[i]);
+
+        if r[i] > 0 then
+            e := ObjByExponents(coll, Exponents(g[i]^r[i]));
+            k := k+1; 
+            Append(e, [k,1]); 
+            SetPower(coll,i,e);
+        fi;
+
+        for j in [1..i-1] do
+            e := ObjByExponents(coll, Exponents(g[i]^g[j]));
+            k := k+1; 
+            Append(e, [k,1]);
+            SetConjugate(coll,i,j,e);
+        od;
+    od;
+
+    # update 
+    CompleteConjugatesInCentralCover(coll, Collector(G));
+    UpdatePolycyclicCollector(coll);
+
+    # evaluate consistency
+    sys := CRSystem(1, y, 0);
+    EvalConsistency( coll, sys );
+
+    # determine quotient
+    T := QuotientBySystem( coll, sys, n );
+
+    return T;
+end;
+
+#############################################################################
+##
+#A SchurMultiplicator(G) . . . . . . . . . . . . . . . . . . . . . . . . M(G)
+##
+InstallMethod( SchurMultiplicator, true, [IsPcpGroup], 0, function(G)
+    local n, H, M, d, a, b, D, m;
+
+    # a simple check
+    if Size(G) = 1 or IsCyclic(G) then return []; fi;
+
+    # otherwise compute
+    n := Length(Igs(G));
+    H := SchurExtension(G); 
+    M := Subgroup(H, Igs(H){[n+1..Length(Igs(H))]});
+    D := DerivedSubgroup(G);
+    m := Length(Filtered(RelativeOrdersOfPcp(Pcp(G,D)), x -> x = 0));
+
+    # get abelian invariants and adjust them
+    d := Collected(AbelianInvariants(M));
+    a := Filtered(d, x -> x[1] > 0);
+    b := Filtered(d, x -> x[1] = 0)[1];
+
+    if b[2] = n-m then 
+        return a;
+    else
+        return Concatenation(a, [[b[1], b[2]-n+m]]);
+    fi;
+end);
 
 #############################################################################
 ##
@@ -181,6 +223,8 @@ end;
 ##
 SchurCovering := function(G)
     local g, H, h, m, M, I, C;
+
+    if Size(G) = 1 then return G; fi;
 
     # set up
     g := Igs(G);
@@ -199,9 +243,7 @@ SchurCovering := function(G)
     # get complement
     C := Subgroup(H, GeneratorsOfPcp( Pcp(M,I,"snf")));
 
-    if not IsFreeAbelian(C) 
-#       or HirschLength(I)+HirschLength(C)+HirschLength(G) <> HirschLength(H)
-       then Error("wrong complement"); fi;
+    if not IsFreeAbelian(C) then Error("wrong complement"); fi;
 
     # get complement to I in M
     return H/C;
@@ -211,12 +253,13 @@ end;
 ##
 #A ExteriorSquare(G) . . . . . . . . . . . . . . . . . . . . . . .(G wegde G)
 ##
-ExteriorSquare := function(G)
+InstallMethod( ExteriorSquare, true, [IsPcpGroup], 0, function(G)
     local H, D;
+    if Size(G) = 1 then return G; fi;
     H := SchurExtension(G);
     D := DerivedSubgroup(H);
     return PcpGroupByPcp(Pcp(D));
-end;
+end );
     
 #############################################################################
 ##
@@ -226,6 +269,8 @@ end;
 ##
 ExteriorSquarePlus := function(G)
     local g, n, r, w, F, f, D, d, m, s, c, i, j, k, e, alpha, gens, imgs, S;
+
+    if Size(G) = 1 then return G; fi;
 
     # set up
     g := Pcp(G);
@@ -243,8 +288,8 @@ ExteriorSquarePlus := function(G)
     m := Length(d);
     s := RelativeOrdersOfPcp(d);
 
-    Print( "#  ExteriorSquarePlus: Setting up collector with ", 2*n+m, 
-           " generators\n" );
+#    Print( "#  ExteriorSquarePlus: Setting up collector with ", 2*n+m, 
+#           " generators\n" );
 
     # set up collector for exterior square plus
     c := FromTheLeftCollector(2*n+m);

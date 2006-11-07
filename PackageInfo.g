@@ -3,19 +3,19 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.16 2006/10/23 11:20:40 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.21 2006/11/07 10:34:10 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.0",
+Version     := "2.1",
 Date        := "23/10/2006",
 
-ArchiveFormats := ".tar .tar.gz",
+ArchiveFormats := ".tar.gz",
 ArchiveURL     := 
-  "http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.0.tar",
+"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.1",
 
 Persons          := [ 
   rec( LastName      := "Eick",
@@ -25,7 +25,7 @@ Persons          := [
        Email         := "b.eick@tu-bs.de",
        WWWHome       := "http://www.tu-bs.de/~beick",
        PostalAddress := Concatenation([
-               "Institut f\"ur Geometrie, Algebra und diskrete Mathematik\n",
+               "Institut Computational Mathematics\n",
                "TU Braunschweig\n",
                "Pockelsstr. 14 \n D-38106 Braunschweig \n Germany"] ),
        Place         := "Braunschweig",
@@ -50,10 +50,10 @@ Status              := "accepted",
 CommunicatedBy   := "Charles Wright (Eugene)",
 AcceptDate       := "01/2004",
 
-README_URL 
-  := "http://cayley.math.nat.tu-bs.de/software/eick/polycyclic/README",
-PackageInfoURL 
-  := "http://cayley.math.nat.tu-bs.de/software/eick/polycyclic/PackageInfo.g",
+README_URL := 
+"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/README",
+PackageInfoURL :=
+"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/PackageInfo.g",
 
 AbstractHTML     :=
 "This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.",
@@ -72,7 +72,7 @@ PackageDoc     := rec(
 Dependencies    := rec(
                 GAP                    := ">= 4.3fix4",
                 NeededOtherPackages    := [["alnuth", "1.0"]],
-                SuggestedOtherPackages := [],
+                SuggestedOtherPackages := [["nq","1.0"]],
                 ExternalConditions     := [ ]),
 
 AvailabilityTest := ReturnTrue,
