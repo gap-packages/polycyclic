@@ -3,7 +3,7 @@
 %W  matreps.tex           GAP documentation                  Bettina Eick
 %W                                                          Werner Nickel
 %%
-%H  $Id: matreps.tex,v 1.5 2005/01/09 21:27:38 werner Exp $
+%H  $Id: matreps.tex,v 1.6 2007/06/08 16:48:49 werner Exp $
 %%
 
 \Chapter{Matrix Representations}
@@ -12,6 +12,9 @@ This chapter describes functions which compute with matrix
 representations for pcp-groups.  So far the routines in this package
 are only able to compute matrix representations for torsion-free
 nilpotent groups.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Section{Unitriangular matrix groups}
 
 \>UnitriangularMatrixRepresentation( G )
 
@@ -25,6 +28,7 @@ algorithm is described in \cite{dGN02}.
 checks if the map defined by maping the i-th generator of the
 pcp-group <G> to the i-th matrix of <matrices> defines a homomorphism.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \Section{Upper unitriangular matrix groups}
 
 We call a matrix upper unitriangular if it is an upper triangular

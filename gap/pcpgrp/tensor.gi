@@ -18,9 +18,9 @@ end;
 
 #############################################################################
 ##
-#F TensorSquareFp(G) . . . . . . . . . . . . . . . . . . . . . . (G otimes G) 
+#F NonAbelianTensorSquareFp(G) . . . . . . . . . . . . . . . . . (G otimes G) 
 ##
-TensorSquareFp := function(G)
+NonAbelianTensorSquareFp := function(G)
     local e, F, f, r, i, j, k, a, b1, b2, b, c, c1, c2, T, t;
 
     if not IsFinite(G) then return fail; fi;
@@ -68,9 +68,9 @@ end;
     
 #############################################################################
 ##
-#F TensorSquarePlusFp(G)  . . . . . . . . . . .(G otimes G) split (G times G)
+#F NonAbelianTensorSquarePlusFp(G)  . . . . . .(G otimes G) split (G times G)
 ##
-TensorSquarePlusFp := function(G)
+NonAbelianTensorSquarePlusFp := function(G)
     local g, e, n, F, f, r, i, j, k, w, v, M, m, u;
 
     # set up
@@ -129,7 +129,7 @@ TensorSquarePlusFp := function(G)
     return M;
 end;
 
-TensorSquareViaNq := function( G )
+NonAbelianTensorSquareViaNq := function( G )
     local   tsfp,  phi;
 
     if RequirePackage("nq") = fail then 
@@ -137,11 +137,11 @@ TensorSquareViaNq := function( G )
     fi;
 
     if not IsNilpotent( G ) then 
-        Error( "TensorSquareViaNq: Group is not nilpotent, ",
+        Error( "NonAbelianTensorSquareViaNq: Group is not nilpotent, ",
                "therefore nq might not terminate\n" );
     fi;
 
-    tsfp := TensorSquarePlusFp( G );
+    tsfp := NonAbelianTensorSquarePlusFp( G );
     phi  := NqEpimorphismNilpotentQuotient( tsfp );
 
     return Image( phi, tsfp!.tensor );
@@ -670,18 +670,23 @@ end );
 
 #############################################################################
 ##
-#F TensorSquarePlus(G) . . . . . . . . . . . . (G otimes G) split (G times G)
+#F NonAbelianTensorSquarePlus(G) . . . . . . . .  (G otimes G) by (G times G)
 ##
-TensorSquarePlus := function(G)
-    local n, S, coll, y, sys, T;
+## This is the group nu(G) in our paper.  The following function computes the
+## epimorphisms of nu(G) onto tau(G).
+##
+NonAbelianTensorSquarePlusEpimorphism := function(G)
+    local   n,  embed,  S,  coll,  y,  sys,  T,  lift;
 
-    if Size(G) = 1 then return G; fi;
+    if Size(G) = 1 then return IdentityMapping( G ); fi;
  
     # some info
     n := Length(Igs(G));
 
     # set up quotient
-    S := ExteriorSquarePlus(G);
+    embed := NonAbelianExteriorSquarePlusEmbedding(G);
+    S := Range( embed );
+    S!.embedding := embed;
 
     # set up covering group
     coll := CollectorCentralCover(S);
@@ -700,23 +705,41 @@ TensorSquarePlus := function(G)
     T := QuotientBySystem( coll, sys, n );
 
     # enforce epimorphism
-    return Subgroup(T, Igs(T){[1..2*n]});
+    T := Subgroup(T, Igs(T){[1..2*n]});
+
+    # construct homomorphism from nu(G) to tau(G)
+    lift := GroupHomomorphismByImagesNC( T,S, 
+                    Igs(T){[1..2*n]},Igs(S){[1..2*n]} );
+    SetFeatureObj( lift, IsMapping, true );
+    SetFeatureObj( lift, IsGroupHomomorphism, true );
+    SetFeatureObj( lift, IsSurjective, true );
+
+    return lift;
 end;
+
+NonAbelianTensorSquarePlus := function( G )
+
+    return Source( NonAbelianTensorSquarePlusEpimorphism( G ) );
+end;
+
 
 #############################################################################
 ##
-#F TensorSquare(G). . . . . . . . . . . . . . . . . . . . . . . .(G otimes G)
+#F NonAbelianTensorSquare(G). . . . . . . . . . . . . . . . . . .(G otimes G)
 ##
-InstallMethod( TensorSquare, true, [IsPcpGroup], 0, function(G)
-    local n, T, U, t, r, c, i, j;
+NonAbelianTensorSquareEpimorphism := function( G )
+    local   n,  epi,  T,  U,  t,  r,  c,  i,  j,  GoG,  gens,  embed,  
+            imgs,  alpha;
 
-    if Size(G) = 1 then return G; fi;
+    if Size(G) = 1 then return IdentityMapping(G); fi;
 
     # set up
     n := Length(Pcp(G));
 
     # tensor square plus
-    T := TensorSquarePlus(G);
+    epi := NonAbelianTensorSquarePlusEpimorphism(G);
+
+    T := Source( epi );
     U := Parent(T);
     t := Pcp(U);
     r := RelativeOrdersOfPcp(t);
@@ -731,7 +754,29 @@ InstallMethod( TensorSquare, true, [IsPcpGroup], 0, function(G)
             if r[i]=0 and r[j]=0 then Add(c, Comm(t[i]^-1, t[n+j]^-1)); fi;
         od;
     od;
-    return Subgroup(U, c);
+
+    ## construct homomorphism G otimes G --> G^G
+    ## we don't just want G^G as a subgroup of tau(G) but we want to go back
+    ## to G^G as constructed by NonAbelianExteriorSquarePlus.  (G^G)+ has the
+    ## component .embedding which embeds G^G into (G^G)+
+    GoG := Subgroup(U, c);
+    gens := GeneratorsOfGroup( GoG );
+    embed := Image( epi )!.embedding;
+    imgs := List( gens, g->PreImagesRepresentative( embed, Image( epi, g ) ) );
+
+    alpha := GroupHomomorphismByImagesNC( GoG, Source( embed ), gens, imgs );
+    
+    SetFeatureObj( alpha, IsMapping, true );
+    SetFeatureObj( alpha, IsGroupHomomorphism, true );
+    SetFeatureObj( alpha, IsSurjective, true );
+
+    return alpha;
+end;
+            
+
+InstallMethod( NonAbelianTensorSquare, true, [IsPcpGroup], 0, function(G)
+    
+    return Source( NonAbelianTensorSquareEpimorphism( G ) );
 end );
 
 #############################################################################
@@ -746,11 +791,11 @@ CheckGroupsByOrder := function(n,full)
         if full or not IsAbelian(G) then 
             Print("check ",i,"\n");
             t := Runtime();
-            A := TensorSquare(G);
+            A := NonAbelianTensorSquare(G);
             Print(" ",Runtime() - t, " for pcp method \n");
             if full then 
                 t := Runtime();
-                B := TensorSquareFp(G); Size(B);
+                B := NonAbelianTensorSquareFp(G); Size(B);
                 Print(" ",Runtime() - t, " for fp method \n");
                 if Size(A) <> Size(B) then Error(n," ",i,"\n"); fi;
             fi;

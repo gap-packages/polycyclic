@@ -35,6 +35,6 @@ DeclareGlobalFunction("EvalConsistency");
 DeclareGlobalFunction("QuotientBySystem");
 
 DeclareAttribute( "SchurMultiplicator", IsGroup );
-DeclareAttribute("TensorSquare", IsGroup);
-DeclareAttribute("ExteriorSquare", IsGroup);
+DeclareAttribute( "NonAbelianTensorSquare", IsGroup );
+DeclareAttribute( "NonAbelianExteriorSquare", IsGroup );
 

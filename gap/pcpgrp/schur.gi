@@ -188,6 +188,24 @@ SchurExtension := function(G)
     return T;
 end;
 
+SchurExtensionEpimorphism := function( G )
+    local   ext,  extgens,  Ggens,  images,  epi;
+
+    ext := SchurExtension( G );
+    extgens := GeneratorsOfGroup( ext );
+
+    Ggens := GeneratorsOfGroup( G );
+    images := List( extgens, g->Identity(G) );
+    images{[1..Length(Ggens)]} := Ggens;
+
+    epi := GroupHomomorphismByImagesNC( ext, G, extgens, images );
+    SetFeatureObj( epi, IsMapping, true );
+    SetFeatureObj( epi, IsGroupHomomorphism, true );
+    SetFeatureObj( epi, IsSurjective, true );
+
+    return epi;
+end;
+
 #############################################################################
 ##
 #A SchurMultiplicator(G) . . . . . . . . . . . . . . . . . . . . . . . . M(G)
@@ -213,7 +231,7 @@ InstallMethod( SchurMultiplicator, true, [IsPcpGroup], 0, function(G)
     if b[2] = n-m then 
         return a;
     else
-        return Concatenation(a, [[b[1], b[2]-n+m]]);
+        return Concatenation([[b[1], b[2]-n+m]], a);
     fi;
 end);
 
@@ -251,24 +269,55 @@ end;
     
 #############################################################################
 ##
-#A ExteriorSquare(G) . . . . . . . . . . . . . . . . . . . . . . .(G wegde G)
+#A NonAbelianExteriorSquareEpimorphism(G) . . . . . . . . .  G wegde G --> G'
 ##
-InstallMethod( ExteriorSquare, true, [IsPcpGroup], 0, function(G)
-    local H, D;
-    if Size(G) = 1 then return G; fi;
-    H := SchurExtension(G);
-    D := DerivedSubgroup(H);
-    return PcpGroupByPcp(Pcp(D));
-end );
-    
+NonAbelianExteriorSquareEpimorphism := function( G )
+    local   lift,  D,  gens,  imgs,  epi,  lambda;
+
+    if Size(G) = 1 then return IdentityMapping( G ); fi;
+
+    lift := SchurExtensionEpimorphism(G);
+    D    := DerivedSubgroup( Source(lift) );
+
+    gens := GeneratorsOfGroup( D );
+    imgs := List( gens, g->Image( lift, g ) );
+    epi  := GroupHomomorphismByImagesNC( D, DerivedSubgroup(G), gens, imgs );
+                    
+    SetFeatureObj( epi, IsMapping, true );
+    SetFeatureObj( epi, IsGroupHomomorphism, true );
+    SetFeatureObj( epi, IsSurjective, true );
+
+    lambda := function( g, h )
+        return Comm( PreImagesRepresentative( lift, g ),
+                     PreImagesRepresentative( lift, h ) );
+    end;
+
+    D!.epimorphism := epi;
+    D!.crossedPairing := lambda;
+
+    return epi;
+end;
+
 #############################################################################
 ##
-#A ExteriorSquarePlus(G) . . . . . . . . . . . . . (G wegde G) by (G times G)
+#A NonAbelianExteriorSquare(G) . . . . . . . . . . . . . . . . . .(G wegde G)
 ##
-## This is the group tau(G) in our paper.
+InstallMethod( NonAbelianExteriorSquare, true, [IsPcpGroup], 0, function(G)
+    return Source( NonAbelianExteriorSquareEpimorphism( G ) );
+end );
+ 
+#############################################################################
 ##
-ExteriorSquarePlus := function(G)
-    local g, n, r, w, F, f, D, d, m, s, c, i, j, k, e, alpha, gens, imgs, S;
+#A NonAbelianExteriorSquarePlus(G) . . . . . . . . . . (G wegde G) by (G x G)
+##
+## This is the group tau(G) in our paper. 
+##
+## The follwoing function comutes the embedding of the non-abelian exterior
+## square of G into tau(G).
+##
+NonAbelianExteriorSquarePlusEmbedding := function(G)
+    local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,  
+            e,  j,  gens,  imgs,  k,  alpha,  S,  embed;
 
     if Size(G) = 1 then return G; fi;
 
@@ -278,20 +327,22 @@ ExteriorSquarePlus := function(G)
     r := RelativeOrdersOfPcp(g);
     w := List([1..2*n], x -> 0);
 
-    # F/[R,F]
-    F := SchurExtension(G);
+    extlift := NonAbelianExteriorSquareEpimorphism( G );
+
+    # F/[R,F] = G*
+    F := Parent( Source( extlift ) );
     f := Pcp(F);
 
-    # the exterior square D
-    D := DerivedSubgroup(F);
+    # the non-abelian exterior square D = G^G
+    D := Source( extlift );
     d := Pcp(D);
     m := Length(d);
     s := RelativeOrdersOfPcp(d);
 
-#    Print( "#  ExteriorSquarePlus: Setting up collector with ", 2*n+m, 
+#    Print( "#  NonAbelianExteriorSquarePlus: Setting up collector with ", 2*n+m, 
 #           " generators\n" );
 
-    # set up collector for exterior square plus
+    # set up collector for non-abelian exterior square plus
     c := FromTheLeftCollector(2*n+m);
 
     # the relators of GxG
@@ -326,7 +377,7 @@ ExteriorSquarePlus := function(G)
         od;
     od;
 
-    # the relators of D
+    # the relators of G^G
     for i in [1..m] do
 
         # relative order and power
@@ -351,7 +402,11 @@ ExteriorSquarePlus := function(G)
         od;
     od;
 
-    # the extension of D by GxG 
+    # the extension of G^G by GxG 
+    #
+    # This is the computation of \lambda in our paper: For (g_i,g_j) we take
+    # preimages (f_i,f_j) in G* and calculate the image of (g_i,g_j) under
+    # \lambda as the commutator [f_i,f_j].
     for i in [1..n] do
         for j in [1..n] do
             e := ExponentsByPcp(d, Comm(f[j], f[i]));
@@ -366,10 +421,12 @@ ExteriorSquarePlus := function(G)
         od;
     od;
 
-    # the action on D by GxG 
+    # the action on G^G by GxG 
     for i in [1..n] do
 
         # create action homomorphism
+        # G^G is generated by commutators of G*
+        # G acts on G^G via conjugation with preimages in G*.
         gens := []; imgs := [];
         for k in [1..n] do
             for j in [1..n] do
@@ -417,7 +474,15 @@ ExteriorSquarePlus := function(G)
         S := PcpGroupByCollectorNC(c);
     fi;
     S!.group := G;
-    return S;
+
+    gens := GeneratorsOfGroup(S){[2*n+1..2*n+m]};
+    embed := GroupHomomorphismByImagesNC( D, S, GeneratorsOfPcp(d), gens );
+
+    return embed;
 end;
 
+NonAbelianExteriorSquarePlus := function( G )
+
+    return Range( NonAbelianExteriorSquarePlusEmbedding( G ) );
+end;
 

@@ -36,6 +36,8 @@ The features of this package include
 
         - computation of various subgroups of finite index
 
+        - computation of teh Schur multiplicator, the non-abelian
+          exterior square and the non-abelian tenor square
 
 There is a manual in the subdirectory 'doc' written in plain TeX which
 describes the available functions in detail.

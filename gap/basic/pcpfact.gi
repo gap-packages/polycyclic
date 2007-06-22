@@ -58,3 +58,9 @@ function( G, N )
     if Size(N) = 1 then return IdentityMapping( G ); fi;
     return NaturalHomomorphismByPcp( Pcp( G, N ) );
 end );
+
+InstallMethod( NaturalHomomorphismByNormalSubgroupNCOrig, 
+        "for pcp groups", true, [IsPcpGroup, IsPcpGroup], 0,
+function( G, N ) return NaturalHomomorphism(G,N); end );
+
+        

@@ -11,18 +11,6 @@ DeclareCategory( "IsPcpElement", IsMultiplicativeElementWithInverse );
 DeclareCategoryFamily( "IsPcpElement" );
 DeclareCategoryCollections( "IsPcpElement" );
 
-
-#############################################################################
-##
-## Operations
-##
-DeclareOperation( "Exponents",       [ IsObject ] );
-DeclareOperation( "NameTag",         [ IsObject ] );
-DeclareOperation( "GenExpList",      [ IsObject ] );
-DeclareOperation( "Depth",           [ IsObject ] );
-DeclareOperation( "LeadingExponent", [ IsObject ] );
-
-
 #############################################################################
 ##
 ## Introduce the representation of pcp elements
@@ -34,6 +22,16 @@ DeclareRepresentation( "IsPcpElementRep",
                          "depth",
                          "leading",
                          "name" ] );
+
+#############################################################################
+##
+## Operations
+##
+DeclareOperation( "Exponents",       [ IsPcpElementRep ] );
+DeclareOperation( "NameTag",         [ IsPcpElementRep ] );
+DeclareOperation( "GenExpList",      [ IsPcpElementRep ] );
+DeclareOperation( "Depth",           [ IsPcpElementRep ] );
+DeclareOperation( "LeadingExponent", [ IsPcpElementRep ] );
 
 #############################################################################
 ##

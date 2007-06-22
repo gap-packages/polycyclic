@@ -29,7 +29,7 @@ InstallGlobalFunction( ExampleOfMetabelianPcpGroup, function( a, k )
     ##  The ring of algebraic integers defined by the following
     ##  polynomial has the obvious units x, x-a  and x+a.
     ##
-    x := Indeterminate( Rationals, "x" );
+    x := Indeterminate( Rationals, "x" : new );
     pol := x * (x-a) * (x+a) - 1;
 
     ##

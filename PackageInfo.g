@@ -3,19 +3,19 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.21 2006/11/07 10:34:10 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.22 2007/06/22 15:36:47 werner Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.1",
-Date        := "23/10/2006",
+Version     := "2.2",
+Date        := "22/06/2007",
 
 ArchiveFormats := ".tar.gz",
 ArchiveURL     := 
-"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.1",
+"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.2",
 
 Persons          := [ 
   rec( LastName      := "Eick",
@@ -38,7 +38,7 @@ Persons          := [
        Email         := "nickel@mathematik.tu-darmstadt.de",
        WWWHome       := "http://www.mathematik.tu-darmstadt.de/~nickel",
        PostalAddress := Concatenation( 
-               "Fachbereich Mathematik, AG 2 \n",
+               "Fachbereich Mathematik\n",
                "TU Darmstadt\n",
                "Schlossgartenstr. 7\n",
                "64289 Darmstadt\n",
