@@ -121,7 +121,8 @@ end );
 ##
 #F NumberOfGenerators( <coll> )
 ##
-BindGlobal( "NumberOfGenerators", coll -> coll![PC_NUMBER_OF_GENERATORS] );
+InstallGlobalFunction( NumberOfGenerators, 
+  coll -> coll![PC_NUMBER_OF_GENERATORS] );
 
 ##
 #M  SetRelativeOrder( <coll>, <gen>, <order> )
@@ -584,7 +585,8 @@ end );
 ##
 #F  FromTheLeftCollector_SetCommute( <coll> )
 ##
-BindGlobal( "FromTheLeftCollector_SetCommute", function( coll )
+InstallGlobalFunction( FromTheLeftCollector_SetCommute, 
+  function( coll )
     local   com,  cnj,  icnj,  cnji,  icnji,  n,  g,  again,  h;
     
     Info( InfoFromTheLeftCollector, 1, "Computing commute array" );
@@ -649,7 +651,8 @@ end );
 ##        ev[i] := 0;  ev[j] := 1;
 ##        
                     
-BindGlobal( "FromTheLeftCollector_CompleteConjugate", function( coll )
+InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate, 
+  function( coll )
     local   G,  gens,  n,  i,  missing,  j,  images;
     
     Info( InfoFromTheLeftCollector, 1, "Completing conjugate relations" );
@@ -736,7 +739,8 @@ end );
 ##
 #F  FromTheLeftCollector_CompletePowers( <coll> )
 ##
-BindGlobal( "FromTheLeftCollector_CompletePowers", function( coll )
+InstallGlobalFunction( FromTheLeftCollector_CompletePowers, 
+  function( coll )
     local   n,  i;
     
     Info( InfoFromTheLeftCollector, 1, "Completing power relations" );
@@ -836,6 +840,94 @@ function( coll )
     return false;
 end );
 
+############################################################################
+##
+#F  IsPcpNormalFormObj ( <ftl>, <w> )
+##
+## checks whether <w> is in normal form.
+## 
+InstallGlobalFunction( IsPcpNormalFormObj,
+  function( ftl, w )
+  local k; # loop variable
+  
+  if not IsSortedList( w{[1,3..Length(w)-1]} ) then 
+    return(false);
+  fi;
+  for k in [1,3..Length(w)-1] do
+    if IsBound( ftl![ PC_EXPONENTS ][ w[k] ]) and 
+      ( not w[k+1] < ftl![ PC_EXPONENTS ][ w[k] ] or
+        not w[k+1] >= 0 ) then 
+      return(false);
+    fi;
+  od;
+
+  return(true);
+  end);
+
+############################################################################
+##
+#P  IsPolycyclicPresentation( <ftl> )
+## 
+## checks whether the input-presentation is a polycyclic presentation, i.e.
+## whether the right-hand-sides of the relations are normal.
+##
+InstallMethod( IsPolycyclicPresentation, 
+  "FromTheLeftCollector", 
+  [ IsFromTheLeftCollectorRep ], 0, 
+  function( ftl )
+  local n, 	# number of generators of <ftl>
+	i,j;	# loop variables
+
+  n := ftl![ PC_NUMBER_OF_GENERATORS ];
+
+  # check power relations
+  for i in [1..n] do
+    if IsBound( ftl![ PC_POWERS ][i] ) and 
+       not IsPcpNormalFormObj( ftl, ftl![ PC_POWERS ][i]) then 
+      return( false );
+    fi;
+  od;
+  
+  # check conjugacy relations
+  for i in [ 1 .. n ] do 
+    for j in [ i+1 .. n ] do
+      if IsBound( ftl![ PC_CONJUGATES ][j][i] ) and
+         not IsPcpNormalFormObj( ftl, ftl![ PC_CONJUGATES ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_INVERSECONJUGATES ][j][i] ) and
+         not IsPcpNormalFormObj( ftl, ftl![ PC_INVERSECONJUGATES ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_CONJUGATESINVERSE ][j][i] ) and
+        not IsPcpNormalFormObj( ftl, ftl![ PC_CONJUGATESINVERSE ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_INVERSECONJUGATESINVERSE ][j][i] ) and
+        not IsPcpNormalFormObj( ftl, ftl![PC_INVERSECONJUGATESINVERSE][j][i] ) then
+        return( false );
+      fi;
+    od;
+  od;
+
+  # check commutator relations
+  for i in [ 1 .. n ] do 
+    for j in [ i+1 .. n ] do 
+      if IsBound( ftl![ PC_COMMUTATORS ][j][i] ) and
+         not IsPcpNormalFormObj( ftl, ftl![ PC_COMMUTATORS ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_INVERSECOMMUTATORS ][j][i] ) and
+         not IsPcpNormalFormObj( ftl, ftl![ PC_INVERSECOMMUTATORS ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_COMMUTATORSINVERSE ][j][i] ) and
+        not IsPcpNormalFormObj( ftl, ftl![ PC_COMMUTATORSINVERSE ][j][i] ) then
+        return( false );
+      elif IsBound( ftl![ PC_INVERSECOMMUTATORSINVERSE ][j][i] ) and
+        not IsPcpNormalFormObj( ftl, ftl![PC_INVERSECOMMUTATORSINVERSE][j][i] ) then
+        return( false );
+      fi;
+    od;
+  od;
+
+  return( true );
+  end);
 
 #############################################################################
 ##
@@ -849,6 +941,10 @@ InstallMethod( UpdatePolycyclicCollector,
         "FromTheLeftCollector",
         [ IsFromTheLeftCollectorRep ],
 function( coll )
+
+    if not IsPolycyclicPresentation( coll ) then
+       Error("the input presentation is not a polcyclic presentation");
+    fi;
     
     FromTheLeftCollector_SetCommute( coll );
 

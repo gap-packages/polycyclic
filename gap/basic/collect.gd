@@ -83,6 +83,33 @@ DeclareOperation( "GetConjugate",
 DeclareInfoClass( "InfoFromTheLeftCollector" );
 DeclareInfoClass( "InfoCombinatorialFromTheLeftCollector" );
 
+############################################################################
+##
+#F  NumberOfGenerators
+#F  FromTheLeftCollector_SetCommute
+#F  FromTheLeftCollector_CompletePowers
+#F  FromTheLeftCollector_CompleteConjugate
+##
+DeclareGlobalFunction( "NumberOfGenerators" );
+DeclareGlobalFunction( "FromTheLeftCollector_SetCommute" );
+DeclareGlobalFunction( "FromTheLeftCollector_CompletePowers" );
+DeclareGlobalFunction( "FromTheLeftCollector_CompleteConjugate" );
+
+############################################################################
+##
+#F  IsPcpNormalFormObj( <ftl>, <w> )
+##
+DeclareGlobalFunction( "IsPcpNormalFormObj" );
+
+############################################################################
+##
+#P  IsPolycyclicPresentation
+##
+## checks whether the input-presentation is a polycyclic presentation, i.e.
+## whether the right-hand-sides of the relations are normal.
+##
+DeclareProperty( "IsPolycyclicPresentation", IsFromTheLeftCollectorRep );
+
 #############################################################################
 ##
 #H The following indices point into a from the left collector.  They are used

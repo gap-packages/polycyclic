@@ -25,11 +25,11 @@ end;
 ##
 FactorLattice := function( V, U )
     local d, g, r, i, j, e;
-    d := List( U, DepthVector );
+    d := List( U, DepthOfVec );
     g := [];
     r := [];
     for i in [1..Length(V)] do
-        j := Position( d, DepthVector(V[i]) );
+        j := Position( d, DepthOfVec(V[i]) );
         if IsBool(j) then 
             Add( g, V[i] );
             Add( r, 0 );
@@ -51,13 +51,13 @@ end;
 CoefficientsByFactorLattice := function( F, v )
     local df, dk, cf, ck, z, l, j, e;
     v  := ShallowCopy(v);
-    df := List( F.gens, DepthVector );
-    dk := List( F.kern, DepthVector );
+    df := List( F.gens, DepthOfVec );
+    dk := List( F.kern, DepthOfVec );
     cf := List( df, x -> 0 );
     ck := List( dk, x -> 0 );
     z := 0 * v;
     while v <> z do
-        l := DepthVector(v);
+        l := DepthOfVec(v);
 
         # reduce with factor
         j := Position( df, l );
@@ -72,7 +72,7 @@ CoefficientsByFactorLattice := function( F, v )
         fi;
 
         # reduce with kernel
-        if DepthVector(v) = l then
+        if DepthOfVec(v) = l then
             j := Position( dk, l );
             ck[j] := v[l]/F.kern[j][l];
             AddRowVector( v, F.kern[j], -ck[j] );

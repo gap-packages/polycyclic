@@ -5,14 +5,6 @@
 ##
 
 ##
-## dummy function name
-##
-
-if RequirePackage("nq") = fail then
-    NqEpimorphismNilpotentQuotient := fail; 
-fi;
-
-##
 ## matrix -- basics about matrices, rational spaces, lattices and modules
 ##
 ReadPkg( PolycyclicPkgName, "gap/matrix/intmat.gi");

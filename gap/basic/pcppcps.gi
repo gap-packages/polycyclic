@@ -572,98 +572,6 @@ function( pcp ) PrintObj( pcp ); end );
 
 #############################################################################
 ##
-#M Print pcp presentation
-##
-PrintPresentationByPcp := function( pcp )
-    local gens, rels, i, r, g, j, h, c;
-
-    gens := GeneratorsOfPcp( pcp );
-    rels := RelativeOrdersOfPcp( pcp );
-    
-    # print relations
-    for i in [1..Length(gens)] do
-        if rels[i] > 0 then
-            r := rels[i];
-            g := gens[i];
-            Print("g",i," ^ ",r," = ", g^r,"\n");
-        fi;
-    od;
-
-    for i in [1..Length(gens)] do
-        for j in [1..i-1] do
-            g := gens[i];
-            h := gens[j];
-            c := gens[i]^gens[j];
-            if c <> g then
-                Print("g",i," ^ g",j," = ", c,"\n");
-            fi;
-            if rels[j] = 0 then 
-                c := gens[i]^(gens[j]^-1);
-                if c <> g then
-                    Print("g",i," ^ g",j,"^-1 = ", c,"\n");
-                fi;
-            fi;
-        od;
-    od;
-end;
-
-#############################################################################
-##
-#M Print pcp presentation
-##
-PrintPcpPresentation := function( G )
-    if IsGroup(G) then 
-        PrintPresentationByPcp( Pcp(G) );
-    else
-        PrintPresentationByPcp( G );
-    fi;
-end;
-
-#############################################################################
-##
-#M Print full pcp presentation
-##
-PrintFullPresentationByPcp := function( pcp )
-    local gens, rels, i, r, g, j, h, c;
-
-    gens := GeneratorsOfPcp( pcp );
-    rels := RelativeOrdersOfPcp( pcp );
-    
-    # print relations
-    for i in [1..Length(gens)] do
-        if rels[i] > 0 then
-            r := rels[i];
-            g := gens[i];
-            Print("g",i," ^ ",r," = ", g^r,"\n");
-        fi;
-    od;
-
-    for i in [1..Length(gens)] do
-        for j in [1..i-1] do
-            g := gens[i];
-            h := gens[j];
-            c := gens[i]^gens[j];
-            Print("g",i," ^ g",j," = ", c,"\n");
-            c := gens[i]^(gens[j]^-1);
-            Print("g",i," ^ g",j,"^-1 = ", c,"\n");
-        od;
-    od;
-end;
-
-#############################################################################
-##
-#M Print full presentation
-##
-PrintFullPresentation := function( G )
-    if IsGroup(G) then 
-        PrintFullPresentationByPcp( Pcp(G) );
-    else
-        PrintFullPresentationByPcp( G );
-    fi;
-end;
-
-#############################################################################
-##
 #F  small helper
 ##
 WordByExps := function( exp )
@@ -676,6 +584,90 @@ WordByExps := function( exp )
         fi;
     od;
     return w;
+end;
+
+#############################################################################
+##
+#M a small helper
+##
+PrintWord := function(gen,exp)
+    local w, i, g;
+    w := WordByExps(exp);
+    if Length(w) = 0 then 
+        Print("id "); 
+    else
+        for i in [1,3..Length(w)-1] do
+            g := Concatenation(gen,String(w[i])); 
+            if w[i+1] = 1 then 
+                Print(g);
+            else
+                Print(g,"^",w[i+1]);
+            fi;
+            if i < Length(w)-1 then 
+                Print(" * ");
+            fi;
+        od;
+    fi;
+    Print("\n");
+end;
+
+#############################################################################
+##
+#M Print pcp presentation
+##
+PrintPresentationByPcp := function( pcp, flag )
+    local gens, rels, i, r, g, j, h, c;
+
+    gens := GeneratorsOfPcp( pcp );
+    rels := RelativeOrdersOfPcp( pcp );
+    
+    # print relations
+    for i in [1..Length(gens)] do
+        if rels[i] > 0 then
+            r := rels[i];
+            g := gens[i];
+            Print("g",i,"^",r," = ");
+            PrintWord("g",ExponentsByPcp(pcp, g^r));
+        fi;
+    od;
+
+    for i in [1..Length(gens)] do
+        for j in [1..i-1] do
+            g := gens[i];
+            h := gens[j];
+            c := gens[i]^gens[j];
+            if c <> g or flag = "all" then
+                Print("g",i," ^ g",j," = ");
+                PrintWord("g",ExponentsByPcp(pcp, c));
+            fi;
+            if rels[j] = 0 or flag = "all" then 
+                c := gens[i]^(gens[j]^-1);
+                if c <> g or flag = "all" then 
+                    Print("g",i," ^ g",j,"^-1 = ");
+                    PrintWord("g",ExponentsByPcp(pcp, c));
+                fi;
+            fi;
+        od;
+    od;
+end;
+
+#############################################################################
+##
+#M Print pcp presentation
+##
+PrintPcpPresentation := function( arg )
+    local G, flag;
+    G := arg[1];
+    if Length(arg) = 2 then 
+        flag := arg[2];
+    else
+        flag := false;
+    fi;
+    if IsGroup(G) then 
+        PrintPresentationByPcp( Pcp(G), flag );
+    else
+        PrintPresentationByPcp( G, flag );
+    fi;
 end;
 
 #############################################################################

@@ -42,5 +42,4 @@ ReadPkg( PolycyclicPkgName, "gap/exam/exam.gd");
 #D require other packages
 ##
 RequirePackage("alnuth");
-RequirePackage("nq");
 

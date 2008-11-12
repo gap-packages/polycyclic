@@ -20,9 +20,10 @@ end;
 
 #############################################################################
 ##
-#F  DepthVector( vec )
+#F  DepthOfVec( vec )
 ##
-DepthVector := function( vec ) return PositionNonZero( vec ); end;
+InstallGlobalFunction( DepthOfVec, 
+   function( vec ) return PositionNonZero( vec ); end );
 
 #############################################################################
 ##
@@ -30,8 +31,8 @@ DepthVector := function( vec ) return PositionNonZero( vec ); end;
 ##
 SemiEchelonFactorBase := function( V, U )
     local L1, L2;
-    L1 := List( V, DepthVector );
-    L2 := List( U, DepthVector );
+    L1 := List( V, DepthOfVec );
+    L2 := List( U, DepthOfVec );
     return V{Filtered( [1..Length(V)], i -> not L1[i] in L2 )};
 end;
 
@@ -42,11 +43,11 @@ end;
 MemberBySemiEchelonBase := function( v, U )
     local d, c, z, l, j;
     v := ShallowCopy(v);
-    d := List( U, DepthVector );
+    d := List( U, DepthOfVec );
     c := List( d, x -> 0 );
     z := 0 * v;
     while v <> z do
-        l := DepthVector(v); 
+        l := DepthOfVec(v); 
         j := Position( d, l );
         if IsBool( j ) then return false; fi;
         c[j] := v[l];
@@ -74,13 +75,13 @@ end );
 CoefficientsByNHSEB := function( v, hom )
     local df, dk, cf, ck, z, l, j;
     v  := ShallowCopy(v);
-    df := List( hom.factor, DepthVector );
-    dk := List( hom.kernel, DepthVector );
+    df := List( hom.factor, DepthOfVec );
+    dk := List( hom.kernel, DepthOfVec );
     cf := List( df, x -> 0 );
     ck := List( dk, x -> 0 );
     z := 0 * v;
     while v <> z do
-        l := DepthVector(v);
+        l := DepthOfVec(v);
         j := Position( df, l );
         if not IsBool( j ) then
             cf[j] := v[l];
@@ -166,9 +167,9 @@ AddVectorEchelonBase := function( base, vec )
     local d, l, j, i;
 
     # reduce vec
-    d := List( base, DepthVector );
+    d := List( base, DepthOfVec );
     repeat
-        l := DepthVector( vec );
+        l := DepthOfVec( vec );
         j := Position( d, l );
         if not IsBool( j ) then
             AddRowVector( vec, base[j], -vec[l] );
@@ -232,7 +233,7 @@ end );
 #F  IsSemiEchelonBase( base )  
 ##
 IsSemiEchelonBase := function( base )
-    return IsSSortedList( List( base, DepthVector ) );
+    return IsSSortedList( List( base, DepthOfVec ) );
 end;
 
 #############################################################################
@@ -241,8 +242,8 @@ end;
 ##
 IsEchelonBase := function( base )
     local d, i;
-    d := List( base, DepthVector );
-    if not IsSSortedList( List( base, DepthVector ) ) then return false; fi;
+    d := List( base, DepthOfVec );
+    if not IsSSortedList( List( base, DepthOfVec ) ) then return false; fi;
     for i in [1..Length(d)] do
         if base[i][d[i]] <> 1 then return false; fi;
     od;

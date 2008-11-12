@@ -136,7 +136,10 @@ end;
 ##
 #F SplitExtensionByAutomorphisms( G, H, auts )
 ##
-SplitExtensionByAutomorphisms := function( G, H, auts )
+InstallMethod( SplitExtensionByAutomorphisms,
+   "for a PcpGroup, a PcpGroup, and a list of automorphisms", true, 
+   [ IsPcpGroup, IsPcpGroup, IsList ], 0, 
+   function( G, H, auts )
     local g, h, n, m, rg, rh, zn, zm, coll, o, i, j, k;
 
     # get dimensions
@@ -155,13 +158,13 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
     # the relators of G
     for i in [1..n] do
         if rg[i] > 0 then
-            o := Exponents( g[i]^rg[i] );
+            o := ExponentsByPcp( g, g[i]^rg[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetRelativeOrder( coll, m+i, rg[i] );
             SetPower( coll, m+i, o );
         fi;
         for j in [i+1..n] do
-            o := Exponents( g[j]^g[i] );
+            o := ExponentsByPcp( g, g[j]^g[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetConjugate( coll, m+j, m+i, o );
         od;
@@ -170,13 +173,13 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
     # the relators of H
     for i in [1..m] do
         if rh[i] > 0 then 
-            o := Exponents( h[i]^rh[i] );
+            o := ExponentsByPcp( h, h[i]^rh[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
             SetRelativeOrder( coll, i, rh[i] );
             SetPower( coll, i, o );
         fi;
         for j in [i+1..m] do
-            o := Exponents( h[j]^h[i] );
+            o := ExponentsByPcp( h, h[j]^h[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
             SetConjugate( coll, j, i, o );
         od;
@@ -186,7 +189,7 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
     for i in [1..m] do
         k := List( g, x -> Image( auts[i], x ) );
         for j in [1..n] do
-            o := Exponents( k[j] );
+            o := ExponentsByPcp( g, k[j] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetConjugate( coll, m+j, i, o );
         od;
@@ -195,39 +198,100 @@ SplitExtensionByAutomorphisms := function( G, H, auts )
     UpdatePolycyclicCollector(coll);
     G := PcpGroupByCollectorNC( coll );
     return G;
-end;
+end);
 
 #############################################################################
 ##
 #M  DirectProductOp( <groups>, <onegroup> ) . . . . . . . . .  for pcp groups
 ##
-InstallMethod( DirectProductOp,
-                "for pcp groups", ReturnTrue,
-                [ IsList, IsPcpGroup ], 0,
+InstallMethod( DirectProductOp, "for pcp groups", ReturnTrue, 
+               [ IsList, IsPcpGroup ], 0,
+function( groups, onegroup )
+    local  D, info, f, a, i;
 
-   function ( groups, onegroup )
+    if IsEmpty(groups) or not ForAll(groups,IsPcpGroup) then 
+        TryNextMethod(); 
+    fi;
 
-     local  D, info, first, auts, i;
+    D := groups[1]; 
+    f := [1,Length(Igs(D))+1];
+    for i in [2..Length(groups)] do
+        a := List(Igs(D), x -> IdentityMapping(groups[i]));
+        D := SplitExtensionByAutomorphisms(groups[i],D,a);
+        Add(f,Length(Igs(D))+1);
+    od;
 
-     if   IsEmpty(groups) or not ForAll(groups,IsPcpGroup)
-     then TryNextMethod(); fi;
+    info := rec(groups := groups, 
+                first  := f,
+                embeddings := [ ], 
+                projections := [ ]);
+    SetDirectProductInfo(D,info);
 
-     D := groups[1]; first := [1,Length(GeneratorsOfGroup(D))+1];
-     for i in [2..Length(groups)] do
-       auts := List(Igs(groups[i]), x -> IdentityMapping(D));
-       D    := SplitExtensionByAutomorphisms(D,groups[i],auts);
-       Add(first,Length(Igs(D))+1);
-     od;
+    if ForAny(groups,grp->HasSize(grp) and not IsFinite(grp)) then 
+        SetSize(D,infinity); 
+    elif ForAll(groups,HasSize) then 
+        SetSize(D,Product(List(groups,Size))); 
+    fi;
 
-     info := rec(groups := groups, first := first,
-                 embeddings := [ ], projections := [ ]);
-     SetDirectProductInfo(D,info);
+    return D;
+end );
 
-     if   ForAny(groups,grp->HasSize(grp) and not IsFinite(grp))
-     then SetSize(D,infinity); fi;
-     if   ForAll(groups,grp->HasSize(grp) and IsInt(Size(grp)))
-     then SetSize(D,Product(List(groups,Size))); fi;
+#############################################################################
+##
+#A Embedding
+##
+InstallMethod( Embedding, true, 
+               [ IsPcpGroup and HasDirectProductInfo, IsPosInt ], 0,
+function( D, i )
+    local info, G, imgs, hom, gens;
 
-     return D;
-   end );
+    # check
+    info := DirectProductInfo( D );
+    if IsBound( info.embeddings[i] ) then return info.embeddings[i]; fi;
+
+    # compute embedding
+    G := info.groups[i];
+    gens := Igs( G );
+    imgs := Igs( D ){[info.first[i] .. info.first[i+1]-1]};
+    hom  := GroupHomomorphismByImagesNC( G, D, gens, imgs );
+    SetIsInjective( hom, true );
+
+    # store information
+    info.embeddings[i] := hom;
+    return hom;
+end );
+
+#############################################################################
+##
+#A Projection
+##
+InstallMethod( Projection, true,
+         [ IsPcpGroup and HasDirectProductInfo, IsPosInt ], 0,
+function( D, i )
+    local info, G, imgs, hom, N, gens;
+
+    # check
+    info := DirectProductInfo( D );
+    if IsBound( info.projections[i] ) then return info.projections[i]; fi;
+
+    # compute projection
+    G := info.groups[i];
+    gens := Igs( D );
+    imgs := Concatenation(
+               List( [1..info.first[i]-1], x -> One( G ) ),
+               Igs( G ),
+               List( [info.first[i+1]..Length(gens)], x -> One(G)));
+    hom := GroupHomomorphismByImagesNC( D, G, gens, imgs );
+    SetIsSurjective( hom, true );
+
+    # add kernel
+    N := SubgroupNC( D, gens{Concatenation( [1..info.first[i]-1],
+                           [info.first[i+1]..Length(gens)])});
+    SetKernelOfMultiplicativeGeneralMapping( hom, N );
+
+    # store information
+    info.projections[i] := hom;
+    return hom;
+end );
+
 

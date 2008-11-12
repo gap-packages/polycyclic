@@ -7,12 +7,26 @@
 ##
 #M AbelianPcpGroup
 ##
-InstallGlobalFunction( AbelianPcpGroup, function( n, rels )
-    local coll, i;
+InstallGlobalFunction( AbelianPcpGroup, function( arg )
+    local coll, i, n, r;
+
+    # catch arguments
+    if Length(arg) = 1 and IsInt(arg[1]) then
+        n := arg[1];
+        r := List([1..n], x -> 0);
+    elif Length(arg) = 1 and IsList(arg[1]) then 
+        n := Length(arg[1]);
+        r := arg[1];
+    elif Length(arg) = 2 then 
+        n := arg[1];
+        r := arg[2];
+    fi;
+
+    # construct group
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
-        if IsBound( rels[i] ) and rels[i] > 0 then
-            SetRelativeOrder( coll, i, rels[i] );
+        if IsBound( r[i] ) and r[i] > 0 then
+            SetRelativeOrder( coll, i, r[i] );
         fi;
     od;
     UpdatePolycyclicCollector(coll);

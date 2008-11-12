@@ -38,3 +38,5 @@ DeclareAttribute( "SchurMultiplicator", IsGroup );
 DeclareAttribute( "NonAbelianTensorSquare", IsGroup );
 DeclareAttribute( "NonAbelianExteriorSquare", IsGroup );
 
+DeclareOperation( "NqEpimorphismNilpotentQuotient", [IsGroup, IsPosInt]);
+

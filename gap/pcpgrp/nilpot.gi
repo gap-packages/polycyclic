@@ -38,6 +38,7 @@ PcpNextStepCentralizer := function( gens, cent, pcp )
     od;
 
     for g in gens do
+#Print("start gen ",g,"\n");
         if Length( cent ) = 0 then return []; fi;
 
         newgens := [];
@@ -52,6 +53,7 @@ PcpNextStepCentralizer := function( gens, cent, pcp )
                 Add( matrix, comm );
             fi;
         od;
+#Print("  got matrix \n");
 
         if Length( matrix ) > 0  then
     
@@ -60,6 +62,7 @@ PcpNextStepCentralizer := function( gens, cent, pcp )
 
             # get nullspace
             null := PcpNullspaceIntMat( matrix );
+#Print("  solved matrix \n");
 
             # calculate elements corresponding to null
 	    l := Length( notcentral );
@@ -100,7 +103,7 @@ CentreNilpotentPcpGroup := function(G)
     local  ser, gens, cent;
     if Length(Igs(G)) = 0 then return G; fi;
     ser  := LowerCentralSeries(G);
-    gens := GeneratorsOfPcp( Pcp( ser[1], ser[2] ) );
+    gens := Reversed(GeneratorsOfPcp( Pcp( ser[1], ser[2] ) ));
     cent := CentralizeByCentralSeries( G, gens, ser );
     return Subgroup( G, cent );
 end;

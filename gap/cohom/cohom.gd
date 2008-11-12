@@ -19,3 +19,4 @@ DeclareGlobalFunction("ExtensionCR");
 DeclareGlobalFunction("CRRecordByMats");
 DeclareGlobalFunction("CollectedTwoCR");
 
+DeclareOperation( "SplitExtensionByAutomorphisms", [ IsGroup, IsGroup, IsList ] );

@@ -99,7 +99,7 @@ function( elm )
     fi;
 end );
 
-InstallMethod( Tail,
+InstallMethod( TailOfElm,
         "for pcp elements",
         [ IsPcpElement and IsPcpElementRep ],
         
@@ -293,7 +293,7 @@ InstallMethod( \*,
 function( g1, g2 )
     local e, f;
 
-    if Tail( g1 ) < Depth( g2 ) then
+    if TailOfElm( g1 ) < Depth( g2 ) then
         e := Exponents( g1 ) + Exponents( g2 );
 
     else
@@ -440,7 +440,7 @@ function( h, g )
             conj := PcpElementByExponentsNC( clt, conj );
         fi;
 
-    elif Depth(g) = Tail(g) and Depth( g ) < Depth( h ) then
+    elif Depth(g) = TailOfElm(g) and Depth( g ) < Depth( h ) then
 
         ##
         ## nicht klar ob dies etwas bringt

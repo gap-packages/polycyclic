@@ -37,7 +37,7 @@ NextStepRepresentation := function( G, i, mats )
     # choose a cocycle
     rc := List( cc.gcc, Reversed );
     rc := NormalFormIntMat( rc, 2 ).normal;
-    rc := Filtered( rc, x -> DepthVector(x) <= Length(mats[1]) );
+    rc := Filtered( rc, x -> DepthOfVec(x) <= Length(mats[1]) );
     if Length(rc) = 0 then return false; fi;
     co := Reversed( rc[Length(rc)] );
 

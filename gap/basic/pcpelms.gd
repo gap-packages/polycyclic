@@ -47,7 +47,7 @@ DeclareGlobalFunction( "PcpElementByGenExpList" );
 ##
 ## Some attributes
 ##
-DeclareAttribute( "Tail",             IsPcpElement );
+DeclareAttribute( "TailOfElm",        IsPcpElement );
 DeclareAttribute( "RelativeOrderPcp", IsPcpElement );
 DeclareAttribute( "RelativeIndex",    IsPcpElement );
 DeclareAttribute( "FactorOrder",      IsPcpElement );

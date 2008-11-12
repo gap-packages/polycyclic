@@ -72,11 +72,9 @@ RefinedPcpGroup := function( G )
     # refined pcp
     pcs := Igs( G );
     new := RefinedIgs( G );
-    if Length( new.map ) = 0 then
-        G!.bijection := IdentityMapping( G );
-        return G;
-    fi;
-    ord := new.rel; map := new.map; new := new.pcs;
+    ord := new.rel; 
+    map := new.map; 
+    new := new.pcs;
 
     # rewrite relations
     n := Length( new );

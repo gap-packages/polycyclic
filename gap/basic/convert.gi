@@ -38,7 +38,7 @@ PcpGroupToPcGroup := function( G )
     return GroupByRwsNC( rws );
 end;
 
-InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup], 0, 
+InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup and IsFinite], 0, 
 function( G )
     local K, H, g, k, h, hom;
     K := RefinedPcpGroup(G);
@@ -51,6 +51,18 @@ function( G )
     SetIsBijective( hom, true );
     SetIsGroupHomomorphism( hom, true );
     return hom;
+end );
+
+#############################################################################
+##
+## Convert finite pcp groups to perm groups.
+##
+InstallMethod( IsomorphismPermGroup, true, [IsPcpGroup and IsFinite], 0, 
+function( G )
+    local hom1, hom2;
+    hom1 := IsomorphismPcGroup(G);
+    hom2 := IsomorphismPermGroup(Range(hom1));
+    return hom1*hom2;
 end );
 
 #############################################################################
@@ -152,6 +164,10 @@ function( G )
     return hom;
 end );
 
+#############################################################################
+##
+## Convert perm groups to pcp groups.
+##
 InstallMethod( IsomorphismPcpGroup, true, [IsPermGroup], 0,
 function( G )
     local iso, F,H, gens, hom;
@@ -166,6 +182,10 @@ function( G )
     return hom;
 end );
                       
+#############################################################################
+##
+## Convert special fp groups to pcp groups.
+##
 ClassifyRelationsOfFpGroup := function( fpgroup )
     local   gens,  rels,  allpowers,  conflicts,  relations,  rel,  n,  
             l,  g1,  e1,  g2,  e2,  g3,  e3,  g4,  e4;

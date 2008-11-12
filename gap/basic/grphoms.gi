@@ -5,8 +5,7 @@
 
 #############################################################################
 ##
-## Functions to deal with homomorphisms from pcp groups to pcp groups and
-## from arbitrary groups to pcp groups.
+## Functions to deal with homomorphisms to and from pcp groups.
 ##
 
 #############################################################################
@@ -27,34 +26,50 @@ function( G, H, gens, imgs )
     else
         new := [gens, imgs];
     fi;
+    new := [Immutable(new[1]), Immutable(new[2])];
 
     filt := IsGroupGeneralMappingByImages and IsTotal
-            and IsPcpGHBI and IsToPcpGHBI and HasSource 
-            and HasRange and HasMappingGeneratorsImages;
+            and IsPcpGHBI and IsFromPcpGHBI and IsToPcpGHBI 
+            and HasSource and HasRange and HasMappingGeneratorsImages;
 
     type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                      ElementsFamily( FamilyObj( H ) ) ), filt );
 
     hom  := rec( );
-    ##
-    ## With version 4.3 the components !.generators and !.geninages were
-    ## moved into the component MappingGeneratorsImages.  To remain
-    ## compatible with 4.1 and 4.2 we keep the old components as well.
-    ##
-    if not CompareVersionNumbers( VERSION, "4.3" ) then
-        hom.generators := new[1]; 
-        hom.genimages  := new[2];
-    fi;
-
     ObjectifyWithAttributes( hom, type, Source, G, Range, H,
                              MappingGeneratorsImages, new );
     return hom;
 end );
 
-#############################################################################
-##
-#M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . .only H is a pcp group
-##
+InstallMethod( GroupGeneralMappingByImages,
+               true, [IsPcpGroup, IsGroup, IsList, IsList], 0,
+function( G, H, gens, imgs )
+    local new, filt, type, hom;
+ 
+    if Length( gens ) <> Length( imgs ) then
+        Error("gens and imgs must have same length");
+    fi;
+
+    if gens <> Igs(G) then
+        new := IgsParallel( gens, imgs );
+    else
+        new := [gens, imgs];
+    fi;
+    new := [Immutable(new[1]), Immutable(new[2])];
+
+    filt := IsGroupGeneralMappingByImages and IsTotal
+            and IsPcpGHBI and IsFromPcpGHBI 
+            and HasSource and HasRange and HasMappingGeneratorsImages;
+
+    type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
+                     ElementsFamily( FamilyObj( H ) ) ), filt );
+
+    hom  := rec( );
+    ObjectifyWithAttributes( hom, type, Source, G, Range, H,
+                             MappingGeneratorsImages, new );
+    return hom;
+end );
+
 InstallMethod( GroupGeneralMappingByImages,
                true, [IsGroup, IsPcpGroup, IsList, IsList], 0,
 function( G, H, gens, imgs )
@@ -63,28 +78,19 @@ function( G, H, gens, imgs )
     if Length( gens ) <> Length( imgs ) then
         Error("gens and imgs must have same length");
     fi;
+    
+    new := [Immutable(gens), Immutable(imgs)];
 
     filt := IsGroupGeneralMappingByImages and IsTotal
-            and IsToPcpGHBI and HasSource and HasRange
-            and HasMappingGeneratorsImages;
+            and IsPcpGHBI and IsToPcpGHBI 
+            and HasSource and HasRange and HasMappingGeneratorsImages;
 
     type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                      ElementsFamily( FamilyObj( H ) ) ), filt );
 
     hom  := rec( );
-    ##
-    ## With version 4.3 the components !.generators and !.geninages were
-    ## moved into the component MappingGeneratorsImages.  To remain
-    ## compatible with 4.1 and 4.2 we keep the old components as well.
-    ##
-    if not CompareVersionNumbers( VERSION, "4.3" ) then
-        hom.generators := gens;
-        hom.genimages := imgs;
-    fi;
-
     ObjectifyWithAttributes( hom, type, Source, G, Range, H,
-                             MappingGeneratorsImages, [ gens, imgs ] );
-
+                             MappingGeneratorsImages, new );
     return hom;
 end );
 
@@ -98,6 +104,7 @@ function( G, H, gens, imgs )
     local hom;
     hom := GroupGeneralMappingByImages( G, H, gens, imgs );
     SetIsMapping(hom, true);
+    SetIsSingleValued(hom,true);
     return hom;
 end );
 
@@ -125,21 +132,32 @@ IsPcpGroupHomomorphism := function(hom)
             b := imgs[i] ^ imgs[j];
             if a <> b then return false; fi;
 
-            a := gens[i] ^ (gens[j]^-1);
-            a := MappedVector(ExponentsByIgs(gens, a),imgs);
-            b := imgs[i] ^ (imgs[j]^-1);
-            if a <> b then return false; fi;
+            if RelativeOrderPcp( gens[i] ) = 0 then 
+                a := gens[i] ^ (gens[j]^-1);
+                a := MappedVector(ExponentsByIgs(gens, a),imgs);
+                b := imgs[i] ^ (imgs[j]^-1);
+                if a <> b then return false; fi;
+            fi;
         od;
     od;
     return true;
 end;
+
+InstallMethod( IsSingleValued, true, [IsPcpGHBI], 0,
+function(hom) return IsPcpGroupHomomorphism(hom); end );
+
+InstallMethod( IsTotal, true, [IsFromPcpGHBI], 0,
+function(hom) 
+    return Subgroup(Source(hom),MappingGeneratorsImages(hom)[1])
+           = Source(hom);
+end );
 
 #############################################################################
 ##
 #M  \=
 ##
 InstallMethod( \=,
-               IsIdenticalObj, [ IsPcpGHBI, IsPcpGHBI ], 0,
+               IsIdenticalObj, [ IsPcpGHBI, IsPcpGHBI ], SUM_FLAGS,
 function( a, b )
     if a!.Source <> b!.Source then
         return false;
@@ -155,8 +173,8 @@ end );
 ##
 #M  \*
 ##
-InstallMethod( CompositionMapping2,
-               FamSource1EqFamRange2, [ IsPcpGHBI, IsPcpGHBI ], 0,
+InstallMethod( CompositionMapping2, FamSource1EqFamRange2, 
+               [ IsPcpGHBI, IsPcpGHBI ], SUM_FLAGS,
 function( a, b )
   local hom;
   hom := GroupHomomorphismByImagesNC( Source(b), Range(a), 
@@ -168,60 +186,49 @@ end );
 
 #############################################################################
 ##
-#M  \^-1
-##
-#InstallMethod( InverseGeneralMapping,
-#               true, [ IsGroupGeneralMappingByImages ], 0,
-#    function( hom )
-#    return GroupGeneralMappingByImages( Range( hom ),   Source( hom ),
-#                                        MappingGeneratorsImages( home )[2],
-#                                        MappingGeneratorsImages( home )[1] );
-#    end );
-
-#############################################################################
-##
 #M  Images
 ##
-InstallMethod( ImagesRepresentative, 
-               FamSourceEqFamElm,
-               [ IsPcpGHBI, IsMultiplicativeElementWithInverse ], 0,
+InstallMethod( ImagesRepresentative, FamSourceEqFamElm,
+               [ IsFromPcpGHBI, IsMultiplicativeElementWithInverse ], 
+               SUM_FLAGS,
 function( hom, elm )
     local g, h, e;
     g := MappingGeneratorsImages(hom)[1];
     h := MappingGeneratorsImages(hom)[2];
-    e := Exponents(elm);
-
-    if g = Igs(Parent(hom!.Source)) and Length(g) = Length(e) then
-        return MappedVector( e, h);
-    fi;
-    return MappedVector( ExponentsByIgs( g, elm ), h);
+    e := ExponentsByIgs( g, elm );
+    if IsEmpty(e) then return One(Range(hom)); fi;
+    return MappedVector( e, h );
 end );
+
+#############################################################################
+##
+#M  AddPreimagesInfo - a helper
+##
+AddPreimagesInfo := function(hom)
+    local  new;
+    if IsBound( hom!.impcp ) then return; fi;
+    new := IgsParallel( MappingGeneratorsImages(hom)[2],
+                        MappingGeneratorsImages(hom)[1] );
+    hom!.impcp := new[1];
+    hom!.prpcp := new[2];
+end;
 
 #############################################################################
 ##
 #M  PreImages
 ##
-InstallMethod( PreImagesRepresentative,
-               "for pcp groups",
-               FamRangeEqFamElm,
-               [ IsToPcpGHBI, IsMultiplicativeElementWithInverse ], 0,
+InstallMethod( PreImagesRepresentative, FamRangeEqFamElm,
+               [ IsToPcpGHBI, IsMultiplicativeElementWithInverse ], 
+               SUM_FLAGS,
 function( hom, elm )
     local new;
-    if not IsBound( hom!.impcp ) then
-        new := IgsParallel( MappingGeneratorsImages(hom)[2],
-                            MappingGeneratorsImages(hom)[1] );
-        hom!.impcp := new[1];
-        hom!.prpcp := new[2];
-    fi;
-    if Length( hom!.impcp ) = 0 then
-        return One( hom!.Source );
-    fi;
-    return MappedVector( ExponentsByIgs(hom!.impcp, elm), hom!.prpcp );
+    AddPreimagesInfo(hom);
+    if Length(hom!.impcp) = 0 then return One(hom!.Source); fi;
+    return MappedVector(ExponentsByIgs(hom!.impcp, elm), hom!.prpcp);
 end );
 
-InstallMethod( PreImagesSet,
-               true,
-               [ IsPcpGHBI, IsPcpGroup ], 0,
+InstallMethod( PreImagesSet, true,
+               [ IsPcpGHBI, IsPcpGroup ], SUM_FLAGS,
 function( hom, U )
     local prei, kern;
     prei := List( Igs(U), x -> PreImagesRepresentative(hom,x) );
@@ -229,14 +236,13 @@ function( hom, U )
     return SubgroupByIgs( Source(hom), kern, prei );
 end );
 
-InstallMethod( PreImagesSet,
-               true,
-               [ IsToPcpGHBI and IsInjective, IsPcpGroup ], 0,
+InstallMethod( PreImagesSet, true,
+               [ IsToPcpGHBI and IsInjective, IsPcpGroup ], SUM_FLAGS,
 function( hom, U )
     local gens, prei;
     gens := GeneratorsOfGroup( U );
     prei := List( gens, x -> PreImagesRepresentative(hom,x) );
-    return Subgroup( Source(hom), prei );
+    return SubgroupNC( Source(hom), prei );
 end );
 
 #############################################################################
@@ -244,26 +250,30 @@ end );
 #M  Kernel
 ##
 InstallMethod( KernelOfMultiplicativeGeneralMapping,
-               true, [ IsPcpGHBI ], 0,
+               true, [ IsPcpGHBI ], SUM_FLAGS,
 function( hom )
-    local gens, imgs, new, kern, i, e, l;
+    local A, a, B, b, D, u, kern, i, g;
     
-    gens := MappingGeneratorsImages(hom)[1];
-    imgs := MappingGeneratorsImages(hom)[2];
-    if not IsBound( hom!.impcp ) then
-        new := IgsParallel( imgs, gens );
-        hom!.impcp := new[1];
-        hom!.prpcp := new[2];
-    fi;
+    # set up
+    A := Source(hom);
+    a := MappingGeneratorsImages(hom)[1];
+    B := Range(hom);
+    b := MappingGeneratorsImages(hom)[2];
+    D := DirectProduct(B,A);
+    u := Cgs(Subgroup(D, List([1..Length(a)], x ->
+          Image(Embedding(D,1),b[x])*Image(Embedding(D,2),a[x]))));
 
+    # filter kernel gens
     kern := [];
-    for i in [1..Length(gens)] do
-        e := ExponentsByIgs( hom!.impcp, imgs[i] );
-        l := gens[i] * MappedVector( e, hom!.prpcp )^-1; 
-        Add( kern, l );
-    od; 
- 
-    return Subgroup( Source( hom ), kern );
+    for i in [1..Length(u)] do
+        g := Image(Projection(D,1),u[i]);
+        if g = One(B) then 
+            Add(kern, Image(Projection(D,2),u[i]));
+        fi;
+    od;
+
+    # create group
+    return Subgroup( Source(hom), kern);
 end );
 
 #############################################################################
@@ -271,7 +281,7 @@ end );
 #M  IsInjective( <hom> )  . . . . . . . . . . . . . . . . . . . . .  for GHBI
 ##
 InstallMethod( IsInjective,
-               true, [ IsPcpGHBI ], 0,
+               true, [ IsPcpGHBI ], SUM_FLAGS,
 function( hom )
     return Size( KernelOfMultiplicativeGeneralMapping(hom) ) = 1;
 end );

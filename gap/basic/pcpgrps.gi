@@ -121,7 +121,8 @@ end );
 ## by <gens, pcs> and use this. Note: this function does not check if the
 ## generators are in G.
 ##
-SubgroupByIgs := function( arg )
+InstallGlobalFunction( SubgroupByIgs,
+   function( arg )
     local U, pcs;
     if Length( arg ) = 3 then
         pcs := AddToIgs( arg[2], arg[3] );
@@ -131,7 +132,7 @@ SubgroupByIgs := function( arg )
     U := SubgroupNC( Parent(arg[1]), pcs );
     SetIgs( U, pcs );
     return U;
-end;
+end);
     
 #############################################################################
 ##
@@ -408,6 +409,11 @@ end;
 InstallMethod( AbelianInvariants, true, [IsPcpGroup], 0,
 function( G )
     return RelativeOrdersOfPcp( Pcp(G, DerivedSubgroup(G),"snf") );
+end );
+
+InstallMethod( AbelianInvariants, true, [IsPcpGroup and IsAbelian], 0,
+function( G )
+    return RelativeOrdersOfPcp( Pcp(G, "snf") );
 end );
 
 #############################################################################

@@ -26,4 +26,4 @@ DeclareGlobalFunction( "PcpGroupByCollectorNC" );
 DeclareGlobalFunction( "PcpGroupByCollector" );
 DeclareGlobalFunction( "LinearActionOnPcp" );
 
-
+DeclareGlobalFunction( "SubgroupByIgs" );

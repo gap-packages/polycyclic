@@ -349,6 +349,29 @@ end );
 
 #############################################################################
 ##
+#F TwoCohomologyTrivialModule( G, d[, p] )
+##
+TwoCohomologyTrivialModule := function(arg)
+    local G, d, m, C, c;
+
+    # catch arguments
+    G := arg[1];
+    d := arg[2];
+    if Length(arg)=2 then
+        m := List(Igs(G), x -> IdentityMat(d));
+    elif Length(arg)=3 then
+        m := List(Igs(G), x -> IdentityMat(d,arg[3]));
+    fi;
+
+    # construct H^2
+    C := CRRecordByMats(G, m);
+    c := TwoCohomologyCR(C);
+
+    return c.factor.rels;   
+end;
+
+#############################################################################
+##
 #F CheckTrivialCohom( G )
 ##
 CheckTrivialCohom := function(G)

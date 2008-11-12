@@ -138,10 +138,10 @@ CentrePcpGroup := function( G )
 
     # find iterated centralizer under action of G
     gens := Pcp( G, F );
-    for g in AsList( gens ) do
+    for g in Reversed(AsList( gens )) do
 
         # get pcp and its relation matrix
-        pcp := Pcp( C );
+        pcp := Pcp( C, "snf" );
         rel := ExponentRelationMatrix( pcp );
         if Length( pcp ) = 0 then return C; fi;
 

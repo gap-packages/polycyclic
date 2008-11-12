@@ -3,19 +3,15 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.22 2007/06/22 15:36:47 werner Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.25 2008/11/12 12:22:43 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.2",
-Date        := "22/06/2007",
-
-ArchiveFormats := ".tar.gz",
-ArchiveURL     := 
-"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/polycyclic-2.2",
+Version     := "2.4",
+Date        := "09/11/2008",
 
 Persons          := [ 
   rec( LastName      := "Eick",
@@ -23,7 +19,7 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "b.eick@tu-bs.de",
-       WWWHome       := "http://www.tu-bs.de/~beick",
+       WWWHome       := "http://www-public.tu-bs.de:8080/~beick",
        PostalAddress := Concatenation([
                "Institut Computational Mathematics\n",
                "TU Braunschweig\n",
@@ -50,15 +46,16 @@ Status              := "accepted",
 CommunicatedBy   := "Charles Wright (Eugene)",
 AcceptDate       := "01/2004",
 
-README_URL := 
-"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/README",
-PackageInfoURL :=
-"http://www.icm.tu-bs.de/ag_algebra/software/eick/polycyclic/PackageInfo.g",
+PackageWWWHome := "http://www-public.tu-bs.de:8080/~beick/soft/polycyclic/",
+
+ArchiveFormats := ".tar.gz",
+ArchiveURL     := Concatenation( ~.PackageWWWHome, "polycyclic-", ~.Version ),
+README_URL     := Concatenation( ~.PackageWWWHome, "README" ),
+PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 
 AbstractHTML     :=
 "This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.",
 
-PackageWWWHome := "http://www.mathematik.tu-darmstadt.de/~nickel/software/polycyclic/",
 
 PackageDoc     := rec(
                 BookName  := "polycyclic",

@@ -12,4 +12,5 @@ DeclareGlobalFunction("OnMatVector");
 DeclareGlobalFunction("PreimageByNHSEB");
 DeclareGlobalFunction("InducedActionFactorByNHSEB");
 DeclareGlobalFunction("InducedActionSubspaceByNHSEB");
+DeclareGlobalFunction("DepthOfVec");
 

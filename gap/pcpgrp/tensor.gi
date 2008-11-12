@@ -773,11 +773,28 @@ NonAbelianTensorSquareEpimorphism := function( G )
     return alpha;
 end;
             
-
 InstallMethod( NonAbelianTensorSquare, true, [IsPcpGroup], 0, function(G)
-    
     return Source( NonAbelianTensorSquareEpimorphism( G ) );
 end );
+
+#############################################################################
+##
+#F WhiteheadQuadraticFunctor(G) . . . . . . . . . . . . . . . . .  (Gamma(G))
+##
+WhiteheadQuadraticFunctor := function(G)
+    local invs, news, i;
+    invs := AbelianInvariants(G);
+    news := [];
+    for i in [1..Length(invs)] do
+        if IsInt(invs[i]/2) then 
+            Add(news, 2*invs[i]);
+        else
+            Add(news, invs[i]);
+        fi; 
+        Append(news, List([1..i-1], x -> Gcd(invs[i], invs[x])));
+    od;
+    return AbelianPcpGroup(Length(news), news);
+end;
 
 #############################################################################
 ##

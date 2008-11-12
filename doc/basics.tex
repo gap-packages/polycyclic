@@ -3,7 +3,7 @@
 %W  basics.tex             GAP documentation                 Bettina Eick
 %W                                                          Werner Nickel
 %%
-%H  $Id: basics.tex,v 1.8 2007/06/08 16:48:49 werner Exp $
+%H  $Id: basics.tex,v 1.9 2008/11/10 08:04:16 gap Exp $
 %%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -438,8 +438,8 @@ conjugating with inverse generators are included only if the conjugating
 generator has infinite order. If this generator has finite order, then
 the conjugation relation is a consequence of the remaining relations.
 
-\> PrintFullPresentation( <G> )
-\> PrintFullPresentation( <pcp> )
+\> PrintPcpPresentation( <G>, "all" )
+\> PrintPcpPresentation( <pcp>, "all" )
 
 prints the full defining pcp presentation defined by the igs of <G> or the 
 pcp <pcp>. Here the trivial conjugate relations are always included and also
