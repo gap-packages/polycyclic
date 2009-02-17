@@ -3,14 +3,14 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.25 2008/11/12 12:22:43 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.27 2008/11/25 10:44:17 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.4",
+Version     := "2.5",
 Date        := "09/11/2008",
 
 Persons          := [ 
@@ -68,7 +68,8 @@ PackageDoc     := rec(
 
 Dependencies    := rec(
                 GAP                    := ">= 4.3fix4",
-                NeededOtherPackages    := [["alnuth", "1.0"]],
+                NeededOtherPackages    := [["alnuth", "1.0"],
+                                           ["autpgrp","1.0"]],
                 SuggestedOtherPackages := [["nq","1.0"]],
                 ExternalConditions     := [ ]),
 
@@ -98,6 +99,8 @@ Keywords         := [
  "polycyclic group",
  "polycyclically presented group",
  "polycyclic presentation",
- "maximal subgroups" ]
+ "maximal subgroups", 
+ "Schur cover",
+ "Schur multiplicator" ]
 ));
 

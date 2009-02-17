@@ -274,3 +274,62 @@ function(G)
     SetEfaSeries(GG, new);
     return GG;
 end );
+
+#############################################################################
+##
+#F ExponentsByPcpFactors( pcps, g )
+##
+ExponentsByPcpFactors := function( pcps, g )
+    local red, exp, pcp, e;
+    red := g;
+    exp := [];
+    for pcp  in pcps do
+        e := ExponentsByPcp( pcp, red );
+        if e <> 0 * e  then
+            red := MappedVector(e,pcp)^-1 * red;
+        fi;
+        Append( exp, e );
+    od;
+    return exp;
+end;
+
+#############################################################################
+##
+#F PcpFactorByPcps( H, pcps )
+##
+PcpFactorByPcps := function(H, pcps)
+    local  gens, rels, n, coll, i, j, h, e, w, G;
+
+    # catch args
+    gens := Concatenation(List(pcps, x -> GeneratorsOfPcp(x)));
+    rels := Concatenation(List(pcps, x -> RelativeOrdersOfPcp(x)));
+    n := Length( gens );
+
+    # create new collector
+    coll := FromTheLeftCollector( n );
+    for i  in [ 1 .. n ]  do
+        if rels[i] > 0  then
+            SetRelativeOrder( coll, i, rels[i] );
+            h := gens[i] ^ rels[i];
+            e := ExponentsByPcpFactors( pcps, h );
+            w := ObjByExponents( coll, e );
+            if Length(w) > 0  then SetPower( coll, i, w ); fi;
+        fi;
+        for j  in [ 1 .. i - 1 ]  do
+            h := gens[i] ^ gens[j];
+            e := ExponentsByPcpFactors( pcps, h );
+            w := ObjByExponents( coll, e );
+            if Length(w) > 0  then SetConjugate( coll, i, j, w ); fi;
+            if rels[j] = 0  then
+                h := gens[i] ^ (gens[j] ^ -1);
+                e := ExponentsByPcpFactors( pcps, h );
+                w := ObjByExponents( coll, e );
+                if Length(w) > 0  then SetConjugate( coll, i, - j, w ); fi;
+            fi;
+        od;
+    od;
+
+    # create new group
+    return PcpGroupByCollector( coll );
+end;
+

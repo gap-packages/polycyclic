@@ -100,3 +100,16 @@ ReadPkg( PolycyclicPkgName, "gap/exam/bgnilp.gi");
 ReadPkg( PolycyclicPkgName, "gap/exam/metacyc.gi");
 ReadPkg( PolycyclicPkgName, "gap/exam/metagrp.gi");
 
+##
+## schur covers and schur towers of p-groups
+##
+ReadPkg( PolycyclicPkgName, "gap/cover/const/bas.gi"); # basic stuff
+ReadPkg( PolycyclicPkgName, "gap/cover/const/orb.gi"); # orbits
+ReadPkg( PolycyclicPkgName, "gap/cover/const/aut.gi"); # automorphisms
+ReadPkg( PolycyclicPkgName, "gap/cover/const/com.gi"); # complements
+ReadPkg( PolycyclicPkgName, "gap/cover/const/cov.gi"); # Schur covers
+ReadPkg( PolycyclicPkgName, "gap/cover/const/ord.gi"); # order
+ReadPkg( PolycyclicPkgName, "gap/cover/const/ccc.gi"); # coclass
+#ReadPkg( PolycyclicPkgName, "gap/cover/trees/xtree.gi"); # cover trees
+ 
+

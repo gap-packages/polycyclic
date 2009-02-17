@@ -61,6 +61,14 @@ function( G, H, gens, imgs )
             and IsPcpGHBI and IsFromPcpGHBI 
             and HasSource and HasRange and HasMappingGeneratorsImages;
 
+    if IsFpGroup(H) then 
+        filt := filt and IsToFpGroupGeneralMappingByImages;
+    elif IsPcGroup(H) then 
+        filt := filt and IsToPcGroupGeneralMappingByImages;
+    elif IsPermGroup(H) then 
+        filt := filt and IsToPermGroupGeneralMappingByImages;
+    fi;
+
     type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                      ElementsFamily( FamilyObj( H ) ) ), filt );
 
@@ -85,6 +93,10 @@ function( G, H, gens, imgs )
             and IsPcpGHBI and IsToPcpGHBI 
             and HasSource and HasRange and HasMappingGeneratorsImages;
 
+    if IsFpGroup(G) then 
+        filt := filt and IsFromFpGroupGeneralMappingByImages;
+    fi;
+
     type := NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                      ElementsFamily( FamilyObj( H ) ) ), filt );
 
@@ -105,6 +117,18 @@ function( G, H, gens, imgs )
     hom := GroupGeneralMappingByImages( G, H, gens, imgs );
     SetIsMapping(hom, true);
     SetIsSingleValued(hom,true);
+    SetIsTotal(hom,true);
+    return hom;
+end );
+
+InstallMethod( GroupHomomorphismByImagesNC,
+               true, [IsPcpGroup, IsGroup, IsList, IsList], 0,
+function( G, H, gens, imgs )
+    local hom;
+    hom := GroupGeneralMappingByImages( G, H, gens, imgs );
+    SetIsMapping(hom, true);
+    SetIsSingleValued(hom,true);
+    SetIsTotal(hom,true);
     return hom;
 end );
 
@@ -143,7 +167,7 @@ IsPcpGroupHomomorphism := function(hom)
     return true;
 end;
 
-InstallMethod( IsSingleValued, true, [IsPcpGHBI], 0,
+InstallMethod( IsSingleValued, true, [IsFromPcpGHBI], 0,
 function(hom) return IsPcpGroupHomomorphism(hom); end );
 
 InstallMethod( IsTotal, true, [IsFromPcpGHBI], 0,
@@ -250,7 +274,8 @@ end );
 #M  Kernel
 ##
 InstallMethod( KernelOfMultiplicativeGeneralMapping,
-               true, [ IsPcpGHBI ], SUM_FLAGS,
+               true, [ IsPcpGHBI and IsFromPcpGHBI and IsToPcpGHBI], 
+               SUM_FLAGS,
 function( hom )
     local A, a, B, b, D, u, kern, i, g;
     

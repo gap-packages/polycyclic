@@ -3,7 +3,7 @@
 %W  pcpmeths.tex           GAP documentation                 Bettina Eick
 %W                                                          Werner Nickel
 %%
-%H  $Id: methods.tex,v 1.11 2008/02/27 08:27:45 gap Exp $
+%H  $Id: methods.tex,v 1.12 2008/11/25 10:33:53 gap Exp $
 %%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -777,3 +777,52 @@ returns the group $\nu(G)$ in \cite{EickNickel07}.
 returns Whitehead's universal quadratic functor of $G$, see
 \cite{EickNickel07} for a description.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Section{Schur covers and Schur towers}
+
+A finite $p$-group <G> is a Schur tower, if $G/\gamma_{i+1}(G)$ is a
+Schur cover of $G/\gamma_i(G)$ for every $i$, where $\gamma_i(G)$ is
+the $i$-th term of the lower central series of $G$. This section 
+contains a function to determine the Schur covers of a finite $p$-group
+up to isomorphism and it gives access to two libraries of Schur tower
+$p$-groups.
+
+\>SchurCovers( <G> )
+
+Let <G> be a finite $p$-group defined as a pcp group. This function
+returns a complete and irredundant set of isomorphism types of Schur
+covers of <G>. The algorithm implements a method of Nickel's Phd Thesis.
+
+\> ReadOrderDB()
+
+reads the library of Schur towers by order.
+
+\> NrItCovers(p,n,d)
+
+returns the number of all $d$-generator Schur tower $p$-groups of order $p^n$.
+
+\> AllItCovers(p,n,d)
+
+returns all $d$-generator Schur tower $p$-groups of order $p^n$.
+
+\> ItCover(p,n,d,i)
+
+returns the $i$-th $d$-generator Schur tower $p$-groups of order $p^n$.
+
+\> ReadCoclassDB()
+
+reads the library of Schur towers by coclass.
+
+\> NrCcCovers(p,r,d)
+
+returns the number of all $d$-generator Schur tower $p$-groups of 
+coclass $r$ ($p$ odd).
+
+\> AllCcCovers(p,r,d)
+
+returns all $d$-generator Schur tower $p$-groups of coclass $r$ ($p$ odd).
+
+\> CcCover(p,r,d,i)
+
+returns the $i$-th $d$-generator Schur tower $p$-groups of coclass $r$ 
+($p$ odd).

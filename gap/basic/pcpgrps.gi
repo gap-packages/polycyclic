@@ -22,6 +22,13 @@ InstallGlobalFunction( PcpGroupByCollectorNC, function( coll )
     G := GroupWithGenerators( e, f );
     SetCgs( G, e );
 
+    if 0 in RelativeOrders( coll ) then 
+      SetIsFinite( G, false );
+    else
+      SetIsFinite( G, true );
+      SetSize( G, Product( RelativeOrders( coll ) ) );
+    fi;
+
     return G;
 end );
 

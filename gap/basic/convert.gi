@@ -38,9 +38,10 @@ PcpGroupToPcGroup := function( G )
     return GroupByRwsNC( rws );
 end;
 
-InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup and IsFinite], 0, 
+InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup], 0, 
 function( G )
     local K, H, g, k, h, hom;
+    if not IsFinite(G) then TryNextMethod(); fi;
     K := RefinedPcpGroup(G);
     H := PcpGroupToPcGroup(K);
     g := Igs(G);
@@ -57,9 +58,10 @@ end );
 ##
 ## Convert finite pcp groups to perm groups.
 ##
-InstallMethod( IsomorphismPermGroup, true, [IsPcpGroup and IsFinite], 0, 
+InstallMethod( IsomorphismPermGroup, true, [IsPcpGroup], 0, 
 function( G )
     local hom1, hom2;
+    if not IsFinite( G ) then return( fail ); fi;
     hom1 := IsomorphismPcGroup(G);
     hom2 := IsomorphismPermGroup(Range(hom1));
     return hom1*hom2;
