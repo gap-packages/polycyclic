@@ -3,7 +3,7 @@
 %W  pcpmeths.tex           GAP documentation                 Bettina Eick
 %W                                                          Werner Nickel
 %%
-%H  $Id: methods.tex,v 1.12 2008/11/25 10:33:53 gap Exp $
+%H  $Id: methods.tex,v 1.13 2009/02/18 10:46:02 gap Exp $
 %%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -793,36 +793,3 @@ Let <G> be a finite $p$-group defined as a pcp group. This function
 returns a complete and irredundant set of isomorphism types of Schur
 covers of <G>. The algorithm implements a method of Nickel's Phd Thesis.
 
-\> ReadOrderDB()
-
-reads the library of Schur towers by order.
-
-\> NrItCovers(p,n,d)
-
-returns the number of all $d$-generator Schur tower $p$-groups of order $p^n$.
-
-\> AllItCovers(p,n,d)
-
-returns all $d$-generator Schur tower $p$-groups of order $p^n$.
-
-\> ItCover(p,n,d,i)
-
-returns the $i$-th $d$-generator Schur tower $p$-groups of order $p^n$.
-
-\> ReadCoclassDB()
-
-reads the library of Schur towers by coclass.
-
-\> NrCcCovers(p,r,d)
-
-returns the number of all $d$-generator Schur tower $p$-groups of 
-coclass $r$ ($p$ odd).
-
-\> AllCcCovers(p,r,d)
-
-returns all $d$-generator Schur tower $p$-groups of coclass $r$ ($p$ odd).
-
-\> CcCover(p,r,d,i)
-
-returns the $i$-th $d$-generator Schur tower $p$-groups of coclass $r$ 
-($p$ odd).

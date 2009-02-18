@@ -108,8 +108,8 @@ ReadPkg( PolycyclicPkgName, "gap/cover/const/orb.gi"); # orbits
 ReadPkg( PolycyclicPkgName, "gap/cover/const/aut.gi"); # automorphisms
 ReadPkg( PolycyclicPkgName, "gap/cover/const/com.gi"); # complements
 ReadPkg( PolycyclicPkgName, "gap/cover/const/cov.gi"); # Schur covers
-ReadPkg( PolycyclicPkgName, "gap/cover/const/ord.gi"); # order
-ReadPkg( PolycyclicPkgName, "gap/cover/const/ccc.gi"); # coclass
+#ReadPkg( PolycyclicPkgName, "gap/cover/const/ord.gi"); # order
+#ReadPkg( PolycyclicPkgName, "gap/cover/const/ccc.gi"); # coclass
 #ReadPkg( PolycyclicPkgName, "gap/cover/trees/xtree.gi"); # cover trees
  
 

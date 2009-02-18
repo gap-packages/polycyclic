@@ -1,3 +1,5 @@
+if not IsBound(CODEONLY) then CODEONLY := false; fi;
+
 NrToElm := function(rels, nr, n)
     local q, elm, i;
     elm := []; elm[n] := 0;

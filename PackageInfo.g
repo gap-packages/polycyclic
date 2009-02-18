@@ -3,22 +3,22 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.27 2008/11/25 10:44:17 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.28 2009/02/18 10:46:01 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.5",
-Date        := "09/11/2008",
+Version     := "2.6",
+Date        := "18/02/2009",
 
 Persons          := [ 
   rec( LastName      := "Eick",
        FirstNames    := "Bettina",
        IsAuthor      := true,
        IsMaintainer  := true,
-       Email         := "b.eick@tu-bs.de",
+       Email         := "beick@tu-bs.de",
        WWWHome       := "http://www-public.tu-bs.de:8080/~beick",
        PostalAddress := Concatenation([
                "Institut Computational Mathematics\n",
