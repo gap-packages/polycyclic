@@ -208,10 +208,10 @@ end;
 
 #############################################################################
 ##
-#A SchurMultiplicator(G) . . . . . . . . . . . . . . . . . . . . . . . . M(G)
+#A SchurMultPcpGroup(G) . . . . . . . . . . . . . . . . . . . . . . . . . M(G)
 ##
-InstallMethod( SchurMultiplicator, true, [IsPcpGroup], 0, function(G)
-    local n, H, M, d, a, b, D, m;
+SchurMultPcpGroup := function(G)
+    local n, H, M, T, D, I;
 
     # a simple check
     if Size(G) = 1 or IsCyclic(G) then return []; fi;
@@ -220,19 +220,22 @@ InstallMethod( SchurMultiplicator, true, [IsPcpGroup], 0, function(G)
     n := Length(Igs(G));
     H := SchurExtension(G); 
     M := Subgroup(H, Igs(H){[n+1..Length(Igs(H))]});
-    D := DerivedSubgroup(G);
-    m := Length(Filtered(RelativeOrdersOfPcp(Pcp(G,D)), x -> x = 0));
 
-    # get abelian invariants and adjust them
-    d := Collected(AbelianInvariants(M));
-    a := Filtered(d, x -> x[1] > 0);
-    b := Filtered(d, x -> x[1] = 0)[1];
-
-    if b[2] = n-m then 
-        return a;
-    else
-        return Concatenation([[b[1], b[2]-n+m]], a);
+    # the finite case
+    if IsFinite(G) then 
+        T := TorsionSubgroup(M);
+        return AbelianInvariants(T);
     fi;
+
+    # the other case
+    D := DerivedSubgroup(H);
+    I := Intersection(M, D);
+    return AbelianInvariants(I);
+end;
+
+InstallMethod( AbelianInvariantsMultiplier, true, [IsPcpGroup], 0, 
+function(G)
+    return SchurMultPcpGroup(G);
 end);
 
 #############################################################################

@@ -24,7 +24,7 @@ all: manual.dvi manual.ps manual.pdf html
 html: manual.dvi
 	mkdir -p ../htm
 	echo "Creating HTML documentation"
-	$(CONVERT) -c -n Polycyclic . ../htm
+	$(CONVERT) -c -u -n Polycyclic . ../htm
 
 manual.dvi: manual.tex polycyclic.bib $(DOCU)
 	tex manual

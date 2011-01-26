@@ -405,7 +405,7 @@ FromTheLeftCollectorByRelations := function( gens, rels )
     return ftl;
 end;
 
-PcpGroupFpGroup := function( G )
+PcpGroupFpGroupPcPres := function( G )
     local   gens,  rels,  ftl,  ev,  rel;
 
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup( G ) );
@@ -425,14 +425,13 @@ PcpGroupFpGroup := function( G )
     return PcpGroupByCollector( ftl );
 end;
 
-InstallMethod( IsomorphismPcpGroup, true, [IsFpGroup], 0,
-function( G )
+IsomorphismPcpGroupFromFpGroupWithPcPres := function(G)
     local H, hom;
 
-    H := PcpGroupFpGroup( G );
+    H := PcpGroupFpGroupPcPres( G );
     hom := GroupHomomorphismByImagesNC( G, H, 
                    GeneratorsOfGroup( G ), GeneratorsOfGroup(H) );
     SetIsBijective( hom, true );
     return hom;
-end );
+end;
 
