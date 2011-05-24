@@ -44,3 +44,15 @@ ReadPkg( PolycyclicPkgName, "gap/exam/exam.gd");
 RequirePackage("alnuth");
 RequirePackage("autpgrp");
 
+#############################################################################
+##
+#R  Compatibility mode
+##
+##    With 4.5, calcreps2 has been renamed to Calcreps2. Since we use it,
+##    we have to declare it here.
+##
+if not CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
+    if not IsBound( Calcreps2 ) then
+        DeclareSynonym( "Calcreps2", calcreps2 );
+    fi;
+fi;

@@ -3,7 +3,7 @@
 #W  Makefile              GAP documentation                  Bettina Eick
 #W                                                          Werner Nickel
 ##
-#H  $Id: Makefile,v 1.10 2004/03/31 07:22:01 werner Exp $
+#H  $Id: Makefile,v 1.11 2011/05/23 09:37:18 gap Exp $
 ##
 
 ##
