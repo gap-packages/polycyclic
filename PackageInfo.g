@@ -2,16 +2,21 @@
 ##
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
+#W                                                                   Max Horn
 ##  
-#H  @(#)$Id: PackageInfo.g,v 1.29 2011/05/23 09:37:17 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.39 2012/01/12 18:28:41 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.8.1",
-Date        := "24/05/2011",
+Version     := "2.9",
+Date        := "12/01/2012",
+##  <#GAPDoc Label="PKGVERSIONDATA">
+##  <!ENTITY VERSION "2.9">
+##  <!ENTITY RELEASEDATE "12 January 2012">
+##  <#/GAPDoc>
 
 Persons          := [ 
   rec( LastName      := "Eick",
@@ -19,28 +24,45 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "beick@tu-bs.de",
-       WWWHome       := "http://www-public.tu-bs.de/~beick",
-       PostalAddress := Concatenation([
+       PostalAddress := Concatenation(
+               "AG Algebra und Diskrete Mathematik\n",
                "Institut Computational Mathematics\n",
                "TU Braunschweig\n",
-               "Pockelsstr. 14 \n D-38106 Braunschweig \n Germany"] ),
+               "Pockelsstr. 14\n",
+               "D-38106 Braunschweig\n",
+               "Germany" ),
        Place         := "Braunschweig",
-       Institution   := "TU Braunschweig"),
+       Institution   := "TU Braunschweig"
+     ),
 
   rec( LastName      := "Nickel",
        FirstNames    := "Werner",
        IsAuthor      := true,
+       IsMaintainer  := false,
+       # MH: Werner rarely (if at all) replies to emails sent to this
+       # old email address. To discourage users from sending bug reports
+       # there, I have disabled it here.
+       #Email         := "nickel@mathematik.tu-darmstadt.de",
+       WWWHome       := "http://www.mathematik.tu-darmstadt.de/~nickel/",
+     ),
+
+  rec( LastName      := "Horn",
+       FirstNames    := "Max",
+       IsAuthor      := true,
        IsMaintainer  := true,
-       Email         := "nickel@mathematik.tu-darmstadt.de",
-       WWWHome       := "http://www.mathematik.tu-darmstadt.de/~nickel",
-       PostalAddress := Concatenation( 
-               "Fachbereich Mathematik\n",
-               "TU Darmstadt\n",
-               "Schlossgartenstr. 7\n",
-               "64289 Darmstadt\n",
+       Email         := "mhorn@tu-bs.de",
+       WWWHome       := "http://www.icm.tu-bs.de/~mhorn",
+       PostalAddress := Concatenation(
+               "AG Algebra und Diskrete Mathematik\n",
+               "Institut Computational Mathematics\n",
+               "TU Braunschweig\n",
+               "Pockelsstr. 14\n",
+               "D-38106 Braunschweig\n",
                "Germany" ),
-       Place         := "Darmstadt, Germany",
-       Institution   := "Fachbereich Mathematik, TU Darmstadt") ],
+       Place         := "Braunschweig",
+       Institution   := "TU Braunschweig"
+     )
+    ],
 
 Status              := "accepted",
 CommunicatedBy   := "Charles Wright (Eugene)",
@@ -59,15 +81,15 @@ AbstractHTML     :=
 
 PackageDoc     := rec(
                 BookName  := "polycyclic",
-                ArchiveURLSubset   := [ "doc", "htm" ],
-                HTMLStart := "htm/chapters.htm",
+                ArchiveURLSubset   := [ "doc" ],
+                HTMLStart := "doc/chap0.html",
                 PDFFile   := "doc/manual.pdf",
                 SixFile   := "doc/manual.six",
                 LongTitle := "Computation with polycyclic groups",
                 Autoload  := true),
 
 Dependencies    := rec(
-                GAP                    := ">= 4.3fix4",
+                GAP                    := ">= 4.4",
                 NeededOtherPackages    := [["alnuth", "1.0"],
                                            ["autpgrp","1.0"]],
                 SuggestedOtherPackages := [["nq","1.0"]],
@@ -78,29 +100,30 @@ BannerString     := Concatenation( "Loading polycyclic ",
                             String( ~.Version ), " ...\n" ),
 Autoload         := true,
 Keywords         := [ 
- "finitely generated nilpotent groups",
- "metacyclic groups",
- "collection",
- "consistency check",
- "solvable word problem",
- "normalizers","centralizers", "intersection",
- "conjugacy problem",
- "subgroups of finite index",
- "torsion subgroup", "finite subgroups",
- "extensions",
- "complements",
- "cohomology groups",
- "orbit-stabilizer algorithms",
- "fitting subgroup",
- "center",
- "infinite groups",
- "polycyclic generating sequence",
- "polycyclic presentation",
- "polycyclic group",
- "polycyclically presented group",
- "polycyclic presentation",
- "maximal subgroups", 
- "Schur cover",
- "Schur multiplicator" ]
+  "finitely generated nilpotent groups",
+  "metacyclic groups",
+  "collection",
+  "consistency check",
+  "solvable word problem",
+  "normalizers","centralizers", "intersection",
+  "conjugacy problem",
+  "subgroups of finite index",
+  "torsion subgroup", "finite subgroups",
+  "extensions",
+  "complements",
+  "cohomology groups",
+  "orbit-stabilizer algorithms",
+  "fitting subgroup",
+  "center",
+  "infinite groups",
+  "polycyclic generating sequence",
+  "polycyclic presentation",
+  "polycyclic group",
+  "polycyclically presented group",
+  "polycyclic presentation",
+  "maximal subgroups", 
+  "Schur cover",
+  "Schur multiplicator",
+  ]
 ));
 

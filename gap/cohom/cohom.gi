@@ -238,7 +238,17 @@ end;
 #F AddFieldCR( A )
 ##
 AddFieldCR := function( A )
-    A.char := RelativeOrdersOfPcp( A.normal )[1];
+    local ro;
+    ro := Set( RelativeOrdersOfPcp( A.normal ) );
+
+    # Verify that A.normal is free or elementary abelian.
+    if not (IsAbelian( GroupOfPcp( A.normal ) )
+            and Length(ro) = 1
+            and (ro[1] = 0 or IsPrimeInt( ro[1] ))
+            ) then
+        Error("module must be free abelian or elementary abelian");
+    fi;
+    A.char := ro[1];
     A.dim  := Length( A.normal );
     A.one  := IdentityMat( A.dim );
     if A.char > 0 then 
@@ -275,6 +285,7 @@ end );
 ##
 #F CRRecordBySubgroup( G, N )
 ##
+# FIXME: This function is documented and should be turned into a GlobalFunction
 CRRecordBySubgroup := function( G, N )
     local A;
 
@@ -294,6 +305,7 @@ end;
 ##
 #F CRRecordByPcp( G, pcp )  
 ##
+# FIXME: This function is documented and should be turned into a GlobalFunction
 CRRecordByPcp := function( G, pcp )
     local A;
 

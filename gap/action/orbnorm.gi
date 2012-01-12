@@ -149,7 +149,7 @@ end;
 ## g exists. If no g exists, then false is returned.
 ##
 ConjugacyHomogeneousAction := function( G, linG, baseU, baseW )
-    local K, baseK, baseL, L, U, a, f, b, C, g, exp, N, k, h;
+    local K, baseK, baseL, L, U, a, f, b, C, g, N, k, h;
 
     # check for trivial cases
     if Length(baseU) <> Length(baseW) then return false; fi;
@@ -483,6 +483,7 @@ end;
 ##
 #F NormalizerIntegralAction( G, linG, U ) . . . . . . . . . . . . . . .N_G(U)
 ##
+# FIXME: This function is documented and should be turned into a GlobalFunction
 NormalizerIntegralAction := function( G, linG, U )
     local gensU, d, e, F, t, I, S, linS, K, linK, ser, T, orbf, N;
 
@@ -554,6 +555,7 @@ end;
 ## returns N_G(U) and g in G with U^g = W if g exists.
 ## returns false otherwise.
 ##
+# FIXME: This function is documented and should be turned into a GlobalFunction
 ConjugacyIntegralAction := function( G, linG, U, W )
     local F, t, I, J, os, j, g, L, S, linS, K, linK, ser, orbf, h, T; 
 

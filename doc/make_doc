@@ -1,5 +1,3 @@
 #!/bin/sh
 
-make all
-make clean
-
+gap -A -q -T < make_doc.g

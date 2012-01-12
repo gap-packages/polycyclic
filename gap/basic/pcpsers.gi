@@ -25,20 +25,6 @@ function( G )
     return ser;
 end );
 
-InstallOtherMethod( LowerCentralSeries, true, [IsPcpGroup, IsInt], 0, 
-function( G, l )
-    local ser, U;
-    ser := [G];
-    U   := ShallowCopy( G );
-    G!.isNormal := true;
-    while Length(Igs(U)) > 0 and Length(ser) < l do
-        U := CommutatorSubgroup( U, G );
-        Add( ser, U );
-    od;
-    Unbind( G!.isNormal );
-    return ser;
-end );
-
 InstallMethod( PCentralSeriesOp, true, [IsPcpGroup, IsPosInt], 0,
 function( G, p )
     local ser, U, C, pcp, new;
@@ -223,7 +209,7 @@ end );
 InstallGlobalFunction( RefinedDerivedSeries, function( G )
     local ser, ref, i, A, B, pcp, gens, rels, n, free, fini, U, s, t, f;
 
-    ser := DerivedSeries( G );
+    ser := DerivedSeriesOfGroup( G );
     ref := [G];
     for i in [1..Length( ser ) - 1] do
 
@@ -271,7 +257,7 @@ end );
 InstallGlobalFunction( RefinedDerivedSeriesDown, function( G )
     local ser, ref, i, A, B, pcp, gens, rels, n, free, fini, U, s, f, t;
 
-    ser := DerivedSeries( G );
+    ser := DerivedSeriesOfGroup( G );
     ref := [G];
     for i in [1..Length( ser ) - 1] do
 
