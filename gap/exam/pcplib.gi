@@ -12,7 +12,7 @@ InstallGlobalFunction( ExamplesOfSomePcpGroups, function(n)
     if not IsInt(n) then return fail; fi;
     if n < 1 or n > 16 then return fail; fi;
     if n <= 13 then return PcpExamples(n); fi;
-    return NqExamples(n-13); 
+    return NqExamples(n-13);
 end );
 
 #############################################################################
@@ -23,14 +23,14 @@ InstallGlobalFunction( PcpExamples, function( n )
     local FTL;
 
     ##
-    ##                                             [ 0 1 ]   [ -1  0 ] 
+    ##                                             [ 0 1 ]   [ -1  0 ]
     ##  The semidirect product of the matrices     [ 1 1 ],  [  0 -1 ]
     ##
     ##  and Z^2.  We let the generator corresponding to the second matrix
-    ##  have infinite order. 
+    ##  have infinite order.
     ##
-    if n = 1 then 
-        return SplitExtensionPcpGroup( AbelianPcpGroup( 2, [] ), 
+    if n = 1 then
+        return SplitExtensionPcpGroup( AbelianPcpGroup( 2, [] ),
                              [ [[0,1],[1,1]], [[-1,0],[0,-1]] ] );
     fi;
 
@@ -38,16 +38,16 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##  The following matrices are a basis of the fundamental units of the
     ##  order defined by the polynomials x^4 - x - 1
     ##
-    if n = 2 then 
-        return SplitExtensionPcpGroup( AbelianPcpGroup( 2, [] ), 
+    if n = 2 then
+        return SplitExtensionPcpGroup( AbelianPcpGroup( 2, [] ),
        [ [ [ 0,1,0,0 ],  [ 0,0,1,0 ],  [ 0,0,0,1 ],  [ 1,1,0,0 ] ],
        [ [ 1,1,0,-1 ], [ -1,0,1,0 ], [ 0,-1,0,1 ], [ 1,1,-1,0 ] ] ] );
     fi;
 
     ##
-    ##  Z split Z 
+    ##  Z split Z
     ##
-    if n = 3 then 
+    if n = 3 then
         FTL := FromTheLeftCollector( 2 );
         SetConjugate( FTL, 2,  1, [2,-1] );
         SetConjugate( FTL, 2, -1, [2,-1] );
@@ -58,7 +58,7 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##  A gr oup of Hirsch length 3.  Interesting because the exponents in
     ##  words can become large very quickly.
     ##
-    if n = 4 then 
+    if n = 4 then
         FTL := FromTheLeftCollector( 3 );
         SetConjugate( FTL, 2, 1, [3, 1] );
         SetConjugate( FTL, 3, 1, [2, 1, 3, 7] );
@@ -148,8 +148,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugate( FTL, 3, 2, [3,1,6, 1] );
         return PcpGroupByCollector( FTL );
     fi;
-  
-    if n = 13 then 
+
+    if n = 13 then
         FTL := FromTheLeftCollector( 4 );
         SetConjugate( FTL, 2, 1, [2,-1] );
         SetConjugate( FTL, 4, 1, [4,-1] );

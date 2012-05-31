@@ -7,7 +7,7 @@
 
 #############################################################################
 ##
-#F SubgroupsFirstLayerByIndex( G, pcp, n ) 
+#F SubgroupsFirstLayerByIndex( G, pcp, n )
 ##
 ## All subgroup of index dividing n.
 ##
@@ -19,17 +19,17 @@ SubgroupsFirstLayerByIndex := function( G, pcp, n )
     l := Length( pcp );
 
     # reset n, if the layer is finite, and compute divisors
-    if p > 0 then 
-        m := Gcd( n, p^l ); 
+    if p > 0 then
+        m := Gcd( n, p^l );
     else
         m := n;
     fi;
     d := Filtered( DivisorsInt( m ), x -> x <> m );
-    if Length( d ) = 0 then 
+    if Length( d ) = 0 then
         return [rec( repr := G, norm := G, open := n )];
     fi;
-    
-    # create all normed bases in m^l 
+
+    # create all normed bases in m^l
     idm := IdentityMat( l );
     exp := [[]];
     for i in [1..l] do
@@ -42,7 +42,7 @@ SubgroupsFirstLayerByIndex := function( G, pcp, n )
                 c := CoefficientsQadic( j, m );
                 for k in [1..Length(c)] do
                     f[k][i] := c[k];
-                od;  
+                od;
                 Add( t, f );
             od;
         od;
@@ -62,7 +62,7 @@ SubgroupsFirstLayerByIndex := function( G, pcp, n )
         Append( exp, t );
 
     od;
-            
+
     # convert each basis to a pcs
     denom := DenominatorOfPcp( pcp );
     for i in [1..Length(exp)] do
@@ -104,12 +104,12 @@ end;
 ##
 #F LowIndexSubgroupsEaLayer( cl, pcp, d, act )
 ##
-## Compute low-index subgroups in <cl> not containing the elementary abelian 
+## Compute low-index subgroups in <cl> not containing the elementary abelian
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by p^d.
 ##
 LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
-    local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu, 
+    local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu,
           L, fac, new, i, tmp, t;
 
     # a first trivial case
@@ -144,7 +144,7 @@ LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
         if IsInt( t ) then
 
             # copy sub and adjust the entries to the layer
-            sub := InduceToFactor( C, o ); 
+            sub := InduceToFactor( C, o );
             AddInversesCR( sub );
 
             # finally, compute the desired complements
@@ -153,7 +153,7 @@ LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
             Append( com, new );
 
             # if there are no complements, then reduce invs
-            if Length( new ) = 0 then 
+            if Length( new ) = 0 then
                 orbs := Filtered( orbs, x -> not IsSubbasis( o.repr, x.repr ) );
             fi;
         fi;
@@ -165,7 +165,7 @@ end;
 ##
 #F LowIndexSubgroupsFaLayer( cl, pcplist, l, act )
 ##
-## Compute low-index subgroups in <cl> not containing the free abelian 
+## Compute low-index subgroups in <cl> not containing the free abelian
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by l.
 ##
@@ -206,7 +206,7 @@ PowerPcpsByIndex := function( pcp, l )
     # loop over series trough A/B
     fac := Collected( Factors( l ) );
 
-    # create pcp's 
+    # create pcp's
     ser := [];
     s   := 1;
     B   := GroupOfPcp( pcp );
@@ -215,8 +215,8 @@ PowerPcpsByIndex := function( pcp, l )
         for i in [1..pr[2]] do
             s := s * pr[1];
             A := ShallowCopy( B );
-            B := SubgroupByIgs( GroupOfPcp( pcp ), 
-                                 DenominatorOfPcp( pcp ), 
+            B := SubgroupByIgs( GroupOfPcp( pcp ),
+                                 DenominatorOfPcp( pcp ),
                                  List( pcp, x -> x^s ) );
             ser[pr[1]][i] := Pcp( A, B );
         od;
@@ -229,9 +229,9 @@ end;
 #F LowIndexSubgroupsBySeries( G, n, pcps )
 ##
 LowIndexSubgroupsBySeries := function( G, n, pcps )
-    local grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp; 
+    local grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
-    # set up 
+    # set up
     all := Pcp( G );
 
     # the first layer
@@ -251,7 +251,7 @@ LowIndexSubgroupsBySeries := function( G, n, pcps )
         act := rec( pcp := all, mats := mats );
         act.central := ForAll( mats, x -> x = x^0 );
 
-        # loop over all subgroups 
+        # loop over all subgroups
         new := [];
         adj := [];
         for cl in grps do
@@ -265,7 +265,7 @@ LowIndexSubgroupsBySeries := function( G, n, pcps )
                 tmp := LowIndexSubgroupsFaLayer( cl, adj[l], l, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );
-            elif l > 1 then 
+            elif l > 1 then
                 d := ValuationInt( l, p );
                 tmp := LowIndexSubgroupsEaLayer( cl, pcp, d, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");

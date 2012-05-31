@@ -2,7 +2,7 @@
 ##
 #W  addgrp.gi                    Polycyc                         Bettina Eick
 ##
-##  In our case cohomology groups are factors Z / B where Z and B are either 
+##  In our case cohomology groups are factors Z / B where Z and B are either
 ##  free or elementary abelian. In the elementary abelian case we can repr.
 ##  such factors by vector spaces. In the free abelian case we need machery
 ##  for f.g. abelian groups in additive notation.
@@ -13,7 +13,7 @@
 #F AdditiveIgsParallel
 ##
 AdditiveIgsParallel := function( gens, imgs )
-    local n, zero, ind, indd, todo, tododo, g, gg, d, h, hh, k, eg, 
+    local n, zero, ind, indd, todo, tododo, g, gg, d, h, hh, k, eg,
           eh, e, c, i, sub;
 
     if Length( gens ) = 0 then return [gens, imgs]; fi;
@@ -134,7 +134,7 @@ end;
 ##
 AdditiveFactorPcp := function( base, sub, r )
     local denom, deps, prei, rels, h, d, j, e, gens, imgs, zero, new, k,
-          full, n, fimg, news, exp, chng, mat, i, g, l, rimg, newr, newp, 
+          full, n, fimg, news, exp, chng, mat, i, g, l, rimg, newr, newp,
           oldg, t, invs, tmps;
 
     # triangulise sub
@@ -143,7 +143,7 @@ AdditiveFactorPcp := function( base, sub, r )
     else
         denom := ShallowCopy( sub );
         TriangulizeMat( denom );
-    fi; 
+    fi;
 
     deps := List( denom, PositionNonZero );
     prei := [];
@@ -261,9 +261,9 @@ AdditiveFactorPcp := function( base, sub, r )
 end;
 
 SizeAddFactor := function( fact )
-    if ForAny( fact.rels, x -> x = 0 ) then 
-        return infinity; 
-    else 
+    if ForAny( fact.rels, x -> x = 0 ) then
+        return infinity;
+    else
         return Product( fact.rels );
     fi;
 end;

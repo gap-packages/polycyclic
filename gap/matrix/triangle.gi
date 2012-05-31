@@ -25,7 +25,7 @@ end;
 #F  PreImageSubspaceIntMats( <matlist>, <subspace> )
 ##
 ##  Find all v such that v * M in <subspace> for all matrices M in
-##  <matlist>.   
+##  <matlist>.
 ##
 PreImageSubspaceIntMats := function( mats, D )
     local   E,  M,  N;
@@ -33,7 +33,7 @@ PreImageSubspaceIntMats := function( mats, D )
     if Length(mats[1]) <> Length(mats[1][1]) then
         Error( "square matrices expected" );
     fi;
-    
+
     E := mats[1]^0;
     for M in mats do
         N := PreImageSubspaceIntMat( E * M, D );
@@ -99,7 +99,7 @@ end;
 #F  RowsWithLeadingIndexHNF( <hnf> )
 ##
 ##  Given an integer matrix <hnf> in Hermite Normal Form, return a list that
-##  indicates which row of the matrix has its leading entry in a given 
+##  indicates which row of the matrix has its leading entry in a given
 ##  column.
 ##
 RowsWithLeadingIndexHNF := function( hnf )
@@ -108,11 +108,11 @@ RowsWithLeadingIndexHNF := function( hnf )
     indices := [1..Length(hnf[1])] * 0;
     i := 1;
     for j in [1..Length(hnf)] do
-        while i < Length(hnf[j]) and hnf[j][i] = 0 do 
-            i := i+1; 
+        while i < Length(hnf[j]) and hnf[j][i] = 0 do
+            i := i+1;
         od;
-        if i > Length( hnf[j]) then 
-            break; 
+        if i > Length( hnf[j]) then
+            break;
         fi;
         indices[i] := j;
     od;
@@ -125,11 +125,11 @@ end;
 ##
 ##  Decompose the integer vector <v> into the rows of the integer matrix
 ##  <hnf> given in Hermite Normal Form and return the respective
-##  coefficients. 
+##  coefficients.
 ##
 CoefficientsVectorHNF := function( v, hnf )
     local   reduce,  coeffs,  i,  k,  c;
-    
+
     reduce := RowsWithLeadingIndexHNF( hnf );
     coeffs := [1..Length(hnf)] * 0;
     for i in [1..Length(v)] do
@@ -147,12 +147,12 @@ CoefficientsVectorHNF := function( v, hnf )
     return coeffs;
 end;
 
-    
+
 #############################################################################
 ##
 #F  CompletionToUnimodularMat( <matrix> )
 ##
-##  Complete the integer matrix <matrix> to a unimodular matrix if possible 
+##  Complete the integer matrix <matrix> to a unimodular matrix if possible
 ##  and produces an error message otherwise.
 ##
 CompletionToUnimodularMat := function( M )
@@ -198,7 +198,7 @@ end;
 ##  (possibly in a suitable extension field) of the matrices.
 ##
 TriangularForm := function( mats )
-    local   d,  comms,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,  
+    local   d,  comms,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,
             C;
 
     d := Length( mats[1] );
@@ -241,10 +241,10 @@ end;
 ##
 ##  Transform the unimodular integer matrices <matrices> to lower
 ##  unitriangular form, i.e. to lower triangular matrices with ones on the
-##  diagonal. 
+##  diagonal.
 ##
 LowerUnitriangularForm := function( mats )
-    local   d,  nilpmats,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,  
+    local   d,  nilpmats,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,
             C,  I;
 
     d := Length( mats[1] );
@@ -281,7 +281,7 @@ LowerUnitriangularForm := function( mats )
     return T * mats * T^-1;
 end;
 
-        
+
 #############################################################################
 ##
 #F  IsLowerUnitriangular( <mat> )

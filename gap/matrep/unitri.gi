@@ -9,18 +9,18 @@ InfoMatrixNq := Ignore;
 ##   Test if a matrix is the identity matrix.
 ##
 ##   For non-identity matrices this is faster than comparing with an identity
-##   matrix. 
+##   matrix.
 ##
 InstallGlobalFunction( "IsIdentityMat", function( M )
     local   zero,  one,  i,  j;
-    
+
     zero := Zero( M[1][1] );
     one  := zero + 1;
 
     if Set( List( M, Length ) ) <> [Length(M)] then
         return false;
     fi;
-    
+
     for i in [1..Length(M)] do
         if M[i][i] <> one then return false; fi;
         for j in [i+1..Length(M)] do
@@ -30,20 +30,20 @@ InstallGlobalFunction( "IsIdentityMat", function( M )
     od;
     return true;
 end );
-            
+
 ##
 ##   Test if a matrix is upper triangular with 1s on the diagonal.
 ##
 InstallGlobalFunction( "IsUpperUnitriMat", function( M )
     local   one,  i;
-    
+
     one := One( M[1][1] );
     if not IsUpperTriangularMat( M ) then return false; fi;
-    
+
     for i in [1..Length(M)] do
         if M[i][i] <> one then return false; fi;
     od;
-    
+
     return true;
 end );
 
@@ -53,11 +53,11 @@ end );
 ##
 InstallGlobalFunction( "WeightUpperUnitriMat", function( M )
     local   n,  s,  i,  w;
-    
+
     n := Length(M); w := 0; s := 1;
     while s < n do
         s := s+1;
-        for i in [1..n-s+1] do 
+        for i in [1..n-s+1] do
             if M[i][i+s-1] <> 0 then return w; fi;
         od;
         w := w+1;
@@ -71,7 +71,7 @@ end );
 ##
 InstallGlobalFunction( "UpperDiagonalOfMat", function( M, s )
     local   d,  i;
-    
+
     d := [];
     for i in [1..Length(M)-s] do d[i] := M[i][i+s]; od;
     return d;
@@ -84,7 +84,7 @@ end );
 ##    matrix its inverse and the diagonal of the correct weight.
 ##
 InstallGlobalFunction( "MakeNewLevel", function( w )
-    
+
     InfoMatrixNq( "#I  MakeNewLevel( ", w, " ) called\n" );
     return rec( weight :=   w,
                 matrices := [],
@@ -99,13 +99,13 @@ end );
 ##    level on closed under taking commutators.
 ##
 ##    This function computes the necessary commutators and sifts each of
-##    them. 
+##    them.
 ##
 InstallGlobalFunction( "FormCommutators", function( gens, level, j )
     local   C,  Mj,  i;
-    
+
     InfoMatrixNq( "#I  Forming commutators on level ", level.weight, "\n" );
-    
+
     Mj := level.matrices[j];
     for i in [1..Length(gens)] do
         C := Comm( Mj,gens[i] );
@@ -132,7 +132,7 @@ end );
 ##
 InstallGlobalFunction( "SiftUpperUnitriMat", function( gens, level, M )
     local   w,  d,  h,  r,  R,  Ri,  c,  rr,  RR;
-    
+
     w := WeightUpperUnitriMat( M );
     if w > level.weight then
         if not IsBound( level.nextlevel ) then
@@ -141,12 +141,12 @@ InstallGlobalFunction( "SiftUpperUnitriMat", function( gens, level, M )
         SiftUpperUnitriMat( gens, level.nextlevel, M );
         return;
     fi;
-    
+
     InfoMatrixNq( "#I  Sifting at level ", level.weight, " with " );
-    
+
     d := UpperDiagonalOfMat( M, w+1 );
     h := 1; while h <= Length(d) and d[h] = 0 do h := h+1; od;
-    
+
     while h <= Length(d) do
         if IsBound(level.diags[h]) then
             r  := level.diags[ h ];
@@ -208,11 +208,11 @@ end );
 ##    defines a filtration on each subgroup of U.
 ##
 ##    This function computes this filtration for the unitriangular matrix
-##    group  G. 
-##   
+##    group  G.
+##
 InstallGlobalFunction( "SiftUpperUnitriMatGroup", function( G )
     local   firstlevel,  g;
- 
+
     firstlevel := MakeNewLevel( 0 );
     for g in GeneratorsOfGroup(G) do
         SiftUpperUnitriMat( GeneratorsOfGroup(G), firstlevel, g );
@@ -226,7 +226,7 @@ end );
 ##
 InstallGlobalFunction( "RanksLevels", function( L )
     local   ranks;
-    
+
     ranks := [];
     Add( ranks, Length( Filtered( L.diags, x->IsBound(x) ) ) );
     while IsBound( L.nextlevel ) do
@@ -242,25 +242,25 @@ end );
 ##
 InstallGlobalFunction( "DecomposeUpperUnitriMat", function( level, M )
     local   w,  d,  h,  r,  R,  c;
-    
+
     InfoMatrixNq( "#I  Decomposition on level ", level.weight, "\n" );
-    
+
     w := WeightUpperUnitriMat(M);
     if w = Length(M[1])-1 then return []; fi;
     if w > level.weight then
         if not IsBound( level.nextlevel ) then return false; fi;
         return DecomposeUpperUnitriMat( level.nextlevel, M );
     fi;
-    
+
     w := [];
     d := UpperDiagonalOfMat( M, WeightUpperUnitriMat(M)+1 );
     h := 1; while h <= Length(d) and d[h] = 0 do h := h+1; od;
-    
+
     while h <= Length(d) do
         if not IsBound( level.diags[ h ] ) then return false; fi;
         r := level.diags[ h ];
         R := level.matrices[ h ];
-        if d[h] mod r[h] <> 0 then return false; fi;        
+        if d[h] mod r[h] <> 0 then return false; fi;
         c := Int( d[h] / r[h] );
         d := d - c * r;
         M := R^(-c) * M;
@@ -269,7 +269,7 @@ InstallGlobalFunction( "DecomposeUpperUnitriMat", function( level, M )
         InfoMatrixNq( "   coeff: ", c, "\n" );
         while h <= Length(d) and d[h] = 0 do h := h+1; od;
     od;
-    
+
     if not IsIdentityMat( M ) then
         if not IsBound( level.nextlevel ) then return false; fi;
         h := DecomposeUpperUnitriMat( level.nextlevel, M );
@@ -279,7 +279,7 @@ InstallGlobalFunction( "DecomposeUpperUnitriMat", function( level, M )
     return w;
 end );
 
-##     
+##
 InstallGlobalFunction( "PolycyclicGenerators", function( L )
     local   matrices,  gens,  i,  l;
 
@@ -302,7 +302,7 @@ InstallGlobalFunction( "PolycyclicGenerators", function( L )
     od;
 
     return rec( gens := gens, matrices := matrices );
-end ); 
+end );
 
 InstallGlobalFunction( "WordPolycyclicGens", function( gens, w )
     local   r,  g;
@@ -316,7 +316,7 @@ end );
 
 InstallGlobalFunction( "PresentationMatNq", function( L )
     local   matrices,  gens,  i,  l,  rels,  j,  r,  g;
-    
+
     matrices := Compacted( L.matrices );
     gens := [];
     for i in [1..Length(L.diags)] do
@@ -346,14 +346,14 @@ InstallGlobalFunction( "PresentationMatNq", function( L )
             rels[j][i] := r;
         od;
     od;
-    
+
     return rec( generators := [1..Length(rels)],
                 relators   := rels );
 end );
 
 InstallGlobalFunction( "PrintMatPres", function( P )
     local   r;
-    
+
     Print( P.generators, "\n" );
     for r in P.relators do
         Print( r, "\n" );
@@ -363,36 +363,36 @@ end );
 
 InstallGlobalFunction( "PrintNqPres", function( P )
     local   x,  CommString,  PowerString,  s,  i,  j,  r,  g;
-    
+
     x := "x";
-    
+
     CommString := function( j, i )
         local   s;
-        
+
         s := "[ ";
         Append( s, x ); Append( s, String(j) ); Append( s, ", " );
         Append( s, x ); Append( s, String(i) ); Append( s, " ]" );
         return s;
     end;
-    
+
     PowerString := function( g )
         local   s;
-        
+
         s := "";
         Append( s, x );   Append( s, String(g[1]) );
         Append( s, "^" ); Append( s, String(g[2]) ); Append( s, "*" );
         return s;
     end;
-    
-        
+
+
     s := "< ";
-    for i in P.generators do 
-        Append(s,x); Append(s,String(i)); Append(s,","); 
+    for i in P.generators do
+        Append(s,x); Append(s,String(i)); Append(s,",");
     od;
     Unbind( s[ Length(s) ] );    # remove trailing comma
-    
+
     Append( s, " | \n" );
-    
+
     for j in P.generators do
         for i in [1..j-1] do
             r := P.relators[j][i];
@@ -403,12 +403,12 @@ InstallGlobalFunction( "PrintNqPres", function( P )
                 Append( s, PowerString(g) );
             od;                                 # remove trailing asterisk
             if s[ Length(s) ] = '*' then Unbind( s[ Length(s) ] ); fi;
-            Append( s, ",\n" );        
+            Append( s, ",\n" );
         od;
     od;
     Unbind( s[ Length(s) ] );
     Unbind( s[ Length(s) ] );    # remove trailing comma & newline
-    
+
     Append( s, "\n>\n" );
     return s;
 end );
@@ -417,13 +417,13 @@ InstallGlobalFunction( "CollectorByMatNq", function( levels )
     local   pres,  n,  coll,  j,  i;
 
     pres := PresentationMatNq( levels );
-    
+
     n := Length( pres.generators );
     coll := FromTheLeftCollector( n );
 
     for j in [1..n] do
         for i in [1..j-1] do
-            if IsBound( pres.relators[j][i] ) and 
+            if IsBound( pres.relators[j][i] ) and
                        pres.relators[j][i] <> [] then
                 SetCommutator( coll, j, i, Flat( pres.relators[j][i] ) );
             fi;
@@ -442,7 +442,7 @@ InstallGlobalFunction( "IsomorphismUpperUnitriMatGroupPcpGroup", function( G )
     levs := SiftUpperUnitriMatGroup( G );
 
     pcgens := PolycyclicGenerators( levs );
-    
+
     coll := CollectorByMatNq( levs );
     H := PcpGroupByCollectorNC( coll );
 
@@ -455,9 +455,7 @@ InstallGlobalFunction( "IsomorphismUpperUnitriMatGroupPcpGroup", function( G )
 
     phi := GroupHomomorphismByImagesNC( G, H,
                    GeneratorsOfGroup( G ), images );
-
-    SetFeatureObj( phi, IsInjective, true );
-    SetFeatureObj( phi, IsSurjective, true );
+	SetIsBijective( phi, true );
 
     return phi;
 end );

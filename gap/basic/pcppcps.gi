@@ -20,7 +20,7 @@ UpdateCounter := function( ind, gens, c )
     # first reset c by ind
     i := c - 1;
     while i > 0 and not IsBool(ind[i]) and LeadingExponent(ind[i]) = 1 do
-        i := i - 1; 
+        i := i - 1;
     od;
 
     # now try to add elements from gens
@@ -50,8 +50,8 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
 
-    # create new list from igs 
-    ind  := List( [1..n], x -> false );
+    # create new list from igs
+    ind  := ListWithIdenticalEntries(n, false );
     for g in igs do ind[Depth(g)] := g; od;
 
     # set counter and add tail as far as possible
@@ -63,10 +63,9 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
 
-        g := todo[Length(todo)];
+        g := Remove( todo );
         d := Depth( g );
         f := [];
-        Unbind( todo[Length(todo)] );
 
         # shift g into ind
         while d < c do
@@ -82,7 +81,7 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
                 ind[d] := (g^e.coeff1) * (h^e.coeff2);
                 if e.coeff1 <> 0 then Add( f, d ); fi;
 
-                # adjust g 
+                # adjust g
                 g := (g^e.coeff3) * (h^e.coeff4);
             else
 
@@ -103,7 +102,7 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
                 if Depth(k) < c then  Add( todo, k ); fi;
             fi;
             for l in [1..n] do
-                if not IsBool( ind[l] ) and ( d < c  or l < c ) then 
+                if not IsBool( ind[l] ) and ( d < c  or l < c ) then
                     k := Comm( g, ind[l] );
                     if Depth(k) < c then  Add( todo, k ); fi;
                 fi;
@@ -111,7 +110,7 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
         od;
 
         # try sorting
-        todo := Set( todo );
+        Sort( todo );
 
     od;
 
@@ -123,21 +122,21 @@ end );
 ##
 #F Igs( <gens> )
 ##
-InstallOtherMethod( Igs, true, [IsList], 0,
+InstallOtherMethod( Igs, [IsList],
 function( gens ) return AddToIgs( [], gens ); end );
 
 #############################################################################
 ##
 #F Ngs( <igs> )  . . .  . . . . . . . . . . . . compute normed version of igs
 ##
-InstallOtherMethod( Ngs, true, [IsList], 0,
+InstallOtherMethod( Ngs, [IsList],
 function( igs ) return List( igs, x -> NormedPcpElement( x ) ); end );
 
 #############################################################################
 ##
 #F Cgs( <igs> ) . . . . . .. . . . . . . . . compute canonical version of igs
 ##
-InstallOtherMethod( Cgs, true, [IsList], 0,
+InstallOtherMethod( Cgs, [IsList],
 function( igs )
     local ind, can, i, e, j, l, d, r, s;
 
@@ -164,7 +163,7 @@ function( igs )
             fi;
         od;
     od;
- 
+
     # set flag `normed' and return
     for i in [1..Length(can)] do can[i]!.normed := true; od;
     return can;
@@ -174,8 +173,8 @@ end );
 ##
 #F AddIgsToIgs( pcs1, pcs2 );
 ##
-## Combines an igs <pcs2> of a normal subgroup with an igs <pcs1> of a 
-## factor. Typically, <pcs1> is induced wrt to a pcp and <pcs2> is the 
+## Combines an igs <pcs2> of a normal subgroup with an igs <pcs1> of a
+## factor. Typically, <pcs1> is induced wrt to a pcp and <pcs2> is the
 ## denominator of this pcp.
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
@@ -245,7 +244,7 @@ end;
 
 #############################################################################
 ##
-#F ModuloInfo( igsH, igsN ) 
+#F ModuloInfo( igsH, igsN )
 ##
 ## igsH and igsN are igs'ses for H and N. We assume N <= H and N normal
 ## in H. The function computes information for the factor H/N.
@@ -292,7 +291,7 @@ CyclicDecomposition := function( pcp )
     local  rels, n, mat, i, row, new, cyc, ord, chg, inv, g, tmp, imgs, prei;
 
     # catch a trivial case
-    if Length( pcp ) = 0 then 
+    if Length( pcp ) = 0 then
         return rec( gens := [], rels := [], chg  := [], inv := [] );
     fi;
 
@@ -320,8 +319,8 @@ CyclicDecomposition := function( pcp )
     # get new generators, relators and the basechange
     cyc := [];
     ord := [];
-    chg  := [];  
-    inv  := [];  
+    chg  := [];
+    inv  := [];
 
     imgs := TransposedMat( new.coltrans );
     prei := InverseIntMat( new.coltrans );
@@ -338,7 +337,7 @@ CyclicDecomposition := function( pcp )
             fi;
         fi;
     od;
-    return rec( gens := cyc, 
+    return rec( gens := cyc,
                 rels := ord,
                 chg  := chg,
                 inv  := TransposedMat( inv ) );
@@ -346,7 +345,7 @@ end;
 
 #############################################################################
 ##
-#F AddTailInfo( pcp ) . . . . . . . 
+#F AddTailInfo( pcp ) . . . . . . .
 ##
 ##           The info in pcp!.tail is used to compute exponent vectors.
 ##           1.) pcp!.tail is a list, then exponents are just looked up.
@@ -369,13 +368,13 @@ AddTailInfo := function( pcp )
     # if not IsSortedList( deps ) then Error("add tail info"); fi;
 
     # set tail to an integer - this is the bad case cenario
-    pcp!.tail := Maximum( depg ) + 1; 
+    pcp!.tail := Maximum( depg ) + 1;
     if not IsSortedList( deps ) then return; fi;
 
     # now figure out whether we can do better
     for i in [1..Length(sub)] do
         if deps[i] < pcp!.tail - 1 then
-           d := IsPowerOfGenerator( sub[i], pcp!.tail ); 
+           d := IsPowerOfGenerator( sub[i], pcp!.tail );
            if IsBool( d ) then return; fi;
         fi;
     od;
@@ -384,7 +383,7 @@ AddTailInfo := function( pcp )
     mult := [];
     for i in [1..Length(gens)] do
         if depg[i] < pcp!.tail then
-           d := IsPowerOfGenerator( gens[i], pcp!.tail ); 
+           d := IsPowerOfGenerator( gens[i], pcp!.tail );
            if IsBool( d ) then return; fi;
            Add( mult, d );
         fi;
@@ -436,7 +435,7 @@ InstallGlobalFunction( Pcp, function( arg )
         gens  := numer;
         rels  := List( gens, RelativeOrderPcp );
     fi;
-        
+
     # create pcp record and objectify
     pcp := rec( gens  := gens,
                 rels  := rels,
@@ -447,14 +446,14 @@ InstallGlobalFunction( Pcp, function( arg )
 
     pcp := Objectify( PcpType, pcp );
 
-    # add info on tails 
+    # add info on tails
     AddTailInfo( pcp );
 
     # add info on snf if desired
     if arg[Length(arg)] = "snf" then
         pcp!.cyc := CyclicDecomposition( pcp );
     fi;
-    
+
     # return
     return pcp;
 end );
@@ -463,34 +462,28 @@ end );
 ##
 #F Basic attributes and properties - for IsPcpRep
 ##
-InstallGlobalFunction( RelativeOrdersOfPcp, function( pcp ) 
+InstallGlobalFunction( RelativeOrdersOfPcp, function( pcp )
     if IsBound( pcp!.cyc ) then
         return pcp!.cyc.rels;
     else
-        return pcp!.rels; 
+        return pcp!.rels;
     fi;
 end );
 
-InstallGlobalFunction( GeneratorsOfPcp, function( pcp ) 
+InstallGlobalFunction( GeneratorsOfPcp, function( pcp )
     if IsBound( pcp!.cyc ) then
         return pcp!.cyc.gens;
     else
-        return pcp!.gens; 
+        return pcp!.gens;
     fi;
 end );
 
-InstallGlobalFunction( DenominatorOfPcp, function( pcp ) 
-                       return pcp!.denom; end );
-InstallGlobalFunction( NumeratorOfPcp, function( pcp ) 
-                       return pcp!.numer; end );
-InstallGlobalFunction( OneOfPcp, function( pcp ) 
-                       return pcp!.one; end );
-InstallGlobalFunction( GroupOfPcp, function( pcp ) 
-                       return pcp!.group; end );
-InstallGlobalFunction( IsSNFPcp, function( pcp ) 
-                       return IsBound(pcp!.cyc); end );
-InstallGlobalFunction( IsTailPcp, function( pcp ) 
-                       return IsList(pcp!.tail); end );
+InstallGlobalFunction( DenominatorOfPcp, pcp -> pcp!.denom );
+InstallGlobalFunction( NumeratorOfPcp,   pcp -> pcp!.numer );
+InstallGlobalFunction( OneOfPcp,         pcp -> pcp!.one );
+InstallGlobalFunction( GroupOfPcp,       pcp -> pcp!.group );
+InstallGlobalFunction( IsSNFPcp,         pcp -> IsBound(pcp!.cyc) );
+InstallGlobalFunction( IsTailPcp,        pcp -> IsList(pcp!.tail) );
 
 #############################################################################
 ##
@@ -501,10 +494,7 @@ InstallGlobalFunction( IsTailPcp, function( pcp )
 ##
 #M  Length( <pcp> )
 ##
-InstallOtherMethod( Length,
-    true,
-    [ IsPcp ],
-    0,
+InstallOtherMethod( Length, [ IsPcp ],
     pcp -> Length( GeneratorsOfPcp( pcp ) ) );
 
 
@@ -512,17 +502,15 @@ InstallOtherMethod( Length,
 ##
 #M  AsList( <pcp> )
 ##
-InstallOtherMethod( AsList, true, [ IsPcp ], 0,
+InstallOtherMethod( AsList, [ IsPcp ],
     pcp -> GeneratorsOfPcp( pcp ) );
 
 #############################################################################
 ##
 #M  Position( <pcp>, <elm>, <from> )
 ##
-InstallOtherMethod( Position, true,
+InstallOtherMethod( Position,
     [ IsPcp, IsPcpElement, IsInt ],
-    0,
-
 function( pcp, elm, from )
     return Position( AsList( pcp ), elm, from );
 end );
@@ -531,9 +519,8 @@ end );
 ##
 #M  ListOp( pcp, function )
 ##
-InstallOtherMethod( ListOp, true,
-    [ IsPcp, IsObject ], 
-    0,
+InstallOtherMethod( ListOp,
+    [ IsPcp, IsObject ],
 function( pcp, f )
     return List( AsList(pcp), f );
 end );
@@ -543,33 +530,31 @@ end );
 #M  <pcp> [ <pos> ]
 ##
 InstallOtherMethod( \[\],
-    true,
     [ IsPcp, IsPosInt ],
-    0,
-
-function( pcp, pos ) return GeneratorsOfPcp(pcp)[pos]; end );
+function( pcp, pos )
+    return GeneratorsOfPcp(pcp)[pos];
+end );
 
 #############################################################################
 ##
 #M  <pcp>{[ <pos> ]}
 ##
-InstallOtherMethod( ELMS_LIST, true, [ IsPcp, IsDenseList ], 0,
+InstallOtherMethod( ELMS_LIST, [ IsPcp, IsDenseList ],
 function( pcp, ran )
     return GeneratorsOfPcp( pcp ){ran};
 end );
 
 #############################################################################
 ##
-#M Print pcp 
+#M Print pcp
 ##
-InstallMethod( PrintObj, "for pcp", true, [IsPcp], 0,
+InstallMethod( PrintObj, "for pcp", [IsPcp],
 function( pcp )
-    Print( "Pcp ", GeneratorsOfPcp( pcp ), " with orders ", 
+    Print( "Pcp ", GeneratorsOfPcp( pcp ), " with orders ",
            RelativeOrdersOfPcp(pcp));
 end );
 
-InstallMethod( ViewObj, true, [ IsPcp ], SUM_FLAGS,
-function( pcp ) PrintObj( pcp ); end );
+InstallMethod( ViewObj, [ IsPcp ], SUM_FLAGS, PrintObj );
 
 #############################################################################
 ##
@@ -594,17 +579,17 @@ end;
 PrintWord := function(gen,exp)
     local w, i, g;
     w := WordByExps(exp);
-    if Length(w) = 0 then 
-        Print("id "); 
+    if Length(w) = 0 then
+        Print("id ");
     else
         for i in [1,3..Length(w)-1] do
-            g := Concatenation(gen,String(w[i])); 
-            if w[i+1] = 1 then 
+            g := Concatenation(gen,String(w[i]));
+            if w[i+1] = 1 then
                 Print(g);
             else
                 Print(g,"^",w[i+1]);
             fi;
-            if i < Length(w)-1 then 
+            if i < Length(w)-1 then
                 Print(" * ");
             fi;
         od;
@@ -621,7 +606,7 @@ PrintPresentationByPcp := function( pcp, flag )
 
     gens := GeneratorsOfPcp( pcp );
     rels := RelativeOrdersOfPcp( pcp );
-    
+
     # print relations
     for i in [1..Length(gens)] do
         if rels[i] > 0 then
@@ -641,9 +626,9 @@ PrintPresentationByPcp := function( pcp, flag )
                 Print("g",i," ^ g",j," = ");
                 PrintWord("g",ExponentsByPcp(pcp, c));
             fi;
-            if rels[j] = 0 or flag = "all" then 
+            if rels[j] = 0 or flag = "all" then
                 c := gens[i]^(gens[j]^-1);
-                if c <> g or flag = "all" then 
+                if c <> g or flag = "all" then
                     Print("g",i," ^ g",j,"^-1 = ");
                     PrintWord("g",ExponentsByPcp(pcp, c));
                 fi;
@@ -660,12 +645,12 @@ end;
 PrintPcpPresentation := function( arg )
     local G, flag;
     G := arg[1];
-    if Length(arg) = 2 then 
+    if Length(arg) = 2 then
         flag := arg[2];
     else
         flag := false;
     fi;
-    if IsGroup(G) then 
+    if IsGroup(G) then
         PrintPresentationByPcp( Pcp(G), flag );
     else
         PrintPresentationByPcp( G, flag );
@@ -678,7 +663,7 @@ end;
 ##
 GapInputPcpGroup := function( file, pcp )
     local gens, rels, i, j, obj;
-    
+
     gens := GeneratorsOfPcp( pcp );
     rels := RelativeOrdersOfPcp( pcp );
     PrintTo(file, "coll := FromTheLeftCollector( ", Length(gens)," );\n");
@@ -689,18 +674,18 @@ GapInputPcpGroup := function( file, pcp )
             AppendTo(file, "SetPower( coll, ",i,", ",obj," );\n");
         fi;
     od;
-   
+
     for i in [1..Length(rels)] do
         for j in [1..i-1] do
             obj := WordByExps(ExponentsByPcp( pcp, gens[i]^gens[j] ));
             if obj <> [ i, 1 ] then
-                AppendTo(file, 
+                AppendTo(file,
                         "SetConjugate( coll, ",i,", ",j,", ",obj," );\n");
             fi;
 
             obj := WordByExps(ExponentsByPcp( pcp, gens[i]^(gens[j]^-1) ));
             if obj <> [ i, 1 ] then
-                AppendTo(file, 
+                AppendTo(file,
                         "SetConjugate( coll, ",i,", ",-j,", ",obj," );\n");
             fi;
         od;
@@ -708,9 +693,9 @@ GapInputPcpGroup := function( file, pcp )
 
     AppendTo(file, "UpdatePolycyclicCollector( coll );\n" );
     AppendTo(file, "G := PcpGroupByCollectorNC( coll ); \n");
-    if HasIsNilpotentGroup( GroupOfPcp(pcp) ) and 
+    if HasIsNilpotentGroup( GroupOfPcp(pcp) ) and
        IsNilpotentGroup( GroupOfPcp(pcp) ) then
-        AppendTo(file, "SetFeatureObj( G, IsNilpotentGroup, true );\n" );
+        AppendTo(file, "SetIsNilpotentGroup( G, true );\n" );
     fi;
 end;
 
@@ -773,7 +758,7 @@ DisplayPcpGroup :=  function( G )
     for g in [1..n] do
         if rods[g] <> 0 then
             ##  print the power relation for g.
-            Print( "    ", gens[g], "^", rods[g], " = ", 
+            Print( "    ", gens[g], "^", rods[g], " = ",
                    gens[g]^rods[g], "\n" );
         fi;
     od;
@@ -784,7 +769,7 @@ DisplayPcpGroup :=  function( G )
             conj := gens[h]^gens[g];
             if conj <> gens[h] then
                 ##  print the conjuagte relation for h^g.
-                Print( "    ", gens[h], "^", gens[g], " = ", 
+                Print( "    ", gens[h], "^", gens[g], " = ",
                        gens[h]^gens[g], "\n" );
             fi;
         od;

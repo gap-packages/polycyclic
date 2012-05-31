@@ -31,9 +31,9 @@ ReduceAuto := function( auto, C, isom, gens, imgs )
 end;
 
 AutomorphismActionCover := function( G, C )
-    local pcgs, first, p, n, r, f, i, 
-          chars, bases, S, H, kern, A, 
-          F, Q, s, t, P, M, N, U, baseN, baseU, 
+    local pcgs, first, p, n, r, f, i,
+          chars, bases, S, H, kern, A,
+          F, Q, s, t, P, M, N, U, baseN, baseU,
           OnSubs, gens, imgs, isom, Cimg;
 
     # start off
@@ -69,7 +69,7 @@ AutomorphismActionCover := function( G, C )
     A.group   := H;
     A.size    := A.glOrder * Product( A.agOrder );
 
-    # add perm rep 
+    # add perm rep
     AddPermOper(A);
 
     # check for large solvable subgroups

@@ -7,6 +7,29 @@
  us know.
 ===========================================================================
 
+2.10 (2012-05-31)
+	o Added methods for GAP's Epicentre and EpimorphismSchurCover attribute
+	o Added group constructors that allow construction extraspecial groups
+	  as well as alternating and symmetric groups of degree <= 4 as pcp groups
+	o Changed SchurExtension and SchurExtensionEpimorphism into attributes
+	o Changed IsomorphismPcpGroup for pcp groups, now returns identity map
+	o Changed SchurCovering to be a synonym for GAP's SchurCover attribute
+	o Fixed regression in AddFieldCR which caused incorrect errors
+	  (e.g. when testing whether a pcp group is torsion free)
+	o Fixed some warnings by adding a IsGeneratorsOfMagmaWithInverses
+	  method for pcp element collections
+	o Fixed several bugs resulting in errors when computing Schur extensions,
+	  nonabelian exterior and tensor squares, and so on, but only if the
+	  argument was a subgroup of a pcp group
+	o Fixed computing Schur extensions, nonabelian exterior and tensor squares
+	  etc. of the infinite cyclic group
+	o Fixed bug in direct products of pcp groups that could result in
+	  wrong embedding and projection maps
+	o Fixed error triggered when calling NormalizerOp on two groups
+	  that have differing Parent() groups, yet still are subgroups
+	  of a common overgroup
+	o Removed some dead obsolete code
+
 2.9 (2012-01-12)
 	o Updated README
 	o Added GPL license text
@@ -93,7 +116,7 @@
 	o Various other fixes and improvements
 
 2.3:
-	We are not sure right now if this version was ever released. If you
+	We are not sure whether this version was ever released. If you
 	happen to know, and maybe even have a copy, please let us know.
 
 2.2 (2007-06-22)

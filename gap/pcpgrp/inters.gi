@@ -7,12 +7,12 @@
 ##
 #F NormalIntersection( N, U ) . . . . . . . . . . . . . . . . . . . .U \cap N
 ##
-InstallOtherMethod( NormalIntersection, true, [IsPcpGroup, IsPcpGroup], 0,
+InstallMethod( NormalIntersection, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( N, U )
     local G, igs, igsN, igsU, n, s, I, id, ls, rs, is, g, d, al, ar, e, tm;
 
-    G    := Parent( N );
-    while G <> Parent(G) do G := Parent(G); od;
+	# get common overgroup of N and U
+	G := PcpGroupByCollector( Collector( N ) );
 
     igs  := Igs(G);
     igsN := Cgs( N );
@@ -20,20 +20,22 @@ function( N, U )
     n    := Length( igs );
 
     # if N or U is trivial
-    if Length( igsN ) = 0 or Length( igsU ) = 0 then
-        return SubgroupByIgs(G, [] );
+    if Length( igsN ) = 0 then
+        return N;
+    elif Length( igsU ) = 0 then
+        return U;
     fi;
 
     # if N or U are equal to G
-    if Length( igsN ) = n and ForAll(igsN, x -> LeadingExponent(x) = 1) then 
+    if Length( igsN ) = n and ForAll(igsN, x -> LeadingExponent(x) = 1) then
         return U;
-    elif Length(igsU) = n and ForAll(igsU, x -> LeadingExponent(x) = 1) then 
+    elif Length(igsU) = n and ForAll(igsU, x -> LeadingExponent(x) = 1) then
         return N;
     fi;
-  
+
     # if N is a tail
     s := Depth( igsN[1] );
-    if Length( igsN ) = n-s+1 and 
+    if Length( igsN ) = n-s+1 and
        ForAll( igsN, x -> LeadingExponent(x) = 1 ) then
         I := Filtered( igsU, x -> Depth(x) >= s );
         return SubgroupByIgs( G, I );
@@ -41,9 +43,9 @@ function( N, U )
 
     # otherwise compute
     id := One(G);
-    ls := List( igs, x -> id );
-    rs := List( igs, x -> id );
-    is := List( igs, x -> id );
+    ls := ListWithIdenticalEntries( n, id );
+    rs := ListWithIdenticalEntries( n, id );
+    is := ListWithIdenticalEntries( n, id );
 
     for g in igsU do
         d := Depth( g );
@@ -54,7 +56,7 @@ function( N, U )
     I := [];
     for g in igsN do
         d := Depth( g );
-        if ls[d] = id  then
+        if ls[d] = id then
             ls[d] := g;
         else
             Add( I, g );
@@ -62,12 +64,12 @@ function( N, U )
     od;
 
     # enter the pairs [ u, 1 ] of <I> into [ <ls>, <rs> ]
-    for al  in I  do
+    for al in I do
         ar := id;
         d  := Depth( al );
 
         # compute sum and intersection
-        while al <> id and ls[d] <> id  do
+        while al <> id and ls[d] <> id do
             e := Gcdex( LeadingExponent(ls[d]), LeadingExponent(al) );
             tm := ls[d]^e.coeff1 * al^e.coeff2;
             al := ls[d]^e.coeff3 * al^e.coeff4;
@@ -79,10 +81,10 @@ function( N, U )
         od;
 
         # we have a new sum generator
-        if al <> id  then
+        if al <> id then
             ls[d] := al;
             rs[d] := ar;
-       
+
         # we have a new intersection generator
         elif ar <> id then
             d := Depth( ar );
@@ -93,7 +95,7 @@ function( N, U )
                 is[d] := tm;
                 d  := Depth( ar );
             od;
-            if ar <> id  then
+            if ar <> id then
                 is[d] := ar;
             fi;
         fi;
@@ -108,17 +110,8 @@ end );
 ##
 #M Intersection( N, U )
 ##
-InstallMethod( Intersection2, true, [IsPcpGroup, IsPcpGroup], 0,
+InstallMethod( Intersection2, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( U, V )
-    local G;
-
-    # get the parent 
-    G := Parent( U );
-    while G <> Parent(G) do G := Parent(G); od;
-
-    # catch a trivial case
-    if not IsSubgroup( G, V ) then TryNextMethod(); fi;
-
     # check for trivial cases
     if IsInt(Size(U)) and IsInt(Size(V)) then
         if IsInt(Size(V)/Size(U)) and ForAll(Igs(U), x -> x in V ) then

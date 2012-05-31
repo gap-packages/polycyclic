@@ -9,12 +9,12 @@
 ##
 #F LowIndexNormalsEaLayer( G, U, pcp, d, act )
 ##
-## Compute low-index subgroups in <cl> not containing the elementary abelian 
+## Compute low-index subgroups in <cl> not containing the elementary abelian
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by p^d.
 ##
 LowIndexNormalsEaLayer := function( G, U, pcp, d, act )
-    local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu, 
+    local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu,
           L, fac, new, i, tmp, mats, t;
 
     # a first trivial case
@@ -52,20 +52,20 @@ LowIndexNormalsEaLayer := function( G, U, pcp, d, act )
         if IsInt( t ) then
 
             # copy sub and adjust the entries to the layer
-            sub := InduceToFactor(C, rec(repr := o,stab := AsList(C.super))); 
+            sub := InduceToFactor(C, rec(repr := o,stab := AsList(C.super)));
             AddInversesCR( sub );
 
             # compute the desired complements
             new := InvariantComplementsCR( sub );
-    
+
             # add information on index
             for i in [1..Length(new)] do new[i]!.open := t; od;
-    
+
             # append them
             Append( com, new );
 
             # if there are no complements, then reduce invs
-            if Length( new ) = 0 then 
+            if Length( new ) = 0 then
                 invs := Filtered( invs, x -> not IsSubbasis( o, x ) );
             fi;
         fi;
@@ -77,7 +77,7 @@ end;
 ##
 #F LowIndexNormalsFaLayer( cl, pcplist, l, act )
 ##
-## Compute low-index subgroups in <cl> not containing the free abelian 
+## Compute low-index subgroups in <cl> not containing the free abelian
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by l.
 ##
@@ -113,9 +113,9 @@ end;
 #F LowIndexNormalsBySeries( G, n, pcps )
 ##
 LowIndexNormalsBySeries := function( G, n, pcps )
-    local U, grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp; 
+    local U, grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
-    # set up 
+    # set up
     all := Pcp( G );
 
     # the first layer
@@ -138,7 +138,7 @@ LowIndexNormalsBySeries := function( G, n, pcps )
         mats := List( all, x -> List(pcp, y -> ExponentsByPcp(pcp, y^x)));
         act := rec( pcp := all, mats := mats );
 
-        # loop over all subgroups 
+        # loop over all subgroups
         new := [];
         adj := [];
         for U in grps do
@@ -152,7 +152,7 @@ LowIndexNormalsBySeries := function( G, n, pcps )
                 tmp := LowIndexNormalsFaLayer( G, U, adj[l], l, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );
-            elif l > 1 then 
+            elif l > 1 then
                 d := ValuationInt( l, p );
                 tmp := LowIndexNormalsEaLayer( G, U, pcp, d, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
@@ -168,16 +168,14 @@ end;
 ##
 #F LowIndexNormalSubgroups( G, n )
 ##
-LowIndexNormalSubgroupsPcpGroup := function( G, n )
+InstallMethod( LowIndexNormalSubgroupsOp, "for pcp groups",
+               [IsPcpGroup, IsPosInt],
+function( G, n )
     local efa;
     if n = 1 then return [G]; fi;
     efa := PcpsOfEfaSeries( G );
     return LowIndexNormalsBySeries( G, n, efa );
-end;
-
-InstallMethod( LowIndexNormalSubgroupsOp, "for pcp groups",
-               true, [IsPcpGroup, IsPosInt], 0,
-function( G, n ) return LowIndexNormalSubgroupsPcpGroup( G, n ); end );
+end );
 
 #############################################################################
 ##

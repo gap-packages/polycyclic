@@ -19,7 +19,7 @@ MaximalSubgroupsByLayer := function( G, pcp, p )
     if Length( pcp ) = 0 then return []; fi;
     q := RelativeOrdersOfPcp( pcp )[1];
     if q <> 0 and q <> p then return []; fi;
-    if q = 0 then 
+    if q = 0 then
         new := List( pcp, x -> x ^ p );
         new := AddIgsToIgs( new, DenominatorOfPcp( pcp ) );
         new := SubgroupByIgs( G, new );
@@ -44,7 +44,7 @@ MaximalSubgroupsByLayer := function( G, pcp, p )
     # add extension info
     AddRelatorsCR( C );
     AddOperationCR( C );
-    
+
     # if it is a trivial factor
     if Length( pcp ) = 1 then
         AddInversesCR( C );
@@ -67,11 +67,13 @@ end;
 
 #############################################################################
 ##
-#F  MaximalSubgroupClassesByIndex( G, p ) 
+#F  MaximalSubgroupClassesByIndex( G, p )
 ##
 ##  The conjugacy classes of maximal subgroups of p-power index in G.
 ##
-MaximalSubgroupClassesByIndexPcpGroup := function( G, p )
+InstallMethod( MaximalSubgroupClassesByIndexOp, "for pcp groups",
+               [IsPcpGroup, IsPosInt],
+function( G, p )
     local pcp, max, i, tmp;
 
     # loop over series and determine subgroups
@@ -88,8 +90,4 @@ MaximalSubgroupClassesByIndexPcpGroup := function( G, p )
         max[i] := tmp;
     od;
     return max;
-end;
-
-InstallMethod( MaximalSubgroupClassesByIndexOp, "for pcp groups", 
-               true, [IsPcpGroup, IsPosInt], 0,
-function( G, p ) return MaximalSubgroupClassesByIndexPcpGroup( G, p ); end ); 
+end );

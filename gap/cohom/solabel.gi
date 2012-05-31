@@ -3,21 +3,21 @@
 #W  solabel.gi                  Polycyc                         Bettina Eick
 ##
 
-# Input: 
-#  n integer, m integer, p prime, 
+# Input:
+#  n integer, m integer, p prime,
 #  e = [e_1, ..., e_k] list of p-powers e_1 <= ... <= e_k
 #  A = nk x mk integer matrix
-#  b = integer vector of lenth mk 
+#  b = integer vector of lenth mk
 
 SeriesSteps := function(e)
     local l, f, p, k, s, i;
 
     l := Length(e);
-    f := Factors(e[l]); 
-    p := f[1]; 
+    f := Factors(e[l]);
+    p := f[1];
     k := Length(f);
 
-    s := []; 
+    s := [];
     for i in [1..k] do
         s[i] := Length(Filtered(e, x -> x < p^i));
     od;
@@ -25,18 +25,10 @@ SeriesSteps := function(e)
     return s;
 end;
 
-DepthVector := function( vec )
-    local i;
-    for i in [1..Length(vec)] do
-        if vec[i] <> 0*vec[i] then return i; fi;
-    od;
-    return Length(vec)+1;
-end;
-
 StripIt := function( mat, l )
     local n, d, k;
     n := Length( mat );
-    d := List( mat, DepthVector );
+    d := List( mat, PositionNonZero );
     k := First( [1..n], x -> d[x] >= l );
     if IsBool(k) then return Length(mat)+1; fi;
     return k;
@@ -49,7 +41,7 @@ end;
 DivideVec := function(t,p)
     local i;
     for i in [1..Length(t)] do
-        if t[i] <> 0 then 
+        if t[i] <> 0 then
             t[i] := t[i]/p;
         fi;
     od;
@@ -59,14 +51,14 @@ end;
 TransversalMat := function( M, n )
     local d;
     if Length(M) = 0 then return IdentityMat(n); fi;
-    d := List(M, DepthVector);
+    d := List(M, PositionNonZero);
     d := Difference([1..Length(M[1])], d);
     return IdentityMat(n){d};
 end;
 
 KernelSystemGauss := function( A, e, p )
     local k, n, m, q, F, s, AA, SS, KK, II, TT, K, I, i, dW, dV, rT,
-          B, J, W, S, U; 
+          B, J, W, S, U;
 
     # catch arguments
     k := Length(e);
@@ -77,7 +69,7 @@ KernelSystemGauss := function( A, e, p )
     # get steps in series
     s := SeriesSteps(e);
 
-    # solve mod p 
+    # solve mod p
     AA := A*One(F); ConvertToMatrixRepNC(AA, F);
     SS := TriangulizedNullspaceMat(AA);
 
@@ -100,13 +92,13 @@ KernelSystemGauss := function( A, e, p )
 
         # image of K
         B := List( A, x -> x{dW} );
-        J := List( K, x -> DivideVec( x*B, q ) ); 
-        
+        J := List( K, x -> DivideVec( x*B, q ) );
+
         # extend kernel and image
         Append( K, q * TT{rT} );
         Append( J, List( rT, x -> II[x]{dW} ));
 
-        # apply gauss 
+        # apply gauss
         W := J*One(F); ConvertToMatrixRepNC(W, F);
         S := TriangulizedNullspaceMat(W);
 
@@ -115,7 +107,7 @@ KernelSystemGauss := function( A, e, p )
         Append(K, q*Strip( KK, dV ) );
 
     od;
-        
+
     return K;
 end;
 
@@ -138,7 +130,7 @@ CheckKernelSpecial := function( A, e )
     od;
     return I;
 end;
-    
+
 TransversalSystemGauss := function( A, K, e, p )
     local k, n, m, s, d, l, I, T, i, q, t, J, u, r;
 
@@ -148,7 +140,7 @@ TransversalSystemGauss := function( A, K, e, p )
     m := Length(A[1])/k; if not IsInt(m) then return fail; fi;
     s := SeriesSteps(e);
 
-    d := List(K, DepthVector);
+    d := List(K, PositionNonZero);
     l := List([1..Length(d)], x -> K[x][d[x]]);
     I := IdentityMat(n*k);
     T := [];
@@ -178,7 +170,7 @@ ImageSystemGauss := function( A, K, e, p )
     m := Length(A[1])/k; if not IsInt(m) then return fail; fi;
     s := SeriesSteps(e);
 
-    d := List(K, DepthVector);
+    d := List(K, PositionNonZero);
     l := List([1..Length(d)], x -> K[x][d[x]]);
     I := IdentityMat(n*k);
     T := [];
@@ -226,8 +218,8 @@ FindSpecialSolution := function( S, vec )
 end;
 
 SolveSystemGauss := function( A, e, p, b )
-    local k, n, m, q, F, s, AA, SE, SS, KK, II, TT, sl, ss, h, K, I, i, 
-          dW, dV, rT, B, J, W, S, U, v, u, f, M; 
+    local k, n, m, q, F, s, AA, SE, SS, KK, II, TT, sl, ss, h, K, I, i,
+          dW, dV, rT, B, J, W, S, U, v, u, f, M;
 
     # catch arguments
     k := Length(e);
@@ -239,7 +231,7 @@ SolveSystemGauss := function( A, e, p, b )
     # get steps in series
     s := SeriesSteps(e);
 
-    # solve mod p 
+    # solve mod p
     AA := A*One(F); ConvertToMatrixRepNC(AA, F);
     SE := SemiEchelonMatTransformation(AA);
     SS := MutableCopyMat(SE.relations); TriangulizeMat(SS);
@@ -266,19 +258,19 @@ SolveSystemGauss := function( A, e, p, b )
 
         # image of K
         B := List( A, x -> x{dW} );
-        J := List( K, x -> DivideVec( x*B, q ) ); 
+        J := List( K, x -> DivideVec( x*B, q ) );
 
         # extend kernel and image
         Append( K, q * TT{rT} );
         Append( J, List( rT, x -> II[x]{dW} ));
 
-        # apply gauss 
+        # apply gauss
         W := J*One(F); ConvertToMatrixRepNC(W, F);
         M := SemiEchelonMatTransformation(W);
         S := MutableCopyMat(M.relations); TriangulizeMat(S);
-    
+
         # consider special solution
-        if f then 
+        if f then
             v := DivideVec( h*B - b{dW}, q );
             u := IntVecFFE(FindSpecialSolution(M, v*One(F)));
             h := h - u*K;
@@ -289,8 +281,8 @@ SolveSystemGauss := function( A, e, p, b )
         Append(K, q*Strip( KK, dV ) );
 
     od;
-        
-    if f then 
+
+    if f then
         return rec( kernel := K, sol := h );
     else
         return K;

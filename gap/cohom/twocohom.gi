@@ -20,7 +20,7 @@ InstallGlobalFunction( CollectedTwoCR, function( A, u, v )
     # create stacks and put v onto stack
     wstack := [WordOfVectorCR( v.word )];
     tstack := [v.tail];
-    p := [1];                 
+    p := [1];
     c := [1];
 
     # run until stacks are empty
@@ -57,23 +57,23 @@ InstallGlobalFunction( CollectedTwoCR, function( A, u, v )
             fi;
         fi;
 
-        # push g through word 
+        # push g through word
         for i  in [ n, n-1 .. g+1 ]  do
 
             if word[i] <> 0 then
 
                 # get relator and tail
                 t := [];
-                if e > 0 then 
+                if e > 0 then
                     s := Position( A.enumrels, [i, g] );
                     r := PowerWord( A, A.relators[i][g], word[i] );
                     t[s] := PowerTail( A, A.relators[i][g], word[i] );
-                elif e < 0 then 
+                elif e < 0 then
                     s := Position( A.enumrels, [i, i+g] );
                     r := PowerWord( A, A.relators[i][i+g], word[i] );
                     t[s] := PowerTail( A, A.relators[i][i+g], word[i] );
                 fi;
- 
+
                 # add to stacks
                 AddTailVectorsCR( tail, t );
                 l := l+1;
@@ -107,7 +107,7 @@ InstallGlobalFunction( CollectedTwoCR, function( A, u, v )
             AddTailVectorsCR( tail, t );
 
         # insert power relators if exponent is negative
-        elif rels[g] > 0 and word[g] < 0 then 
+        elif rels[g] > 0 and word[g] < 0 then
             word[g] := rels[g] + word[g];
             if Length(A.relators[g][g]) <= 1 then
                 r := A.relators[g][g];
@@ -148,14 +148,14 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
     e := RelativeOrdersOfPcp( A.factor );
     l := Length( A.enumrels );
 
-    if IsBound(A.endosys) then 
+    if IsBound(A.endosys) then
         sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
         for i in [1..Length(sys)] do sys[i].full := true; od;
     else
         sys := CRSystem( A.dim, l, A.char );
     fi;
 
-    # set up for equations 
+    # set up for equations
     id := IdentityMat(n);
     gn := List( id, x -> rec( word := x, tail := [] ) );
 
@@ -164,7 +164,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
     for i  in [1..n]  do
         if e[i] > 0 then
             h := rec( word := (e[i] - 1) * id[i], tail := [] );
-            pairs[i][i] := CollectedTwoCR( A, h, gn[i] ); 
+            pairs[i][i] := CollectedTwoCR( A, h, gn[i] );
         fi;
         for j  in [1..i-1]  do
             pairs[i][j] := CollectedTwoCR( A, gn[i], gn[j] );
@@ -234,7 +234,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
          fi;
     od;
 
-    # consistency 5: j = (j -i) i   
+    # consistency 5: j = (j -i) i
     gi := List( id, x -> rec( word := -x, tail := [] ) );
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
@@ -249,8 +249,8 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
             fi;
         od;
     od;
-            
-    # consistency 6: i = -j (j i)   
+
+    # consistency 6: i = -j (j i)
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
             if e[j] = 0 then
@@ -264,7 +264,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
         od;
     od;
 
-    # consistency 7: -i = -j (j -i) 
+    # consistency 7: -i = -j (j -i)
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
             if e[i] = 0 and e[j] = 0 then
@@ -279,7 +279,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
         od;
     od;
 
-    # add a check ((j ^ i) ^-i ) = j 
+    # add a check ((j ^ i) ^-i ) = j
     for i in [1..n] do
         for j in [1..i-1] do
             w1 := CollectedTwoCR( A, gi[j], pairs[i][j] );
@@ -287,7 +287,7 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
             w1 := CollectedTwoCR( A, w1, gi[j] );
             if w1.word <> id[i] then
                 Error("in rel check ");
-            elif not IsZeroTail( w2.tail ) then 
+            elif not IsZeroTail( w2.tail ) then
                # Error("relations bug");
                 AddEquationsCR( sys, w1.tail, [], true );
             fi;
@@ -310,7 +310,7 @@ InstallGlobalFunction( TwoCoboundariesCR, function( A )
     e := RelativeOrdersOfPcp( A.factor );
     l := Length( A.enumrels );
 
-    if IsBound(A.endosys) then 
+    if IsBound(A.endosys) then
         sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
         for i in [1..Length(sys)] do sys[i].full := true; od;
     else
@@ -319,7 +319,7 @@ InstallGlobalFunction( TwoCoboundariesCR, function( A )
 
     # loop over relators
     R := [];
-    for c in A.enumrels do 
+    for c in A.enumrels do
         tail := CollectedRelatorCR( A, c[1], c[2] );
         SubtractTailVectors( tail[1], tail[2] );
         Add( R, tail[1] );
@@ -328,12 +328,12 @@ InstallGlobalFunction( TwoCoboundariesCR, function( A )
     # shift into system
     for i in [1..n] do
         t := [];
-        for j in [1..l] do 
+        for j in [1..l] do
             if IsBound(R[j][i]) then t[i] := R[j][i]; fi;
         od;
-        if IsList(sys) then 
+        if IsList(sys) then
             AddEquationsCREndo( sys, t );
-        else 
+        else
             AddEquationsCRNorm( sys, t, true );
         fi;
     od;
@@ -344,14 +344,14 @@ end );
 
 #############################################################################
 ##
-#F TwoCohomologyCR( A ) 
+#F TwoCohomologyCR( A )
 ##
 InstallGlobalFunction( TwoCohomologyCR, function( A )
     local cc, cb, exp, l, B, b, Q, U, V, i;
     cc := TwoCocyclesCR( A );
     cb := TwoCoboundariesCR( A );
-    if not IsBound(A.endosys) then 
-        return rec( gcc := cc, gcb := cb, 
+    if not IsBound(A.endosys) then
+        return rec( gcc := cc, gcb := cb,
                     factor := AdditiveFactorPcp( cc, cb, A.char ));
     fi;
 
@@ -389,7 +389,7 @@ TwoCohomologyTrivialModule := function(arg)
     C := CRRecordByMats(G, m);
     c := TwoCohomologyCR(C);
 
-    return c.factor.rels;   
+    return c.factor.rels;
 end;
 
 #############################################################################
@@ -411,9 +411,9 @@ CheckTrivialCohom := function(G)
     # first check
     Print("check cb in cc \n");
     c  := First( cb, x -> IsBool( SolutionMat( cc,x ) ) );
-    if not IsBool( c ) then 
+    if not IsBool( c ) then
         Print("  coboundary is not contained in cc \n");
-        return c; 
+        return c;
     fi;
 
     # second check

@@ -130,7 +130,7 @@ end;
 ##  g normalizes <pcgs> and we compute a new pcgs for <pcgs, g>.
 ##
 ExtendedBasePcgs := function( pcgs, g, d )
-    local h, e, i, o, b, m, c, l, w, j, k; 
+    local h, e, i, o, b, m, c, l, w, j, k;
 
     # change in place - but unbind not updated information
     Unbind(pcgs.pcgs);

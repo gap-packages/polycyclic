@@ -2,7 +2,7 @@
 ##  The elements of combinatorial collection from the left are:
 ##
 ##      the exponent vector:     contains the result of the collection process
-##      
+##
 ##      the word stack:          stacks words which need to be collected into
 ##                               the exponent vector
 ##      the word exponent stack: stacks the exponents corresponding to each
@@ -17,8 +17,8 @@
 ##                               power of generator in a word may have to be
 ##                               collected partially before new words are put
 ##                               on the stack.
-##                               
-##     the two commute arrays:   
+##
+##     the two commute arrays:
 ##
 ##     the 4 conjugation arrays:
 ##     the exponent array:
@@ -45,7 +45,7 @@ Count_Length := 0;
 Count_Weight := 0;
 
 DisplayCombCollStats := function()
-    
+
     Print( "Calls to combinatorial collector: ", Counter,         "\n" );
     Print( "Completely collected generators:  ", CompleteCommGen, "\n" );
     Print( "Whole words collected:            ", WholeCommWord,   "\n" );
@@ -74,10 +74,10 @@ ClearCombCollStats := function()
     ThreeWtGenStack := 0;
 end;
 
- 
+
 
 CombinatorialCollectPolycyclicGap := function( coc, ev, w )
-    local   com,  com2,  wt,  class,  wst,  west,  
+    local   com,  com2,  wt,  class,  wst,  west,
             sst,  est,  bottom,  stp,  g,  cnj,  icnj,  h,  m,  i,  j,
             astart,  IsNormed,  InfoCombi,
             ngens, pow, exp,
@@ -97,14 +97,14 @@ ReduceExponentVector := function( ev, g )
 
     for h in [g..ngens] do
         if IsBound( exp[h] ) and (ev[h] < 0  or ev[h] >= exp[h]) then
-            m := QuoInt( ev[h], exp[h] );      
+            m := QuoInt( ev[h], exp[h] );
             ev[h] := ev[h] - m * exp[h];
             if ev[h] < 0 then
                 m := m - 1;
                 ev[h] := ev[h] + exp[h];
             fi;
-                
-            if ev[h] < 0  or ev[h] >= exp[h] then 
+
+            if ev[h] < 0  or ev[h] >= exp[h] then
                 Error( "incorrect reduction of exponent vector" );
             fi;
 
@@ -124,7 +124,7 @@ AddIntoExponentVector := function( ev, word, start, e )
     local   i,  h;
     Info( InfoCombinatorialFromTheLeftCollector, 5,
           " Adding ", word, "^", e, " from ", start );
-    
+
     Count_Length := Count_Length + Length(word);
     if start <= Length(word) then
         Count_Weight := Count_Weight + word[start];
@@ -144,13 +144,13 @@ end;
     InfoCombi := InfoCombinatorialFromTheLeftCollector;
 
     Counter := Counter + 1;
-    Info( InfoCombi, 4, 
+    Info( InfoCombi, 4,
           "Entering combinatorial collector (", Counter, ") ",
            ev, " * ", w );
-    
+
     ## Check if the word is normed
     IsNormed := true;
-    for i in [3,5..Length(w)-1] do 
+    for i in [3,5..Length(w)-1] do
         if not w[i-2] < w[i] then IsNormed := false; break; fi;
     od;
 
@@ -166,7 +166,7 @@ end;
     com    := coc![ PC_COMMUTE ];
     com2   := coc![ PC_NILPOTENT_COMMUTE ];
     astart := coc![ PC_ABELIAN_START ];
- 
+
     ##  the four stacks
     wst   := coc![ PC_WORD_STACK ];
     west  := coc![ PC_WORD_EXPONENT_STACK ];
@@ -200,7 +200,7 @@ end;
                 west[stp] := west[stp] - 1;
                 if west[stp] > 0 then
                     ##  Initialise the syllable pointer and exponent
-                    ##  counter. 
+                    ##  counter.
                     sst[stp] := 1;
                     est[stp] := wst[stp][2];
                 else
@@ -215,7 +215,7 @@ end;
 
         ##  Collection
         else    ## now move the next generator/word to the correct position
-            
+
             g := wst[stp][ sst[stp] ];             ##  get generator number
 
             if est[stp] > 0 then
@@ -229,73 +229,73 @@ end;
             fi;
 
             ##  Check if there is a single commuting generator on the stack
-            ##  and collect. 
-            if Length( wst[stp] ) = 1 and com[g] = g then 
+            ##  and collect.
+            if Length( wst[stp] ) = 1 and com[g] = g then
                 CompleteCommGen := CompleteCommGen + 1;
 
                 Info( InfoCombi, 5,
                       " collecting single generator ", g );
                 ev[ g ] := ev[ g ] + west[stp] * wst[stp][ sst[stp]+1 ];
-                
+
                 west[ stp ] := 0; est[ stp ]  := 0; sst[ stp ]  := 1;
-                
+
                 ##  Do we need to reduce ev[ g ] ?
-                if IsBound( exp[g] ) and 
+                if IsBound( exp[g] ) and
                    ( ev[g] < 0  or ev[ g ] >= exp[ g ]) then
                     ReduceExponentVector( ev, g );
                 fi;
-                
+
             ##  Check if we can collect a whole commuting word into ev[].  We
             ##  can only do this if the word on the stack is normed.
             ##  Therefore, we cannot do this for the first word on the stack.
             elif (IsNormed or stp > 1) and sst[stp] = 1 and g = com[g] then
                 WholeCommWord := WholeCommWord + 1;
 
-                Info( InfoCombi, 5,  
-                      " collecting a whole word ", 
+                Info( InfoCombi, 5,
+                      " collecting a whole word ",
                       wst[stp], "^", west[stp] );
-                
+
                 ##  Collect word ^ exponent in one go.
                 AddIntoExponentVector( ev, wst[stp], sst[stp], west[stp] );
 #                ReduceExponentVector( ev, g );
-                
+
                 ##  Adjust the stack.
-                west[ stp ] := 0; 
+                west[ stp ] := 0;
                 est[  stp ] := 0;
                 sst[  stp ] := Length( wst[stp] ) - 1;
-                
+
             elif (IsNormed or stp > 1) and g = com[g] then
                 CommRestWord := CommRestWord + 1;
 
-                Info( InfoCombi, 5,  
+                Info( InfoCombi, 5,
                       " collecting the rest of a word ",
                       wst[stp], "[", sst[stp], "]" );
 
                 ##  Here we must only add the word from g onwards.
                 AddIntoExponentVector( ev, wst[stp], sst[stp], 1 );
 #                ReduceExponentVector( ev, g );
-                
+
                 # Adjust the stack.
                 est[  stp ] := 0;
                 sst[  stp ] := Length( wst[ stp ] ) - 1;
-                
+
             elif g = com[g] then
                 CommGen := CommGen + 1;
 
-                Info( InfoCombi, 5,  
+                Info( InfoCombi, 5,
                       " collecting a commuting generators ",
                       g, "^", est[stp] );
 
                 ##  move generator directly to its correct position ...
                 ev[g] := ev[g] + est[stp];
-                
+
                 ##  ... and reduce if necessary.
                 if IsBound( exp[g] ) and (ev[g] < 0 or ev[g] >= exp[g]) then
                     ReduceExponentVector( ev, g );
                 fi;
-                
+
                 est[stp] := 0;
-                
+
             elif (IsNormed or stp > 1) and 3*wt[g] > class then
                 ThreeWtGen := ThreeWtGen + 1;
 
@@ -303,22 +303,22 @@ end;
                       " collecting generator ", g, " with w(g)=", wt[g],
                       " and exponent ", est[stp] );
 
-                ##  Collect <g>^<e> without stacking commutators.  
+                ##  Collect <g>^<e> without stacking commutators.
                 ##  This is step 6 in (Vaughan-Lee 1990).
                 for h in Reversed( [ g+1 .. com[g] ] ) do
                     if ev[h] > 0 and IsBound( cnj[h][g] ) then
-                        AddIntoExponentVector( ev, cnj[h][g], 
+                        AddIntoExponentVector( ev, cnj[h][g],
                                 3, ev[h] * AbsInt(est[ stp ]) );
                     elif ev[h] < 0 and IsBound( icnj[h][g] ) then
-                        AddIntoExponentVector( ev, icnj[h][g], 
+                        AddIntoExponentVector( ev, icnj[h][g],
                                 3, -ev[h] * AbsInt(est[ stp ]) );
                     fi;
                 od;
                 ReduceExponentVector( ev, astart );
-                
+
                 ev[g] := ev[g] + est[ stp ];
                 est[ stp ] := 0;
-                
+
                 ##  If the exponent is out of range, we have to stack up the
                 ##  entries of the exponent vector because the rhs of the
                 ##  power relation need not satisfy the weight condition.
@@ -329,8 +329,8 @@ end;
                         m := m - 1;
                         ev[g] := ev[g] + exp[g];
                     fi;
-                    if IsBound(pow[g]) then 
-                        ##  Put entries of the exponent vector onto the stack 
+                    if IsBound(pow[g]) then
+                        ##  Put entries of the exponent vector onto the stack
                         ThreeWtGenStack := ThreeWtGenStack + 1;
                         for i in Reversed( [g+1 .. com[g]] ) do
                             if ev[i] <> 0 then
@@ -339,13 +339,13 @@ end;
                                 ##  est[]?
                                 wst[stp]  := [ i, ev[i] ];
                                 west[stp] := 1;
-                                sst[stp]  := 1;      
+                                sst[stp]  := 1;
                                 est[stp]  := wst[stp][ sst[stp] + 1 ];
                                 ev[i] := 0;
                             fi;
                         od;
                         ##  m must be 1, otherwise we cannot add the power
-                        ##  relation into the exponent vector.  Let´s check. 
+                        ##  relation into the exponent vector.  Let´s check.
                         if m <> 1 then
                             Error( "illegal add operation in collection" );
                         fi;
@@ -356,12 +356,12 @@ end;
 #                        ReduceExponentVector( ev, astart );
                     fi;
                 fi;
-                
+
             else                 ##  we have to move <gn> step by step
                 StepByStep := StepByStep + 1;
 
                 Info( InfoCombi, 5, " else-case, generator ", g );
-                
+
                 if est[ stp ] > 0 then
                     est[ stp ] := est[ stp ] - 1;
                     ev[ g ] := ev[ g ] + 1;
@@ -369,7 +369,7 @@ end;
                     est[ stp ] := est[ stp ] + 1;
                     ev[ g ] := ev[ g ] - 1;
                 fi;
-                
+
                 if IsNormed or stp > 1 then
                     ##  Do combinatorial collection as far as possible.
                     CombColl := CombColl + 1;
@@ -385,7 +385,7 @@ end;
                 else
                     h := com[g];
                 fi;
-                
+
                 ##  Find the first position in v from where on ordinary
                 ##  collection  has to be applied.
                 while h > g do
@@ -394,11 +394,11 @@ end;
                     fi;
                     h := h - 1;
                 od;
-                
-                ##  Stack up this part of v if we run through the next 
-                ##  for-loop or if a power relation will be applied 
-                if g < h or 
-                   IsBound( exp[g] ) and 
+
+                ##  Stack up this part of v if we run through the next
+                ##  for-loop or if a power relation will be applied
+                if g < h or
+                   IsBound( exp[g] ) and
                    (ev[g] < 0 or ev[g] >= exp[g]) and IsBound(pow[g]) then
 
                     if h+1 <= com[g] then
@@ -412,16 +412,16 @@ end;
                             ##  est[]?
                             wst[stp]  := [ j, ev[j] ];
                             west[stp] := 1;
-                            sst[stp]  := 1;      
+                            sst[stp]  := 1;
                             est[stp]  := wst[stp][ sst[stp] + 1 ];
                             ev[j] := 0;
-                            Info( InfoCombi, 5,  
+                            Info( InfoCombi, 5,
                                   "   Putting ", wst[ stp ], "^", west[stp],
                                   " onto the stack" );
                         fi;
                     od;
                 fi;
-                
+
                 ##  We finish with ordinary collection from the left.
                 if g <> h then
                     OrdColl := OrdColl + 1;
@@ -429,10 +429,10 @@ end;
 
                 Info( InfoCombi, 5,
                       " Ordinary collection: g = ", g, ", h = ", h );
-                while g < h do 
-                    Info( InfoCombi, 5,  
+                while g < h do
+                    Info( InfoCombi, 5,
                           "Executing while loop with h = ", h );
-                    
+
                     if  ev[h] <> 0 then
                         stp := stp + 1;
                         if ev[h] > 0 and IsBound( cnj[h][g] ) then
@@ -446,17 +446,17 @@ end;
                             wst[stp]  := [ h, ev[h] ];
                             west[stp] := 1;
                         fi;
-                        sst[stp]  := 1;      
+                        sst[stp]  := 1;
                         est[stp]  := wst[stp][ sst[stp]+1 ];
                         ev[h] := 0;
-                        Info( InfoCombi, 5, 
+                        Info( InfoCombi, 5,
                               "   Putting ", wst[ stp ], "^", west[stp],
                                " onto the stack" );
                     fi;
-                    
+
                     h := h - 1;
                 od;
-                
+
                 ##  check that the exponent is not too big
                 if IsBound( exp[g] ) and (ev[g] < 0 or ev[g] >= exp[g]) then
                     m := ev[g] / exp[g];
@@ -470,9 +470,9 @@ end;
                         stp := stp + 1;
                         wst[stp]  := pow[g];
                         west[stp] := m;
-                        sst[stp]  := 1;      
+                        sst[stp]  := 1;
                         est[stp]  := wst[stp][ sst[stp]+1 ];
-                        Info( InfoCombi, 5, 
+                        Info( InfoCombi, 5,
                               "   Putting ", wst[ stp ], "^", west[stp],
                                " onto the stack" );
                     fi;
@@ -487,16 +487,14 @@ end;
 
 
 #############################################################################
-##  
+##
 ##  Methods for  CollectWordOrFail.
 ##
 InstallMethod( CollectWordOrFail,
         "CombinatorialFromTheLeftCollector",
-        true,
         [ IsFromTheLeftCollectorRep and IsUpToDatePolycyclicCollector
           and IsWeightedCollector,
           IsList, IsList ],
-        0,
 function( pcp, a, b )
     local   aa,  aaa;
 
@@ -512,5 +510,5 @@ function( pcp, a, b )
         CombinatorialCollectPolycyclicGap( pcp, a, b );
     fi;
     return true;
-end );  
+end );
 

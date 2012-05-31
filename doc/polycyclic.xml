@@ -7,7 +7,7 @@
 
 <!-- Documentation of the Example package. -->
 
-<Book Name="polycyclic"> 
+<Book Name="polycyclic">
 
 <TitlePage>
   <Title>&Polycyclic;</Title>
@@ -48,18 +48,18 @@
     <!-- <Email>nickel@mathematik.tu-darmstadt.de</Email> -->
     <Homepage>http://www.mathematik.tu-darmstadt.de/~nickel</Homepage>
   </Author>
-    <Copyright> 
+    <Copyright>
     <Index>License</Index>
-    &copyright; 2003-2011 by Bettina Eick, Max Horn and Werner Nickel<P/>
-    The &Polycyclic; package is free software; 
-    you can redistribute it and/or modify it under the terms of the 
-    <URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL> 
-    as published by the Free Software Foundation; either version 2 of the License, 
+    &copyright; 2003-2012 by Bettina Eick, Max Horn and Werner Nickel<P/>
+    The &Polycyclic; package is free software;
+    you can redistribute it and/or modify it under the terms of the
+    <URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL>
+    as published by the Free Software Foundation; either version 2 of the License,
     or (at your option) any later version.
   </Copyright>
   <Acknowledgements>
-    We appreciate very much all past and future comments, suggestions and 
-    contributions to this package and its documentation provided by &GAP; 
+    We appreciate very much all past and future comments, suggestions and
+    contributions to this package and its documentation provided by &GAP;
     users and developers.
   </Acknowledgements>
 </TitlePage>
@@ -79,6 +79,12 @@
 <#Include SYSTEM "matreps.xml">
 
 </Body>
+
+<Appendix Label="app:Obsolete">
+<Heading>Obsolete Functions and Name Changes</Heading>
+<#Include Label="Obsolete">
+</Appendix>
+
 
 <Bibliography Databases="polycyclicbib.xml" />
 <TheIndex/>

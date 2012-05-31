@@ -14,12 +14,12 @@ InstallTrueMethod( IsNilpotentByFinite, IsGroup and IsFinite );
 
 
 # maxsub.gi
-KeyDependentOperation( "MaximalSubgroupClassesByIndex", 
+KeyDependentOperation( "MaximalSubgroupClassesByIndex",
                        IsGroup, IsPosInt, ReturnTrue );
 # findex/nindex.gi
-KeyDependentOperation( "LowIndexSubgroupClasses", 
+KeyDependentOperation( "LowIndexSubgroupClasses",
                        IsGroup, IsPosInt, ReturnTrue );
-KeyDependentOperation( "LowIndexNormalSubgroups", 
+KeyDependentOperation( "LowIndexNormalSubgroups",
                        IsGroup, IsPosInt, ReturnTrue );
 DeclareGlobalFunction( "NilpotentByAbelianNormalSubgroup" );
 
@@ -47,11 +47,11 @@ InstallTrueMethod( IsTorsionFree, IsGroup and IsFreeAbelian );
 
 
 # schur and tensor
-DeclareGlobalFunction("CompleteConjugatesInCentralCover");
+DeclareAttribute( "SchurExtension", IsGroup );
+DeclareAttribute( "SchurExtensionEpimorphism", IsGroup );
+
 DeclareGlobalFunction("EvalConsistency");
 DeclareGlobalFunction("QuotientBySystem");
 DeclareAttribute( "NonAbelianTensorSquare", IsGroup );
 DeclareAttribute( "NonAbelianExteriorSquare", IsGroup );
-
-DeclareOperation( "NqEpimorphismNilpotentQuotient", [IsGroup, IsPosInt]);
 

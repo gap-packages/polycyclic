@@ -10,7 +10,7 @@
 
 BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
     local mapi, filter, type, hom, pcgs, p, l, obj_args;
- 
+
     hom  := rec( );
     if Length( gens ) <> Length( imgs ) then
         Error("gens and imgs must have same length");
@@ -37,7 +37,7 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
 		hom.sourcePcgs       := mapi[1];
 		hom.sourcePcgsImages := mapi[2];
     elif IsSubgroupFpGroup(G) then
-	  if HasIsWholeFamily(G) and IsWholeFamily(G) 
+	  if HasIsWholeFamily(G) and IsWholeFamily(G)
 		# total on free generators
 		and Set(FreeGeneratorsOfFpGroup(G))=Set(List(gens,UnderlyingElement))
 		then
@@ -54,18 +54,18 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
 	  else
 		filter := filter and IsFromFpGroupGeneralMappingByImages;
 	  fi;
-    elif IsPermGroup(G) then 
+    elif IsPermGroup(G) then
         filter := filter and IsPermGroupGeneralMappingByImages;
     fi;
 
 	if IsPcpGroup(H) then
         hom!.igs_imgs_to_gens := IgsParallel( imgs, gens );
         filter := filter and IsToPcpGHBI;
-    elif IsSubgroupFpGroup(H) then 
+    elif IsSubgroupFpGroup(H) then
         filter := filter and IsToFpGroupGeneralMappingByImages;
-    elif IsPcGroup(H) then 
+    elif IsPcGroup(H) then
         filter := filter and IsToPcGroupGeneralMappingByImages;
-    elif IsPermGroup(H) then 
+    elif IsPermGroup(H) then
         filter := filter and IsToPermGroupGeneralMappingByImages;
     fi;
 
@@ -76,19 +76,19 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
 	 Range, H,
 	 MappingGeneratorsImages, mapi ];
 
-  if HasGeneratorsOfGroup(G) 
+  if HasGeneratorsOfGroup(G)
      and IsIdenticalObj(GeneratorsOfGroup(G),mapi[1]) then
     Append(obj_args, [PreImagesRange, G]);
     filter := filter and IsTotal and HasPreImagesRange;
   fi;
 
-  if HasGeneratorsOfGroup(H) 
+  if HasGeneratorsOfGroup(H)
      and IsIdenticalObj(GeneratorsOfGroup(H),mapi[2]) then
     Append(obj_args, [ImagesSource, H]);
     filter := filter and IsSurjective and HasImagesSource;
   fi;
 
-  obj_args[2] := 
+  obj_args[2] :=
     NewType( GeneralMappingsFamily( ElementsFamily( FamilyObj( G ) ),
                                     ElementsFamily( FamilyObj( H ) ) ),
              filter );
@@ -104,7 +104,7 @@ end );
 ##
 InstallMethod( GroupGeneralMappingByImages,
                "for pcp group, pcp group, list, list",
-               true, [IsPcpGroup, IsPcpGroup, IsList, IsList], 0,
+               [IsPcpGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
 
 #############################################################################
@@ -113,7 +113,7 @@ InstallMethod( GroupGeneralMappingByImages,
 ##
 InstallMethod( GroupGeneralMappingByImages,
                "for pcp group, group, list, list",
-               true, [IsPcpGroup, IsGroup, IsList, IsList], 0,
+               [IsPcpGroup, IsGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
 
 #############################################################################
@@ -122,7 +122,7 @@ InstallMethod( GroupGeneralMappingByImages,
 ##
 InstallMethod( GroupGeneralMappingByImages,
                "for group, pcp group, list, list",
-               true, [IsGroup, IsPcpGroup, IsList, IsList], 0,
+               [IsGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
 
 
@@ -132,7 +132,7 @@ InstallMethod( GroupGeneralMappingByImages,
 ##
 InstallMethod( CoKernelOfMultiplicativeGeneralMapping,
                "for PcpGHBI",
-               [ IsFromPcpGHBI], 
+               [ IsFromPcpGHBI],
 function( hom )
 	local C, gens, imgs, i, j, a, b, mapi;
 
@@ -145,7 +145,7 @@ function( hom )
 
     C := TrivialSubgroup(Range(hom)); # the cokernel
 
-    # check relators 
+    # check relators
     for i in [1..Length( gens )] do
         if RelativeOrderPcp( gens[i] ) > 0 then
             a := gens[i]^RelativeOrderPcp( gens[i] );
@@ -159,7 +159,7 @@ function( hom )
             b := imgs[i] ^ imgs[j];
 			C := ClosureSubgroupNC(C, a/b);
 
-            if RelativeOrderPcp( gens[i] ) = 0 then 
+            if RelativeOrderPcp( gens[i] ) = 0 then
                 a := gens[i] ^ (gens[j]^-1);
                 a := MappedVector(ExponentsByIgs(gens, a), imgs);
                 b := imgs[i] ^ (imgs[j]^-1);
@@ -189,8 +189,8 @@ end );
 # which avoids ImagesSet etc.; this is the case in GAP 4.5
 # but not in 4.4 and earlier, so we add one there.
 if not CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
-  InstallMethod( ImagesSource, "for GHBI", true,
-      [ IsGroupGeneralMappingByImages ], 0,
+  InstallMethod( ImagesSource, "for GHBI",
+      [ IsGroupGeneralMappingByImages ],
       hom -> SubgroupNC( Range( hom ), MappingGeneratorsImages(hom)[2] ) );
 fi;
 
@@ -205,15 +205,15 @@ fi;
 # InstallMethod( IsTotal,
 #                "for FromPcpGHBI",
 #                [IsFromPcpGHBI], 0,
-# function(hom) 
+# function(hom)
 #     return Subgroup(Source(hom),MappingGeneratorsImages(hom)[1])
 #            = Source(hom);
 # end );
-# 
+#
 # InstallMethod( IsSurjective,
 #                "for ToPcpGHBI",
 #                [IsToPcpGHBI], 0,
-# function(hom) 
+# function(hom)
 #     return Subgroup(Range(hom),MappingGeneratorsImages(hom)[2])
 #            = Range(hom);
 # end );
@@ -225,7 +225,7 @@ fi;
 InstallMethod( ImagesRepresentative,
                "for FromPcpGHBI",
                FamSourceEqFamElm,
-               [ IsFromPcpGHBI, IsMultiplicativeElementWithInverse ], 
+               [ IsFromPcpGHBI, IsMultiplicativeElementWithInverse ],
 function( hom, elm )
     local e;
     if Length(hom!.igs_gens_to_imgs[1]) = 0 then return One(Range(hom)); fi;
@@ -244,7 +244,7 @@ end );
 InstallMethod( PreImagesRepresentative,
                "for ToPcpGHBI",
                FamRangeEqFamElm,
-               [ IsToPcpGHBI, IsMultiplicativeElementWithInverse ], 
+               [ IsToPcpGHBI, IsMultiplicativeElementWithInverse ],
 function( hom, elm )
     local e;
     if Length(hom!.igs_imgs_to_gens[1]) = 0 then return One(hom!.Source); fi;
@@ -277,10 +277,10 @@ end );
 ##
 InstallMethod( KernelOfMultiplicativeGeneralMapping,
                "for PcpGHBI",
-               [ IsFromPcpGHBI and IsToPcpGHBI], 
+               [ IsFromPcpGHBI and IsToPcpGHBI],
 function( hom )
     local A, a, B, b, D, u, kern, i, g;
-    
+
     # set up
     A := Source(hom);
     a := MappingGeneratorsImages(hom)[1];
@@ -294,7 +294,7 @@ function( hom )
     kern := [];
     for i in [1..Length(u)] do
         g := Image(Projection(D,1),u[i]);
-        if g = One(B) then 
+        if g = One(B) then
             Add(kern, Image(Projection(D,2),u[i]));
         fi;
     od;
@@ -312,7 +312,7 @@ end );
 ##
 InstallMethod( IsInjective,
                "for PcpGHBI",
-               [ IsFromPcpGHBI and IsToPcpGHBI], 
+               [ IsFromPcpGHBI and IsToPcpGHBI],
 function( hom )
     return Size( KernelOfMultiplicativeGeneralMapping(hom) ) = 1;
 end );

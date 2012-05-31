@@ -8,11 +8,11 @@
 #F  InducedByPcp( pcpG, pcpU, actG )
 ##
 InducedByPcp := function( pcpG, pcpU, actG )
-    if IsMultiplicativeElement( pcpU ) then 
+    if IsMultiplicativeElement( pcpU ) then
         return MappedVector( ExponentsByPcp( pcpG, pcpU ), actG );
     fi;
-    if AsList(pcpU) = AsList(pcpG) then 
-        return actG; 
+    if AsList(pcpU) = AsList(pcpG) then
+        return actG;
     else
         return List(pcpU, x-> MappedVector(ExponentsByPcp(pcpG,x),actG));
     fi;
@@ -36,7 +36,7 @@ KernelOfFiniteMatrixAction := function( G, mats, f )
         stab := PcpOrbitStabilizer( I[i], Pcp(U), actU, OnRight );
         U := SubgroupByIgs( G, stab.stab );
     od;
-    
+
     # that's it
     return U;
 end;
@@ -51,7 +51,7 @@ end;
 ##
 KernelOfFiniteAction := function( G, pcp )
     local rels, p, f, pcpG, actG;
-   
+
     # get the char and the field
     rels := RelativeOrdersOfPcp( pcp );
     p := rels[1];
@@ -219,7 +219,7 @@ KernelOfCongruenceMatrixActionGAP := function( G, mats )
     pcp := Pcp( G );
 
     # now loop
-    repeat 
+    repeat
         K := U;
         gens := Pcp( G, K );
         acts := InducedByPcp( pcp, gens, mats );
@@ -234,7 +234,7 @@ KernelOfCongruenceMatrixActionGAP := function( G, mats )
     if Index( G, U ) > 1 and VERIFY then
         gens := Pcp( G, U );
         acts := InducedByPcp( pcp, gens, mats );
-        if not VerifyIndependence( acts ) then 
+        if not VerifyIndependence( acts ) then
             Error("  generators are not linearly independent");
         fi;
     fi;
@@ -274,7 +274,7 @@ KernelOfCongruenceMatrixActionKANT := function( G, mats )
     for f in fact do
 
         # induce matrices if necessary
-        if Index( G, H ) > 1 then 
+        if Index( G, H ) > 1 then
             mats := List( rels, x -> MappedVector( x, mats ) );
             G := H;
         fi;
@@ -292,13 +292,13 @@ KernelOfCongruenceMatrixActionKANT := function( G, mats )
 
             # compute kernel
             rels := RelationLatticeOfTFUnits( F, imats );
-    
+
             # set up for iteration
             gens := List( rels, x -> MappedVector( x, gens ) );
             H := Subgroup( G, gens );
         fi;
     od;
-   
+
     # that's it
     return H;
 end;
@@ -310,7 +310,7 @@ end;
 if not IsBound( UseKANT ) then UseKANT := true; fi;
 KernelOfCongruenceMatrixAction := function( G, mats )
     if ForAll( mats, x -> x = x^0 ) then return G; fi;
-    if UseKANT then 
+    if UseKANT then
         return KernelOfCongruenceMatrixActionKANT( G, mats );
     else
         return KernelOfCongruenceMatrixActionGAP( G, mats );

@@ -36,11 +36,11 @@ end;
 MappedWordCR := function( w, gens, invs )
     local e, v;
     e := gens[1]^0;
-    for v in w do 
-        if v[2] > 0 then 
-            e := e * gens[v[1]]^v[2]; 
+    for v in w do
+        if v[2] > 0 then
+            e := e * gens[v[1]]^v[2];
         elif v[2] < 0 then
-            e := e * invs[v[1]]^-v[2]; 
+            e := e * invs[v[1]]^-v[2];
         fi;
     od;
     return e;
@@ -73,7 +73,7 @@ end;
 ##
 AddRelatorsCR := function( A )
     local pcp, rels, n, r, c, e, i, j, a, b;
-    
+
     # if they are known return
     if IsBound( A.relators ) then return; fi;
 
@@ -117,13 +117,13 @@ AddRelatorsCR := function( A )
 
     A.enumrels := c;
     A.relators := r;
-    if IsBound( A.normal ) and A.char > 0 then 
-        A.extension := e * One( A.field ); 
+    if IsBound( A.normal ) and A.char > 0 then
+        A.extension := e * One( A.field );
     elif IsBound( A.normal ) then
         A.extension := e;
     fi;
 end;
-    
+
 #############################################################################
 ##
 #F InvertWord( r )
@@ -144,15 +144,15 @@ end;
 ##
 PowerWord := function( A, r, e )
     local l;
-    if Length( r ) = 1 then 
+    if Length( r ) = 1 then
         return [[ r[1][1], e * r[1][2]] ];
-    elif e = 1 then 
+    elif e = 1 then
         return ShallowCopy(r);
-    elif e > 0 then 
+    elif e > 0 then
         return Concatenation( List( [1..e], x -> r ) );
     elif e = -1 then
         return InvertWord( r );
-    elif e < 0 then 
+    elif e < 0 then
         l := InvertWord( r );
         return Concatenation( List( [1..-e], x -> l ) );
     fi;
@@ -173,7 +173,7 @@ PowerTail := function( A, r, e )
         m := MappedWordCR( r, A.mats, A.invs );
         t := A.one;
         for i in [1..e-1] do t := t * m + A.one; od;
-    elif e < 0 then 
+    elif e < 0 then
         m := MappedWordCR( InvertWord(r), A.mats, A.invs );
         t := -m;
         for i in [1..-e-1] do t := (t - A.one)*m; od;
@@ -188,16 +188,16 @@ end;
 AddOperationCR := function( A )
 
     # add operation of factor on normal
-    if not IsBound( A.mats ) then 
-        A.mats := List( A.factor, x -> 
+    if not IsBound( A.mats ) then
+        A.mats := List( A.factor, x ->
                   List( A.normal, y -> ExponentsByPcp( A.normal, y^x )));
         if A.char > 0 then A.mats := A.mats * One( A.field ); fi;
     fi;
 
     # add operation of oper on normal
     if IsBound( A.super ) then
-        if not IsBound( A.smats ) then 
-            A.smats := List( A.super, x -> 
+        if not IsBound( A.smats ) then
+            A.smats := List( A.super, x ->
                        List( A.normal, y -> ExponentsByPcp( A.normal, y^x )));
             if A.char > 0 then A.smats := A.smats * One( A.field ); fi;
         fi;
@@ -222,7 +222,7 @@ AddInversesCR := function( A )
         fi;
     od;
     A.central := cent;
-   
+
     if IsBound( A.super ) then
         A.sinvs := List( A.smats, x -> A.one );
         for i in [1..Length(A.smats)] do
@@ -242,7 +242,7 @@ AddFieldCR := function( A )
     ro := Set( RelativeOrdersOfPcp( A.normal ) );
 
     # Verify that A.normal is free or elementary abelian.
-    if not (IsAbelian( GroupOfPcp( A.normal ) )
+    if not (IsAbelian( PcpGroupByPcp( A.normal ) )
             and Length(ro) = 1
             and (ro[1] = 0 or IsPrimeInt( ro[1] ))
             ) then
@@ -251,8 +251,8 @@ AddFieldCR := function( A )
     A.char := ro[1];
     A.dim  := Length( A.normal );
     A.one  := IdentityMat( A.dim );
-    if A.char > 0 then 
-        A.field := GF( A.char ); 
+    if A.char > 0 then
+        A.field := GF( A.char );
         A.one := A.one * One( A.field );
     fi;
 end;
@@ -261,10 +261,10 @@ end;
 ##
 #F CRRecordByMats( G, mats )
 ##
-InstallGlobalFunction( CRRecordByMats, function( G, mats ) 
+InstallGlobalFunction( CRRecordByMats, function( G, mats )
     local p, cr;
 
-    if Length( mats ) <> Length(Pcp(G)) then 
+    if Length( mats ) <> Length(Pcp(G)) then
         Error("wrong input in CRRecord");
     fi;
     if IsInt(mats[1][1][1]) then p := 0;
@@ -290,7 +290,7 @@ CRRecordBySubgroup := function( G, N )
     local A;
 
     # set up record
-    A := rec( group  := G, 
+    A := rec( group  := G,
               factor := Pcp( G, N ),
               normal := Pcp( N, "snf" ) );
 
@@ -303,7 +303,7 @@ end;
 
 #############################################################################
 ##
-#F CRRecordByPcp( G, pcp )  
+#F CRRecordByPcp( G, pcp )
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 CRRecordByPcp := function( G, pcp )

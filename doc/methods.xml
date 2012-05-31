@@ -2,7 +2,7 @@
 <Heading>Higher level methods for pcp-groups</Heading>
 
 This is a description of some higher level functions of the &Polycyclic;
-package of GAP 4. Throughout this chapter we let <A>G</A> be a pc-presented group 
+package of GAP 4. Throughout this chapter we let <A>G</A> be a pc-presented group
 and we consider algorithms for subgroups <A>U</A> and <A>V</A> of <A>G</A>. For background
 and a description of the underlying algorithms we refer to <Cite Key="Eic01b"/>.
 <P/>
@@ -75,7 +75,7 @@ the algorithms of a number of the available series.
 <Meth Name="UpperCentralSeriesOfGroup" Arg="U"/>
 <Description>
 	the upper central series of <A>U</A>. This function always terminates,
-	but it may terminate at a proper subgroup of <A>U</A>. 
+	but it may terminate at a proper subgroup of <A>U</A>.
 </Description>
 </ManSection>
 
@@ -142,12 +142,12 @@ gap> PcpsBySeries( RefinedDerivedSeries(G));
   Pcp [ g4^8 ] with orders [ 0 ] ]
 
 gap> PcpsBySeries( DerivedSeriesOfGroup(G), "snf" );
-[ Pcp [ g2, g3, g1 ] with orders [ 2, 2, 4 ], 
-  Pcp [ g4^2, g3^-2, g2^2*g4^2 ] with orders [ 4, 0, 0 ], 
+[ Pcp [ g2, g3, g1 ] with orders [ 2, 2, 4 ],
+  Pcp [ g4^2, g3^-2, g2^2*g4^2 ] with orders [ 4, 0, 0 ],
   Pcp [ g4^8 ] with orders [ 0 ] ]
 gap> G.1^4 in DerivedSubgroup( G );
 true
-gap> G.1^2 = G.4;                          
+gap> G.1^2 = G.4;
 true
 
 gap>  PcpsOfEfaSeries( G );
@@ -167,11 +167,11 @@ gap>  PcpsOfEfaSeries( G );
 <Heading>Orbit stabilizer methods for pcp-groups</Heading>
 
 Let <A>U</A> be a pcp-group which acts on a set <M>\Omega</M>. One of the fundamental
-problems in algorithmic group theory is the determination of orbits and 
+problems in algorithmic group theory is the determination of orbits and
 stabilizers of points in <M>\Omega</M> under the action of <A>U</A>. We distinguish
 two cases: the case that all considered orbits are finite and the case that
-there are infinite orbits. In the latter case, an orbit cannot be listed 
-and a description of the orbit and its corresponding stabilizer is much 
+there are infinite orbits. In the latter case, an orbit cannot be listed
+and a description of the orbit and its corresponding stabilizer is much
 harder to obtain.
 <P/>
 If the considered orbits are finite, then the following two functions can be
@@ -185,10 +185,10 @@ applied to compute the considered orbits and their corresponding stabilizers.
 	in the list <A>gens</A> act as the elements in the list <A>acts</A> via the function
 	<A>oper</A> on the given points; that is, <A>oper( point, acts[i] )</A> applies the
 	<M>i</M>th generator to a given point. Thus the group defined by <A>acts</A> must be
-	a homomorphic image of the group defined by <A>gens</A>. The first function 
-	returns a record containing the orbit as component 'orbit' and and igs for 
-	the stabilizer as component 'stab'. The second function returns a list of 
-	records, each record contains 'repr' and 'stab'. Both of these functions 
+	a homomorphic image of the group defined by <A>gens</A>. The first function
+	returns a record containing the orbit as component 'orbit' and and igs for
+	the stabilizer as component 'stab'. The second function returns a list of
+	records, each record contains 'repr' and 'stab'. Both of these functions
 	run forever on infinite orbits.
 
 <Example><![CDATA[
@@ -203,9 +203,9 @@ rec( orbit := [ [ 0, 1 ] ],
      word := [ [ [ 1, 1 ] ], [ [ 2, 1 ] ] ] )
 ]]></Example>
 	If the considered orbits are infinite, then it may not always be possible
-	to determine a description of the orbits and their stabilizers. However, 
-	as shown in <Cite Key="EOs01"/> and <Cite Key="Eic02"/>, it is possible to determine 
-	stabilizers and check if two elements are contained in the same orbit if 
+	to determine a description of the orbits and their stabilizers. However,
+	as shown in <Cite Key="EOs01"/> and <Cite Key="Eic02"/>, it is possible to determine
+	stabilizers and check if two elements are contained in the same orbit if
 	the given action of the polycyclic group is a unimodular linear action on
 	a vector space. The following functions are available for this case.
 </Description>
@@ -216,11 +216,11 @@ rec( orbit := [ [ 0, 1 ] ],
 <Func Name="OrbitIntegralAction" Arg="U, mats , v, w"/>
 <Description>
 	The first function computes the stabilizer in <A>U</A> of the vector <A>v</A> where
-	the pcp group <A>U</A> acts via <A>mats</A> on an integral space and <A>v</A> and <A>w</A> are 
-	elements in this integral space. The second function checks whether <A>v</A> and 
-	<A>w</A> are in the same orbit and the function returns either <A>false</A> or a 
-	record containing an element in <A>U</A> mapping <A>v</A> to <A>w</A> and the stabilizer 
-	of <A>v</A>. 
+	the pcp group <A>U</A> acts via <A>mats</A> on an integral space and <A>v</A> and <A>w</A> are
+	elements in this integral space. The second function checks whether <A>v</A> and
+	<A>w</A> are in the same orbit and the function returns either <A>false</A> or a
+	record containing an element in <A>U</A> mapping <A>v</A> to <A>w</A> and the stabilizer
+	of <A>v</A>.
 </Description>
 </ManSection>
 
@@ -231,8 +231,8 @@ rec( orbit := [ [ 0, 1 ] ],
 	The first function computes the normalizer in <A>U</A> of the lattice with the
 	basis <A>B</A>, where the pcp group <A>U</A> acts via <A>mats</A> on an integral space and
 	<A>B</A> is a subspace of this integral space. The second functions checks whether
-	the two lattices with the bases <A>B</A> and <A>C</A> are contained in the same orbit 
-	under <A>U</A>. The function returns either <A>false</A> or a record with an element 
+	the two lattices with the bases <A>B</A> and <A>C</A> are contained in the same orbit
+	under <A>U</A>. The function returns either <A>false</A> or a record with an element
 	in <A>U</A> mapping <A>B</A> to <A>C</A> and the stabilizer of <A>B</A>.
 
 <Example><![CDATA[
@@ -241,7 +241,7 @@ gap> G := ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
 gap> efa := EfaSeries(G);
 [ Pcp-group with orders [ 0, 0, 0, 0, 0 ],
-  Pcp-group with orders [ 0, 0, 0, 0 ], 
+  Pcp-group with orders [ 0, 0, 0, 0 ],
   Pcp-group with orders [ 0, 0, 0 ],
   Pcp-group with orders [  ] ]
 gap> N := efa[3];
@@ -287,19 +287,19 @@ gap> Igs(last);
 <Heading>Centralizers, Normalizers and Intersections</Heading>
 
 In this section we list a number of operations for which there are methods
-installed to compute the corresponding features in polycyclic groups. 
+installed to compute the corresponding features in polycyclic groups.
 <ManSection>
 <Meth Name="Centralizer" Arg="U, g"/>
 <Meth Name="IsConjugate" Arg="U, g, h"/>
 <Description>
-	These functions solve the conjugacy problem for elements in pcp-groups and 
-	they can be used to compute centralizers. The first method returns a 
-	subgroup of the given group <A>U</A>, the second method either returns a 
+	These functions solve the conjugacy problem for elements in pcp-groups and
+	they can be used to compute centralizers. The first method returns a
+	subgroup of the given group <A>U</A>, the second method either returns a
 	conjugating element or false if no such element exists.
 	<P/>
-	The methods are based on the orbit stabilizer algorithms described in 
+	The methods are based on the orbit stabilizer algorithms described in
 	<Cite Key="EOs01"/>. For nilpotent groups, an algorithm to solve the conjugacy
-	problem for elements is described in <Cite Key="Sims94"/>. 
+	problem for elements is described in <Cite Key="Sims94"/>.
 </Description>
 </ManSection>
 
@@ -308,12 +308,12 @@ installed to compute the corresponding features in polycyclic groups.
 <Meth Name="Normalizer" Arg="U, V"/>
 <Meth Name="IsConjugate" Arg="U, V, W"/>
 <Description>
-	These three functions solve the conjugacy problem for subgroups and compute 
-	centralizers and normalizers of subgroups. The first two functions return 
-	subgroups of the input group <A>U</A>, the third function returns a conjugating 
+	These three functions solve the conjugacy problem for subgroups and compute
+	centralizers and normalizers of subgroups. The first two functions return
+	subgroups of the input group <A>U</A>, the third function returns a conjugating
 	element or false if no such element exists.
 	<P/>
-	The methods are based on the orbit stabilizer algorithms described in 
+	The methods are based on the orbit stabilizer algorithms described in
 	<Cite Key="Eic02"/>. For nilpotent groups, an algorithm to solve the conjugacy
 	problems for subgroups is described in <Cite Key="Lo98"/>.
 </Description>
@@ -322,9 +322,9 @@ installed to compute the corresponding features in polycyclic groups.
 <ManSection>
 <Func Name="Intersection" Arg="U, N"/>
 <Description>
-	A general method to compute intersections of subgroups of a pcp-group is 
-	described in <Cite Key="Eic01b"/>, but it is not yet implemented here. However, 
-	intersections of subgroups <M>U, N \leq G</M> can be computed if <M>N</M> is 
+	A general method to compute intersections of subgroups of a pcp-group is
+	described in <Cite Key="Eic01b"/>, but it is not yet implemented here. However,
+	intersections of subgroups <M>U, N \leq G</M> can be computed if <M>N</M> is
 	normalising <M>U</M>. See <Cite Key="Sims94"/> for an outline of the algorithm.
 </Description>
 </ManSection>
@@ -354,7 +354,7 @@ in this section.
 <Attr Name="NormalTorsionSubgroup" Arg="U"/>
 <Description>
 	Each polycyclic groups has a unique largest finite normal subgroup.
-	This function computes it for <A>U</A>. 
+	This function computes it for <A>U</A>.
 </Description>
 </ManSection>
 
@@ -417,15 +417,15 @@ gap> FiniteSubgroupClasses(G);
 <Section Label="Subgroups of finite index and maximal subgroups">
 <Heading>Subgroups of finite index and maximal subgroups</Heading>
 
-Here we outline functions to determine various types of subgroups of 
-finite index in polycyclic groups. Again, see <Cite Key="Eic00"/> for a 
+Here we outline functions to determine various types of subgroups of
+finite index in polycyclic groups. Again, see <Cite Key="Eic00"/> for a
 description of the algorithms underlying the functions in this section.
 Also, we refer to <Cite Key="Lo99"/> for an alternative approach.
 <ManSection>
 <Oper Name="MaximalSubgroupClassesByIndex" Arg="U, p"/>
 <Description>
 	Each maximal subgroup of a polycyclic group <A>U</A> has <A>p</A>-power index for
-	some prime <A>p</A>. This function can be used to determine the conjugacy 
+	some prime <A>p</A>. This function can be used to determine the conjugacy
 	classes of all maximal subgroups of <A>p</A>-power index for a given prime <A>p</A>.
 </Description>
 </ManSection>
@@ -434,7 +434,7 @@ Also, we refer to <Cite Key="Lo99"/> for an alternative approach.
 <Oper Name="LowIndexSubgroupClasses" Arg="U, n"/>
 <Description>
 	There are only finitely many subgroups of a given index in a polycyclic
-	group <A>U</A>. This function computes conjugacy classes of all subgroups of 
+	group <A>U</A>. This function computes conjugacy classes of all subgroups of
 	index <A>n</A> in <A>U</A>.
 </Description>
 </ManSection>
@@ -442,16 +442,16 @@ Also, we refer to <Cite Key="Lo99"/> for an alternative approach.
 <ManSection>
 <Oper Name="LowIndexNormalSubgroups" Arg="U, n"/>
 <Description>
-	This function computes the normal subgroups of index <A>n</A> in <A>U</A>. 
+	This function computes the normal subgroups of index <A>n</A> in <A>U</A>.
 </Description>
 </ManSection>
 
 <ManSection>
 <Func Name="NilpotentByAbelianNormalSubgroup" Arg="U"/>
 <Description>
-	This function returns a normal subgroup <A>N</A> of finite index in <A>U</A> such 
-	that <A>N</A> is nilpotent-by-abelian. Such a subgroup exists in every polycyclic 
-	group and this function computes such a subgroup using LowIndexNormal. 
+	This function returns a normal subgroup <A>N</A> of finite index in <A>U</A> such
+	that <A>N</A> is nilpotent-by-abelian. Such a subgroup exists in every polycyclic
+	group and this function computes such a subgroup using LowIndexNormal.
 	However, we note that this function is not very efficient and the function
 	NilpotentByAbelianByFiniteSeries may well be more efficient on this task.
 
@@ -487,7 +487,7 @@ gap> List( low, x -> Index( G, x ) );
 
 In this section we provide a variety of other attributes for pcp-groups. Most
 of the methods below are based or related to the Fitting subgroup of the given
-group. We refer to <Cite Key="Eic01"/> for a description of the underlying methods.  
+group. We refer to <Cite Key="Eic01"/> for a description of the underlying methods.
 <ManSection>
 <Attr Name="FittingSubgroup" Arg="U"/>
 <Description>
@@ -499,7 +499,7 @@ group. We refer to <Cite Key="Eic01"/> for a description of the underlying metho
 <ManSection>
 <Prop Name="IsNilpotentByFinite" Arg="U"/>
 <Description>
-	checks whether the Fitting subgroup of <A>U</A> has finite index. 
+	checks whether the Fitting subgroup of <A>U</A> has finite index.
 </Description>
 </ManSection>
 
@@ -529,7 +529,7 @@ group. We refer to <Cite Key="Eic01"/> for a description of the underlying metho
 <ManSection>
 <Func Name="NilpotentByAbelianByFiniteSeries" Arg="U"/>
 <Description>
-	returns a normal series <M>1 \leq F \leq A \leq U</M> such that <M>F</M> is nilpotent, 
+	returns a normal series <M>1 \leq F \leq A \leq U</M> such that <M>F</M> is nilpotent,
 	<M>A/F</M> is abelian and <M>U/A</M> is finite. This series is computed using the
 	Fitting subgroup and the centre of the Fitting factor.
 </Description>
@@ -599,10 +599,10 @@ gap> MinimalGeneratingSet(G);
 <!-- % TODO: The following text talks about orbits and stabilizers, -->
 <!-- % but the functions that follow only deal with centralizers and -->
 <!-- % normalizers. -->
-Below we introduce a function which computes orbit and stabilizer using 
-a random method. This function tries to approximate the orbit and the 
-stabilizer, but the returned orbit or stabilizer may be incomplete. 
-This function is used in the random methods to compute normalizers and 
+Below we introduce a function which computes orbit and stabilizer using
+a random method. This function tries to approximate the orbit and the
+stabilizer, but the returned orbit or stabilizer may be incomplete.
+This function is used in the random methods to compute normalizers and
 centralizers. Note that deterministic methods for these purposes are also
 available.
 <P/>
@@ -646,13 +646,13 @@ gap> Igs(last);
 <Heading>Non-abelian tensor product and Schur extensions</Heading>
 
 <ManSection>
-<Func Name="SchurExtension" Arg="G"/>
+<Attr Name="SchurExtension" Arg="G"/>
 <Description>
 	Let <A>G</A> be a polycyclic group with a polycyclic generating sequence
 	consisting of <M>n</M> elements.  This function computes the largest
 	central extension <A>H</A> of  <A>G</A> such that <A>H</A> is generated by <M>n</M>
 	elements.  If <M>F/R</M> is the underlying polycyclic presentation for <A>G</A>,
-	then <A>H</A> is isomorphic to <M>F/[R,F]</M>. 
+	then <A>H</A> is isomorphic to <M>F/[R,F]</M>.
 
 <Example><![CDATA[
 gap> G := DihedralPcpGroup( 0 );
@@ -672,7 +672,7 @@ true
 </ManSection>
 
 <ManSection>
-<Func Name="SchurExtensionEpimorphism" Arg="G"/>
+<Attr Name="SchurExtensionEpimorphism" Arg="G"/>
 <Description>
 	returns the  projection from the  Schur extension <M>G^{*}</M> of  <A>G</A> onto
 	<A>G</A>.   See   the  function  <C>SchurExtension</C>.   The   kernel  of  this
@@ -680,7 +680,7 @@ true
 	and a direct product of <M>n</M> copies  of <M>&ZZ;</M> where <M>n</M> is the number of
 	generators  in  the  polycyclic   presentation  for  <A>G</A>.   The  Schur
 	multiplicator is the intersection of  the kernel and the derived group
-	of the source.  See also the function <C>SchurCovering</C>.
+	of the source.  See also the function <C>SchurCover</C>.
 
 <Example><![CDATA[
 gap> gl23 := Range( IsomorphismPcpGroup( GL(2,3) ) );
@@ -715,7 +715,7 @@ g2^-2*g4
 </ManSection>
 
 <ManSection>
-<Func Name="SchurCovering" Arg="G"/>
+<Func Name="SchurCover" Arg="G"/>
 <Description>
 	computes a Schur covering group  of the polycyclic group <A>G</A>.  A Schur
 	covering  is a  largest central  extension <A>H</A>  of <A>G</A>  such  that the
@@ -724,14 +724,14 @@ g2^-2*g4
 	<P/>
 
 	If <A>G</A> is given by a presentation <M>F/R</M>, then <A>M</A> is isomorphic to the
-	subgroup <M>R \cap [F,F] / [R,F]</M>.  Let <M>C</M> be a complement to 
+	subgroup <M>R \cap [F,F] / [R,F]</M>.  Let <M>C</M> be a complement to
 	<M>R \cap [F,F] / [R,F]</M> in <M>R/[R,F]</M>.  Then <M>F/C</M> is isomorphic to <A>H</A>
 	and <M>R/C</M> is isomorphic to <A>M</A>.
 
 <Example><![CDATA[
 gap> G := AbelianPcpGroup( 3,[] );
 Pcp-group with orders [ 0, 0, 0 ]
-gap> ext := SchurCovering( G );
+gap> ext := SchurCover( G );
 Pcp-group with orders [ 0, 0, 0, 0, 0, 0 ]
 gap> Centre( ext );
 Pcp-group with orders [ 0, 0, 0 ]
@@ -749,7 +749,7 @@ true
 
 	Note that the Schur multiplicator  of a polycyclic group is a finitely
 	generated abelian group.
- 
+
 <Example><![CDATA[
 gap> G := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]
@@ -797,7 +797,7 @@ gap> Collected( AbelianInvariants( last ) );
 <ManSection>
 <Attr Name="NonAbelianExteriorSquare" Arg="G"/>
 <Description>
-	computes the  non-abelian exterior  square of a  polycylic group  <A>G</A>. 
+	computes the  non-abelian exterior  square of a  polycylic group  <A>G</A>.
 	See  the explanation  for  <C>NonAbelianExteriorSquareEpimorphism</C>.  The
 	natural projection of the non-abelian exterior square onto the derived
 	group of <A>G</A> is stored in the component <C>!.epimorphism</C>.
@@ -940,7 +940,7 @@ true
 
 A finite <M>p</M>-group <A>G</A> is a Schur tower, if <M>G/\gamma_{i+1}(G)</M> is a
 Schur cover of <M>G/\gamma_i(G)</M> for every <M>i</M>, where <M>\gamma_i(G)</M> is
-the <M>i</M>-th term of the lower central series of <M>G</M>. This section 
+the <M>i</M>-th term of the lower central series of <M>G</M>. This section
 contains a function to determine the Schur covers of a finite <M>p</M>-group
 up to isomorphism and it gives access to two libraries of Schur tower
 <M>p</M>-groups.

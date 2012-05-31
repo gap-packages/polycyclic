@@ -57,12 +57,12 @@ CheckConjugacy := function( G, g, linG, U, W )
     if Length( U ) <> Length( W ) then return IsBool( g ); fi;
     if Length(Pcp(G)) = 0 then return U = W; fi;
     m := InducedByPcp( Pcp(G), g, linG );
-    for u in U do 
+    for u in U do
         if IsBool( PcpSolutionIntMat( W, u*m ) ) then return false; fi;
     od;
     return true;
 end;
-    
+
 #############################################################################
 ##
 #F BasisOfNormalizingSubfield( baseK, baseU )
@@ -86,21 +86,21 @@ end;
 ##
 #F NormalizerHomogeneousAction( G, linG, baseU ) . . . . . . . . . . . N_G(U)
 ##
-## V is a homogenous G-module via linG (and thus linG spans a field). 
+## V is a homogenous G-module via linG (and thus linG spans a field).
 ## U is a subspace of V and baseU is an echelonised basis for U.
 ##
 NormalizerHomogeneousAction := function( G, linG, baseU )
     local K, baseK, baseL, L, exp, U, linU;
 
     # check for trivial cases
-    if ForAll(linG, x -> x = x^0) or Length(baseU) = 0 or 
-       Length(baseU) = Length(baseU[1]) then return G; 
+    if ForAll(linG, x -> x = x^0) or Length(baseU) = 0 or
+       Length(baseU) = Length(baseU[1]) then return G;
     fi;
-    
+
     # get field
     K := FieldByMatricesNC( linG );
     baseK := BasisVectors( Basis( K ) );
-    
+
     # determine normalizing subfield and its units
     baseL := BasisOfNormalizingSubfield( baseK, baseU );
     L := FieldByMatrixBasisNC( baseL );
@@ -113,7 +113,7 @@ NormalizerHomogeneousAction := function( G, linG, baseU )
 end;
 
 #############################################################################
-##  
+##
 #F  ConjugatingFieldElement( baseK, baseU, baseW )  . . . . . . . . . U^k = W
 ##
 ConjugatingFieldElement := function( baseK, baseU, baseW )
@@ -137,7 +137,7 @@ ConjugatingFieldElement := function( baseK, baseU, baseW )
     # get one (integral) solution
     k := baseL[Length(baseL)];
     k := k * Lcm( List( k, DenominatorRat ) );
-    return LinearCombination( baseK, k ); 
+    return LinearCombination( baseK, k );
 end;
 
 #############################################################################
@@ -177,7 +177,7 @@ ConjugacyHomogeneousAction := function( G, linG, baseU, baseW )
     b := RootInt( a, f );
     if b^f <> a then return false; fi;
 
-    # solve norm equation in L and sift 
+    # solve norm equation in L and sift
     C := NormCosetsOfNumberField( L, b );
     C := List( C, x -> x * h );
     C := Filtered( C, x -> IsUnitOfNumberField( K, x ) );
@@ -220,7 +220,7 @@ AffineActionAsTensor := function( linG, nath )
         b := PreimagesBasisOfNHLB( nath );
         d := (actsF[i]^-1 * b) * linG[i] - b;
         d := Flat( List( d, x -> ProjectionByNHLB( x, nath ) ) );
-        Add( d, 1 ); 
+        Add( d, 1 );
         Add( t, d );
 
         # t is the affine action - store it
@@ -251,7 +251,7 @@ end;
 #F NormalizerComplement( G, linG, baseU, baseS ) . . . . . . . . . . . N_G(U)
 ##
 ## U and S are free abelian subgroups of V such that U cap S = 0. The group
-## acts via linG on the full space V. 
+## acts via linG on the full space V.
 ##
 NormalizerComplement := function( G, linG, baseU, baseS )
     local baseT, nathT, affG, e;
@@ -278,7 +278,7 @@ ConjugacyComplements := function( G, linG, baseU, baseW, baseS )
 
     # catch the trivial cases
     if Length(baseU)<>Length(baseW) then return false; fi;
-    if baseU = baseW then return 
+    if baseU = baseW then return
         rec( norm := NormalizerComplement( G, linG, baseU, baseS ),
              conj := One(G) );
     fi;
@@ -300,7 +300,7 @@ end;
 #F NormalizerCongruenceAction( G, linG, baseU, ser ) . . . . . . . . . N_G(U)
 ##
 NormalizerCongruenceAction := function( G, linG, baseU, ser )
-    local V, S, i, d, linS, nath, indG, indS, U, M, I, H, subh, actS, T, F, 
+    local V, S, i, d, linS, nath, indG, indS, U, M, I, H, subh, actS, T, F,
           fach, UH, MH, s;
 
     # catch a trivial case
@@ -337,41 +337,41 @@ NormalizerCongruenceAction := function( G, linG, baseU, ser )
         subh := NaturalHomomorphismByLattices( M, [] );
         actS := List( indS, x -> InducedActionFactorByNHLB( x, subh ) );
         I := LatticeBasis( List( I, x -> ImageByNHLB( x, subh ) ) );
-        Info( InfoIntNorm, 2, "  normalize intersection ");  
+        Info( InfoIntNorm, 2, "  normalize intersection ");
         T := NormalizerHomogeneousAction( S, actS, I );
         if Length(Pcp(T)) = 0 then return T; fi;
 
         # reset action for the next step
-        if Index(S,T) <> 1 then 
-            indS := InducedByPcp( Pcp(G), Pcp(T), indG ); 
+        if Index(S,T) <> 1 then
+            indS := InducedByPcp( Pcp(G), Pcp(T), indG );
         fi;
         S := T;
 
         # next, consider the factor modulo the intersection hull H
-        if Length(F) > Length(H) then 
+        if Length(F) > Length(H) then
             fach := NaturalHomomorphismByLattices( F, H );
             UH := LatticeBasis( List( U, x -> ImageByNHLB( x, fach ) ) );
             MH := LatticeBasis( List( M, x -> ImageByNHLB( x, fach ) ) );
             actS := List( indS, x -> InducedActionFactorByNHLB( x, fach ) );
-            Info( InfoIntNorm, 2, "  normalize complement ");  
+            Info( InfoIntNorm, 2, "  normalize complement ");
             T := NormalizerComplement( S, actS, UH, MH );
             if Length(Pcp(T)) = 0 then return T; fi;
 
             # again, reset action for the next step
-            if Index(S,T) <> 1 then 
-                indS := InducedByPcp( Pcp(G), Pcp(T), indG ); 
+            if Index(S,T) <> 1 then
+                indS := InducedByPcp( Pcp(G), Pcp(T), indG );
             fi;
             S := T;
         fi;
 
         # finally, add a finite orbit-stabilizer computation
         if H <> I then
-            Info( InfoIntNorm, 2, "  add finite stabilizer computation");  
+            Info( InfoIntNorm, 2, "  add finite stabilizer computation");
             s := PcpOrbitStabilizer( U, Pcp(S), indS, OnLatticeBases );
             S := SubgroupByIgs( S, s.stab );
         fi;
     od;
-    Info( InfoIntNorm, 2, " "); 
+    Info( InfoIntNorm, 2, " ");
     return S;
 end;
 
@@ -384,12 +384,12 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
           subh, actS, s, UH, WH, MH, j, fach, indG;
 
     # catch some trivial cases
-    if baseU = baseW then 
+    if baseU = baseW then
         return rec( norm := NormalizerCongruenceAction(G, linG, baseU, ser),
-                    conj := One(G) ); 
+                    conj := One(G) );
     fi;
-    if Length(baseU)<>Length(baseW) or ForAll( linG, x -> x = x^0 ) then 
-        return false; 
+    if Length(baseU)<>Length(baseW) or ForAll( linG, x -> x = x^0 ) then
+        return false;
     fi;
 
     # set up
@@ -400,16 +400,16 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
     # use induction over the module series
     for i in [1..Length(ser)-1] do
         d := Length( ser[i] ) - Length( ser[i+1] );
-        Info( InfoIntNorm, 2, " "); 
+        Info( InfoIntNorm, 2, " ");
         Info( InfoIntNorm, 2, "  consider layer ", i, " of dim ",d);
 
         # get action of S on the full space
         moveW := LatticeBasis( baseW * InducedByPcp( Pcp(G), g, linG )^-1 );
 
-        # do a check 
+        # do a check
         if Length(Pcp(S))=0 and baseU<>moveW then return false; fi;
-        if Length(Pcp(S))=0 and baseU=moveW then 
-            return rec( norm := S, conj := g ); 
+        if Length(Pcp(S))=0 and baseU=moveW then
+            return rec( norm := S, conj := g );
         fi;
 
         # induce to the current layer V/ser[i+1];
@@ -439,13 +439,13 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
         # reset action for next step
         g := g * s.conj;
         W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-        if Index(S,s.norm)<>1 then 
-            indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG); 
+        if Index(S,s.norm)<>1 then
+            indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
         fi;
         S := s.norm;
 
         # next, consider factor modulo the intersection hull H
-        if Length(F) > Length(H) then 
+        if Length(F) > Length(H) then
             fach := NaturalHomomorphismByLattices( F, H );
             UH := LatticeBasis( List( U, x -> ImageByNHLB( x, fach ) ) );
             WH := LatticeBasis( List( W, x -> ImageByNHLB( x, fach ) ) );
@@ -458,14 +458,14 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
             # again, reset action
             g := g * s.conj;
             W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-            if Index(S,s.norm)<>1 then 
-                indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG); 
+            if Index(S,s.norm)<>1 then
+                indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
             fi;
             S := s.norm;
         fi;
 
         # finally, add a finite orbit-stabilizer computation
-        if H <> IU then 
+        if H <> IU then
             Info( InfoIntNorm, 2, "  add finite stabilizer computation");
             s := PcpOrbitStabilizer( U, Pcp(S), indS, OnLatticeBases );
             j := Position( s.orbit, W );
@@ -473,9 +473,9 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
             g := g * TransversalElement( j, s, One(G) );
             S := SubgroupByIgs( S, s.stab );
         fi;
-        
+
     od;
-    Info( InfoIntNorm, 2, " "); 
+    Info( InfoIntNorm, 2, " ");
     return rec( norm := S, conj := g );
 end;
 
@@ -557,11 +557,11 @@ end;
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 ConjugacyIntegralAction := function( G, linG, U, W )
-    local F, t, I, J, os, j, g, L, S, linS, K, linK, ser, orbf, h, T; 
+    local F, t, I, J, os, j, g, L, S, linS, K, linK, ser, orbf, h, T;
 
     # do a check
-    if U <> LatticeBasis(U) or W <> LatticeBasis(W) then 
-        Error("function needs lattice bases as input"); 
+    if U <> LatticeBasis(U) or W <> LatticeBasis(W) then
+        Error("function needs lattice bases as input");
     fi;
 
     # catch some trivial cases
@@ -625,10 +625,10 @@ ConjugacyIntegralAction := function( G, linG, U, W )
     # do a temporary check
     if CHECK_INTNORM then
         Info( InfoIntNorm, 1, "checking results");
-        if not CheckNormalizer( G, T, linG, U) then  
-            Error("wrong norm in integral action"); 
-        elif not CheckConjugacy(G, g, linG, U, W) then 
-            Error("wrong conjugate in integral action"); 
+        if not CheckNormalizer( G, T, linG, U) then
+            Error("wrong norm in integral action");
+        elif not CheckConjugacy(G, g, linG, U, W) then
+            Error("wrong conjugate in integral action");
         fi;
     fi;
 

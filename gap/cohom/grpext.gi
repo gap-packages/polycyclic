@@ -16,7 +16,7 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
 
     # the free group
     coll := FromTheLeftCollector( n+m );
-    
+
     # the relators of G
     for i in [1..Length(A.enumrels)] do
         e := A.enumrels[i];
@@ -24,7 +24,7 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
         v := c{[(i-1)*m+1..i*m]};
         Append(r, v);
         o := ObjByExponents( coll, r );
-        
+
         if e[1] = e[2] then
             SetRelativeOrder( coll, e[1], rels[e[1]] );
             SetPower( coll, e[1], o );
@@ -34,7 +34,7 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
             SetConjugate( coll, e[1], -e[2]+e[1], o );
         fi;
     od;
-        
+
     # power relators of A
     if A.char > 0 then
         for i in [n+1..n+m] do
@@ -54,12 +54,12 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
             SetConjugate( coll, j, i, ObjByExponents( coll, x ) );
         od;
     od;
-    
+
     UpdatePolycyclicCollector( coll );
     G := PcpGroupByCollectorNC( coll );
     G!.module := Subgroup( G, Igs(G){[n+1..n+m]} );
     return G;
- 
+
 end );
 
 #############################################################################
@@ -112,7 +112,7 @@ ExtensionClassesCR := function( C )
     fi;
 
     # catch a trivial case
-    if Length( cc.factor.rels ) = 0 then 
+    if Length( cc.factor.rels ) = 0 then
         return [ ExtensionCR( C, false ) ];
     fi;
 
@@ -140,20 +140,20 @@ end;
 #F SplitExtensionByAutomorphisms( G, H, auts )
 ##
 InstallMethod( SplitExtensionByAutomorphisms,
-   "for a PcpGroup, a PcpGroup, and a list of automorphisms", true, 
-   [ IsPcpGroup, IsPcpGroup, IsList ], 0, 
+   "for a PcpGroup, a PcpGroup, and a list of automorphisms", true,
+   [ IsPcpGroup, IsPcpGroup, IsList ], 0,
    function( G, H, auts )
     local g, h, n, m, rg, rh, zn, zm, coll, o, i, j, k;
 
     # get dimensions
-    g := Pcp(G);
-    h := Pcp(H);
+    g := Igs(G);
+    h := Igs(H);
     n := Length( g );
     m := Length( h );
-    rg := RelativeOrdersOfPcp( g );
-    rh := RelativeOrdersOfPcp( h );
-    zn := List( [1..n], x -> 0 );
-    zm := List( [1..m], x -> 0 );
+    rg := List( g, x -> RelativeOrderPcp(x) );
+    rh := List( h, x -> RelativeOrderPcp(x) );
+    zn := ListWithIdenticalEntries( n, 0 );
+    zm := ListWithIdenticalEntries( m, 0 );
 
     # the free group
     coll := FromTheLeftCollector( n+m );
@@ -161,28 +161,28 @@ InstallMethod( SplitExtensionByAutomorphisms,
     # the relators of G
     for i in [1..n] do
         if rg[i] > 0 then
-            o := ExponentsByPcp( g, g[i]^rg[i] );
+            o := ExponentsByIgs( g, g[i]^rg[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetRelativeOrder( coll, m+i, rg[i] );
             SetPower( coll, m+i, o );
         fi;
         for j in [i+1..n] do
-            o := ExponentsByPcp( g, g[j]^g[i] );
+            o := ExponentsByIgs( g, g[j]^g[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetConjugate( coll, m+j, m+i, o );
         od;
     od;
-   
+
     # the relators of H
     for i in [1..m] do
-        if rh[i] > 0 then 
-            o := ExponentsByPcp( h, h[i]^rh[i] );
+        if rh[i] > 0 then
+            o := ExponentsByIgs( h, h[i]^rh[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
             SetRelativeOrder( coll, i, rh[i] );
             SetPower( coll, i, o );
         fi;
         for j in [i+1..m] do
-            o := ExponentsByPcp( h, h[j]^h[i] );
+            o := ExponentsByIgs( h, h[j]^h[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
             SetConjugate( coll, j, i, o );
         od;
@@ -192,7 +192,7 @@ InstallMethod( SplitExtensionByAutomorphisms,
     for i in [1..m] do
         k := List( g, x -> Image( auts[i], x ) );
         for j in [1..n] do
-            o := ExponentsByPcp( g, k[j] );
+            o := ExponentsByIgs( g, k[j] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
             SetConjugate( coll, m+j, i, o );
         od;
@@ -207,16 +207,16 @@ end);
 ##
 #M  DirectProductOp( <groups>, <onegroup> ) . . . . . . . . .  for pcp groups
 ##
-InstallMethod( DirectProductOp, "for pcp groups", ReturnTrue, 
-               [ IsList, IsPcpGroup ], 0,
+InstallMethod( DirectProductOp, "for pcp groups",
+               [ IsList, IsPcpGroup ],
 function( groups, onegroup )
     local  D, info, f, a, i;
 
-    if IsEmpty(groups) or not ForAll(groups,IsPcpGroup) then 
-        TryNextMethod(); 
+    if IsEmpty(groups) or not ForAll(groups,IsPcpGroup) then
+        TryNextMethod();
     fi;
 
-    D := groups[1]; 
+    D := groups[1];
     f := [1,Length(Igs(D))+1];
     for i in [2..Length(groups)] do
         a := List(Igs(D), x -> IdentityMapping(groups[i]));
@@ -224,16 +224,16 @@ function( groups, onegroup )
         Add(f,Length(Igs(D))+1);
     od;
 
-    info := rec(groups := groups, 
+    info := rec(groups := groups,
                 first  := f,
-                embeddings := [ ], 
+                embeddings := [ ],
                 projections := [ ]);
     SetDirectProductInfo(D,info);
 
-    if ForAny(groups,grp->HasSize(grp) and not IsFinite(grp)) then 
-        SetSize(D,infinity); 
-    elif ForAll(groups,HasSize) then 
-        SetSize(D,Product(List(groups,Size))); 
+    if ForAny(groups,grp->HasIsFinite(grp) and not IsFinite(grp)) then
+        SetSize(D,infinity);
+    elif ForAll(groups,HasSize) then
+        SetSize(D,Product(List(groups,Size)));
     fi;
 
     return D;
@@ -243,7 +243,7 @@ end );
 ##
 #A Embedding
 ##
-InstallMethod( Embedding, true, 
+InstallMethod( Embedding, true,
                [ IsPcpGroup and HasDirectProductInfo, IsPosInt ], 0,
 function( D, i )
     local info, G, imgs, hom, gens;

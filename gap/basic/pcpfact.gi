@@ -7,8 +7,7 @@
 ##
 #M FactorGroupNC( H, N )
 ##
-InstallMethod( FactorGroupNC, 
-               true, [IsPcpGroup, IsPcpGroup], 0,
+InstallMethod( FactorGroupNC, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( H, N )
     local  F;
     if not IsNormal( H, N ) then return fail; fi;
@@ -52,15 +51,15 @@ end );
 ##
 #F NaturalHomomorphism( G, N )
 ##
-InstallMethod( NaturalHomomorphism, 
-        "for pcp groups", true, [IsPcpGroup, IsPcpGroup], 0,
+InstallMethod( NaturalHomomorphism,
+        "for pcp groups", IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( G, N )
     if Size(N) = 1 then return IdentityMapping( G ); fi;
     return NaturalHomomorphismByPcp( Pcp( G, N ) );
 end );
 
-InstallMethod( NaturalHomomorphismByNormalSubgroupNCOrig, 
-        "for pcp groups", true, [IsPcpGroup, IsPcpGroup], 0,
-function( G, N ) return NaturalHomomorphism(G,N); end );
+InstallMethod( NaturalHomomorphismByNormalSubgroupNCOrig,
+        "for pcp groups", IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+        NaturalHomomorphism );
 
-        
+

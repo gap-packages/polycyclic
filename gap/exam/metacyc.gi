@@ -7,10 +7,10 @@
 ##
 #F  InfiniteMetacyclicPcpGroup  . . . . . . . . the metacyclic group G(m,n,r)
 ##
-##  In 
+##  In
 ##       J.R. Beuerle & L.-C. Kappe (2000), Infinite Metacyclic Groups and
 ##       Their Non-Abelian Tensor Square, Proc. Edin. Math. Soc., 43,
-##       651--662 
+##       651--662
 ##  the infinite metacyclic groups are classified up to isomorphism.  This
 ##  function implements their classification.  The groups are given by the
 ##  following family of presentations:

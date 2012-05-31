@@ -42,11 +42,11 @@ TorsionSubgroupNilpotentPcpGroup := function( G )
 end;
 
 TorsionSubgroupPcpGroup := function( G )
-    local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g; 
+    local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g;
 
     # set up
     efa := PcpsOfEfaSeries( G );
-    
+
     # get the finite bit at the bottom of efa
     m := Length( efa );
     T := [];
@@ -57,7 +57,7 @@ TorsionSubgroupPcpGroup := function( G )
     T := SubgroupByIgs( G, T );
     sub := [];
 
-    # loop over the rest 
+    # loop over the rest
     for i in Reversed( [1..m] ) do
 
         # get the abelian layer
@@ -71,7 +71,7 @@ TorsionSubgroupPcpGroup := function( G )
 
             H := SubgroupByIgs( G, DenominatorOfPcp( efa[i] ) );
             for g in gens do
-                N := ShallowCopy( H ); 
+                N := ShallowCopy( H );
                 H := SubgroupByIgs( G, AddIgsToIgs( [g], Igs( N ) ) );
 
                 # compute complement to N in H mod T
@@ -94,7 +94,7 @@ TorsionSubgroupPcpGroup := function( G )
     return T;
 end;
 
-InstallMethod( TorsionSubgroup, true, [IsPcpGroup], 0,
+InstallMethod( TorsionSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
     local U;
     if IsAbelian(G) then
@@ -102,17 +102,17 @@ function( G )
     elif HasIsNilpotentGroup( G ) and IsNilpotentGroup(G) then
         U := TorsionSubgroupNilpotentPcpGroup( G );
     else
-        U := TorsionSubgroupPcpGroup( G ); 
-    fi; 
-    if not IsBool(U) then 
+        U := TorsionSubgroupPcpGroup( G );
+    fi;
+    if not IsBool(U) then
         SetNormalTorsionSubgroup( G, U );
         SetIsTorsionFree( G, Size(U)=1 );
     fi;
     return U;
 end );
 
-InstallMethod( TorsionSubgroup, [IsGroup and IsFinite], IdFunc );
-InstallMethod( TorsionSubgroup, [IsGroup and IsTorsionFree], G -> TrivialSubgroup(G) );
+InstallMethod( TorsionSubgroup, "for finite groups", [IsGroup and IsFinite], IdFunc );
+InstallMethod( TorsionSubgroup, "for torsion free groups", [IsGroup and IsTorsionFree], TrivialSubgroup );
 
 #############################################################################
 ##
@@ -121,11 +121,11 @@ InstallMethod( TorsionSubgroup, [IsGroup and IsTorsionFree], G -> TrivialSubgrou
 ## This algorithm returns the (unique) largest finite normal subgroup of G.
 ##
 NormalTorsionSubgroupPcpGroup := function( G )
-    local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g; 
+    local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g;
 
     # set up
     efa := PcpsOfEfaSeries( G );
-    
+
     # get the finite bit at the bottom of efa
     m := Length( efa );
     T := [];
@@ -136,7 +136,7 @@ NormalTorsionSubgroupPcpGroup := function( G )
     T := SubgroupByIgs( G, T );
     sub := [ ];
 
-    # loop over the rest 
+    # loop over the rest
     for i in Reversed( [1..m] ) do
 
         # get the abelian layer
@@ -150,7 +150,7 @@ NormalTorsionSubgroupPcpGroup := function( G )
 
             H := SubgroupByIgs( G, DenominatorOfPcp( efa[i] ) );
             for g in gens do
-                N := ShallowCopy( H ); 
+                N := ShallowCopy( H );
                 H := SubgroupByIgs( G, AddIgsToIgs( [g], Igs(N) ));
 
                 # compute complement to N in H mod T
@@ -171,7 +171,7 @@ NormalTorsionSubgroupPcpGroup := function( G )
     return T;
 end;
 
-InstallMethod( NormalTorsionSubgroup, true, [IsPcpGroup], 0,
+InstallMethod( NormalTorsionSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
     if IsAbelian(G) then
         return TorsionSubgroupAbelianPcpGroup( G );
@@ -179,17 +179,18 @@ function( G )
         return TorsionSubgroupNilpotentPcpGroup( G );
     else
         return NormalTorsionSubgroupPcpGroup( G );
-    fi; 
+    fi;
 end );
 
-InstallMethod( NormalTorsionSubgroup, [IsGroup and IsFinite], IdFunc );
-InstallMethod( NormalTorsionSubgroup, [IsGroup and IsTorsionFree], G -> TrivialSubgroup(G) );
+InstallMethod( NormalTorsionSubgroup, "for finite groups", [IsGroup and IsFinite], IdFunc );
+InstallMethod( NormalTorsionSubgroup, "for torsion free groups", [IsGroup and IsTorsionFree], TrivialSubgroup );
 
 #############################################################################
 ##
 #F IsTorsionFree( G )
 ##
-IsTorsionFreePcpGroup := function( G )
+InstallMethod( IsTorsionFree, "for pcp groups", [IsPcpGroup],
+function( G )
     local pcs, rel, n, i, N, K, com;
 
     # the trival group
@@ -220,21 +221,19 @@ IsTorsionFreePcpGroup := function( G )
         i := i - 1;
     od;
     return true;
-end;
-
-InstallMethod( IsTorsionFree, true, [IsPcpGroup], 0, IsTorsionFreePcpGroup );
+end );
 
 # Finite groups are torsion free if and only if they are trivial
-InstallImmediateMethod( IsTorsionFree,
+InstallImmediateMethod( IsTorsionFree, "for finite groups",
     IsGroup and IsFinite and HasIsTrivial,
     0,
-    grp -> IsTrivial( grp ) );
+    IsTrivial );
 
 # Finite groups are free abelian if and only if they are trivial
-InstallImmediateMethod( IsFreeAbelian,
+InstallImmediateMethod( IsFreeAbelian, "for abelian groups",
     IsGroup and IsFinite and HasIsTrivial,
     0,
-    grp -> IsTrivial( grp ) );
+    IsTrivial );
 
 # In general, a group is free abelian if it is abelian and its abelian invariants are all 0.
 InstallMethod( IsFreeAbelian, [IsGroup],
@@ -338,13 +337,13 @@ end;
 ##
 InduceToFactor := function( C, sub )
     local D, L;
-      
+
     # make a copy and adjust this
     D := StructuralCopy( C );
 
     # adjust D.super
     if sub.stab <> AsList( D.super ) then
-        D.smats := List( sub.stab, 
+        D.smats := List( sub.stab,
                 x -> MappedVector( ExponentsByPcp( D.super, x), D.smats));
         D.super := sub.stab;
     fi;
@@ -354,9 +353,9 @@ InduceToFactor := function( C, sub )
 
         # adjust dim and one to correct dimension
         D.dim := Length(C.normal) - Length( sub.repr );
-        D.one := IdentityMat( D.dim, D.field );          
+        D.one := IdentityMat( D.dim, D.field );
 
-        # adjust the layer pcp 
+        # adjust the layer pcp
         L := SubgroupBySubspace( D.normal, sub.repr );
         D.normal := Pcp( GroupOfPcp( D.normal ), L );
 
@@ -374,12 +373,12 @@ SupplementClassesCR := function( C )
     local orbs, com, orb, D, t;
 
     # catch a trivial case
-    if Length( C.normal ) = 1 then 
+    if Length( C.normal ) = 1 then
         AddInversesCR( C );
-        return ComplementClassesCR( C ); 
+        return ComplementClassesCR( C );
     fi;
 
-    # compute all U-invariant submodules in A 
+    # compute all U-invariant submodules in A
     orbs := OrbitsInvariantSubspaces( C, C.dim );
 
     # lift from U to R-classes of complements
@@ -404,15 +403,15 @@ end;
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 FiniteSubgroupClassesBySeries := function( arg )
-    local N, G, pcps, avoid, pcpG, grps, pcp, act, new, grp, C, tmp, i, 
+    local N, G, pcps, avoid, pcpG, grps, pcp, act, new, grp, C, tmp, i,
           rels, U;
 
-    if Length( arg ) = 2 then 
+    if Length( arg ) = 2 then
         G := arg[1];
         N := G;
         pcps := arg[2];
         avoid := [];
-    elif Length( arg ) = 4 then 
+    elif Length( arg ) = 4 then
         N := arg[1];
         G := arg[2];
         pcps := arg[3];
@@ -434,7 +433,7 @@ FiniteSubgroupClassesBySeries := function( arg )
             # set up class record
             C := rec( );
             C.group  := grp.repr;
-            C.super  := Pcp( grp.norm, grp.repr ); 
+            C.super  := Pcp( grp.norm, grp.repr );
             C.factor := Pcp( grp.repr, GroupOfPcp( pcp ) );
             C.normal := pcp;
 
@@ -449,22 +448,22 @@ FiniteSubgroupClassesBySeries := function( arg )
             if C.char = 0 then
                 AddInversesCR( C );
                 tmp := ComplementClassesCR( C );
-                Info( InfoPcpGrp, 1, "  computed ", Length(tmp), 
+                Info( InfoPcpGrp, 1, "  computed ", Length(tmp),
                       " complements");
             else
                 if IsBound( act.spaces ) then C.spaces := act.spaces; fi;
                 tmp := SupplementClassesCR( C );
-                Info( InfoPcpGrp, 1, "  computed ", Length(tmp), 
+                Info( InfoPcpGrp, 1, "  computed ", Length(tmp),
                       " supplements");
             fi;
-            if Length( avoid ) > 0 then 
+            if Length( avoid ) > 0 then
                 for U in avoid do
                     tmp := Filtered( tmp, x -> not IsSubgroup( U, x.repr ) );
                 od;
             fi;
             Append( new, tmp );
         od;
-        
+
         if C.char = 0 then
             grps := ShallowCopy( new );
         else
@@ -485,13 +484,9 @@ end;
 ##
 #F FiniteSubgroupClasses( G )
 ##
-FiniteSubgroupClassesPcpGroup := function( G )
+InstallMethod( FiniteSubgroupClasses, "for pcp groups", [IsPcpGroup],
+function( G )
     return FiniteSubgroupClassesBySeries( G, PcpsOfEfaSeries(G) );
-end;
-
-InstallMethod( FiniteSubgroupClasses, true, [IsPcpGroup], 0,
-function( G ) 
-    return FiniteSubgroupClassesPcpGroup(G); 
 end );
 
 #############################################################################
@@ -504,7 +499,7 @@ end );
 ## this is the root set. Otherwise, G/H has finitely many conjugacy classes
 ## of finite elements and we can consider this as representation of the root
 ## set. Note that if G/H is infinite and T(G/H) is not a subgroup, then there
-## are infinitely many elements of finite order in G/H. 
+## are infinitely many elements of finite order in G/H.
 ##
 InstallGlobalFunction( RootSet, function( G, H )
     local nat, F, T;
@@ -515,7 +510,7 @@ InstallGlobalFunction( RootSet, function( G, H )
     nat := NaturalHomomorphism( G, H );
     F   := Image( nat );
     T   := TorsionSubgroup( F );
-    if T = fail then 
+    if T = fail then
         Print( "RootSet is not a subgroup - not yet implemented" );
         return fail;
     fi;

@@ -3,7 +3,7 @@
 #W  basepcgs.gi                                                  Bettina Eick
 ##
 #W  A base pcgs is a pcgs with attached base and strong generating set.
-#W  It is a record consisting of: 
+#W  It is a record consisting of:
 #W    .orbit and .trans and .trels - the base and strong gen set
 #W    .acton and .oper  and .trivl - the domain to act on and the action
 #W    .pcref                       - the reference to a pcgs
@@ -22,7 +22,7 @@ BasePcgsByPcSequence := function( pcs, dom, trv, oper )
     local pcgs, i;
     if IsBool( trv ) then trv := function( x ) return x = x^0; end; fi;
     pcgs := rec( orbit := [], trans := [], trels := [], defns := [],
-                 pcref := [], 
+                 pcref := [],
                  acton := dom, oper := oper, trivl := trv );
     for i in Reversed( [1..Length(pcs)] ) do
         ExtendedBasePcgs( pcgs, pcs[i], [i,1] );
@@ -60,10 +60,10 @@ BasePcgsByPcIntMatrices := function( gens, f )
     local d, news, pcgs;
 
     # triviality check
-    if Length(gens) = 0 then  
+    if Length(gens) = 0 then
         return BasePcgsByPcSequence( gens, false, false, OnRight );
     fi;
-        
+
     # change field and compute
     d := Length( gens[1] );
     news := InducedByField( gens, f );
@@ -208,7 +208,7 @@ end;
 
 #############################################################################
 ##
-#F  ExponentsByBasePcgs( pcgs, g ) 
+#F  ExponentsByBasePcgs( pcgs, g )
 ##
 ##  This function gives useful results for abelian groups only.
 ##
@@ -223,5 +223,5 @@ ExponentsByBasePcgs := function( pcgs, g )
     return e;
 end;
 
-    
+
 

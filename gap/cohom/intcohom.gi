@@ -20,7 +20,7 @@ IntKernelCR := function( A, sys, lat, bat )
 
     # transpose and blow up system
     mat := MutableTransposedMat( sys.base );
-    Append( mat, DirectSumMat( List( [1..l], x -> lat ) ) ); 
+    Append( mat, DirectSumMat( List( [1..l], x -> lat ) ) );
 
     # compute kernel
     # Print("  solve system ",Length(mat)," by ",Length(mat[1]),"\n");
@@ -53,7 +53,7 @@ IntTwoCocycleSystemCR := function( A )
     # check
     if not A.char = 0 then return fail; fi;
 
-    # set up for equations 
+    # set up for equations
     id := IdentityMat(n);
     gn := List( id, x -> rec( word := x, tail := [] ) );
 
@@ -63,7 +63,7 @@ IntTwoCocycleSystemCR := function( A )
     for i  in [1..n]  do
         if e[i] > 0 then
             h := rec( word := (e[i] - 1) * id[i], tail := [] );
-            pairs[i][i] := CollectedTwoCR( A, h, gn[i] ); 
+            pairs[i][i] := CollectedTwoCR( A, h, gn[i] );
         fi;
         for j  in [1..i-1]  do
             pairs[i][j] := CollectedTwoCR( A, gn[i], gn[j] );
@@ -137,7 +137,7 @@ IntTwoCocycleSystemCR := function( A )
          fi;
     od;
 
-    # consistency 5: j = (j -i) i   
+    # consistency 5: j = (j -i) i
     #Print("  consistency 5 \n");
     gi := List( id, x -> rec( word := -x, tail := [] ) );
     for i  in [n,n-1..1]  do
@@ -153,8 +153,8 @@ IntTwoCocycleSystemCR := function( A )
             fi;
         od;
     od;
-            
-    # consistency 6: i = -j (j i)   
+
+    # consistency 6: i = -j (j i)
     #Print("  consistency 6 \n");
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
@@ -169,7 +169,7 @@ IntTwoCocycleSystemCR := function( A )
         od;
     od;
 
-    # consistency 7: -i = -j (j -i) 
+    # consistency 7: -i = -j (j -i)
     #Print("  consistency 7 \n");
     for i  in [n,n-1..1]  do
         for j  in [n,n-1..i+1]  do
@@ -185,7 +185,7 @@ IntTwoCocycleSystemCR := function( A )
         od;
     od;
 
-    # add a check ((j ^ i) ^-i ) = j 
+    # add a check ((j ^ i) ^-i ) = j
     #Print("  consistency 8 \n");
     for i in [1..n] do
         for j in [1..i-1] do
@@ -194,7 +194,7 @@ IntTwoCocycleSystemCR := function( A )
             w1 := CollectedTwoCR( A, w1, gi[j] );
             if w1.word <> id[i] then
                 Error("in rel check ");
-            elif not IsZeroTail( w2.tail ) then 
+            elif not IsZeroTail( w2.tail ) then
                # Error("relations bug");
                 AddEquationsCR( sys, w1.tail, [], true );
             fi;
@@ -214,13 +214,13 @@ TwoCohomologyModCR := function( A, lat )
     local cb, cc, bat;
 
     if A.char <> 0 then return fail; fi;
-    
+
     # two cobounds
     cb := TwoCoboundariesCR( A );
 
     # two cocycle system
     cc := IntTwoCocycleSystemCR( A );
-    
+
     # big lattice
     bat := DirectSumMat( List( [1..cc.len], y -> lat ) );
 
@@ -228,7 +228,7 @@ TwoCohomologyModCR := function( A, lat )
     cb := BaseIntMat( Concatenation( cb, bat ) );
     cc := IntKernelCR( A, cc, lat, bat );
 
-    return rec( gcc := cc, gcb := cb, 
+    return rec( gcc := cc, gcb := cb,
                 factor := AdditiveFactorPcp( cc, cb, 0 ) );
 end;
 

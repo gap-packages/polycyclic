@@ -3,7 +3,7 @@
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 SchurCovers := function(G)
-    local p, GG, K, R, M, D, Z, k, H, C, T, P, e, O, bij, f, t, m, A, c, 
+    local p, GG, K, R, M, D, Z, k, H, C, T, P, e, O, bij, f, t, m, A, c,
           l, n, i;
 
     if not IsPGroup(G) then return fail; fi;
@@ -12,7 +12,7 @@ SchurCovers := function(G)
     p := Factors(Size(G))[1];
 
     # move to Pcp groups if necessary
-    if IsPcGroup(G) then 
+    if IsPcGroup(G) then
         GG := PcGroupToPcpGroup(G);
     else
         GG := G;
@@ -23,8 +23,8 @@ SchurCovers := function(G)
     K := GG!.scov;
     R := GG!.modu;
     M := GG!.mult;
- 
-    #  info 
+
+    #  info
     Print("  Schur Mult has type ",AbelianInvariants(M),"\n");
 
     # catch a trival case
@@ -78,7 +78,7 @@ SchurCovers := function(G)
     c := FactorsComplementClasses( A, H, f, t, m );
 
     # adjust if necessary
-    if IsPcGroup(G) and not CODEONLY then 
+    if IsPcGroup(G) and not CODEONLY then
         for i in [1..Length(c)] do
             c[i] := PcpGroupToPcGroup(RefinedPcpGroup(c[i]));
         od;

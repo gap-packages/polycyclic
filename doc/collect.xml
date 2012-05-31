@@ -54,13 +54,13 @@ setting up a collector.
 <ManSection>
 <Oper Name="FromTheLeftCollector" Arg="n"/>
 <Description>
-	returns an empty  data structure for a collector  with <A>n</A> generators. 
+	returns an empty  data structure for a collector  with <A>n</A> generators.
 	No generator  has a relative order,  no right hand sides  of power and
 	conjugate relations  are defined.  Two  generators for which  no right
 	hand side of a conjugate  relation is defined commute.  Therefore, the
 	collector  returned by  this function  can be  used to  define  a free
 	abelian group of rank <A>n</A>.
-	
+
 <Example><![CDATA[
 gap> ftl := FromTheLeftCollector( 4 );
 <<from the left collector with 4 generators>>
@@ -69,7 +69,7 @@ Pcp-group with orders [ 0, 0, 0, 0 ]
 gap> IsAbelian(last);
 true
 ]]></Example>
-	
+
 	If the relative order of a generators has been defined (see
 	<Ref Func="SetRelativeOrder"/>), but the right hand side of the corresponding
 	power relation has not, then the order and the relative order of the
@@ -81,24 +81,24 @@ true
 <Oper Name="SetRelativeOrder" Arg="coll, i, ro"/>
 <Oper Name="SetRelativeOrderNC" Arg="coll, i, ro"/>
 <Description>
-	set the relative order in collector  <A>coll</A> for generator <A>i</A> to <A>ro</A>. 
+	set the relative order in collector  <A>coll</A> for generator <A>i</A> to <A>ro</A>.
 	The  parameter <A>coll</A>  is  a  collector as  returned  by the  function
 	<Ref Func="FromTheLeftCollector"/>,  <A>i</A>  is a  generator  number  and  <A>ro</A> is  a
 	non-negative integer.  The  generator number <A>i</A> is an  integer in the
 	range  <M>1,\ldots,n</M> where  <M>n</M>  is  the number  of  generators of  the
 	collector.
 	<P/>
-	
+
 	If <A>ro</A> is <M>0,</M> then the  generator with number <A>i</A> has infinite order
 	and no  power relation  can be  specified.  As a  side effect  in this
 	case, a previously defined power relation is deleted.
 	<P/>
-	 
+
 	If <A>ro</A>  is the relative order of  a generator with number  <A>i</A> and no
 	power relation  is set for that  generator, then <A>ro</A> is  the order of
 	that generator.
 	<P/>
-	
+
 	The NC version of the function bypasses checks on the range of <A>i</A>.
 
 <Example><![CDATA[
@@ -121,7 +121,7 @@ true
 	set the  right hand side  of the power  relation for generator  <A>i</A> in
 	collector <A>coll</A>  to (a copy of)  <A>rhs</A>.  An attempt to  set the right
 	hand  side for  a generator  without a  relative order  results  in an
-	error.  
+	error.
 	<P/>
 
 	Right hand sides are by default assumed to be trivial.
@@ -205,22 +205,22 @@ true
 	The following example defines a collector for a semidirect product
 	of the cyclic group of order <M>3</M> with the free abelian group of rank
 	<M>2</M>.  The action of the cyclic group on the free abelian
-	group is given by the matrix 
+	group is given by the matrix
 
 	<Display><![CDATA[\pmatrix{ 0 & 1 \cr -1 & -1}.]]></Display>
 
 	This leads to the following polycyclic presentation:
-	<Display>\langle g_1,g_2,g_3 | g_1^3, 
-                        g_2^{g_1}=g_3, 
-                        g_3^{g_1}=g_2^{-1}g_3^{-1}, 
+	<Display>\langle g_1,g_2,g_3 | g_1^3,
+                        g_2^{g_1}=g_3,
+                        g_3^{g_1}=g_2^{-1}g_3^{-1},
                         g_3^{g_2}=g_3\rangle.</Display>
 
 <Example><![CDATA[
 gap> ftl := FromTheLeftCollector( 3 );
 <<from the left collector with 3 generators>>
-gap> SetRelativeOrder( ftl, 1, 3 );         
-gap> SetConjugate( ftl, 2, 1, [3,1] );      
-gap> SetConjugate( ftl, 3, 1, [2,-1,3,-1] );   
+gap> SetRelativeOrder( ftl, 1, 3 );
+gap> SetConjugate( ftl, 2, 1, [3,1] );
+gap> SetConjugate( ftl, 3, 1, [2,-1,3,-1] );
 gap> UpdatePolycyclicCollector( ftl );
 gap> IsConfluent( ftl );
 true
@@ -232,21 +232,21 @@ true
 	<C>UpdatePolycyclicCollector</C>.  It is also possible to specify the
 	conjugation by inverse generators.  Note that you need to run
 	<C>UpdatePolycyclicCollector</C> after one of the set functions has been
-	used. 
+	used.
 
 <Example><![CDATA[
 gap> SetConjugate( ftl, 2, -1, [2,-1,3,-1] );
-gap> SetConjugate( ftl, 3, -1, [2,1] );      
-gap> IsConfluent( ftl );             
+gap> SetConjugate( ftl, 3, -1, [2,1] );
+gap> IsConfluent( ftl );
 Error, Collector is out of date called from
 CollectWordOrFail( coll, ev1, [ j, 1, i, 1 ] ); called from
 <function>( <arguments> ) called from read-eval-loop
 Entering break read-eval-print loop ...
 you can 'quit;' to quit to outer loop, or
 you can 'return;' to continue
-brk> 
+brk>
 gap> UpdatePolycyclicCollector( ftl );
-gap> IsConfluent( ftl );              
+gap> IsConfluent( ftl );
 true
 ]]></Example>
 </Description>
@@ -317,12 +317,12 @@ true
 <Oper Name="ExponentsByObj" Arg="coll, genexp"/>
 <Description>
 	returns an exponent vector for the generator exponent list <A>genexp</A>.
-	This is the inverse operation to <C>ObjByExponents</C>. The function 
+	This is the inverse operation to <C>ObjByExponents</C>. The function
 	assumes that the generators in <A>genexp</A> are given in the right
 	order and that the exponents are in the right range.
 
 <Example><![CDATA[
-gap> G := UnitriangularPcpGroup( 4, 0 );   
+gap> G := UnitriangularPcpGroup( 4, 0 );
 Pcp-group with orders [ 0, 0, 0, 0, 0, 0 ]
 gap> coll := Collector ( G );
 <<from the left collector with 6 generators>>
@@ -352,7 +352,7 @@ use of the special structure of the given pc-presentation.
 	<A>coll</A> into the positive integers  such that <M>w(g) \geq w(x)+w(y)</M> for
 	all  generators <M>x</M>, <M>y</M>  and all  generators <M>g</M>  in (the  normal of)
 	<M>[x,y]</M>.  If  such a function does  not exist, false  is returned.  If
-	such a  function exists, it is  computed and stored in  the collector. 
+	such a  function exists, it is  computed and stored in  the collector.
 	In addition, the default collection strategy for this collector is set
 	to combinatorial collection.
 </Description>
@@ -379,7 +379,7 @@ use of the special structure of the given pc-presentation.
 <Func Name="FTLCollectorPrintTo" Arg="file, name, coll"/>
 <Description>
 	stores a collector <A>coll</A> in the file <A>file</A> such that the file can be
-	read back using the function 'Read' into &GAP; and would then be stored 
+	read back using the function 'Read' into &GAP; and would then be stored
 	in the variable <A>name</A>.
 </Description>
 </ManSection>
@@ -418,7 +418,7 @@ use of the special structure of the given pc-presentation.
 <Description>
 	this  global variable can  be set  to <K>true</K> to force the  comparison of
 	results  from  the  combinatorial  collector  with the  result  of  an
-	identical collection  performed by  a simple from-the-left  collector. 
+	identical collection  performed by  a simple from-the-left  collector.
 	Its main purpose is to help debug the collection routines.
 </Description>
 </ManSection>

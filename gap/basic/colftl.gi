@@ -1,23 +1,23 @@
 CollectPolycyclicGap := function( pcp, ev, w )
-    
-    local   ngens,  pow,  exp,  com,  wst,  west,  sst,  est,  bottom,  
-            stp,  g,  word,  exponent,  i,  h,  m,  u,  j,  cnj,  
+
+    local   ngens,  pow,  exp,  com,  wst,  west,  sst,  est,  bottom,
+            stp,  g,  word,  exponent,  i,  h,  m,  u,  j,  cnj,
             icnj,  hh;
-    
+
     if Length( w ) = 0 then return true; fi;
-    
+
 
     ngens := pcp![PC_NUMBER_OF_GENERATORS];
 
     pow := pcp![ PC_POWERS ];
     exp := pcp![ PC_EXPONENTS ];
     com := pcp![ PC_COMMUTE ];
-    
+
     wst  := pcp![ PC_WORD_STACK ];
     west := pcp![ PC_WORD_EXPONENT_STACK ];
     sst  := pcp![ PC_SYLLABLE_STACK ];
     est  := pcp![ PC_EXPONENT_STACK ];
-    
+
     bottom    := pcp![ PC_STACK_POINTER ];
     stp       := bottom + 1;
     wst[stp]  := w;
@@ -27,7 +27,7 @@ CollectPolycyclicGap := function( pcp, ev, w )
 
     # collect
     while stp > bottom do
-        
+
         if est[stp] = 0 then
             # initialise est
             sst[stp] := sst[stp] + 1;
@@ -49,10 +49,10 @@ CollectPolycyclicGap := function( pcp, ev, w )
                 est[stp] := wst[stp][ 2*sst[stp] ];
             fi;
         else
-            
+
             # get next generator
             g := wst[stp][ 2*sst[stp]-1 ];
-            
+
             if stp > 1 and sst[stp] = 1 and g = com[g] then
                 ## collect word ^ exponent in one go
 
@@ -69,7 +69,7 @@ CollectPolycyclicGap := function( pcp, ev, w )
                     if IsBound( exp[h] ) and ev[h] >= exp[h] then
                         m     := QuoInt( ev[h], exp[h] );
                         ev[h] := ev[h] mod exp[h];
-                        
+
                         if IsBound( pow[h] ) then
                             u := pow[h];
                             for j in [1,3..Length(u)-1] do
@@ -100,7 +100,7 @@ CollectPolycyclicGap := function( pcp, ev, w )
                     cnj   := pcp![ PC_CONJUGATESINVERSE ];
                     icnj  := pcp![ PC_INVERSECONJUGATESINVERSE ];
                 fi;
-                
+
                 h := com[g];
 
                 # Find first position where we need to collect
@@ -117,8 +117,8 @@ CollectPolycyclicGap := function( pcp, ev, w )
 
 
                 # Put that part on the stack, if necessary
-                if h > g or 
-                   ( IsBound(exp[g]) 
+                if h > g or
+                   ( IsBound(exp[g])
                      and (ev[g] < 0 or ev[g] >= exp[g])
                      and IsBound(pow[g]) ) then
 
@@ -142,7 +142,7 @@ CollectPolycyclicGap := function( pcp, ev, w )
                     od;
                 fi;
 
-                
+
                 # move generator across the exponent vector
                 while h > g do
                     if ev[h] <> 0 then
@@ -169,12 +169,12 @@ CollectPolycyclicGap := function( pcp, ev, w )
                         fi;
                         sst[stp] := 1;
                         est[stp] := wst[stp][ 2 ];
-                        ev[h] := 0;    
+                        ev[h] := 0;
                     fi;
                     h := h-1;
                 od;
             fi;
-            
+
             # reduce exponent if necessary
             if IsBound( exp[g] ) and ev[g] >= exp[g] then
                 ev[g] := ev[g] - exp[g];
@@ -197,7 +197,7 @@ end;
 PrintCollectionStack := function( stp, wst, west, sst, est )
 
     while stp > 0 do
-        Print( wst[stp], "^", west[stp], 
+        Print( wst[stp], "^", west[stp],
                " at ", sst[stp], " with exponent ", est[stp], "\n" );
         stp := stp - 1;
     od;
@@ -209,37 +209,30 @@ end;
 ##
 InstallMethod( CollectWordOrFail,
         "FromTheLeftCollector (outdated)",
-        true, 
         [ IsFromTheLeftCollectorRep,
           IsList, IsList ],
-        0,
-        function( pcp, ev, w )
-
+function( pcp, ev, w )
     Error( "Collector is out of date" );
 end );
 
 InstallMethod( CollectWordOrFail,
         "FromTheLeftCollector",
-        true,
         [ IsFromTheLeftCollectorRep and IsUpToDatePolycyclicCollector,
           IsList, IsList ],
-        0,
 function( pcp, a, b )
 
     if USE_LIBRARY_COLLECTOR then
         return CollectPolycyclicGap( pcp, a, b );
     else
+    	# CollectPolycyclic is implemented by the GAP C kernel, in file src/objcftl.c
         CollectPolycyclic( pcp, a, b );
         return true;
     fi;
-end );  
+end );
 
 InstallMethod( CollectWordOrFail,
         "FromTheLeftCollector",
-        true, 
         [ IsFromTheLeftCollectorRep and IsUpToDatePolycyclicCollector and
           UseLibraryCollector,
           IsList, IsList ],
-        0,
         CollectPolycyclicGap );
-

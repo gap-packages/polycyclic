@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#F  FromTheLeftCollector_Power  . . . . . . . . . . . . . . . . . . . . . .  
+#F  FromTheLeftCollector_Power  . . . . . . . . . . . . . . . . . . . . . .
 ##
 #BindGlobal( "FromTheLeftCollector_Power", function( coll, w, e )
 #
@@ -14,7 +14,7 @@
 #
 #############################################################################
 ##
-#F  ProductAutomorphisms  . . . . . . . . . . . . . . . . . . . . . . . . .  
+#F  ProductAutomorphisms  . . . . . . . . . . . . . . . . . . . . . . . . .
 ##
 #BindGlobal( "ProductAutomorphisms", function( coll, alpha, beta )
 #    local   ngens,  gamma,  i,  w,  ev,  g;
@@ -27,7 +27,7 @@
 #            for g in [1,3..Length(w)-1] do
 #                if w[g+1] <> 0 then
 #                    CollectWordOrFail( coll, ev,
-#                            FromTheLeftCollector_Power( 
+#                            FromTheLeftCollector_Power(
 #                                    coll, beta[ w[g] ], w[g+1] ) );
 #                fi;
 #            od;
@@ -39,18 +39,18 @@
 
 #############################################################################
 ##
-#F  PowerAutomorphism . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+#F  PowerAutomorphism . . . . . . . . . . . . . . . . . . . . . . . . . . .
 ##
 #BindGlobal( "PowerAutomorphism", function( coll, g, e )
 #    local   n,  a,  power,  h,  ipower;
-#    
+#
 #    n := NumberGeneratorsOfRws( coll );
-#    
+#
 #    # initialise automorphism
 #    a := [];
 #    power := [];
 #    for h in [g+1..n] do
-#        if e > 0 then 
+#        if e > 0 then
 #            if IsBound( coll![ PC_CONJUGATES][h] ) and
 #                       IsBound( coll![ PC_CONJUGATES ][h][g] ) then
 #                a[h] := coll![ PC_CONJUGATES ][h][g];
@@ -65,7 +65,7 @@
 #                a[h] := [h,1];
 #            fi;
 #        fi;
-#        power[h] := [h,1];    
+#        power[h] := [h,1];
 #    od;
 #    if e < 0 then
 #        e := -e;

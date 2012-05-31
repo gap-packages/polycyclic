@@ -40,7 +40,7 @@ MemberBySemiEchelonBase := function( v, U )
     c := List( d, x -> 0 );
     z := 0 * v;
     while v <> z do
-        l := PositionNonZero(v); 
+        l := PositionNonZero(v);
         j := Position( d, l );
         if IsBool( j ) then return false; fi;
         c[j] := v[l];
@@ -200,7 +200,7 @@ InstallGlobalFunction( SpinnUpEchelonBase, function( base, vecs, gens, oper )
     TriangulizeMat( base );
     return base;
 end );
-        
+
 #############################################################################
 ##
 #F  OnMatVector( vec, mat ) . . . . . . . .operation by matrix on flat matrix
@@ -210,9 +210,9 @@ InstallGlobalFunction( OnMatVector, function( vec, mat )
     d := Length( mat );
     new := List( mat, x -> 0 );
     for i in [1..d] do new[i] := vec{[(i-1)*d+1..i*d]} * mat; od;
-    return Flat( new );       
+    return Flat( new );
 end );
-   
+
 #############################################################################
 ##
 #F  MatByVector( vec, d ) . . . . . . . . . . . . . . reconstruct flat matrix
@@ -223,7 +223,7 @@ end );
 
 #############################################################################
 ##
-#F  IsSemiEchelonBase( base )  
+#F  IsSemiEchelonBase( base )
 ##
 IsSemiEchelonBase := function( base )
     return IsSSortedList( List( base, PositionNonZero ) );
@@ -231,7 +231,7 @@ end;
 
 #############################################################################
 ##
-#F  IsEchelonBase( base )  
+#F  IsEchelonBase( base )
 ##
 IsEchelonBase := function( base )
     local d, i;

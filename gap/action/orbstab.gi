@@ -44,7 +44,7 @@ OrbitStabilizerTranslationAction := function( K, derK )
     if ForAll( derK, x -> x = 0*x ) then
         return rec( stabl := K, trans := [], orbit := [] );
     fi;
- 
+
     # now compute orbit in standart form
     gens := AsList( Pcp(K) );
     base := FreeGensAndKernel( derK );
@@ -56,7 +56,7 @@ OrbitStabilizerTranslationAction := function( K, derK )
     orbit := base.free;
     trans := List( base.trsf, x -> MappedVector( x, gens ) );
     stabl := List( base.kern, x -> MappedVector( x, gens ) );
-    
+
     return rec( stabl := stabl, trans := trans, orbit := orbit );
 end;
 
@@ -71,9 +71,9 @@ InducedDerivation := function( g, G, linG, derG )
     der := 0 * derG[1];
     for i in [1..Length(exp)] do
         e := exp[i];
-        if linG[i] = linG[i]^0 then 
+        if linG[i] = linG[i]^0 then
             der := der + e*derG[i];
-        elif e > 0 then 
+        elif e > 0 then
             for j in [1..e] do
                 der := der * linG[i] + derG[i];
             od;
@@ -154,12 +154,12 @@ OrbitIrreducibleActionTrivialKernel := function( G, K, linG, derG, v )
     while RankMat(der) < d do
         g := Random(G);
         t := InducedDerivation( g, G, linG, derG );
-        if t <> 0 * t and IsBool( SolutionMat( der, t ) ) then 
+        if t <> 0 * t and IsBool( SolutionMat( der, t ) ) then
             Add( der, t );
             Add( lin, InducedByPcp( Pcp(G), g, linG ) );
         fi;
     od;
-    
+
     # find linear combination
     a := SolutionMat( der, v );
     if IsBool( a ) then Error("derivations do not span"); fi;
@@ -187,9 +187,9 @@ OrbitIrreducibleAction := function( G, K, linG, derG, v )
           found, w;
 
     # catch some trivial cases first
-    if v = 0 * v then 
+    if v = 0 * v then
         return rec( stab := StabilizerIrreducibleAction( G, K, linG, derG ),
-                    prei := One(G) ); 
+                    prei := One(G) );
     fi;
     if ForAll( derG, x -> x = 0 * x ) then return false; fi;
 
@@ -217,14 +217,14 @@ OrbitIrreducibleAction := function( G, K, linG, derG, v )
     e := derG[1] * 0;
     h := PcpOrbitStabilizer( e, Pcp(G), affG, OnAffMod );
     H := SubgroupByIgs( G, h.stab );
-    
+
     # get preimage
-    found := false; i := 0; 
+    found := false; i := 0;
     while not found and i < Length( h.orbit ) do
         i := i + 1;
         c := PcpSolutionIntMat( stabK.orbit, v-h.orbit[i] );
         if not IsBool( c ) then
-            g := TransversalElement( i, h, One(G) ); 
+            g := TransversalElement( i, h, One(G) );
             w := InducedDerivation( g, G, linG, derG );
             c := PcpSolutionIntMat( stabK.orbit, v-w);
             k := MappedVector( c, stabK.trans );
@@ -252,7 +252,7 @@ end;
 ##
 StabilizerCongruenceAction := function( G, mats, e, ser )
     local d, l, pcp, S, i, actS, derS, nath, subs, full, T, actT, derT,
-          take, natb, act, der, ref, U, K; 
+          take, natb, act, der, ref, U, K;
 
     # catch the trivial case
     if ForAll( mats, x -> e * x = e ) then return G; fi;
@@ -286,13 +286,13 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
         subs := [full];
 
         # now loop over irreducible submodules and compute stab T
-        T := S; actT := actS; derT := derS; 
+        T := S; actT := actS; derT := derS;
         ref := ( d > 1 );
         while Length( subs ) > 0 do
-  
+
             # refine and choose module
-            if ref then 
-                subs := RefineSplitting( actT, subs ); 
+            if ref then
+                subs := RefineSplitting( actT, subs );
                 subs := List( subs, PurifyRationalBase );
             fi;
             Info( InfoIntStab, 2, "  spaces: ", List(subs,Length));
@@ -315,13 +315,13 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
             U := StabilizerIrreducibleAction( T, K, act, der );
             l := Index( T, U );
             T := SubgroupByIgs( T, Cgs(U) );
- 
-            # reset 
+
+            # reset
             ref := ( l > 1 );
-            if ref and Length( subs ) > 0 then 
+            if ref and Length( subs ) > 0 then
                 K := NormalIntersection( K, T );
                 actT := InducedByPcp( Pcp(S), Pcp(T), actS );
-                derT := List( Pcp(T), 
+                derT := List( Pcp(T),
                             x -> InducedDerivation(x, S, actS, derS));
             fi;
 
@@ -347,12 +347,12 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
           take, natb, act, der, ref, o, u;
 
     # catch some trivial cases
-    if e = f then 
-        return rec( stab := StabilizerCongruenceAction(G, mats, e, ser), 
-                    prei := One( G ) ); 
+    if e = f then
+        return rec( stab := StabilizerCongruenceAction(G, mats, e, ser),
+                    prei := One( G ) );
     fi;
-    if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then 
-        return false; 
+    if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
+        return false;
     fi;
 
     # set up
@@ -400,10 +400,10 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
 
             # set up element and do a check
             u := f * InducedByPcp( pcp, g, mats )^-1 - e;
-            if Length(Pcp(T)) = 0 and u = 0*u then 
+            if Length(Pcp(T)) = 0 and u = 0*u then
                 return rec( stab := T, prei := g );
-            elif Length(Pcp(T)) = 0 then 
-                return false; 
+            elif Length(Pcp(T)) = 0 then
+                return false;
             fi;
             u := ImageByNHSEB( u, nath );
 
@@ -447,8 +447,8 @@ FindPosition := function( orbit, pt, K, actK, orbfun )
     local j, k;
     for j in [1..Length(orbit)] do
         k := orbfun( K, actK, pt, orbit[j] );
-        if not IsBool( k ) then return j; fi; 
-    od; 
+        if not IsBool( k ) then return j; fi;
+    od;
     return false;
 end;
 
@@ -511,13 +511,13 @@ ExtendOrbitStabilizer := function( e, K, actK, S, actS, orbfun, op )
             Add( stab, g );
         fi;
     od;
-    return rec( stab := Reversed( stab ), orbit := orbit, 
+    return rec( stab := Reversed( stab ), orbit := orbit,
                 trels := trels, trans := trans );
 end;
 
 #############################################################################
 ##
-#F StabilizerModPrime( G, mats, e, p ) 
+#F StabilizerModPrime( G, mats, e, p )
 ##
 StabilizerModPrime := function( G, mats, e, p )
     local F, t, S;
@@ -550,7 +550,7 @@ StabilizerIntegralAction := function( G, mats, e )
         Info( InfoIntStab, 1, "  obtained reduction by ",Index(S,T));
         S := T;
         actS := InducedByPcp( Pcp(G), Pcp(S), mats );
-    od; 
+    od;
 
     # use congruence kernel
     Info( InfoIntStab, 1, "determining 3-congruence subgroup");
@@ -585,11 +585,11 @@ StabilizerIntegralAction := function( G, mats, e )
     # do a temporary check
     if CHECK_INTSTAB then
         Info( InfoIntStab, 1, "checking results");
-        if not CheckStabilizer(G, stab, mats, e) then  
-            Error("wrong stab in integral action"); 
+        if not CheckStabilizer(G, stab, mats, e) then
+            Error("wrong stab in integral action");
         fi;
     fi;
- 
+
     # now return
     return stab;
 end;
@@ -670,10 +670,10 @@ OrbitIntegralAction := function( G, mats, e, f )
     # do a temporary check
     if CHECK_INTSTAB then
         Info( InfoIntStab, 1, "checking results");
-        if not CheckStabilizer(G, T, mats, e) then  
-            Error("wrong stab in integral action"); 
-        elif not CheckOrbit(G, g, mats, e, f) then 
-            Error("wrong orbit in integral action"); 
+        if not CheckStabilizer(G, T, mats, e) then
+            Error("wrong stab in integral action");
+        elif not CheckOrbit(G, g, mats, e, f) then
+            Error("wrong orbit in integral action");
         fi;
     fi;
 

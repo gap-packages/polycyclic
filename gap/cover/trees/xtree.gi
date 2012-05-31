@@ -22,7 +22,7 @@ end;
 StringIt := function(t)
     if IsString(t) then return t; fi;
     if IsInt(t) then return String(t); fi;
-    if IsList(t) then 
+    if IsList(t) then
        return Concatenation(List(t, x->Concatenation("-",String(x))));
     fi;
 end;
@@ -37,11 +37,11 @@ PrintVertex := function( Sheet, cl, nr, tx, pa, ty )
     # print vertex
     if ty=1 then
         Disc( Sheet, x, y, 3 );
-    elif ty = 2 then 
+    elif ty = 2 then
         Circle( Sheet, x, y, 3 );
-    elif ty = 3 then 
+    elif ty = 3 then
         Box( Sheet, x, y, 3, 3 );
-    elif ty = 4 then 
+    elif ty = 4 then
         Rectangle( Sheet, x, y, 3, 3 );
     fi;
 
@@ -49,8 +49,8 @@ PrintVertex := function( Sheet, cl, nr, tx, pa, ty )
     Line( Sheet, pa[1], pa[2], x-pa[1], y-pa[2] );
 
     # add text
-    if not IsBool(tx) then 
-        Text( Sheet, FONTS.small, x+2, y, StringIt(tx) ); 
+    if not IsBool(tx) then
+        Text( Sheet, FONTS.small, x+2, y, StringIt(tx) );
     fi;
 
     # return place
@@ -67,7 +67,7 @@ end;
 DrawCoverTree := function( G, r )
     local Title, Sheet, grp, res, nex, des, sub, p, i, j, c, m, d, g, v, H;
 
-    # set up graphic sheet 
+    # set up graphic sheet
     Title := Concatenation( "Cover tree for ", StringIt(AbelianInvariants(G)));
     Sheet := GraphicSheet( Title, SSIZE[1], SSIZE[2] );
 
@@ -79,72 +79,72 @@ DrawCoverTree := function( G, r )
     i := 0;
 
     # init tree
-    if CoclassPGroup(G) < r then 
+    if CoclassPGroup(G) < r then
         Circle( Sheet, 100, 70, 3 );
     else
         Disc( Sheet, 100, 70, 3 );
     fi;
-    
+
     # compute iterated descendants
     repeat
         nex := [];
         j := 1;
         i := i+1;
         for H in grp do
- 
+
             # get invars
             c := CoclassPGroup(H[1]);
             m := H[1]!.mord;
             d := c+Length(Factors(m))-1;
 
             # check
-            if m > 1 and d <= r then 
+            if m > 1 and d <= r then
 
-                # compute covers 
+                # compute covers
                 des := SchurCovers(H[1]);
                 for g in des do AddSExtension(g); od;
 
                 # filter
-                if d < r then 
+                if d < r then
                     des := Filtered(des, x -> x!.mord > 1);
                     des := Filtered(des, x -> d+Length(Factors(x!.mord))-1<=r);
                     for g in des do
                         repeat
-                            v := PrintVertex( Sheet, i, j, false, H[2],2); 
+                            v := PrintVertex( Sheet, i, j, false, H[2],2);
                             j := j + 1;
-                        until not IsBool(v); 
+                        until not IsBool(v);
                         Add( nex, [g, v] );
                     od;
                 fi;
 
-                if d = r then 
+                if d = r then
 
                     # non-terminal
                     sub := Filtered(des, x -> x!.mord = p);
                     for g in sub do
                         repeat
-                            v := PrintVertex( Sheet, i, j, false, H[2],1); 
+                            v := PrintVertex( Sheet, i, j, false, H[2],1);
                             j := j + 1;
-                        until not IsBool(v); 
+                        until not IsBool(v);
                         Add( nex, [g, v] );
                     od;
 
                     # terminal with non-triv. Schu-Mu
                     sub := Filtered(des, x -> x!.mord > p);
                     if Length(sub)>0 then
-                        repeat    
-                            v := PrintVertex(Sheet,i,j,Length(sub),H[2],3); 
+                        repeat
+                            v := PrintVertex(Sheet,i,j,Length(sub),H[2],3);
                             j := j + 1;
-                        until not IsBool(v); 
+                        until not IsBool(v);
                     fi;
-                    
+
                     # terminal with triv. Schu-Mu
                     sub := Filtered(des, x -> x!.mord = 1);
                     if Length(sub)>0 then
-                        repeat    
-                            v := PrintVertex(Sheet,i,j,Length(sub),H[2],1); 
+                        repeat
+                            v := PrintVertex(Sheet,i,j,Length(sub),H[2],1);
                             j := j + 1;
-                        until not IsBool(v); 
+                        until not IsBool(v);
                     fi;
                 fi;
             fi;
@@ -156,18 +156,18 @@ DrawCoverTree := function( G, r )
 end;
 
 DrawSubtree := function( Sheet, root, v, tree )
-    local  x, y, w, j;    
+    local  x, y, w, j;
 
     # get x and y
     x := v;
     y := root[2]+40;
 
     # draw vertex
-    if tree[1] = 1 then 
+    if tree[1] = 1 then
         Disc( Sheet, x, y, 3 );
-    elif tree[1] = 2 then 
+    elif tree[1] = 2 then
         Circle( Sheet, x, y, 3 );
-    elif tree[1] = 3 then 
+    elif tree[1] = 3 then
         Diamond( Sheet, x, y, 3, 3 );
     fi;
 
@@ -175,15 +175,15 @@ DrawSubtree := function( Sheet, root, v, tree )
     Line( Sheet, root[1], root[2], x-root[1], y-root[2] );
 
     # add text
-    if tree[3] > 1 then 
-        Text( Sheet, FONTS.small, x+2, y, StringIt(tree[3]) ); 
+    if tree[3] > 1 then
+        Text( Sheet, FONTS.small, x+2, y, StringIt(tree[3]) );
     fi;
 
     # init recursion
     w := v;
-    if Length(tree[2]) > 0 then 
+    if Length(tree[2]) > 0 then
         for j in [1..Length(tree[2])] do
-            if IsBound(tree[2][j]) then 
+            if IsBound(tree[2][j]) then
                 w := DrawSubtree( Sheet, [x,y], w, tree[2][j]) + 25;
             fi;
         od;
@@ -198,19 +198,19 @@ DrawRootedTree := function( grps )
     local Sheet, v, d, j;
 
     Sheet := GraphicSheet( "Tree", 1000, 700 );
-    
+
     # draw root
-    if grps[1] = 1 then 
+    if grps[1] = 1 then
         Disc( Sheet, 70, 100, 3 );
-    elif grps[1] = 2 then 
+    elif grps[1] = 2 then
         Circle( Sheet, 70, 100, 3 );
-    elif grps[1] = 3 then 
+    elif grps[1] = 3 then
         Diamond( Sheet, 70, 100, 3, 3 );
     fi;
 
     v := 70;
     for j in [1..Length(grps[2])] do
-        if IsBound(grps[2][j]) then 
+        if IsBound(grps[2][j]) then
             v := DrawSubtree( Sheet, [70,100], v, grps[2][j] )+25;
         fi;
     od;
@@ -230,14 +230,14 @@ CollectedTree := function(tree)
     # loop over descendants and collect
     for i in [1..Length(des)] do
         j := Position(des, des[i]);
-        if j < i then 
+        if j < i then
             tree[2][j][3] := tree[2][j][3] + 1;
             tree[2][i] := false;
         fi;
     od;
     tree[2] := Filtered(tree[2], x -> not IsBool(x));
     Print("  and got ",tree,"\n\n");
- 
+
     # recurse
     for i in [1..Length(tree[2])] do
         tree[2][i] := CollectedTree(tree[2][i]);
@@ -266,12 +266,12 @@ ConstCoverTree := function( G, r )
         m := grps[t][2];
         d := c+Length(Factors(m))-1;
 
-        # compute covers 
-        if m > 1 and d<=r then 
+        # compute covers
+        if m > 1 and d<=r then
             H := CodeCover(grps[t]);
-            new := SchurCovers(H); 
+            new := SchurCovers(H);
             for i in [1..Length(new)] do
-                new[i] := CoverCode(new[i]); 
+                new[i] := CoverCode(new[i]);
                 new[i][4] := d;
             od;
             Append(grps, new);
@@ -281,12 +281,12 @@ ConstCoverTree := function( G, r )
         fi;
 
         # replace grps[t]
-        if c < r then 
+        if c < r then
             grps[t] := [1, des];
         fi;
 
-        if c = r then 
-            if m = 1 then 
+        if c = r then
+            if m = 1 then
                 grps[t] := [3, []];
             else
                 grps[t] := [2, des];
@@ -296,7 +296,7 @@ ConstCoverTree := function( G, r )
 
     # reverse tree structure
     for t in Reversed([1..Length(grps)]) do
-        if Length(grps[t][2])>0 then 
+        if Length(grps[t][2])>0 then
             des := List(grps[t][2], x -> grps[x]);
             for i in grps[t][2] do Unbind(grps[i]); od;
             grps[t][2] := des;

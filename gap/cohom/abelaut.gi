@@ -49,12 +49,12 @@ end);
 
 InstallMethod( \=, "", IsIdenticalObj, [IsAPEndo, IsAPEndo], 0,
 function( auto1, auto2 )
-    return 
+    return
        auto1!.prime = auto2!.prime and
        auto1!.exp = auto2!.exp and
        auto1!.mat = auto2!.mat;
 end );
-      
+
 InstallMethod( \+, "", IsIdenticalObj, [IsAPEndo, IsAPEndo], 0,
 function( auto1, auto2 )
     local mat;

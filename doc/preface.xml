@@ -17,9 +17,9 @@ been recognised since.
 
 A well-known result of Hirsch asserts that each polycyclic group is
 finitely presented. In fact, a polycyclic group has a presentation
-which exhibits its polycyclic structure: a <E>pc-presentation</E> as defined 
-in the Chapter <Ref Chap="Introduction to polycyclic presentations" Style="Text"/>. Pc-presentations 
-allow efficient computations with the groups they define. In particular, 
+which exhibits its polycyclic structure: a <E>pc-presentation</E> as defined
+in the Chapter <Ref Chap="Introduction to polycyclic presentations" Style="Text"/>. Pc-presentations
+allow efficient computations with the groups they define. In particular,
 the word problem is efficiently solvable in a group given by a
 pc-presentation. Further, subgroups and factor groups of groups given
 by a pc-presentation can be handled effectively.
@@ -33,23 +33,23 @@ these basic algorithms we present a collection of methods to construct
 polycyclic groups and to investigate their structure.
 <P/>
 
-In <Cite Key="BCRS91"/> and <Cite Key="Seg90"/> the theory of problems which are 
-decidable in polycyclic-by-finite groups has been started. As a result 
-of these investigation we know that a large number of group theoretic 
-problems are decidable by algorithms in polycyclic groups. However, 
+In <Cite Key="BCRS91"/> and <Cite Key="Seg90"/> the theory of problems which are
+decidable in polycyclic-by-finite groups has been started. As a result
+of these investigation we know that a large number of group theoretic
+problems are decidable by algorithms in polycyclic groups. However,
 practical algorithms which are suitable for computer implementations
 have not been obtained by this study. We have developed a new set of
 practical methods for groups given by pc-presentations, see for example
-<Cite Key="Eic00"/>, and this package is a collection of implementations for these 
-and other methods. 
+<Cite Key="Eic00"/>, and this package is a collection of implementations for these
+and other methods.
 <P/>
 
-We refer to <Cite Key="Rob82"/>, page 147ff, and <Cite Key="Seg83"/> for background on 
-polycyclic groups. Further, in <Cite Key="Sims94"/> a variation of the basic 
-methods for groups with pc-presentation is introduced. Finally, we note 
-that the main GAP library contains many practical algorithms to compute 
-with finite polycyclic groups. This is described in the Section on 
-polycyclic groups in the reference manual. 
+We refer to <Cite Key="Rob82"/>, page 147ff, and <Cite Key="Seg83"/> for background on
+polycyclic groups. Further, in <Cite Key="Sims94"/> a variation of the basic
+methods for groups with pc-presentation is introduced. Finally, we note
+that the main GAP library contains many practical algorithms to compute
+with finite polycyclic groups. This is described in the Section on
+polycyclic groups in the reference manual.
 
 </Chapter>
 

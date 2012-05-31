@@ -67,7 +67,7 @@ NullspaceMatMod := function( mat, rels )
 
     # set up
     l := Length( mat );
-    
+
     # append relative orders
     mat := ShallowCopy( mat );
     idm := IdentityMat( Length(rels) );
@@ -133,7 +133,7 @@ end );
 
 #############################################################################
 ##
-#F LatticeIntersection( base1, base2 )  
+#F LatticeIntersection( base1, base2 )
 ##
 InstallGlobalFunction( LatticeIntersection, function( base1, base2 )
     local n, l, m, id, zr, A, i, H, I, h;
@@ -178,11 +178,11 @@ VectorModLattice := function( vec, base )
     local i, q;
     vec := ShallowCopy(vec);
     for i in [1..Length(vec)] do
-        if vec[i] <> 0 then 
+        if vec[i] <> 0 then
             q := QuotientRemainder( vec[i], base[i][i] );
             if q[2] < 0 then q[1] := q[1] - 1; fi;
             AddRowVector( vec, base[i], -q[1] );
-            if vec[i] < 0 or vec[i] >= base[i][i] then 
+            if vec[i] < 0 or vec[i] >= base[i][i] then
                 Error("bloody quotient");
             fi;
         fi;

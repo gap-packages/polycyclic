@@ -25,7 +25,7 @@ AsMat := function(aut, m)
 end;
 
 IntMat := function(mat,e)
-    if IsPrime(e) then 
+    if IsPrime(e) then
         return List(mat, IntVecFFE);
     else
         return List(mat, x -> List(x, ExtRepOfObj));

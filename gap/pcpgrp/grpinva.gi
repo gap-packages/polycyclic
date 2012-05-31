@@ -88,7 +88,7 @@ InvariantSubspaces := function( C, d )
     fi;
     return invs;
 end;
-    
+
 #############################################################################
 ##
 #F OrbitsInvariantSubspaces( C, d )
@@ -146,12 +146,12 @@ end;
 ##
 #F AllSubgroupsAbelian( dim, l )
 ##
-## The subgroups of the free abelian group of rank dim up to index l given 
+## The subgroups of the free abelian group of rank dim up to index l given
 ## as exponent vectors.
 ##
 AllSubgroupsAbelian := function( dim, l )
     local A, gens, fac, sub, i, p, r, sp, j, q, B, pcps, tmp, L, pcpL,
-          pcpsS, C, grps, U, V, pcpS, new; 
+          pcpsS, C, grps, U, V, pcpS, new;
 
     # create the abelian group
     A := AbelianPcpGroup( dim, List( [1..dim], x -> l ) );
@@ -177,8 +177,8 @@ AllSubgroupsAbelian := function( dim, l )
                 pcpL := Pcp( L, B );
                 for pcpS in pcps do
                     if IndexNC( A, L ) * pcpS!.index <= l then
-                        
-                        # compute complements in L to R / S 
+
+                        # compute complements in L to R / S
                         C := rec();
                         C.group := L;
                         C.factor := pcpL;
@@ -211,7 +211,7 @@ AllSubgroupsAbelian := function( dim, l )
     grps := List( grps, x -> InsertZeros( dim, x, l ) );
     return grps{[2..Length(grps)]};
 end;
-    
+
 AllSubgroupsAbelian2 := function( dim, n )
     local A, cl;
     A := AbelianPcpGroup( dim, List( [1..dim], x -> n ) );

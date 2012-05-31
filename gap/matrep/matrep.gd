@@ -8,7 +8,7 @@
 ##
 DeclareOperation( "UnitriangularMatrixRepresentation", [IsGroup] );
 
-DeclareProperty( "IsHomomorphismIntoMatrixGroup", 
+DeclareProperty( "IsHomomorphismIntoMatrixGroup",
                   IsGroupGeneralMappingByImages );
 
 DeclareGlobalFunction( "IsMatrixRepresentation" );

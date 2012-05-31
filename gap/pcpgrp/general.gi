@@ -51,7 +51,7 @@ end;
 ## N and U are subgroups of a free abelian group given by exponents.
 ##
 AbelianIntersection := function( baseN, baseU )
-    local n, s, id, ls, rs, is, g, I, al, ar, d, l1, l2, e, tm; 
+    local n, s, id, ls, rs, is, g, I, al, ar, d, l1, l2, e, tm;
 
     # if N or U is trivial
     if Length( baseN ) = 0 or Length( baseU ) = 0 then return []; fi;
@@ -60,10 +60,10 @@ AbelianIntersection := function( baseN, baseU )
     # if N or U are equal to G
     if Length( baseN ) = n then return baseU;
     elif Length( baseU ) = n then return baseN; fi;
-  
+
     # if N is a tail
     s := PositionNonZero( baseN[1] );
-    if Length( baseN ) = n-s+1 and 
+    if Length( baseN ) = n-s+1 and
     ForAll( baseN, x -> x[PositionNonZero(x)] = 1 ) then
         return Filtered( baseU, x -> Depth(x) >= s );
     fi;
@@ -98,7 +98,7 @@ AbelianIntersection := function( baseN, baseU )
         # compute sum and intersection
         while al <> id and ls[d] <> id  do
             l1 := ls[d][d];
-            l2 := al[d];            
+            l2 := al[d];
             e := Gcdex( l1, l2 );
             tm := e.coeff1 * ls[d] +  e.coeff2 * al;
             al := e.coeff3 * ls[d] +  e.coeff4 * al;
@@ -113,7 +113,7 @@ AbelianIntersection := function( baseN, baseU )
         if al <> id  then
             ls[d] := al;
             rs[d] := ar;
-       
+
         # we have a new intersection generator
         elif ar <> id then
             d := Depth( ar );
@@ -138,18 +138,18 @@ end;
 ##
 #F FrattiniSubgroup( G )
 ##
-InstallMethod( FrattiniSubgroup, "for pcp groups", true, [IsPcpGroup], 0, 
+InstallMethod( FrattiniSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
     local H, K, F, f, h;
-    
-    if not IsFinite(G) then 
+
+    if not IsFinite(G) then
         Error("Sorry - no algorithm available");
     fi;
 
     H := RefinedPcpGroup(G);
     K := PcpGroupToPcGroup(H);
     F := FrattiniSubgroup(K);
-    f := List( GeneratorsOfGroup(F), x -> 
+    f := List( GeneratorsOfGroup(F), x ->
          MappedVector( ExponentsOfPcElement(Pcgs(K), x), Igs(H) ) );
     h := List( f, x -> PreImagesRepresentative(H!.bijection,x));
     return Subgroup( G, h );
@@ -159,8 +159,8 @@ end );
 ##
 #F NormalMaximalSubgroups(G)
 ##
-InstallMethod( NormalMaximalSubgroups, "for pcp groups", true, 
-[IsPcpGroup], 0, function(G)
+InstallMethod( NormalMaximalSubgroups, "for pcp groups", [IsPcpGroup],
+function(G)
     local D, nat, H, prm, max, p, rep;
     D := DerivedSubgroup(G);
     if Index(G,D) = infinity then return fail; fi;
@@ -175,29 +175,16 @@ InstallMethod( NormalMaximalSubgroups, "for pcp groups", true,
     od;
     return List(max, x -> PreImage(nat,x));
 end);
-        
+
 #############################################################################
 ##
-#F Elements(G)
+#F AsList(G)
 ##
-InstallMethod( AsSSortedList, "for pcp groups", true, [IsPcpGroup], 0, 
-function(G)
-    local pcp, exp, elm;
-    if Size(G) = infinity then 
-        Error("group has infinitely many elements"); 
-    fi;
-    pcp := Pcp(G); 
-    exp := ExponentsByRels( RelativeOrdersOfPcp(pcp));
-    elm := List(exp, x -> MappedVector(x, pcp));
-    Sort(elm);
-    return elm;
-end);
-
-InstallMethod( AsList, "for pcp groups", true, [IsPcpGroup], 0, 
+InstallMethod( AsList, "for pcp groups", [IsPcpGroup],
 function(G)
     local pcp, exp;
     if Size(G) = infinity then return fail; fi;
-    pcp := Pcp(G); 
+    pcp := Pcp(G);
     exp := ExponentsByRels( RelativeOrdersOfPcp(pcp));
     return List(exp, x -> MappedVector(x, pcp));
 end);

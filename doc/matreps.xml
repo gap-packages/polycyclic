@@ -37,7 +37,7 @@ nilpotent groups.
 We call a matrix upper unitriangular if it is an upper triangular
 matrix with ones on the main diagonal.  The weight of an upper
 unitriangular matrix is the number of diagonals above the main
-diagonal that contain zeroes only.  
+diagonal that contain zeroes only.
 <P/>
 The subgroup of all upper unitriangular matrices of <M>GL(n,&ZZ;)</M> is
 torsion-free nilpotent.  The <M>k</M>-th term of its lower central series is
@@ -88,11 +88,11 @@ term of the lower central series modulo the <M>(k+1)</M>-th term is <M>n-k</M>.
 <ManSection>
 <Func Name="SiftUpperUnitriMat" Arg="gens, level, M"/>
 <Description>
-	takes the generators <A>gens</A> of an upper  unitriangular group, the data 
+	takes the generators <A>gens</A> of an upper  unitriangular group, the data
 	structure returned <A>level</A> by <C>SiftUpperUnitriMat</C> and another upper
 	unitriangular matrix <A>M</A>.  It sift <A>M</A> through <A>level</A> and adds <A>M</A> at
 	the appropriate place if <A>M</A> is not contained in the subgroup
-	represented by <A>level</A>. 
+	represented by <A>level</A>.
 	<P/>
 	The function <C>SiftUpperUnitriMatGroup</C> illustrates the use of
 	<C>SiftUpperUnitriMat</C>.

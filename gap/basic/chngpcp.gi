@@ -4,11 +4,11 @@
 ##
 ##  Algorithms to compute a new pcp groups whose defining pcp runs through
 ##  a given series or is a prime-infinite pcp.
-##  
+##
 
 #############################################################################
 ##
-#F RefinedIgs( <G> ) 
+#F RefinedIgs( <G> )
 ##
 ## returns a polycyclic generating sequence of G G with prime or infinite
 ## relative orders only. NOTE: this might be not induced!
@@ -46,7 +46,7 @@ end;
 ##
 #F RefinedPcpGroup( <G> ) . . . . . . . . refine to infinite or prime factors
 ##
-## this function returns a new pcp group H isomorphic to G such that the 
+## this function returns a new pcp group H isomorphic to G such that the
 ## defining pcp of H is refined. H!.bijection contains the bijection between
 ## H and G.
 ##
@@ -73,8 +73,8 @@ RefinedPcpGroup := function( G )
     # refined pcp
     pcs := Igs( G );
     new := RefinedIgs( G );
-    ord := new.rel; 
-    map := new.map; 
+    ord := new.rel;
+    map := new.map;
     new := new.pcs;
 
     # rewrite relations
@@ -132,7 +132,7 @@ end;
 ##
 #F PcpGroupByPcps( <pcps> ). . . . . . . . . . . . .  pcps is a list of pcp's
 ##
-## This function returns a new pcp group G. Its defining igs corresponds to 
+## This function returns a new pcp group G. Its defining igs corresponds to
 ## the given series. G!.bijection contains a bijection from the old group
 ## to the new one.
 ##
@@ -181,7 +181,7 @@ end;
 ##
 #F PcpGroupByEfaPcps( <pcps> ) . . . . . . . . . . .  pcps is a list of pcp's
 ##
-## This function returns a new pcp group G. Its defining igs corresponds to 
+## This function returns a new pcp group G. Its defining igs corresponds to
 ## the given series. G!.bijection contains a bijection from the old group
 ## to the new one.
 ##
@@ -231,7 +231,7 @@ end;
 
 #############################################################################
 ##
-#F PcpGroupBySeries( <ser>[, <flag>] ) 
+#F PcpGroupBySeries( <ser>[, <flag>] )
 ##
 ## Computes a new pcp presentation through series. If two arguments are
 ## given, then the factors will be reduced to SNF.
@@ -245,14 +245,14 @@ PcpGroupBySeries := function( arg )
     r    := Length( ser ) - 1;
 
     # the trivial case
-    if r = 0 then 
+    if r = 0 then
         G := ser[1];
         G!.bijection := IdentityMapping( G );
         return G;
     fi;
 
     # otherwise pass arguments on
-    if Length( arg ) = 2 then 
+    if Length( arg ) = 2 then
         pcps := List( [1..r], i -> Pcp( ser[i], ser[i+1], "snf" ) );
     else
         pcps := List( [1..r], i -> Pcp( ser[i], ser[i+1] ) );
@@ -266,7 +266,7 @@ end;
 ##
 #F PcpGroupByEfaSeries(G)
 ##
-InstallMethod( PcpGroupByEfaSeries, true, [IsPcpGroup], 0,
+InstallMethod( PcpGroupByEfaSeries, [IsPcpGroup],
 function(G)
     local efa, GG, iso, new;
     efa := EfaSeries(G);

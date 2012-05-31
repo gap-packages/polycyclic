@@ -66,8 +66,8 @@ BinaryPowering := function( A, m, e )
     # set up for binary powers approach
     l := Log( e, 2 );
     p := [m];
-    for i in [1..l] do Add( p, p[i]^2 ); od; 
-    
+    for i in [1..l] do Add( p, p[i]^2 ); od;
+
     # compute binary powers
     r := ShallowCopy( A.one );
     for i in [1..e-1] do
@@ -79,7 +79,7 @@ BinaryPowering := function( A, m, e )
     # compute final power
     c := CoefficientsQadic( e, 2 );
     c := MappedVector( c, p );
-  
+
     return [r, c];
 end;
 
@@ -105,11 +105,11 @@ CollectedOneCRNew := function( A, w )
             else
                 tail[w[i][1]] := r[1] * t;
             fi;
- 
+
             # adjust tail
             t := r[2] * t;
         else
-    
+
             # compute l + l^2 + ... + l^e
             r := BinaryPowering( A, A.invs[w[i][1]], -w[i][2] );
             r[1] := A.invs[w[i][1]] * r[1];

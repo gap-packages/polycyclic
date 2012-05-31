@@ -3,7 +3,7 @@
 #W  nilpot.gi                   Polycyc                         Bettina Eick
 #W                                                             Werner Nickel
 ##
-##  This file defines special functions for nilpotent groups. The 
+##  This file defines special functions for nilpotent groups. The
 ##  corresponding methods are usually defined with the general methods
 ##  for pcp groups in other files.
 ##
@@ -21,7 +21,7 @@ end;
 #F PcpNextStepCentralizer( gens, cent, pcp )
 ##
 PcpNextStepCentralizer := function( gens, cent, pcp )
-    local   pcpros,  rels,  i,  g,  newgens,  matrix,  notcentral,  h,  
+    local   pcpros,  rels,  i,  g,  newgens,  matrix,  notcentral,  h,
             pcpgens,  comm,  null,  j,  elm,  r,  l;
 
     pcpgens := GeneratorsOfPcp( pcp );
@@ -56,7 +56,7 @@ PcpNextStepCentralizer := function( gens, cent, pcp )
 #Print("  got matrix \n");
 
         if Length( matrix ) > 0  then
-    
+
             # add the relations to the matrix.
             Append( matrix, rels );
 
@@ -115,11 +115,11 @@ end;
 CentralizerNilpotentPcpGroup := function( G, g )
     local sers, cent, U;
     if Length(Igs(G)) = 0 then return G; fi;
-    if IsPcpElement(g) then 
+    if IsPcpElement(g) then
         if not g in G then TryNextMethod(); fi;
         sers := LowerCentralSeriesOfGroup(G);
         cent := CentralizeByCentralSeries( G, [g], sers );
-    elif IsPcpGroup(g) then 
+    elif IsPcpGroup(g) then
         if not IsSubgroup( G, g ) then TryNextMethod(); fi;
         SetIsNilpotentGroup( g, true );
         sers := LowerCentralSeriesOfGroup(G);

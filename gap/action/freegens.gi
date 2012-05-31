@@ -2,7 +2,7 @@
 ##
 #W  freegens.gi               Polycyclic Pakage                  Bettina Eick
 ##
-##  Compute minimal generating sets for abelian mat groups in various 
+##  Compute minimal generating sets for abelian mat groups in various
 ##  situations.
 ##
 
@@ -22,7 +22,7 @@ FreeGensByRelationMat := function( gens, mat )
         for i in [Length(mat)+1..Length(mat[1])] do
             Add( mat, mat[1] * 0 );
         od;
-    fi; 
+    fi;
 
     # solve it
     S := NormalFormIntMat( mat, 9 );
@@ -50,7 +50,7 @@ FreeGensByRelsAndOrders := function( gens, mat, ords )
         Add( mat, ords[i] * idm[i] );
     od;
 
-    # return 
+    # return
     return FreeGensByRelationMat( gens, mat );
 end;
 

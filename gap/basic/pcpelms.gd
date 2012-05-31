@@ -11,14 +11,16 @@ DeclareCategory( "IsPcpElement", IsMultiplicativeElementWithInverse );
 DeclareCategoryFamily( "IsPcpElement" );
 DeclareCategoryCollections( "IsPcpElement" );
 
+InstallTrueMethod( IsGeneratorsOfMagmaWithInverses, IsPcpElementCollection );
+
 #############################################################################
 ##
 ## Introduce the representation of pcp elements
 ##
-DeclareRepresentation( "IsPcpElementRep", 
+DeclareRepresentation( "IsPcpElementRep",
                         IsComponentObjectRep,
-                        ["collector", 
-                         "exponents", 
+                        ["collector",
+                         "exponents",
                          "depth",
                          "leading",
                          "name" ] );
@@ -51,5 +53,5 @@ DeclareAttribute( "TailOfElm",        IsPcpElement );
 DeclareAttribute( "RelativeOrderPcp", IsPcpElement );
 DeclareAttribute( "RelativeIndex",    IsPcpElement );
 DeclareAttribute( "FactorOrder",      IsPcpElement );
- 
+
 

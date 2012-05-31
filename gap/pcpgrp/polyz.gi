@@ -22,7 +22,7 @@ end;
 #F PolyZNormalSubgroup( G )
 ##
 ## returns a normal subgroup N of finite index in G such that N has a
-## normal series with free abelian factors. 
+## normal series with free abelian factors.
 ##
 InstallGlobalFunction( PolyZNormalSubgroup, function( G )
     local N, F, U, ser, nat, pcps, m, i, free, j, p;
@@ -42,7 +42,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
         i    := m;
         while RelativeOrdersOfPcp( pcps[i] )[1] > 0 do
             i := i - 1;
-        od; 
+        od;
         free := AsList( pcps[i] );
         for j in [i+1..m] do
             free := GeneratorsOfCentralizerOfPcp( free, pcps[j] );
@@ -54,7 +54,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
             fi;
         od;
 
-        # reset  
+        # reset
         U := Subgroup( F, free );
         N := PreImage( nat, U );
         Add( ser, N );

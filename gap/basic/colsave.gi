@@ -2,7 +2,7 @@
 ##
 #F  StringByFTLCollector . . . . . . . convert an ftl collector into a string
 ##
-InstallMethod( String, 
+InstallMethod( String,
         "from-the-left collector",
         [ IsFromTheLeftCollectorRep ],
 
@@ -20,29 +20,29 @@ function( coll )
     Append( S, " := FromTheLeftCollector( " );
     Append( S, String(n) );
     Append( S, " );\n" );
-    
+
     # install power relations
     for i in [1..n] do
         if IsBound( coll![PC_EXPONENTS][i] ) then
-            
+
             Append( S, "SetRelativeOrder( " );
             Append( S, name );                   Append( S, ", " );
             Append( S, String( i ) );            Append( S, ", " );
             Append( S, String( coll![PC_EXPONENTS][i] ) );
             Append( S, " );\n" );
-            
+
             Append( S, "SetPower( " );
             Append( S, name );                   Append( S, ", " );
             Append( S, String(i) );              Append( S, ", " );
             if IsBound( coll![PC_POWERS][i] ) then
                 Append( S, String( coll![PC_POWERS][i] ) );
-            else 
+            else
                 Append( S, "[]" );
             fi;
             Append( S, " );\n" );
         fi;
     od;
-    
+
     # install conjugate relations
     for j in [1..n] do
         for i in [1..j-1] do
@@ -51,12 +51,12 @@ function( coll )
                 Append( S, name );      Append( S, ", " );
                 Append( S, String(j) ); Append( S, ", " );
                 Append( S, String(i) ); Append( S, ", " );
-                Append( S, String( coll![PC_CONJUGATES][j][i] ) ); 
+                Append( S, String( coll![PC_CONJUGATES][j][i] ) );
                 Append( S, " );\n" );
             fi;
         od;
     od;
-    
+
     for j in [1..n] do
         for i in [1..j-1] do
             if IsBound(coll![PC_CONJUGATESINVERSE][j][i]) then
@@ -69,7 +69,7 @@ function( coll )
             fi;
         od;
     od;
-    
+
     for j in [1..n] do
         for i in [1..j-1] do
             if IsBound(coll![PC_INVERSECONJUGATES][j][i]) then
@@ -82,7 +82,7 @@ function( coll )
             fi;
         od;
     od;
-    
+
     for j in [1..n] do
         for i in [1..j-1] do
             if IsBound(coll![PC_INVERSECONJUGATESINVERSE][j][i]) then
@@ -95,7 +95,7 @@ function( coll )
             fi;
         od;
     od;
-    
+
     return S;
 end );
 

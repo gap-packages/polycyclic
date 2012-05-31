@@ -24,12 +24,12 @@ end;
 ##
 #F AddToIgsParallel( <pcs>, <gens>, <ppcs>, <pgens> )
 ##
-## This function adds the elements in <gens> to the induced pcs <pcs>. 
+## This function adds the elements in <gens> to the induced pcs <pcs>.
 ## It acts simultaneously on <pcs> and <ppcs> as well as <gens> and <pgens>.
 ##
-InstallGlobalFunction( AddToIgsParallel, 
+InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, id, todo, tododo, ind, indd, g, gg, d, h, hh, k, 
+    local coll, rels, n, id, todo, tododo, ind, indd, g, gg, d, h, hh, k,
           eg, eh, e, changed, c, i, r, sub;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
@@ -56,7 +56,7 @@ function( pcs, gens, ppcs, pgens )
     sub   := Filtered( [1..Length(gens)], x -> Depth(gens[x]) < c );
     todo  := gens{sub};
     tododo:= pgens{sub};
-    
+
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
         g  := todo[Length(todo)];
@@ -104,16 +104,16 @@ function( pcs, gens, ppcs, pgens )
             if d <= Length( rels ) and rels[d] > 0 then
                 r := RelativeOrderPcp( g );
                 k := g ^ r;
-                if Depth(k) < c then  
-                    Add( todo, k ); 
+                if Depth(k) < c then
+                    Add( todo, k );
                     Add( tododo, gg^r );
                 fi;
             fi;
             for i in [1..Length(ind)] do
                 if not IsBool( ind[i] ) then
                     k := Comm( g, ind[i] );
-                    if Depth(k) < c then  
-                        Add( todo, k ); 
+                    if Depth(k) < c then
+                        Add( todo, k );
                         Add( tododo, Comm( gg, indd[i] ) );
                     fi;
                 fi;
@@ -145,9 +145,9 @@ InstallGlobalFunction( CgsParallel, function( gens, pre )
     local   can,  cann,  i,  f,  e,  j,  l,  d,  r, s;
 
     if Length( gens ) = 0 then return []; fi;
-    
+
     can  := IgsParallel( gens, pre );
-    cann := can[2]; 
+    cann := can[2];
     can  := can[1];
 
     # first norm leading coefficients

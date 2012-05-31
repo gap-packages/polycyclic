@@ -14,7 +14,7 @@ SchurCoversByOrder := function(grpsfile, p,n,d)
                              "_",String(d),
                              ".gi");
 
-    PrintTo(file,"SCover[",p,"][",n,"][",d,"] := [\n"); 
+    PrintTo(file,"SCover[",p,"][",n,"][",d,"] := [\n");
 
     # extend gps
     Print("compute covers \n");
@@ -23,14 +23,14 @@ SchurCoversByOrder := function(grpsfile, p,n,d)
 
             # get group
             G := ItCover(p,i,d,j);
-    
+
             # check relevance and extend if necessary
-            if Size(G)*G!.mord = p^n then 
-    
+            if Size(G)*G!.mord = p^n then
+
                 # info
                 Print("start group ",j," of ",NrItCovers(p,i,d));
                 Print(" with order p^",i," \n");
-    
+
                 # get covers
                 new := SchurCovers(G);
 
@@ -43,12 +43,12 @@ SchurCoversByOrder := function(grpsfile, p,n,d)
     # add abelians
     Print("add abelian groups \n");
     for q in Partitions(n) do
-        if Length(q) = d then 
- 
+        if Length(q) = d then
+
             # get group
             G := AbelianPcpGroup(d, List(q, x -> p^x));
 
-            # print 
+            # print
             AppendTo(file, CoverCode(G),", \n");
         fi;
     od;

@@ -3,22 +3,22 @@
 #W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
 #W                                                              Werner Nickel
 #W                                                                   Max Horn
-##  
-#H  @(#)$Id: PackageInfo.g,v 1.39 2012/01/12 18:28:41 gap Exp $
+##
+#H  @(#)$Id: PackageInfo.g,v 1.46 2012/05/31 16:42:22 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.9",
-Date        := "12/01/2012",
+Version     := "2.10",
+Date        := "31/05/2012",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "2.9">
-##  <!ENTITY RELEASEDATE "12 January 2012">
+##  <!ENTITY VERSION "2.10">
+##  <!ENTITY RELEASEDATE "31 May 2012">
 ##  <#/GAPDoc>
 
-Persons          := [ 
+Persons          := [
   rec( LastName      := "Eick",
        FirstNames    := "Bettina",
        IsAuthor      := true,
@@ -64,9 +64,9 @@ Persons          := [
      )
     ],
 
-Status              := "accepted",
-CommunicatedBy   := "Charles Wright (Eugene)",
-AcceptDate       := "01/2004",
+Status         := "accepted",
+CommunicatedBy := "Charles Wright (Eugene)",
+AcceptDate     := "01/2004",
 
 PackageWWWHome := "http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/",
 
@@ -75,31 +75,36 @@ ArchiveURL     := Concatenation( ~.PackageWWWHome, "polycyclic-", ~.Version ),
 README_URL     := Concatenation( ~.PackageWWWHome, "README" ),
 PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 
-AbstractHTML     :=
-"This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.",
-
+AbstractHTML   := Concatenation(
+  "This package provides various algorithms for computations ",
+  "with polycyclic groups defined by polycyclic presentations."
+  ),
 
 PackageDoc     := rec(
-                BookName  := "polycyclic",
-                ArchiveURLSubset   := [ "doc" ],
-                HTMLStart := "doc/chap0.html",
-                PDFFile   := "doc/manual.pdf",
-                SixFile   := "doc/manual.six",
-                LongTitle := "Computation with polycyclic groups",
-                Autoload  := true),
+  BookName  := "polycyclic",
+  ArchiveURLSubset := [ "doc" ],
+  HTMLStart := "doc/chap0.html",
+  PDFFile   := "doc/manual.pdf",
+  SixFile   := "doc/manual.six",
+  LongTitle := "Computation with polycyclic groups",
+  Autoload  := true
+),
 
 Dependencies    := rec(
-                GAP                    := ">= 4.4",
-                NeededOtherPackages    := [["alnuth", "1.0"],
-                                           ["autpgrp","1.0"]],
-                SuggestedOtherPackages := [["nq","1.0"]],
-                ExternalConditions     := [ ]),
+  GAP                    := ">= 4.4",
+  NeededOtherPackages    := [["alnuth", "1.0"],
+                             ["autpgrp","1.4"]],
+  SuggestedOtherPackages := [ ],
+  ExternalConditions     := [ ]
+),
 
 AvailabilityTest := ReturnTrue,
-BannerString     := Concatenation( "Loading polycyclic ",
-                            String( ~.Version ), " ...\n" ),
+
+TestFile := "tst/testall.g",
+
 Autoload         := true,
-Keywords         := [ 
+
+Keywords := [
   "finitely generated nilpotent groups",
   "metacyclic groups",
   "collection",
@@ -121,7 +126,7 @@ Keywords         := [
   "polycyclic group",
   "polycyclically presented group",
   "polycyclic presentation",
-  "maximal subgroups", 
+  "maximal subgroups",
   "Schur cover",
   "Schur multiplicator",
   ]

@@ -4,7 +4,7 @@
 <entry id="Rob82"><book>
   <author>
     <name><first>D. J.</first><last>Robinson</last></name>
-  </author>  
+  </author>
   <title>A Course in the Theory of Groups</title>
   <publisher>Springer-Verlag</publisher>
   <year>1982</year>
@@ -15,7 +15,7 @@
 <entry id="Seg83"><book>
   <author>
     <name><first>D.</first><last>Segal</last></name>
-  </author>  
+  </author>
   <title>Polycyclic Groups</title>
   <publisher>Cambridge University Press</publisher>
   <year>1983</year>
@@ -24,7 +24,7 @@
 <entry id="Seg90"><article>
   <author>
     <name><first>D.</first><last>Segal</last></name>
-  </author>  
+  </author>
   <title>Decidable properties of polycyclic groups</title>
   <journal>Proc. London Math. Soc. (3)</journal>
   <year>1990</year>
@@ -36,7 +36,7 @@
 <entry id="Hir38a"><article>
   <author>
     <name><first>K. A.</first><last>Hirsch</last></name>
-  </author>  
+  </author>
   <title>On Infinite Soluble Groups <C>(I)</C></title>
   <journal>Proc. London Math. Soc.</journal>
   <year>1938</year>
@@ -47,7 +47,7 @@
 <entry id="Hir38b"><article>
   <author>
     <name><first>K. A.</first><last>Hirsch</last></name>
-  </author>  
+  </author>
   <title>On Infinite Soluble Groups <C>(II)</C></title>
   <journal>Proc. London Math. Soc.</journal>
   <year>1938</year>
@@ -58,7 +58,7 @@
 <entry id="Hir46"><article>
   <author>
     <name><first>K. A.</first><last>Hirsch</last></name>
-  </author>  
+  </author>
   <title>On Infinite Soluble Groups <C>(III)</C></title>
   <journal>J. London Math. Soc.</journal>
   <year>1946</year>
@@ -69,7 +69,7 @@
 <entry id="Hir52"><article>
   <author>
     <name><first>K. A.</first><last>Hirsch</last></name>
-  </author>  
+  </author>
   <title>On Infinite Soluble Groups <C>(IV)</C></title>
   <journal>J. London Math. Soc.</journal>
   <year>1952</year>
@@ -79,7 +79,7 @@
 <entry id="Hir54"><article>
   <author>
     <name><first>K. A.</first><last>Hirsch</last></name>
-  </author>  
+  </author>
   <title>On Infinite Soluble Groups <C>(V)</C></title>
   <journal>J. London Math. Soc.</journal>
   <year>1954</year>
@@ -92,7 +92,7 @@
     <name><first>F. B.</first><last>Cannonito</last></name>
     <name><first>D. J. S.</first><last>Robinson</last></name>
     <name><first>D.</first><last>Segal</last></name>
-  </author>  
+  </author>
   <title>The algorithmic theory of polycyclic-by-finite groups</title>
   <journal>J. Algebra</journal>
   <year>1991</year>
@@ -102,7 +102,7 @@
 <entry id="Sims94"><book>
   <author>
     <name><first>Charles C.</first><last>Sims</last></name>
-  </author>  
+  </author>
   <title>Computation with finitely presented groups</title>
   <publisher>Cambridge University Press</publisher>
   <year>1994</year>
@@ -118,7 +118,7 @@
   <author>
     <name><first>C. R.</first><last>Leedham-Green</last></name>
     <name><first>L. H.</first><last>Soicher</last></name>
-  </author>  
+  </author>
   <title>Collection from the left and other strategies</title>
   <journal>J. Symbolic Comput.</journal>
   <year>1990</year>
@@ -133,7 +133,7 @@
 <entry id="MVL90"><article>
   <author>
     <name><first>M. R.</first><last>Vaughan-Lee</last></name>
-  </author>  
+  </author>
   <title>Collection from the left</title>
   <journal>J. Symbolic Comput.</journal>
   <year>1990</year>
@@ -149,7 +149,7 @@
   <author>
     <name><first>James R.</first><last>Beuerle</last></name>
     <name><first>Luise-Charlotte</first><last>Kappe</last></name>
-  </author>  
+  </author>
   <title>Infinite metacyclic groups and their non-abelian
                          tensor squares</title>
   <journal>Proc. Edinburgh Math. Soc. (2)</journal>
@@ -165,8 +165,8 @@
 <entry id="WWM97"><mastersthesis>
   <author>
     <name><first>Wolfgang W.</first><last>Merkwitz</last></name>
-  </author>  
-  <title><C>Symbolische Multiplikation in nilpotenten Gruppen 
+  </author>
+  <title><C>Symbolische Multiplikation in nilpotenten Gruppen
                           mit Deep Thought</C></title>
   <school>RWTH Aachen</school>
   <year>1997</year>
@@ -176,7 +176,7 @@
   <author>
     <name><first>C. R.</first><last>Leedham-Green</last></name>
     <name><first>Leonard H.</first><last>Soicher</last></name>
-  </author>  
+  </author>
   <title>Symbolic collection using <C>D</C>eep <C>T</C>hought</title>
   <journal>LMS J. Comput. Math.</journal>
   <year>1998</year>
@@ -190,7 +190,7 @@
 <entry id="Eic00"><inproceedings>
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
-  </author>  
+  </author>
   <title>Computing with infinite polycyclic groups</title>
   <booktitle><C>Groups and Computation <C>III</C></C></booktitle>
   <year>2000</year>
@@ -201,7 +201,7 @@
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
     <name><first>Gretchen</first><last>Ostheimer</last></name>
-  </author>  
+  </author>
   <title>On the orbit stabilizer problem for integral matrix
                       actions of polycyclic groups</title>
   <journal>Accepted by Math. Comp</journal>
@@ -210,7 +210,7 @@
 <entry id="Eic01"><article>
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
-  </author>  
+  </author>
   <title>On the <C>Fitting</C> subgroup of a polycyclic-by-finite group
                      and its applications</title>
   <journal>J. Algebra</journal>
@@ -221,7 +221,7 @@
 <entry id="Eic01b"><misc>
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
-  </author>  
+  </author>
   <title>Computations with polycyclic groups</title>
   <howpublished>Habilitationsschrift, Kassel</howpublished>
   <year>2001</year>
@@ -229,7 +229,7 @@
 <entry id="Eic02"><article>
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
-  </author>  
+  </author>
   <title>Orbit-stabilizer problems and computing normalizers for
                       polycyclic groups</title>
   <journal>J. Symbolic Comput.</journal>
@@ -240,7 +240,7 @@
 <entry id="Lo99"><misc>
   <author>
     <name><first>Eddie H.</first><last>Lo</last></name>
-  </author>  
+  </author>
   <title>Enumerating finite index subgroups of polycyclic groups</title>
   <howpublished>Unpublished report</howpublished>
   <year>1998</year>
@@ -249,7 +249,7 @@
   <author>
     <name><first>Eddie H.</first><last>Lo</last></name>
     <name><first>Gretchen</first><last>Ostheimer</last></name>
-  </author>  
+  </author>
   <title>A practical algorithm for finding matrix
                         representations for polycyclic groups</title>
   <journal>J. Symbolic Comput.</journal>
@@ -260,7 +260,7 @@
 <entry id="Lo98"><article>
   <author>
     <name><first>E. H.</first><last>Lo</last></name>
-  </author>  
+  </author>
   <title>Finding intersection and normalizer in
                         finitely generated nilpotent groups</title>
   <journal>J. Symbolic Comput.</journal>
@@ -271,7 +271,7 @@
 <entry id="Ost99"><article>
   <author>
     <name><first>G.</first><last>Ostheimer</last></name>
-  </author>  
+  </author>
   <title>Practical algorithms for polycyclic matrix groups</title>
   <journal>J. Symbolic Comput.</journal>
   <year>1999</year>
@@ -282,8 +282,8 @@
   <author>
     <name><first>Willem A.</first><last>de Graaf</last></name>
     <name><first>Werner</first><last>Nickel</last></name>
-  </author>  
-  <title>Constructing faithful representations of 
+  </author>
+  <title>Constructing faithful representations of
   finitely-generated torsion-free nilpotent groups</title>
   <journal>J. Symbolic Comput.</journal>
   <year>2002</year>
@@ -298,8 +298,8 @@
   <author>
     <name><first>Bettina</first><last>Eick</last></name>
     <name><first>Werner</first><last>Nickel</last></name>
-  </author>  
-  <title>Computing the Schur multiplicator  and  the  non-abelian 
+  </author>
+  <title>Computing the Schur multiplicator  and  the  non-abelian
                   tensor square of a polycyclic group</title>
   <journal>J. Algebra</journal>
   <year>2008</year>

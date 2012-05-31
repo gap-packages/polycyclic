@@ -10,7 +10,7 @@
 InstallGlobalFunction( NqExamples, function( n )
     local NqF, NqColl;
 
-if n = 1 then 
+if n = 1 then
 
 NqF := FreeGroup( 24 );
 NqColl := FromTheLeftCollector( NqF );
@@ -317,7 +317,7 @@ SetConjugate( NqColl, 18, -2, NqF.18 );
 
 return PcpGroupByCollector( NqColl );
 
-elif n = 2 then 
+elif n = 2 then
 
 NqF := FreeGroup( 13 );
 NqColl := FromTheLeftCollector( NqF );
@@ -444,7 +444,7 @@ SetConjugate( NqColl, -10, -2, NqF.10^-1 );
 
 return PcpGroupByCollector( NqColl );
 
-elif n = 3 then 
+elif n = 3 then
 
 NqF := FreeGroup( 17 );
 NqColl := FromTheLeftCollector( NqF );

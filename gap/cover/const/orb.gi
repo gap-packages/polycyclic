@@ -36,7 +36,7 @@ HybridOrbitCover := function( A, pt, act )
 
     # get block
     block := AgOrbitCover( A, pt, act );
-    
+
     # set up orbit
     orbit := [block];
 
@@ -54,7 +54,7 @@ HybridOrbitCover := function( A, pt, act )
         k := k + 1;
         #Print("    OS: sub length ",Length(block)," * ",Length(orbit),"\n");
     od;
-    
+
     return Concatenation( orbit );
 end;
 
@@ -66,7 +66,7 @@ MyOrbits := function( A, len, act )
     # set up boolean list of length len
     todo := []; todo[len] := true; for i in [1..len] do todo[i] := true; od;
 
-    # c is the number of entries true, 
+    # c is the number of entries true,
     # a+1 is the position of the first true
     c := len; a := 1;
 
@@ -84,10 +84,10 @@ MyOrbits := function( A, len, act )
 
         # cancel in todo-list
         for j in o do
-            if j < len then 
+            if j < len then
                 if todo[j+1] = false then Error("orb problem"); fi;
                 todo[j+1] := false;
-                c := c-1; 
+                c := c-1;
             fi;
         od;
 

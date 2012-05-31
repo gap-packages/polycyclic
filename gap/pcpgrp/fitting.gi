@@ -9,7 +9,9 @@
 ##
 #A SemiSimpleEfaSeries( G )
 ##
-SemiSimpleEfaSeriesPcpGroup := function(G)
+InstallMethod( SemiSimpleEfaSeries,
+               "for pcp groups", [IsPcpGroup],
+function(G)
     local efas, pcps, refs, i, rels, d, mats, subs, j, gens, U, f;
 
     efas := EfaSeries( G );
@@ -21,14 +23,14 @@ SemiSimpleEfaSeriesPcpGroup := function(G)
 
         # compute radical series
         rels := RelativeOrdersOfPcp( pcps[i] );
-        mats := LinearActionOnPcp( Igs(G), pcps[i] ); 
+        mats := LinearActionOnPcp( Igs(G), pcps[i] );
         d := Length( rels );
-        if rels[1] > 0 then 
+        if rels[1] > 0 then
             f := GF( rels[1] );
             mats := InducedByField( mats, f );
             subs := RadicalSeriesOfFiniteModule( mats, d, f );
         fi;
-        if rels[1] = 0 then 
+        if rels[1] = 0 then
             subs := RadicalSeriesOfRationalModule( mats, d );
             subs := List( subs, x -> PurifyRationalBase( x ) );
         fi;
@@ -44,11 +46,7 @@ SemiSimpleEfaSeriesPcpGroup := function(G)
 
     # that's it
     return refs;
-end;
-
-InstallMethod( SemiSimpleEfaSeries, 
-               "for pcp groups", true, [IsPcpGroup], 0,
-function( G ) return SemiSimpleEfaSeriesPcpGroup(G); end );
+end );
 
 ## return LowerCentralSeries for nilpotent groups?
 
@@ -56,47 +54,43 @@ function( G ) return SemiSimpleEfaSeriesPcpGroup(G); end );
 ##
 #F FittingSubgroup( G )
 ##
-FittingSubgroupPcpGroup := function( G )
+InstallMethod( FittingSubgroup,
+               "for pcp groups", [IsPcpGroup],
+function( G )
     local efas, pcps, l, F, i;
 
     efas := SemiSimpleEfaSeries( G );
-    pcps := PcpsBySeries( efas, "snf" ); 
+    pcps := PcpsBySeries( efas, "snf" );
     l := Length( efas ) - 1;
     Info( InfoPcpGrp, 1, "determined semisimple series of length ",l);
-    
+
     # compute centralizer of ssefa - finite cases first
     F := G;
     for i in [1..l] do
         Info( InfoPcpGrp, 1, "centralize ",i,"th layer - finite");
         F := KernelOfFiniteAction( F, pcps[i] );
-        if RelativeOrdersOfPcp(pcps[i])[1] = 0 then 
+        if RelativeOrdersOfPcp(pcps[i])[1] = 0 then
             Info( InfoPcpGrp, 1, "centralize ",i,"th layer - infinite");
             F := KernelOfCongruenceAction( F, pcps[i] );
         fi;
     od;
 
-    return F;
-end;
-
-InstallMethod( FittingSubgroup, 
-               "for pcp groups", true, [IsPcpGroup and IsNilpotentGroup], 0,
-function( G ) return G; end );
-
-InstallMethod( FittingSubgroup, 
-               "for pcp groups", true, [IsPcpGroup], 0,
-function( G )
-    local F;
-    F := FittingSubgroupPcpGroup(G); 
     SetIsNilpotentGroup( F, true );
     if IndexNC( G, F ) = 1 then SetIsNilpotentGroup( G, true ); fi;
     return F;
 end );
 
+InstallMethod( FittingSubgroup,
+               "for pcp groups", [IsPcpGroup and IsNilpotentGroup],
+               IdFunc );
+
 #############################################################################
 ##
 #F IsNilpotentByFinite( G )
 ##
-IsNilpotentByFinitePcpGroup := function( G )
+InstallMethod( IsNilpotentByFinite,
+               "for pcp groups", [IsPcpGroup],
+function( G )
     local efas, pcps, l, F, i, mats, idmt;
 
     efas := SemiSimpleEfaSeries( G );
@@ -115,11 +109,7 @@ IsNilpotentByFinitePcpGroup := function( G )
         fi;
     od;
     return true;
-end;
-
-InstallMethod( IsNilpotentByFinite,
-               "for pcp groups", true, [IsPcpGroup], 0,
-               IsNilpotentByFinitePcpGroup );
+end );
 
 #############################################################################
 ##
@@ -156,15 +146,15 @@ CentrePcpGroup := function( G )
     return C;
 end;
 
-InstallMethod( Centre, 
-               "for pcp groups", true, [IsPcpGroup], 0,
-function( G ) 
-    if IsAbelian(G) then 
+InstallMethod( Centre,
+               "for pcp groups", [IsPcpGroup],
+function( G )
+    if IsAbelian(G) then
         return G;
-    elif IsNilpotentGroup(G) then 
+    elif IsNilpotentGroup(G) then
         return CentreNilpotentPcpGroup(G);
     else
-        return CentrePcpGroup(G); 
+        return CentrePcpGroup(G);
     fi;
 end );
 
@@ -187,9 +177,9 @@ UpperCentralSeriesPcpGroup := function( G )
     return Reversed( upp );
 end;
 
-InstallMethod( UpperCentralSeriesOfGroup, true, [IsPcpGroup], 0,
+InstallMethod( UpperCentralSeriesOfGroup, [IsPcpGroup],
 function( G )
-    if IsNilpotentGroup(G) then 
+    if IsNilpotentGroup(G) then
         return UpperCentralSeriesNilpotentPcpGroup(G);
     fi;
     return UpperCentralSeriesPcpGroup(G);
@@ -197,9 +187,9 @@ end );
 
 
 #############################################################################
-##  
+##
 #F FCCentre( G )
-##  
+##
 FCCentrePcpGroup := function( G )
     local N, hom, H, F, C, K, gens, g, pcp, mat, fix;
 
@@ -218,8 +208,8 @@ FCCentrePcpGroup := function( G )
     gens := Pcp( K, F );
     for g in AsList( gens ) do
 
-        # get pcp 
-        pcp := Pcp( C ); 
+        # get pcp
+        pcp := Pcp( C );
         if Length( pcp ) = 0 then return C; fi;
 
         # compute action by g on pcp
@@ -233,19 +223,19 @@ FCCentrePcpGroup := function( G )
     return PreImage( hom, C );
 end;
 
-InstallMethod( FCCentre, 
-               "FCCentre for pcp groups", true, [IsPcpGroup], 0,
-function( G ) 
+InstallMethod( FCCentre,
+               "FCCentre for pcp groups", [IsPcpGroup],
+function( G )
     if IsFinite(G) then return G; fi;
     return FCCentrePcpGroup(G);
 end );
 
-InstallMethod( FCCentre, 
-               "FCCentre for finite groups", true, [IsGroup and IsFinite], 0,
-function( G ) return G; end );
+InstallMethod( FCCentre,
+               "FCCentre for finite groups", [IsGroup and IsFinite],
+               IdFunc );
 
 #############################################################################
-##  
+##
 #F NilpotentByAbelianByFiniteSeries( G )
 ##
 InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )

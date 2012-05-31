@@ -33,7 +33,7 @@ NextStepRepresentation := function( G, i, mats )
     C := CRRecordByMats( F, mats );
     cc := OneCohomologyCR( C );
     Print("  got cohomology with orders ", cc.factor.rels, "\n");
-    
+
     # choose a cocycle
     rc := List( cc.gcc, Reversed );
     rc := NormalFormIntMat( rc, 2 ).normal;
@@ -42,13 +42,13 @@ NextStepRepresentation := function( G, i, mats )
     co := Reversed( rc[Length(rc)] );
 
     for j in [1..Length(cc.factor.prei)] do
-        if co = cc.factor.prei[j] then 
+        if co = cc.factor.prei[j] then
             coc := co;
         else
             coc := co + cc.factor.prei[j];
         fi;
         news := ExtendAffine( mats, coc );
-        if not IsMatrixRepresentation( F, news ) then 
+        if not IsMatrixRepresentation( F, news ) then
             Error("no mat rep");
         fi;
         news := NextStepRepresentation( G, i+1, news );
@@ -56,7 +56,7 @@ NextStepRepresentation := function( G, i, mats )
    od;
    return false;
 end;
-         
+
 AffineRepresentation := function( G )
     local mats, news;
     mats := [[[1,0],[1,1]]];
@@ -66,4 +66,4 @@ AffineRepresentation := function( G )
         Error("no representation ");
     fi;
     return news;
-end;         
+end;

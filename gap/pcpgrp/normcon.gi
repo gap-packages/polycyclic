@@ -16,7 +16,7 @@ AffineActionOnH1 := function( CR, cc )
     aff := OperationOnH1( CR, cc );
     l   := Length( cc.factor.rels );
     for i in [1..Length(aff)] do
-        if aff[i] = 1 then 
+        if aff[i] = 1 then
             aff[i] := IdentityMat( l+1 );
         else
             lin := List( aff[i].lin, x -> cc.CocToFactor( cc, x ) );
@@ -40,7 +40,7 @@ VectorByComplement := function( CR, U )
     local fac, vec, igs;
     fac := CR.factor;
     igs := Cgs(U);
-    vec := List( [1..Length(fac)], i -> 
+    vec := List( [1..Length(fac)], i ->
            ExponentsByPcp( CR.normal, fac[i]^-1 * igs[i] ) );
     return Flat(vec);
 end;
@@ -52,7 +52,7 @@ end;
 LiftBlockToPointNormalizer := function( CR, cc, C, H, HN )
     local b, r, t, i, c, igs;
 
-    # set up b and t 
+    # set up b and t
     b := AddIgsToIgs( Igs(H), DenominatorOfPcp( CR.normal ) );
     r := List( cc.rls, x -> MappedVector( x, CR.normal ) );
     b := AddIgsToIgs( r, b );
@@ -183,8 +183,8 @@ PcpsOfAbelianFactor := function( N, I )
 
     # the factor mod torsion
     T := SubgroupByIgsAndIgs( N, tor, sub );
-    if IndexNC(N,T) > 1 then 
-        Add( ser, Pcp(N,T,"snf") ); 
+    if IndexNC(N,T) > 1 then
+        Add( ser, Pcp(N,T,"snf") );
         pcp := Pcp(T, I);
         rel := RelativeOrdersOfPcp( pcp );
     fi;
@@ -195,7 +195,7 @@ PcpsOfAbelianFactor := function( N, I )
         gen := List( pcp, x -> x^p );
         gen := Filtered( gen, x -> x <> One(N) );
         M := SubgroupByIgsAndIgs( N, gen, sub );
-        Add( ser, Pcp(T,M,"snf") ); 
+        Add( ser, Pcp(T,M,"snf") );
         T := M;
         pcp := Pcp(T, I);
         rel := RelativeOrdersOfPcp( pcp );
@@ -225,7 +225,7 @@ NormalizerOfComplement := function( C, H, N, I )
         L := SubgroupByIgsAndIgs( C, Igs(H), Igs(M) );
 
         # set up H^1
-        CR := rec( group  := L, 
+        CR := rec( group  := L,
                    super  := Pcp( C, L ),
                    factor := Pcp( L, M ),
                    normal := pcp );
@@ -234,7 +234,7 @@ NormalizerOfComplement := function( C, H, N, I )
         AddOperationCR( CR );
         AddInversesCR( CR );
 
-        # determine 1-cohomology 
+        # determine 1-cohomology
         cc := OneCohomologyEX( CR );
         if IsBool( cc ) then Error("no complement \n"); fi;
 
@@ -258,7 +258,7 @@ end;
 #F NormalizerBySeries( G, U, efa )
 ##
 NormalizerBySeries := function( G, U, efa )
-    local C, i, N, M, hom, H, I, nat, k; 
+    local C, i, N, M, hom, H, I, nat, k;
 
     # do a simple check
     if Size(U) = 1 or G = U then return G; fi;
@@ -319,24 +319,20 @@ NormalizerPcpGroup := function( G, U )
     return Image(GG!.bijection, NN );
 end;
 
-InstallMethod( NormalizerOp, "for a pcp group", true,
-        [IsPcpGroup, IsPcpGroup], 0,
-function( G, U ) 
+InstallMethod( NormalizerOp, "for a pcp group", IsIdenticalObj,
+        [IsPcpGroup, IsPcpGroup],
+function( G, U )
     local H;
 
-    # check
-    if not IsSubgroup( Parent(G), U ) then
-        Error("arguments must have a common parent group");
-    fi;
-
     # catch a special case
-    if not IsSubgroup( G, U ) then 
-        H := SubgroupByIgs( Parent(G), Igs(G), Igs(U) );
-        return Intersection( G, NormalizerPcpGroup( H, U ) );
+    if IsSubgroup( G, U ) then
+        return NormalizerPcpGroup( G, U );
     fi;
 
-    # treat the general case
-    return NormalizerPcpGroup( G, U ); 
+     # find a common overgroup of G and U and compute the normalizer in there
+     H := PcpGroupByCollectorNC( Collector( G ) );
+     H := SubgroupByIgs( H, Igs(G), Igs(U) );
+     return Intersection( G, NormalizerPcpGroup( H, U ) );
 end );
 
 #############################################################################
@@ -350,20 +346,11 @@ end;
 #############################################################################
 ##
 #F IsConjugate( G, U, V )
-#F ConjugacySubgroupsPcpGroup( G, U, V )
 ##
-ConjugacySubgroupsPcpGroup := function( G, U, V )
-
-    # check
-    if not IsSubgroup(Parent(G),U) or not IsSubgroup( Parent(G), V ) then
-        Error("arguments must have a common parent group");
-    fi;
-
+InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
+        [IsPcpGroup, IsPcpGroup, IsPcpGroup],
+function( G, U, V )
     # compute
     return ConjugacySubgroupsBySeries( G, U, V, PcpsOfEfaSeries(G) );
-end;
-
-InstallMethod( IsConjugate, "for a pcp group", true,
-        [IsPcpGroup, IsPcpGroup, IsPcpGroup], 0,
-function( G, U, V ) return ConjugacySubgroupsPcpGroup( G, U, V ); end );
+end );
 

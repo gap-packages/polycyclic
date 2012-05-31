@@ -10,12 +10,12 @@
 ##
 InstallMethod( TrivialGroupCons,
     "pcp group",
-    [ IsPcpGroup ],
+    [ IsPcpGroup and IsFinite ],
 function( filter )
     return PcpGroupByCollectorNC( FromTheLeftCollector( 0 ) );
 end );
 
-   
+
 #############################################################################
 ##
 #M  AbelianGroupCons( <IsPcpGroup>, <ints> )
@@ -57,7 +57,7 @@ end );
 ##
 InstallMethod( ElementaryAbelianGroupCons,
 	"pcp group",
-    [ IsPcpGroup, IsPosInt ],
+    [ IsPcpGroup and IsFinite, IsPosInt ],
 function(filter,size)
 
     local grp;
@@ -78,7 +78,7 @@ end);
 ##
 InstallMethod( CyclicGroupCons,
     "pcp group",
-    [ IsPcpGroup, IsPosInt ],
+    [ IsPcpGroup and IsFinite, IsPosInt ],
 function( filter, n )
     local coll, grp;
 
@@ -121,7 +121,7 @@ end );
 ##
 InstallMethod( DihedralGroupCons,
     "pcp group",
-    [ IsPcpGroup, IsPosInt ],
+    [ IsPcpGroup and IsFinite, IsPosInt ],
 function( filter, n )
     local coll, grp;
 
@@ -168,7 +168,7 @@ if CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
 
 InstallMethod( QuaternionGroupCons,
     "pcp group",
-    [ IsPcpGroup, IsPosInt ],
+    [ IsPcpGroup and IsFinite, IsPosInt ],
 function( filter, n )
     local coll, grp;
 
@@ -190,7 +190,56 @@ end );
 
 fi;
 
-# TODO:
-# ExtraspecialGroupCons
-# AlternatingGroupCons for n <= 4 ?
-# SymmetricGroupCons for n <= 4 ?
+#############################################################################
+##
+#M  ExtraspecialGroupCons( <IsPcpGroup>, <order>, <exponent> )
+##
+InstallMethod( ExtraspecialGroupCons,
+    "pcp group",
+    [ IsPcpGroup and IsFinite,
+      IsInt,
+      IsObject ],
+function( filters, order, exp )
+    local G;
+    G := ExtraspecialGroupCons( IsPcGroup and IsFinite, order, exp );
+    return PcGroupToPcpGroup( G );
+end );
+
+#############################################################################
+##
+#M  AlternatingGroupCons( <IsPcpGroup>, <deg> )
+##
+InstallMethod( AlternatingGroupCons,
+    "pcp group with degree",
+    [ IsPcpGroup and IsFinite,
+      IsPosInt ],
+function( filter, deg )
+    local   alt;
+    if 4 < deg  then
+        Error( "<deg> must be at most 4" );
+    fi;
+    alt := AlternatingGroupCons(IsPcGroup and IsFinite,deg);
+    alt := PcGroupToPcpGroup(alt);
+    SetIsAlternatingGroup( alt, true );
+    return alt;
+end );
+
+
+#############################################################################
+##
+#M  SymmetricGroupCons( <IsPcpGroup>, <deg> )
+##
+InstallMethod( SymmetricGroupCons,
+    "pcp group with degree",
+    [ IsPcpGroup and IsFinite,
+      IsPosInt ],
+function( filter, deg )
+    local sym;
+    if 4 < deg  then
+        Error( "<deg> must be at most 4" );
+    fi;
+    sym := SymmetricGroupCons(IsPcGroup and IsFinite,deg);
+    sym := PcGroupToPcpGroup(sym);
+    SetIsSymmetricGroup( sym, true );
+    return sym;
+end );

@@ -11,7 +11,7 @@
 ##  is sets U!.isNormal before to avoid unnecessary normal closures in
 ##  CommutatorSubgroup.
 ##
-InstallMethod( LowerCentralSeriesOfGroup, true, [IsPcpGroup], 0, 
+InstallMethod( LowerCentralSeriesOfGroup, [IsPcpGroup],
 function( G )
     local ser, U;
     ser := [G];
@@ -25,7 +25,7 @@ function( G )
     return ser;
 end );
 
-InstallMethod( PCentralSeriesOp, true, [IsPcpGroup, IsPosInt], 0,
+InstallMethod( PCentralSeriesOp, [IsPcpGroup, IsPosInt],
 function( G, p )
     local ser, U, C, pcp, new;
     ser := [G];
@@ -51,20 +51,20 @@ end );
 InstallGlobalFunction( PcpSeries, function( G )
     local pcs, ser;
     pcs := Igs( G );
-    ser := List( [1..Length(pcs)], 
+    ser := List( [1..Length(pcs)],
            i ->  SubgroupByIgs( G, pcs{[i..Length(pcs)]} ) );
     Add( ser, TrivialSubgroup(G) );
     return ser;
-end );   
+end );
 
 #############################################################################
 ##
 #F  CompositionSeries(G)
 ##
-InstallMethod( CompositionSeries, true, [IsPcpGroup], 0,
+InstallMethod( CompositionSeries, [IsPcpGroup],
 function(G)
     local g, r, n, s, i, f, m, j, e, U;
- 
+
     if not IsFinite(G) then Error("composition series is infinite"); fi;
 
     # set up
@@ -75,7 +75,7 @@ function(G)
     # construct series
     s := [G];
     for i in [1..n] do
-        if r[i] > 1 then 
+        if r[i] > 1 then
             f := Factors(r[i]);
             m := Length(f);
             for j in [1..m-1] do
@@ -153,7 +153,7 @@ InstallGlobalFunction( EfaSeriesParent, function( G )
         U := ser[i];
         V := ser[i+1];
 
-        # if the factor is free or elementary abelian, then 
+        # if the factor is free or elementary abelian, then
         # everything is fine
         pcp  := Pcp( U, V );
         if IsEfaFactorPcp( pcp ) then
@@ -172,7 +172,7 @@ InstallGlobalFunction( EfaSeriesParent, function( G )
     return new;
 end );
 
-InstallMethod( EfaSeries, true, [IsPcpGroup], 0, 
+InstallMethod( EfaSeries, [IsPcpGroup],
 function( G )
     local efa, new, L, A, B;
 
@@ -224,10 +224,10 @@ InstallGlobalFunction( RefinedDerivedSeries, function( G )
         # take the free part for the top factor
         free := Filtered( [1..n], x -> rels[x] = 0 );
         fini := Filtered( [1..n], x -> rels[x] > 0 );
-        if Length( free ) > 0 then 
+        if Length( free ) > 0 then
             f := AddToIgs( Igs(B), gens{fini} );
             U := SubgroupByIgs( G, f );
-            Add( ref, U ); 
+            Add( ref, U );
         else
             U := A;
         fi;
@@ -375,7 +375,7 @@ end );
 ##  Some of the factors in this series know already its pcp. The other must
 ##  be computed.
 ##
-InstallMethod( PcpsOfEfaSeries, true, [IsPcpGroup], 0, 
+InstallMethod( PcpsOfEfaSeries, [IsPcpGroup],
 function( G )
     local ser, i, new, pcp;
     ser := EfaSeries( G );

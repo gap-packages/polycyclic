@@ -33,7 +33,7 @@ end );
 #############################################################################
 ##
 #F OneCoboundariesEX( A ) . . . . . . . . . . one cobounds and transformation
-#F OneCoboundariesCR( A ) 
+#F OneCoboundariesCR( A )
 ##
 InstallGlobalFunction( OneCoboundariesEX, function( A )
     local n, mat, i, v, j;
@@ -126,7 +126,7 @@ InstallGlobalFunction( OneCohomologyEX, function( C )
     # compute linear mapping extend coh.gcc to an full basis
     coh.invgcc := InverseCohMapping( coh, coh.gcc );
 
-    # add conversion functions 
+    # add conversion functions
     coh.CocToCCElement := function( coh, coc )
         local new;
         if Length( coh.gcc ) = 0 then return []; fi;
@@ -134,7 +134,7 @@ InstallGlobalFunction( OneCohomologyEX, function( C )
         return new{[ 1..Length(coh.gcc)]};
     end;
 
-    # add conversion functions 
+    # add conversion functions
     coh.CocToCBElement := function( coh, coc )
         local new;
         if Length( coh.gcb ) = 0 then return []; fi;
@@ -157,13 +157,13 @@ InstallGlobalFunction( OneCohomologyEX, function( C )
         elm := elm * coh.factor.imgs;
         if IsBool( coh.fld ) then
             for i in [1..Length(elm)] do
-                if coh.factor.rels[i] > 0 then 
+                if coh.factor.rels[i] > 0 then
                     elm[i] := elm[i] mod coh.factor.rels[i];
                 fi;
             od;
         fi;
         return elm;
-    end;        
+    end;
 
     coh.FactorToCoc := function( coh, elm )
         return elm * coh.factor.prei;

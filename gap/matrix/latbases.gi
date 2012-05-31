@@ -21,7 +21,7 @@ end;
 
 #############################################################################
 ##
-#F  FactorLattice( V, U ) 
+#F  FactorLattice( V, U )
 ##
 FactorLattice := function( V, U )
     local d, g, r, i, j, e;
@@ -30,12 +30,12 @@ FactorLattice := function( V, U )
     r := [];
     for i in [1..Length(V)] do
         j := Position( d, PositionNonZero(V[i]) );
-        if IsBool(j) then 
+        if IsBool(j) then
             Add( g, V[i] );
             Add( r, 0 );
         else
             e := AbsInt( U[j][d[j]] / V[i][d[j]] );
-            if e > 1 then 
+            if e > 1 then
                 Add( g, V[i] );
                 Add( r, e );
             fi;
@@ -62,7 +62,7 @@ CoefficientsByFactorLattice := function( F, v )
         # reduce with factor
         j := Position( df, l );
         if not IsBool( j ) then
-            if F.rels[j] > 0 then 
+            if F.rels[j] > 0 then
                 e := Gcdex( F.rels[j], F.gens[j][l] );
                 cf[j] := (v[l]/e.gcd * e.coeff2) mod F.rels[j];
             else

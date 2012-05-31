@@ -151,7 +151,7 @@ PcpOrbitsStabilizers := function( dom, pcp, act, op )
     while Length( todo ) > 0 do
         e := dom[todo[1]];
         o := PcpOrbitStabilizer( e, pcp, act, op );
-        Add( orbs, rec( repr := o.orbit[1], 
+        Add( orbs, rec( repr := o.orbit[1],
                         leng := Length(o.orbit),
                         stab := o.stab,
                         word := o.word ) );
@@ -210,9 +210,9 @@ RandomPcpOrbitStabilizer := function( e, pcp, act, op )
                     else
                         count := 0;
                     fi;
-                    if count > 100 then 
+                    if count > 100 then
                         Print( "#I  Stabilizer not increasing: exiting.\n" );
-                        return rec( orbit := O, stab := S ); 
+                        return rec( orbit := O, stab := S );
                     fi;
                 fi;
             fi;
@@ -234,7 +234,7 @@ RandomCentralizerPcpGroup := function( G, g )
     gens := Igs( G );
     if IsPcpElement( g ) then
         stab := RandomPcpOrbitStabilizer( g, gens, gens, OnPoints ).stab;
-    elif IsSubgroup( G, g ) then 
+    elif IsSubgroup( G, g ) then
         stab := ShallowCopy( gens );
         for h in GeneratorsOfGroup( g ) do
             stab := RandomPcpOrbitStabilizer( h, stab, stab, OnPoints ).stab;

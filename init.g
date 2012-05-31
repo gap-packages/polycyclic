@@ -10,19 +10,19 @@
 ##
 #D Read .gd files
 ##
-ReadPkg( "polycyclic", "gap/matrix/matrix.gd");
-ReadPkg( "polycyclic", "gap/basic/infos.gd");
-ReadPkg( "polycyclic", "gap/basic/collect.gd");
-ReadPkg( "polycyclic", "gap/basic/pcpelms.gd");
-ReadPkg( "polycyclic", "gap/basic/pcpgrps.gd");
-ReadPkg( "polycyclic", "gap/basic/pcppcps.gd");
-ReadPkg( "polycyclic", "gap/basic/grphoms.gd");
-ReadPkg( "polycyclic", "gap/basic/basic.gd");
-ReadPkg( "polycyclic", "gap/cohom/cohom.gd");
-ReadPkg( "polycyclic", "gap/matrep/matrep.gd");
-ReadPkg( "polycyclic", "gap/matrep/unitri.gd");
-ReadPkg( "polycyclic", "gap/pcpgrp/pcpgrp.gd");
-ReadPkg( "polycyclic", "gap/exam/exam.gd");
+ReadPackage( "polycyclic", "gap/matrix/matrix.gd");
+ReadPackage( "polycyclic", "gap/basic/infos.gd");
+ReadPackage( "polycyclic", "gap/basic/collect.gd");
+ReadPackage( "polycyclic", "gap/basic/pcpelms.gd");
+ReadPackage( "polycyclic", "gap/basic/pcpgrps.gd");
+ReadPackage( "polycyclic", "gap/basic/pcppcps.gd");
+ReadPackage( "polycyclic", "gap/basic/grphoms.gd");
+ReadPackage( "polycyclic", "gap/basic/basic.gd");
+ReadPackage( "polycyclic", "gap/cohom/cohom.gd");
+ReadPackage( "polycyclic", "gap/matrep/matrep.gd");
+ReadPackage( "polycyclic", "gap/matrep/unitri.gd");
+ReadPackage( "polycyclic", "gap/pcpgrp/pcpgrp.gd");
+ReadPackage( "polycyclic", "gap/exam/exam.gd");
 
 #############################################################################
 ##
@@ -35,4 +35,13 @@ if not CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
     if not IsBound( Calcreps2 ) then
         DeclareSynonym( "Calcreps2", calcreps2 );
     fi;
+fi;
+
+##
+## Load list of obsolete names. In GAP before 4.5, this is always done;
+## starting with GAP 4.5, we honors the "ReadObsolete" user preference.
+##
+if not CompareVersionNumbers( GAPInfo.Version, "4.5.0")
+    or UserPreference( "ReadObsolete" ) <> false then
+	ReadPackage( "polycyclic", "gap/obsolete.gd");
 fi;

@@ -11,7 +11,7 @@ InstallGlobalFunction( BurdeGrunewaldPcpGroup, function( s, t )
     local F, k3, k4, k5, k6, k7, k8, k9, k10, k11, G;
 
     F := FromTheLeftCollector( 11 );
-    
+
     k11 := 2*(203230225 - 12930435*s + 677376*s^2 + 4372200*t);
     k10 := -2267555 + 151088*s - 126000*t;
     k9 := 6*(-1108 - 525*s - 1400*t);
@@ -23,7 +23,7 @@ InstallGlobalFunction( BurdeGrunewaldPcpGroup, function( s, t )
     k3 := -1;
     SetConjugate( F, 2, 1, [2,1,3,k3,4,k4,5,k5,6,k6,7,k7,8,k8,9,k9,
                             10,k10,11,k11] );
- 
+
     k11 := 180*(-5202055 + 135870*s + 18816*s^2 - 190050*t);
     k10 := 80*(45515 - 3066*s + 3150*t);
     k9 := 35*(829 + 180*s - 360*t);
@@ -119,7 +119,7 @@ InstallGlobalFunction( BurdeGrunewaldPcpGroup, function( s, t )
     k11 := -10843875;
     SetConjugate( F, 6, 5, [6,1,11,k11] );
 
-    k11 := 31500; 
+    k11 := 31500;
     k10 := -1400;
     k9 := 105;
     k8 := -6;
@@ -142,8 +142,8 @@ InstallGlobalFunction( BurdeGrunewaldPcpGroup, function( s, t )
     k9 := -35;
     SetConjugate( F, 8, 1, [8,1,9,k9,10,k10,11,k11] );
 
-    k11 := -141120*s; 
-    k10 := -7280; 
+    k11 := -141120*s;
+    k10 := -7280;
     SetConjugate( F, 8, 2, [8,1,10,k10,11,k11] );
 
     k11 := -505575;

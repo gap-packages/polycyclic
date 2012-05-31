@@ -13,15 +13,15 @@ RadicalSeriesOfFiniteModule := function( mats, d, f )
     base := IdentityMat( d, f );
     sers := [base];
     modu := GModuleByMats( mats, d, f );
-    repeat 
+    repeat
         radb := SMTX.BasisRadical( modu );
-        if Length( radb ) > 0 then 
+        if Length( radb ) > 0 then
             base := radb * base;
-        else 
+        else
             base := [];
         fi;
         Add( sers, base );
-        if Length( base ) > 0 then 
+        if Length( base ) > 0 then
             modu := SMTX.InducedActionSubmodule( modu, radb );
         fi;
     until Length( base ) = 0;
@@ -33,10 +33,10 @@ end;
 #F RadicalOfCongruenceModule( mats, d ) . . . . . . .for congruence subgroups
 ##
 RadicalOfCongruenceModule := function( mats, d )
-    local coms, i, j, new, base, full, nath, indm, l, algb, newv, tmpb, subb, 
+    local coms, i, j, new, base, full, nath, indm, l, algb, newv, tmpb, subb,
           f, g, h, mat;
 
-    # get commutators 
+    # get commutators
     coms := [];
     for i in [1..Length( mats )] do
         for j in [i+1..Length( mats )] do
@@ -58,7 +58,7 @@ RadicalOfCongruenceModule := function( mats, d )
         # add next element to algebra basis
         l := Length( algb );
         newv := Flat( indm[i] );
-        tmpb := SpinnUpEchelonBase( algb, [newv], indm{[1..i]}, OnMatVector ); 
+        tmpb := SpinnUpEchelonBase( algb, [newv], indm{[1..i]}, OnMatVector );
 
         # check whether we have added a non-semi-simple element
         subb := [];
@@ -75,7 +75,7 @@ RadicalOfCongruenceModule := function( mats, d )
 
         # spinn up new subspace of radical
         subb := SpinnUpEchelonBase( [], subb, indm, OnRight );
-        if Length( subb ) > 0 then 
+        if Length( subb ) > 0 then
             base := PreimageByNHSEB( subb, nath );
             nath := NaturalHomomorphismBySemiEchelonBases( full, base );
             indm := List( mats, x -> InducedActionFactorByNHSEB( x, nath ) );
@@ -125,7 +125,7 @@ RadicalOfRationalModule := function( mats, d )
     # get base
     base := AlgebraBase( mats );
     if Length(base) = 0 then return rec( radical := [] ); fi;
-    
+
     # set up system of linear equations ( Tr( ai * aj ) )
     trac := List( base, b -> List( base, c -> TraceMatProd( b, c, d ) ) );
 
@@ -152,7 +152,7 @@ RadicalSeriesOfRationalModule := function( mats, d )
     sers := [full];
     base := full;
     acts := mats;
-    repeat 
+    repeat
         radb := RadicalOfRationalModule( acts, d ).radical;
         if Length(radb) > 0 then
             base := radb * base;
@@ -205,7 +205,7 @@ SplitSemisimple := function( base )
     f := Factors( b.poly );
 
     # the trivial case
-    if Length( f ) = 1 then 
+    if Length( f ) = 1 then
         return [rec( basis := IdentityMat(Length(base[1])), poly := f )];
     fi;
 
@@ -228,7 +228,7 @@ HomogeneousSeriesOfCongruenceModule := function( mats, d )
     if Length( mats ) = 0 then return [full, []]; fi;
     sers := [full];
 
-    # get the radical 
+    # get the radical
     radb := RadicalOfCongruenceModule( mats, d );
     splt := SplitSemisimple( radb.algebra );
     nath := radb.nathom;
@@ -237,11 +237,11 @@ HomogeneousSeriesOfCongruenceModule := function( mats, d )
     l := Length( splt );
     for i in [2..l] do
         sub := Concatenation( List( [i..l], x -> splt[x].basis ) );
-        TriangulizeMat( sub ); 
+        TriangulizeMat( sub );
         Add( sers, PreimageByNHSEB( sub, nath ) );
     od;
     Add( sers, radb.radical );
-        
+
     # induce action to radical
     nath := NaturalHomomorphismBySemiEchelonBases( full, radb.radical );
     acts := List( mats, x -> InducedActionSubspaceByNHSEB( x, nath ) );
@@ -261,7 +261,7 @@ end;
 ##
 HomogeneousSeriesOfRationalModule := function( mats, cong, d )
     local full, sers, radb, nath, fact, base, splt, l, i, sub, acts, subs,
-          rads; 
+          rads;
 
     # catch the trivial case and set up
     if d = 0 then return []; fi;

@@ -10,9 +10,9 @@
 ##
 #M MinimalGeneratingSet( G )
 ##
-InstallMethod( MinimalGeneratingSet, "for pcp groups", true, [IsPcpGroup], 0,
+InstallMethod( MinimalGeneratingSet, "for pcp groups", [IsPcpGroup],
 function( G )
-    if IsNilpotentGroup( G ) then 
+    if IsNilpotentGroup( G ) then
         return MinimalGeneratingSetNilpotentPcpGroup(G);
     else
         Error("sorry: function is not installed");
@@ -23,7 +23,7 @@ end );
 ##
 #M SmallGeneratingSet( G )
 ##
-InstallMethod( SmallGeneratingSet, "for pcp groups", true, [IsPcpGroup], 0,
+InstallMethod( SmallGeneratingSet, "for pcp groups", [IsPcpGroup],
 function( G )
     local g, s, U, i, V;
     if Size(G) = 1 then return []; fi;
@@ -48,9 +48,9 @@ end );
 ##
 #M SylowSubgroup( G, p )
 ##
-InstallMethod( SylowSubgroupOp, true, [IsPcpGroup, IsPosInt], 0, 
+InstallMethod( SylowSubgroupOp, [IsPcpGroup, IsPosInt],
 function( G, p )
-    if not IsFinite(G) then 
+    if not IsFinite(G) then
         Error("sorry: function is not installed");
     fi;
     TryNextMethod();

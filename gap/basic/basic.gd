@@ -4,14 +4,14 @@
 ##
 
 #############################################################################
-## 
+##
 #F  The collector
 ##
 DeclareOperation( "Collector", [ IsObject ] );
 
 #############################################################################
-## 
-#F  Exponent vectors. 
+##
+#F  Exponent vectors.
 ##
 DeclareGlobalFunction( "ReducedByIgs" );
 DeclareGlobalFunction( "ExponentsByIgs");

@@ -10,16 +10,8 @@ fi;
 
 #############################################################################
 ##
-#A ReduceVector 
+#A ReduceTail
 ##
-ReduceVector := function( v, d, f )
-    local i;
-    for i in [1..Length(v)] do
-        if d[i] > 1 then v[i] := v[i] mod d[i]; fi;
-    od;
-    return v{f};
-end;
-
 ReduceTail := function( w, n, Q, d, f )
     local   i,  a,  v;
 
@@ -33,12 +25,12 @@ ReduceTail := function( w, n, Q, d, f )
         v := v + Q[ w[i] - n ] * w[i+1];
         i := i+2;
     od;
-    
+
     for i in [1..Length(v)] do
         if d[i] > 1 then v[i] := v[i] mod d[i]; fi;
     od;
-    
-    for i in [1..Length(f)] do 
+
+    for i in [1..Length(f)] do
         Add( a, n+i ); Add( a, v[ f[i] ] );
     od;
 
@@ -47,112 +39,28 @@ end;
 
 #############################################################################
 ##
-#A OldSchurExtension(G) .. . . . . . . . . . . . . . . . . . . . . . .F/[R,F]
+#A SchurExtensionEpimorphism(G) . . . . . . . epimorphism from F/R to F/[R,F]
 ##
-OldSchurExtension := function(G)
-    local g, r, n, C, c, M, D, P, Q, d, f, l, I, coll, i, j, e, a, b,
-          ocoll, H, U;
+InstallMethod( SchurExtensionEpimorphism, "for pcp groups", [IsPcpGroup], function(G)
+    local g, r, n, y, coll, k, i, j, e, sys, ext, extgens, images, epi, ker;
 
-    # set up
-    g := Igs(G);
-    r := List(g, x -> RelativeOrderPcp(x));
-    n := Length(Igs(G));
-
-    # cohomology record and system
-    C := CRRecordByMats(G, List(g, x -> IdentityMat(1)));
-    c := IntTwoCocycleSystemCR(C); 
-    M := c.base;
-
-    # check
-    if c.len = 0 then return G; fi;
-    if Length(M) = 0 then M := NullMat(c.len, c.len); fi;
-    if Length(M) < Length(M[1]) then 
-         for i in [1..Length(M[1])-Length(M)] do
-             Add(M, 0*M[1]);
-         od;
+    # handle the trivial group
+    if IsTrivial(G) then
+    	return IdentityMapping(G);
     fi;
 
-    Print( "#  SchurExtension: Dealing with ", 
-           Length(M), "x", Length(M[1]), 
-           "-matrix from cohomology calculation\n" );
-
-    # set up
-    if USE_NFMI then
-        D := NormalFormIntMat(M,13);
-        Q := D.coltrans;
-        P := D.rowtrans;
-        d := DiagonalOfMat( D.normal );
-    else
-        D := NormalFormConsistencyRelations(M);
-        Q := D.coltrans;
-        P := D.rowtrans;
-        d := [1..Length(M[1])] * 0;
-        d{List( D.normal, r->PositionNot( r, 0 ) )} := 
-          List( D.normal, r->First( r, e->e<>0 ) ); 
-    fi;    
-
-    f := Filtered([1..Length(d)], x -> d[x] <> 1);
-    l := Length(f);
-
-    Print( "#  SchurExtension: Setting up collector with ", n+l, 
-           " generators\n" );
-
-    # initialize collector
-    coll := FromTheLeftCollector(n+l);
-
-    # relative orders
-    for i in [1..n] do
-        SetRelativeOrder(coll, i, r[i]);
-    od;
-    for i in [1..l] do
-        SetRelativeOrder(coll, n+i, d[f[i]]);
-    od;
-    
-    # relations of G
-    ocoll := Collector( G );
-    for i in [1..Length(C.enumrels)] do
-        e := C.enumrels[i];
-        b := ReduceVector(Q[i], d, f);
-        if e[1] = e[2] then
-            a := ExponentsByObj( ocoll, GetPower( ocoll, e[1] ) );
-            SetPower(coll, e[1], ObjByExponents(coll, Concatenation(a,b)));
-        elif e[1] > e[2] then
-            a := ExponentsByObj( ocoll, GetConjugate( ocoll, e[1], e[2] ) );
-            SetConjugate(coll, e[1], e[2], 
-                     ObjByExponents(coll, Concatenation(a,b)));
-        elif e[1] < e[2] then
-            a := ExponentsByObj( ocoll, 
-                         GetConjugate( ocoll, e[1], -(e[2]-e[1]) ) );
-            SetConjugate(coll, e[1], -(e[2]-e[1]), 
-                     ObjByExponents(coll, Concatenation(a,b)));
-        fi;
-    od;
-
-    # set up group 
-    UpdatePolycyclicCollector( coll );
-    H := PcpGroupByCollectorNC(coll);
-
-    # enforce surjectivity
-    U := Subgroup(H, Cgs(H){[1..Length(Igs(G))]}); 
-    Cgs(U);
-    return U;
-end;
-
-#############################################################################
-##
-#A SchurExtension(G) . . . . . . . . . . . . . . . . . . . . . . . .  F/[R,F]
-##
-# FIXME: This function is documented and should be turned into a attribute
-SchurExtension := function(G)
-    local g, r, n, y, coll, k, i, j, e, sys, T;
-
     # set up
     g := Igs(G);
+    n := Length(g);
     r := List(g, x -> RelativeOrderPcp(x));
-    n := Length(Igs(G));
+
+    if n = 1 then
+        ext := AbelianPcpGroup(1, [0]); # the infinite cyclic group
+        return GroupHomomorphismByImagesNC( ext, G, GeneratorsOfGroup(ext), GeneratorsOfGroup(G) );;
+    fi;
 
     # get collector for extension
-    y := n*(n-1)/2 + Length(Filtered(r, x -> x>0));
+    y := n*(n-1)/2 + Number(r, x -> x>0);
     coll := FromTheLeftCollector(n+y);
 
     # add a tail to each power and each positive conjugate relation
@@ -161,22 +69,21 @@ SchurExtension := function(G)
         SetRelativeOrder(coll, i, r[i]);
 
         if r[i] > 0 then
-            e := ObjByExponents(coll, Exponents(g[i]^r[i]));
-            k := k+1; 
-            Append(e, [k,1]); 
+            e := ObjByExponents(coll, ExponentsByIgs(g, g[i]^r[i]));
+            k := k+1;
+            Append(e, [k,1]);
             SetPower(coll,i,e);
         fi;
 
         for j in [1..i-1] do
-            e := ObjByExponents(coll, Exponents(g[i]^g[j]));
-            k := k+1; 
+            e := ObjByExponents(coll, ExponentsByIgs(g, g[i]^g[j]));
+            k := k+1;
             Append(e, [k,1]);
             SetConjugate(coll,i,j,e);
         od;
     od;
 
-    # update 
-    CompleteConjugatesInCentralCover(coll, Collector(G));
+    # update
     UpdatePolycyclicCollector(coll);
 
     # evaluate consistency
@@ -184,97 +91,98 @@ SchurExtension := function(G)
     EvalConsistency( coll, sys );
 
     # determine quotient
-    T := QuotientBySystem( coll, sys, n );
+    ext := QuotientBySystem( coll, sys, n );
 
-    return T;
-end;
-
-# FIXME: This function is documented and should be turned into a attribute
-# FIXME: Compare with EpimorphismSchurCover
-SchurExtensionEpimorphism := function( G )
-    local   ext,  extgens,  Ggens,  images,  epi;
-
-    ext := SchurExtension( G );
-    extgens := GeneratorsOfGroup( ext );
-
-    Ggens := GeneratorsOfGroup( G );
-    images := List( extgens, g->Identity(G) );
-    images{[1..Length(Ggens)]} := Ggens;
+    # construct quotient epimorphism
+    extgens := Igs( ext );
+    images := ListWithIdenticalEntries( Length(extgens), One(G) );
+    images{[1..n]} := g;
 
     epi := GroupHomomorphismByImagesNC( ext, G, extgens, images );
-    SetFeatureObj( epi, IsMapping, true );
-    SetFeatureObj( epi, IsGroupHomomorphism, true );
-    SetFeatureObj( epi, IsSurjective, true );
+    SetIsSurjective( epi, true );
+    ker := Subgroup( ext, extgens{[n+1..Length(extgens)]} );
+    SetKernelOfMultiplicativeGeneralMapping( epi, ker );
 
     return epi;
-end;
+end );
 
 #############################################################################
 ##
-#A SchurMultPcpGroup(G) . . . . . . . . . . . . . . . . . . . . . . . . . M(G)
+#A SchurExtension(G) . . . . . . . . . . . . . . . . . . . . . . . .  F/[R,F]
 ##
-SchurMultPcpGroup := function(G)
-    local n, H, M, T, D, I;
+InstallMethod( SchurExtension, "for groups", [IsGroup], function(G)
+    return Source( SchurExtensionEpimorphism( G ) );
+end );
+
+#############################################################################
+##
+#A AbelianInvariantsMultiplier(G) . . . . . . . . . . . . . . . . . . .  M(G)
+##
+InstallMethod( AbelianInvariantsMultiplier, "for pcp groups", [IsPcpGroup], function(G)
+    local epi, H, M, T, D, I;
 
     # a simple check
-    if Size(G) = 1 or IsCyclic(G) then return []; fi;
+    if IsCyclic(G) then return []; fi;
 
     # otherwise compute
-    n := Length(Igs(G));
-    H := SchurExtension(G); 
-    M := Subgroup(H, Igs(H){[n+1..Length(Igs(H))]});
+    epi := SchurExtensionEpimorphism(G);
+    H := Source(epi);
+    M := KernelOfMultiplicativeGeneralMapping(epi);
 
     # the finite case
-    if IsFinite(G) then 
+    if IsFinite(G) then
         T := TorsionSubgroup(M);
         return AbelianInvariants(T);
     fi;
 
-    # the other case
+    # the general case
     D := DerivedSubgroup(H);
     I := Intersection(M, D);
     return AbelianInvariants(I);
-end;
-
-InstallMethod( AbelianInvariantsMultiplier, true, [IsPcpGroup], 0, 
-function(G)
-    return SchurMultPcpGroup(G);
-end);
+end );
 
 #############################################################################
 ##
-#A SchurCovering(G) . . . . . . . . . . . . . . . . . . . .M(G) extended by G
+#A EpimorphismSchurCover(G) . . . . . . . . . . . . . . .  M(G) extended by G
 ##
-# FIXME: This function is documented and should be turned into an attribute
-# FIXME: Compare this to the GAP attribute SchurCover..
-SchurCovering := function(G)
-    local g, H, h, m, M, I, C;
+InstallMethod( EpimorphismSchurCover, "for pcp groups", [IsPcpGroup], function(G)
+    local epi, H, M, I, C, cover, g, n, extgens, images, ker;
 
-    if Size(G) = 1 then return G; fi;
-
-    # set up
-    g := Igs(G);
+    if IsCyclic(G) then return IdentityMapping( G ); fi;
 
     # get full extension F/[R,F]
-    H := SchurExtension(G);
-    h := Igs(H);
+    epi := SchurExtensionEpimorphism(G);
+    H := Source(epi);
 
     # get R/[R,F]
-    m := h{[Length(g)+1..Length(h)]};
-    M := SubgroupByIgs(H, m);
+    M := KernelOfMultiplicativeGeneralMapping(epi);
 
     # get R cap F'
     I := Intersection(M, DerivedSubgroup(H));
 
-    # get complement
+    # get complement to I in M
     C := Subgroup(H, GeneratorsOfPcp( Pcp(M,I,"snf")));
 
     if not IsFreeAbelian(C) then Error("wrong complement"); fi;
 
-    # get complement to I in M
-    return H/C;
-end;
-    
+	# get Schur cover (R cap F') / [R,F]
+    cover := H/C;
+
+    # construct quotient epimorphism
+    g := Igs(G);
+    n := Length(g);
+    extgens := Igs( cover );
+    images := ListWithIdenticalEntries( Length(extgens), One(G) );
+    images{[1..n]} := g;
+
+    epi := GroupHomomorphismByImagesNC( cover, G, extgens, images );
+    SetIsSurjective( epi, true );
+    ker := Subgroup( cover, extgens{[n+1..Length(extgens)]} );
+    SetKernelOfMultiplicativeGeneralMapping( epi, ker );
+
+    return epi;
+end );
+
 #############################################################################
 ##
 #A NonAbelianExteriorSquareEpimorphism(G) . . . . . . . . .  G wegde G --> G'
@@ -291,10 +199,7 @@ NonAbelianExteriorSquareEpimorphism := function( G )
     gens := GeneratorsOfGroup( D );
     imgs := List( gens, g->Image( lift, g ) );
     epi  := GroupHomomorphismByImagesNC( D, DerivedSubgroup(G), gens, imgs );
-                    
-    SetFeatureObj( epi, IsMapping, true );
-    SetFeatureObj( epi, IsGroupHomomorphism, true );
-    SetFeatureObj( epi, IsSurjective, true );
+    SetIsSurjective( epi, true );
 
     lambda := function( g, h )
         return Comm( PreImagesRepresentative( lift, g ),
@@ -302,6 +207,7 @@ NonAbelianExteriorSquareEpimorphism := function( G )
     end;
 
     D!.epimorphism := epi;
+    # TODO: Make the crossedPairing accessible via an attribute!
     D!.crossedPairing := lambda;
 
     return epi;
@@ -311,30 +217,30 @@ end;
 ##
 #A NonAbelianExteriorSquare(G) . . . . . . . . . . . . . . . . . .(G wegde G)
 ##
-InstallMethod( NonAbelianExteriorSquare, true, [IsPcpGroup], 0, function(G)
+InstallMethod( NonAbelianExteriorSquare, "for pcp groups", [IsPcpGroup], function(G)
     return Source( NonAbelianExteriorSquareEpimorphism( G ) );
 end );
- 
+
 #############################################################################
 ##
 #A NonAbelianExteriorSquarePlus(G) . . . . . . . . . . (G wegde G) by (G x G)
 ##
-## This is the group tau(G) in our paper. 
+## This is the group tau(G) in our paper.
 ##
-## The follwoing function comutes the embedding of the non-abelian exterior
+## The following function computes the embedding of the non-abelian exterior
 ## square of G into tau(G).
 ##
 # FIXME: This function is documented and should be turned into an attribute
 NonAbelianExteriorSquarePlusEmbedding := function(G)
-    local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,  
+    local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,
             e,  j,  gens,  imgs,  k,  alpha,  S,  embed;
 
     if Size(G) = 1 then return G; fi;
 
     # set up
-    g := Pcp(G);
+    g := Igs(G);
     n := Length(g);
-    r := RelativeOrdersOfPcp(g);
+    r := List(g, x -> RelativeOrderPcp(x));
     w := List([1..2*n], x -> 0);
 
     extlift := NonAbelianExteriorSquareEpimorphism( G );
@@ -349,7 +255,7 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
     m := Length(d);
     s := RelativeOrdersOfPcp(d);
 
-#    Print( "#  NonAbelianExteriorSquarePlus: Setting up collector with ", 2*n+m, 
+#    Print( "#  NonAbelianExteriorSquarePlus: Setting up collector with ", 2*n+m,
 #           " generators\n" );
 
     # set up collector for non-abelian exterior square plus
@@ -359,9 +265,9 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
     for i in [1..n] do
 
         # relative order and power
-        if r[i] > 0 then 
+        if r[i] > 0 then
             SetRelativeOrder(c, i, r[i]);
-            e := ExponentsByPcp(g, g[i]^r[i]);
+            e := ExponentsByIgs(g, g[i]^r[i]);
             SetPower(c, i, ObjByExponents(c,e));
 
             SetRelativeOrder(c, n+i, r[i]);
@@ -371,14 +277,14 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
 
         # conjugates
         for j in [1..i-1] do
-            e := ExponentsByPcp(g, g[i]^g[j]);
+            e := ExponentsByIgs(g, g[i]^g[j]);
             SetConjugate(c, i, j, ObjByExponents(c,e));
 
             e := Concatenation(0*e, e);
             SetConjugate(c, n+i, n+j, ObjByExponents(c,e));
 
             if r[j] = 0 then
-                e := ExponentsByPcp(g, g[i]^(g[j]^-1));
+                e := ExponentsByIgs(g, g[i]^(g[j]^-1));
                 SetConjugate(c, i, -j, ObjByExponents(c,e));
                 e := Concatenation(0*e, e);
                 SetConjugate(c, n+i, -(n+j), ObjByExponents(c,e));
@@ -391,7 +297,7 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
     for i in [1..m] do
 
         # relative order and power
-        if s[i] > 0 then 
+        if s[i] > 0 then
             SetRelativeOrder(c, 2*n+i, s[i]);
             e := ExponentsByPcp(d, d[i]^s[i]);
             e := Concatenation(w, e);
@@ -412,7 +318,7 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
         od;
     od;
 
-    # the extension of G^G by GxG 
+    # the extension of G^G by GxG
     #
     # This is the computation of \lambda in our paper: For (g_i,g_j) we take
     # preimages (f_i,f_j) in G* and calculate the image of (g_i,g_j) under
@@ -431,7 +337,7 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
         od;
     od;
 
-    # the action on G^G by GxG 
+    # the action on G^G by GxG
     for i in [1..n] do
 
         # create action homomorphism
@@ -492,7 +398,16 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
 end;
 
 NonAbelianExteriorSquarePlus := function( G )
-
     return Range( NonAbelianExteriorSquarePlusEmbedding( G ) );
 end;
 
+#############################################################################
+##
+#A Epicentre
+##
+InstallMethod(Epicentre, "for pcp groups", [IsPcpGroup],
+function (G)
+	local epi;
+	epi := SchurExtensionEpimorphism(G);
+	return Image(epi,Center(Source(epi)));
+end);

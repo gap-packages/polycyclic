@@ -49,8 +49,110 @@ Code:
   version to newer GAP... ideally, such a change should be made
   *before* GAP 4.5 is introduced.
 
-* could also extend TorsionSubgroup to finite groups
-
 * The third parameter "snf" in  Pcp( U, "snf" )
   is really an "option", and should be replaced by use of ValueOption()
   Similar for "all" in PrintPcpPresentation()
+
+* Looking at the code in SchurExtension (and elsewhere), perhaps we should
+  add a CollectorForPcp operation?
+
+* Get rid of global variables and functions (they pollute the global namespace
+  and are a liability, as they can be overwritten by chance).
+  CHECK_CENT
+
+* Add code for computing conjugacy classes of elements
+
+* Implement ConjugacySubgroupsBySeries
+
+* implement missing Sylow subgroup code (borrow from the corresponding
+  pcgroup code)
+
+* Remove dependency on nq? Only undocumented functions
+    NonAbelianTensorSquareFp
+    NonAbelianTensorSquarePlusFp
+    NonAbelianTensorSquareViaNq
+  If we do so, also remove the declaration of and call to
+    NqEpimorphismNilpotentQuotient
+
+* The documentation in methods.xml, last section, mentions
+   "two libraries of Schur tower p-groups", but then fails to list
+   methods for these, nor do I see such libraries in polycyclic. Huh?
+
+* Rename various operations/attributes/properties to better fit into the GAP
+  naming conventions; also, in some cases, polycyclic adds new operations
+  for things that already have different names in GAP; that should be changed
+  as well.
+  This includes:
+  SchurExtensionEpimorphism => EpimorphismSchurExtension
+  SchurCovering => SchurCover (already exists in GAP)
+  NonAbelianExteriorSquareEpimorphism => EpimorphismNonabelianExteriorSquare
+  NonAbelianExteriorSquare => NonabelianExteriorSquare
+  ...
+
+* Add a method for EpimorphismSchurCover
+
+* Turn D!.crossedPairing (set by NonAbelianExteriorSquareEpimorphism)
+  into an attribute or so?
+
+* There is lots of dead/unused code in polycyclic, e.g.
+   CollectedOneCRNew
+   CRRecordWithAction
+   -> there is actually a *ton* of code related to that, dealing with "smats"
+     "super" and other undocumented CR record entries.
+  Decide what to keep of that and what to remove
+
+* in gap/matrix/latbases.gi, there is a function "LatticeBasis"
+  perhaps BaseIntMat could / should be used instead?
+
+* in gap/matrix/hnf.gi, there is a function "HNFIntMatRowOps"
+  What advantages does it have, exactly, over HermiteNormalFormIntegerMatTransform?
+  And likewise for HNFIntMat vs. HermiteNormalFormIntegerMat
+  They are used by "NormalFormConsistencyRelations" and "DiagonalFormIntMat" in the same file,
+  and the long comments in there sound as if they might be "better" in some special
+  cases... would be good to know if that is actually true, by finding such cases
+  in real-world examples and documenting them.
+
+* Document (in the manual) the return values of ComplementClasses, ComplementClassesEfaPcps
+  and so on. They seem to be some kind of list of records
+
+* Robert Morse suggests the following:
+
+"NonAbelianTensorPlus and NonAbelianExteriorPlus are group products.  It
+would be very nice to have the embeddings similar to direct product,
+semidirect products, and free products.
+
+For instance just like the other products:
+
+nu := NonAbelianTensorPlus(g);
+Embedding(nu,1);
+returns a monomorphism from g into nu (first copy)
+Embedding(nu,2);
+returns a monomorphism from g int nu (second copy)
+
+
+* Another suggestion by Robert Morse is to install methods that apply the
+fast methods for NonAbelianTensorSquare, SchurCover(ing) etc. in polycyclic
+to arbitrary polycyclic groups (or at least to pc groups), by temporarily
+converting these groups to pcp groups, performing the computation, then
+converting back.
+
+* add a method for ConjugacyClasses
+
+* several collector properties should perhaps be plain filters instead:
+  IsWeightedCollector, IsPolynomialCollector, UseLibraryCollector
+
+* Move !.collector from pcp group elements to the *family object* of these elements?
+  Since the collector is shared by all elements in the same family, this
+  seems like the sensible thing to do
+
+* change NameTag resp. !.name -> only store !.name if it differs from "g".
+  Which right now it *never* does...
+  Indeed, might just as well get rid of NameTag in its current form.
+  It is weird that this is an operation on the group elements anyway;
+  it would make slightly more sense if it was an operation of the collector.
+  
+
+* set IsWholeFamily to true/false for pcp groups, esp. in PcpGroupByCollectorNC
+  also add a method for it (this should be quite cheap)
+
+* figure out why EfaSeriesParent is not directly installed as method for EfaSeries...

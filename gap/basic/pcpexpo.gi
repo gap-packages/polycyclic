@@ -52,7 +52,7 @@ end;
 
 #############################################################################
 ##
-#F ReducedByIgs( <igs>, <g> ) 
+#F ReducedByIgs( <igs>, <g> )
 ##
 InstallGlobalFunction( ReducedByIgs, function( igs, g )
     local  dep, j, e;
@@ -71,12 +71,12 @@ end );
 
 #############################################################################
 ##
-#F ExponentsByIgs( igs, g ) . . . . . . . . . . .exponents of g wrt to an igs
+#F ExponentsByIgs( igs, g ) . . . . . . . . . .  exponents of g wrt to an igs
 ##
 ## Note that this functions returns fail, if g is not in <pcs>.
 ##
 InstallGlobalFunction( ExponentsByIgs, function( pcs, g )
-    local dep, exp, j, e; 
+    local dep, exp, j, e;
 
     # pcs is an induced pc sequence
     dep := List( pcs, Depth );
@@ -127,7 +127,7 @@ InstallGlobalFunction( ExponentsByPcp, function( pcp, g )
         exp := Exponents(g){pcp!.tail};
         if IsBound( pcp!.mult ) then
             for i in [1..Length(exp)] do
-                if pcp!.rels[i] = 0 then 
+                if pcp!.rels[i] = 0 then
                     exp[i] := exp[i] / pcp!.mult[i];
                 else
                     exp[i] := exp[i] / pcp!.mult[i] mod pcp!.rels[i];
@@ -135,12 +135,12 @@ InstallGlobalFunction( ExponentsByPcp, function( pcp, g )
             od;
         else
             for i in [1..Length(exp)] do
-                if pcp!.rels[i] <> 0 then 
+                if pcp!.rels[i] <> 0 then
                     exp[i] := exp[i] mod pcp!.rels[i];
                 fi;
             od;
         fi;
-        if IsBound( pcp!.cyc ) then 
+        if IsBound( pcp!.cyc ) then
             exp := TranslateExp( pcp!.cyc, exp );
         fi;
         return exp;
@@ -156,8 +156,8 @@ InstallGlobalFunction( ExponentsByPcp, function( pcp, g )
     # get denominator pcp - might be the empty list
     pcpN := DenominatorOfPcp( pcp );
     depN := List( pcpN, Depth );
-    
-    # go through and reduce g 
+
+    # go through and reduce g
     d := Depth( g );
     while d < pcp!.tail and (d in dept or d in depN) do
 
@@ -180,10 +180,10 @@ InstallGlobalFunction( ExponentsByPcp, function( pcp, g )
         fi;
 
         # if g has still depth d then there is something wrong
-        if Depth(g) <= d then 
+        if Depth(g) <= d then
             Error("wrong reduction in ExponentsByPcp");
         fi;
-    
+
         d := Depth( g );
     od;
 

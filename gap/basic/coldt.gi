@@ -1,6 +1,6 @@
 
 ##
-#F  AddHallPolynomials 
+#F  AddHallPolynomials
 ##
 BindGlobal( "AddHallPolynomials", function( coll )
 
@@ -10,7 +10,7 @@ BindGlobal( "AddHallPolynomials", function( coll )
                "for weighted collectors only" );
     fi;
 
-    if not IsBound( coll![PC_DEEP_THOUGHT_POLS] ) or 
+    if not IsBound( coll![PC_DEEP_THOUGHT_POLS] ) or
        coll![PC_DEEP_THOUGHT_POLS] = [] then
 
         # Compute the deep thought polynomials
@@ -22,7 +22,7 @@ BindGlobal( "AddHallPolynomials", function( coll )
         # reduce the coefficients of the deep thought polynomials
         ReduceCoefficientsOfRws(coll);
 
-        SetFeatureObj( coll, IsPolynomialCollector, true );
+        SetIsPolynomialCollector( coll, true );
     fi;
 
 end );
@@ -37,7 +37,7 @@ BindGlobal( "SetDeepThoughtBound", function( coll, n )
 end );
 
 
-##  
+##
 ##  Methods for  CollectWordOrFail.
 ##
 InstallMethod(CollectWordOrFail,
@@ -45,18 +45,18 @@ InstallMethod(CollectWordOrFail,
     "FTL collector with Hall polynomials, exponent vector, gen-exp-pairs",
 
     [ IsFromTheLeftCollectorRep
-      and IsPolynomialCollector    
+      and IsPolynomialCollector
       and IsUpToDatePolycyclicCollector,
-      IsList, 
+      IsList,
       IsList],
-        
+
 function( coll, l, genexp )
     local   res,  i,  n;
 
     if Length(genexp) = 0 then return true; fi;
 
     res := ObjByExponents( coll, l );
-    
+
     i := 1;
     while i < Length(genexp) do
         res := DTMultiply( res, [genexp[i], genexp[i+1]], coll );

@@ -9,19 +9,19 @@
 ##
 #F WreathProductPcp( G, H, act )
 ##
-InstallOtherMethod( WreathProduct, true, 
-[IsPcpGroup, IsPcpGroup, IsMapping], 0,
-        function( G, H, act )
-    return WreathProduct( G, H, act, 
+InstallOtherMethod( WreathProduct,
+        [IsPcpGroup, IsPcpGroup, IsMapping],
+function( G, H, act )
+    return WreathProduct( G, H, act,
                    Maximum( 1, LargestMovedPoint( Image( act ))));
 end);
 
-InstallOtherMethod( WreathProduct, true,         
-        [IsPcpGroup, IsPcpGroup, IsMapping, IsPosInt], 0,
+InstallOtherMethod( WreathProduct,
+        [IsPcpGroup, IsPcpGroup, IsMapping, IsPosInt],
 function( G, H, act, l )
     local pcpG, relG, pcpH, relH, n, m, coll, i, k, c, e, o, j, W, a, h,
           ShiftedObject;
-    
+
 #############################################################################
 ##
 #F ShiftedObject( exp, shift )
@@ -34,7 +34,7 @@ function( G, H, act, l )
         od;
         return obj;
     end;
-    
+
     pcpG := Pcp(G);
     relG := RelativeOrdersOfPcp( pcpG );
     pcpH := Pcp(H);
@@ -125,18 +125,18 @@ function( G, H, act, l )
     return W;
 end );
 
-InstallMethod(Embedding,"pcp wreath product",
+InstallMethod(Embedding, "pcp wreath product",
         [IsPcpGroup and HasWreathProductInfo, IsPosInt],
-        function(W,i)
+function(W,i)
     local info, FilledIn;
-    
+
     FilledIn := function( exp, shift, len )
         local s;
         s := List([1..len], i->0);
         s{shift+[1..Length(exp)]} := exp;
         return s;
     end;
-      
+
     info := WreathProductInfo(W);
     if not IsBound(info.embeddings[i]) then
         if i<=info.l then

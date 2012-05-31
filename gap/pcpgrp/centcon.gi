@@ -2,7 +2,7 @@
 ##
 #W  centcon.gi                  Polycyc                         Bettina Eick
 ##
-##  Computing centralizers of elements and subgroups. 
+##  Computing centralizers of elements and subgroups.
 ##  Solving the conjugacy problem for elements.
 ##
 if not IsBound( CHECK_CENT ) then CHECK_CENT := false; fi;
@@ -15,7 +15,7 @@ AffineActionByElement := function( gens, pcp, g )
     local lin, i, j, c;
     lin := LinearActionOnPcp( gens, pcp );
     for i in [1..Length(gens)] do
- 
+
         # add column
         for j in [1..Length(lin[i])] do
             Add( lin[i][j], 0 );
@@ -39,7 +39,7 @@ IsCentralLayer := function( G, pcp )
         for h in AsList(pcp) do
             e := ExponentsByPcp( pcp, Comm(g,h) );
             if e <> 0*e then return false; fi;
-        od; 
+        od;
     od;
     return true;
 end;
@@ -68,7 +68,7 @@ CentralizerByCentralLayer := function( gens, cent, pcp )
     od;
     return cent;
 end;
- 
+
 #############################################################################
 ##
 #F CentralizerBySeries(G, g, pcps)
@@ -96,7 +96,7 @@ CentralizerBySeries := function( G, elms, pcps )
         e := List( [1..d], x -> 0 ); Add( e, 1 );
 
         # if the layer is central
-        if IsCentralLayer( C, pcp ) then 
+        if IsCentralLayer( C, pcp ) then
             Info( InfoPcpGrp, 1, "got central layer of type ",p,"^",d);
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
             gen := Pcp(C, N);
@@ -105,7 +105,7 @@ CentralizerBySeries := function( G, elms, pcps )
             C := SubgroupByIgs( G, stb );
 
         # if it is a non-central finite layer
-        elif p > 0 then 
+        elif p > 0 then
             Info( InfoPcpGrp, 1, "got finite layer of type ",p,"^",d);
             F := GF(p);
             M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
@@ -136,12 +136,12 @@ CentralizerBySeries := function( G, elms, pcps )
             C := PreImage( nat, CM );
         fi;
     od;
-    
+
     # add checking if required
-    if CHECK_CENT then 
+    if CHECK_CENT then
         Print("check result \n");
         for g in elms do
-            if ForAny( Igs(C), x -> Comm(g,x) <> One(G) ) then 
+            if ForAny( Igs(C), x -> Comm(g,x) <> One(G) ) then
                 Error("centralizer is not centralizing");
             fi;
         od;
@@ -157,9 +157,9 @@ end;
 ##
 CentralizerPcpGroup := function( G, g )
 
-    # get arguments 
-    if IsPcpGroup(g) then 
-        g := SmallGeneratingSet(g); 
+    # get arguments
+    if IsPcpGroup(g) then
+        g := SmallGeneratingSet(g);
     elif IsPcpElement(g) then
         g := [g];
     fi;
@@ -168,26 +168,26 @@ CentralizerPcpGroup := function( G, g )
     if ForAny( g, x -> not x in G ) then
         Error("elements must be contained in group");
     fi;
-        
+
     # compute
     return CentralizerBySeries( G, g, PcpsOfEfaSeries(G) );
 end;
 
-InstallMethod( CentralizerOp, "for a pcp group", true,
-        [IsPcpGroup and IsNilpotentGroup, IsPcpElement], 0,
-function( G, g ) return CentralizerNilpotentPcpGroup( G, g ); end );
+InstallMethod( CentralizerOp, "for a pcp group", IsCollsElms,
+        [IsPcpGroup and IsNilpotentGroup, IsPcpElement],
+        CentralizerNilpotentPcpGroup );
 
-InstallMethod( CentralizerOp, "for a pcp group", true,
-        [IsPcpGroup and IsNilpotentGroup, IsPcpGroup], 0,
-function( G, U ) return CentralizerNilpotentPcpGroup( G, U ); end );
+InstallMethod( CentralizerOp, "for a pcp group", IsIdenticalObj,
+        [IsPcpGroup and IsNilpotentGroup, IsPcpGroup],
+        CentralizerNilpotentPcpGroup );
 
-InstallMethod( CentralizerOp, "for a pcp group", true,
-        [IsPcpGroup, IsPcpElement], 0,
-function( G, g ) return CentralizerPcpGroup( G, g ); end );
+InstallMethod( CentralizerOp, "for a pcp group", IsCollsElms,
+        [IsPcpGroup, IsPcpElement],
+        CentralizerPcpGroup );
 
-InstallMethod( CentralizerOp, "for a pcp group", true,
-        [IsPcpGroup, IsPcpGroup], 0,
-function( G, U ) return CentralizerPcpGroup( G, U ); end );
+InstallMethod( CentralizerOp, "for a pcp group", IsIdenticalObj,
+        [IsPcpGroup, IsPcpGroup],
+        CentralizerPcpGroup );
 
 #############################################################################
 ##
@@ -198,8 +198,8 @@ ConjugacyByCentralLayer := function( g, h, cent, pcp )
 
     # first check
     c := ExponentsByPcp( pcp, g^-1 * h );
-    if Length(cent) = 0 then 
-        if c = 0*c then 
+    if Length(cent) = 0 then
+        if c = 0*c then
             return rec( stab := cent, prei := g^0 );
         else
             return false;
@@ -209,17 +209,17 @@ ConjugacyByCentralLayer := function( g, h, cent, pcp )
     # set up matrix
     matrix := List( cent, x -> ExponentsByPcp( pcp, Comm(x,g) ) );
     Append( matrix, ExponentRelationMatrix( pcp ) );
-    
+
     # get solution
     solv := PcpSolutionIntMat( matrix, -c );
     if IsBool( solv ) then return false; fi;
     solv := solv{[1..Length(cent)]};
-    
+
     # get nullspace
     null := PcpNullspaceIntMat( matrix );
     null := null{[1..Length(null)]}{[1..Length(cent)]};
-    
-    # calculate elements 
+
+    # calculate elements
     solv := MappedVector( solv, cent );
     cent := List( null, x -> MappedVector( x, cent ) );
     cent := Filtered( cent, x -> x <> x^0 );
@@ -231,7 +231,7 @@ end;
 #F ConjugacyElementsBySeries( G, g, h, pcps )
 ##
 ConjugacyElementsBySeries := function( G, g, h, pcps )
-    local C, k, eg, eh, i, pcp, rel, p, d, 
+    local C, k, eg, eh, i, pcp, rel, p, d,
           e, f, c, j, N, M, fac, stb, F, act, nat;
 
     # do a simple check
@@ -324,18 +324,9 @@ end;
 #F IsConjugate( G, g, h )
 #F ConjugacyElementsPcpGroup( G, g, h )
 ##
-ConjugacyElementsPcpGroup := function( G, g, h )
-
-    # check
-    if not g in Parent(G) or not h in Parent(G) then
-        Error("arguments must have a common parent group");
-    fi;
-
-    # compute
+InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
+        [IsPcpGroup, IsPcpElement, IsPcpElement],
+function( G, g, h )
     return ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries(G) );
-end;
-
-InstallMethod( IsConjugate, "for a pcp group", true,
-        [IsPcpGroup, IsPcpElement, IsPcpElement], 0,
-function( G, g, h ) return ConjugacyElementsPcpGroup( G, g, h ); end );
+end );
 

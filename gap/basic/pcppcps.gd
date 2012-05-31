@@ -44,7 +44,7 @@ DeclareGlobalFunction( "IsTailPcp" );
 
 #############################################################################
 ##
-## The main function to create an pcp 
+## The main function to create an pcp
 ##
 DeclareGlobalFunction( "Pcp" );
 

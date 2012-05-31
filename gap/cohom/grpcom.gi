@@ -19,7 +19,7 @@ PushVector := function( mats, invs, one, coc, exp )
 
     # parse coc trough exp under action of matrixes
     for i in Reversed( [1..Length(exp)] ) do
-        e := exp[i]; 
+        e := exp[i];
         if e > 0 then
             for j in [1..e] do
                 n := n + coc[i] * m;
@@ -62,7 +62,7 @@ CocycleConjugateComplement := function( C, cc, coc, w, h )
     fi;
 
     # now compute
-    if Length( coc ) = 0 then 
+    if Length( coc ) = 0 then
         coc := cc.sol;
     else
         coc := coc * cc.factor.prei + cc.sol;
@@ -78,10 +78,10 @@ CocycleConjugateComplement := function( C, cc, coc, w, h )
     a := Flat( List( s, x -> EvaluateCocycle( C, c, x )*m ) );
 
     # the translation part
-    b := List( [1..l], 
+    b := List( [1..l],
                x -> C.factor[x]^-1 * MappedVector(s[x], C.factor)^h);
     b := List( b, x -> ExponentsByPcp( C.normal, x ) );
-    
+
     return Flat(a) + Flat(b) - coc;
 end;
 
@@ -100,7 +100,7 @@ OperationOnH1 := function( C, cc )
     fi;
     l := Length( C.factor );
 
-    # compute action - linear and translation 
+    # compute action - linear and translation
     lin := List( C.super, x -> [] );
     trl := List( C.super, x -> 0  );
     for i in [1..Length(C.super)] do
@@ -121,7 +121,7 @@ OperationOnH1 := function( C, cc )
         coc := CutVector( cc.sol, l );
         img := List( s, x -> EvaluateCocycle( C, coc, x ) );
         img := List( img, x -> x * m );
-        add := List( [1..l], 
+        add := List( [1..l],
                x -> C.factor[x]^-1 * MappedVector(s[x], C.factor)^h);
         add := List( add, x -> ExponentsByPcp( C.normal, x ) );
         trl[i] := Flat( img ) + Flat( add ) - cc.sol;
@@ -144,12 +144,12 @@ end;
 #F ComplementClassesCR( C )
 ##
 InstallGlobalFunction( ComplementClassesCR, function( C )
-    local cc, elms, supr, mats, oper, os, cent, comp, e, d, K, gens, w, g, 
+    local cc, elms, supr, mats, oper, os, cent, comp, e, d, K, gens, w, g,
           c, S;
 
     # first catch a trivial case
-    if Length(C.normal) = 0 then 
-        return [rec( repr := GroupOfPcp( C.factor ), 
+    if Length(C.normal) = 0 then
+        return [rec( repr := GroupOfPcp( C.factor ),
                      norm := GroupOfPcp( C.super ) )];
     fi;
 
@@ -160,7 +160,7 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
     # check the finiteness of H^1
     if ForAny( cc.factor.rels, x -> x = 0 ) then
         Print("infinitely many complements to lift \n");
-        return fail; 
+        return fail;
     fi;
 
     # create elements of H1
@@ -178,7 +178,7 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
     cc.action := mats;
 
     # the operation function of G on H1
-    oper := function( pt, act ) 
+    oper := function( pt, act )
         local im;
         if act = 1 then return pt; fi;
         im := pt * act.lin + act.trl;
@@ -195,8 +195,8 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
     comp := [];
     for e in os do
 
-        # the complement 
-        if Length( e.repr ) > 0 then 
+        # the complement
+        if Length( e.repr ) > 0 then
             d := e.repr * cc.factor.prei + cc.sol;
         else
             d := cc.sol;
@@ -222,7 +222,7 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
         # the normalizer
         S := SubgroupByIgs( C.group, gens );
 
-        #if not CheckComplement( C, S, K ) then 
+        #if not CheckComplement( C, S, K ) then
         #   Error("complement wrong");
         #fi;
 
@@ -246,21 +246,21 @@ CheckComplement := function( C, S, K )
     L := SubgroupByIgs( G, Igs(A), Igs(K) );
     I := NormalIntersection( A, K );
 
-    if not L = G then 
+    if not L = G then
         Print("intersection wrong\n");
-        return false; 
-    elif not I = B then 
+        return false;
+    elif not I = B then
         Print("cover wrong\n");
-        return false; 
-    elif ForAny( Igs(S), x -> x = One(K) ) then 
+        return false;
+    elif ForAny( Igs(S), x -> x = One(K) ) then
         Print("igs of normalizer is incorrect\n");
         return false;
     elif not IsSubgroup(S,K) then
         Print("normalizer does not contain complement\n");
         return false;
-    elif not IsNormal(S, K)  then 
+    elif not IsNormal(S, K)  then
         Print("normalizer does not normalize \n");
-        return false; 
+        return false;
     fi;
 
     # now its o.k.
@@ -269,9 +269,9 @@ end;
 
 #############################################################################
 ##
-#F ComplementClassesEfaPcps( G, U, pcps ). . . . . 
+#F ComplementClassesEfaPcps( G, U, pcps ). . . . .
 ##        compute G-classes of complements in U along series. Series must
-##        be an efa-series and each subgroup in series must be normal 
+##        be an efa-series and each subgroup in series must be normal
 ##        under G.
 ##
 InstallGlobalFunction( ComplementClassesEfaPcps, function( G, U, pcps )
@@ -279,7 +279,7 @@ InstallGlobalFunction( ComplementClassesEfaPcps, function( G, U, pcps )
 
     cls := [ rec( repr := U, norm := G )];
     for pcp in pcps do
-        if Length( pcp ) > 0 then 
+        if Length( pcp ) > 0 then
             new := [];
             for cl in cls do
 
@@ -295,7 +295,7 @@ InstallGlobalFunction( ComplementClassesEfaPcps, function( G, U, pcps )
                 AddInversesCR( C );
                 tmp :=  ComplementClassesCR( C );
                 Append( new, tmp );
-            od; 
+            od;
             cls := ShallowCopy(new);
         fi;
     od;
@@ -322,8 +322,8 @@ InstallGlobalFunction( ComplementClasses, function( arg )
     fi;
 
     # catch a trivial case
-    if U = N then 
-       return [rec( repr := TrivialSubgroup( N ), norm := G )]; 
+    if U = N then
+       return [rec( repr := TrivialSubgroup( N ), norm := G )];
     fi;
 
     # otherwise compute series and all next function
@@ -331,3 +331,13 @@ InstallGlobalFunction( ComplementClasses, function( arg )
     return ComplementClassesEfaPcps( G, U, pcps );
 end );
 
+
+if CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
+
+InstallMethod( ComplementClassesRepresentatives, "for pcp groups",
+  IsIdenticalObj, [IsPcpGroup,IsPcpGroup],
+function( G, N )
+    return List(ComplementClasses(G, N), r -> r.repr);
+end);
+
+fi;

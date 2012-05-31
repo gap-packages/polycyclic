@@ -40,11 +40,11 @@ ConsideredPrimes := function( rats )
     for r in rats do
         a1 := AbsInt( NumeratorRat(r) );
         a2 := DenominatorRat(r);
-        if a1 <> 1 then 
+        if a1 <> 1 then
             tmp := FactorsInt( a1: RhoTrials := 1000000 );
             pr := Union( pr, tmp );
         fi;
-        if a2 <> 1 then 
+        if a2 <> 1 then
             tmp := FactorsInt( a2: RhoTrials := 1000000 );
             pr := Union( pr, tmp );
         fi;
@@ -68,7 +68,7 @@ end;
 #F FullDixonBound( gens, prim )
 ##
 FullDixonBound := function( gens, prim )
-    local c, f, j, n, d, minp, sub, max, cof, deg, base, cofs, dofs, 
+    local c, f, j, n, d, minp, sub, max, cof, deg, base, cofs, dofs,
           g, pr, t1, p, s, i, a, b, t2, t;
 
     # set up
@@ -77,7 +77,7 @@ FullDixonBound := function( gens, prim )
     n := Length( gens );
     d := Degree(f);
     cof := CoefficientsOfUnivariatePolynomial( f );
-    if cof[1] <> 1 or cof[d+1] <> 1 then return fail; fi; 
+    if cof[1] <> 1 or cof[d+1] <> 1 then return fail; fi;
 
     # get prim-basis
     # Print("compute prim-base \n");
@@ -96,7 +96,7 @@ FullDixonBound := function( gens, prim )
     Print("compute relevant primes \n");
     pr := ConsideredPrimes( Flat( Concatenation(  cofs, dofs ) ) );
 
-    # first consider p-adic case 
+    # first consider p-adic case
     Print("p-adic valuations \n");
     t1 := 0;
     for p in pr do
@@ -126,7 +126,7 @@ FullDixonBound := function( gens, prim )
     od;
     t2 := QuoInt( 3 * 7 * d^2 * t2, 2 * LogInt(d,2) );
     Print("archimedian: ", t2,"\n");
-  
+
     t := Maximum( t1, t2 );
     return QuoInt( t^n + 1, t );
 end;
@@ -154,7 +154,7 @@ LogDixonBound := function( gens, prim )
     cofs := [];
     dofs := [];
     for g in gens do
-        Add( cofs, CoefficientsByBase( base, Flat( g ) ) ); 
+        Add( cofs, CoefficientsByBase( base, Flat( g ) ) );
         Add( dofs, CoefficientsByBase( base, Flat( g^-1 ) ) );
     od;
 

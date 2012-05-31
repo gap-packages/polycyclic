@@ -65,7 +65,7 @@ Complements := function( U, N )
             C.group  := U;
             C.factor := Pcp( L, GroupOfPcp( pcp ) );
             C.normal := pcp;
-        
+
             AddFieldCR( C );
             AddRelatorsCR( C );
             AddOperationCR( C );
@@ -153,7 +153,7 @@ InvariantComplementsCR := function( C )
     if IsBool( cc.transl ) then return []; fi;
 
     # check the finiteness of H^1
-    if C.char = 0 and Length( cc.basis ) > 0 then 
+    if C.char = 0 and Length( cc.basis ) > 0 then
         Print("infinitely many complements \n");
         return fail;
     fi;

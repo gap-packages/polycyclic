@@ -15,7 +15,7 @@
 InstallGlobalFunction( ExampleOfMetabelianPcpGroup, function( a, k )
     local   i,
             x,    y,    coeffs,    pol,
-            M1,   M2, 
+            M1,   M2,
             ext,  ftl;
 
     if not (IsInt(a) and IsInt(k)) or a < 2 then
@@ -52,7 +52,7 @@ InstallGlobalFunction( ExampleOfMetabelianPcpGroup, function( a, k )
     ##
     ##  a bit clumsy to construct the group first and then recover the
     ##  collector.  There should be a function that constructs the
-    ##  collector. 
+    ##  collector.
     ##
     ##  one could also use CRRecordByMats( ) and then ExtensionCR()
     ##  to construct the non-split extension directly.
@@ -60,7 +60,7 @@ InstallGlobalFunction( ExampleOfMetabelianPcpGroup, function( a, k )
     ext := SplitExtensionPcpGroup( AbelianPcpGroup( 2, [] ), [ M1, M2 ] );
     ftl := Collector( One( ext ) );
 
-    ##  The commutator of the two top generators is made non-trivial. 
+    ##  The commutator of the two top generators is made non-trivial.
     SetConjugate( ftl, 2, 1, [2,1,5,k] );
 
     UpdatePolycyclicCollector( ftl );

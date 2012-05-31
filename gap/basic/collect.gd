@@ -16,23 +16,23 @@ DeclareRepresentation( "IsFromTheLeftCollectorRep",
 
 BindGlobal( "FromTheLeftCollectorFamily",
     NewFamily( "FromTheLeftCollector", IsFromTheLeftCollectorRep ) );
-          
+
 #############################################################################
-##  
+##
 #P  The following property is set if a collector presents a nilpotent group
 ##  and has a weight array and a second commute array.  . . . . . . . . . . .
 ##
 DeclareProperty( "IsWeightedCollector", IsPolycyclicCollector );
 
 #############################################################################
-##  
+##
 #P  The following property is set if a collector presents a nilpotent group
 ##  and has Hall polynomials (computed by Deep Thought)
 ##
 DeclareProperty( "IsPolynomialCollector", IsFromTheLeftCollectorRep );
 
 #############################################################################
-##  
+##
 #P  The following property is used to dispatch between a GAP level collector
 ##  and the kernel collector.  By default the property is false.  Its main
 ##  use is for debugging purposes.
@@ -40,7 +40,7 @@ DeclareProperty( "IsPolynomialCollector", IsFromTheLeftCollectorRep );
 DeclareProperty( "UseLibraryCollector", IsFromTheLeftCollectorRep  );
 
 #############################################################################
-##  
+##
 #V  The following variables are global flags mainly intended for debugging
 ##  purposes.
 ##
@@ -72,13 +72,13 @@ DeclareOperation( "ExponentsByObj", [IsPolycyclicCollector, IsObject] );
 #O  GetConjugate
 ##
 DeclareOperation( "GetPower", [IsPolycyclicCollector, IsObject] );
-DeclareOperation( "GetConjugate", 
+DeclareOperation( "GetConjugate",
         [IsPolycyclicCollector, IsObject, IsObject] );
 
 #############################################################################
 ##
-#I  InfoFromTheLeftCollector 
-#I  InfoCombinatorialFromTheLeftCollector 
+#I  InfoFromTheLeftCollector
+#I  InfoCombinatorialFromTheLeftCollector
 ##
 DeclareInfoClass( "InfoFromTheLeftCollector" );
 DeclareInfoClass( "InfoCombinatorialFromTheLeftCollector" );

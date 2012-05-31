@@ -86,7 +86,7 @@ FactorsComplementClasses := function(A, H, f, t, m)
         os[i] := Permuted(NrToElm(rr, os[i], nn),q);
         os[i] := ComplementCover(H,n,f,t,os[i]);
         os[i] := H/os[i];
-        if CODEONLY then 
+        if CODEONLY then
             AddMOrder(os[i]);
             os[i] := [Size(os[i]), os[i]!.mord,
                       CodePcGroup(PcpGroupToPcGroup(RefinedPcpGroup(os[i])))];
@@ -99,7 +99,7 @@ end;
 AllComplementsCover := function(K, f, m)
     local n, r, s, elms;
 
-    # set up 
+    # set up
     n := Length(f);
     s := RelativeOrdersOfPcp(m);
 

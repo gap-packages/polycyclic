@@ -10,16 +10,16 @@
 ##  This function constructs a basic from-the-left collector.  A
 ##  from-the-left collector is a positional object.  The components defined
 ##  in this function are the ingredients used by the simple from-the-left
-##  collector. 
+##  collector.
 ##
-InstallMethod( FromTheLeftCollector, 
+InstallMethod( FromTheLeftCollector,
         "for positive integer",
-        [ IsInt ], 
+        [ IsInt ],
 
 function( nrgens )
     local   pcp;
-    
-    if nrgens < 0 then 
+
+    if nrgens < 0 then
         return Error( "number of generators must not be negative" );
     fi;
 
@@ -43,21 +43,21 @@ function( nrgens )
 
     pcp[ PC_DEEP_THOUGHT_POLS ]        := [];
     pcp[ PC_DEEP_THOUGHT_BOUND ]       := 666666;
-    
+
     # Initialise the various stacks.
     pcp[ PC_STACK_SIZE ]               := 1024 * nrgens;
-    pcp[ PC_WORD_STACK ]               := 
+    pcp[ PC_WORD_STACK ]               :=
       ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_WORD_EXPONENT_STACK ]      := 
+    pcp[ PC_WORD_EXPONENT_STACK ]      :=
       ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_SYLLABLE_STACK ]           := 
+    pcp[ PC_SYLLABLE_STACK ]           :=
       ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_EXPONENT_STACK ]           := 
+    pcp[ PC_EXPONENT_STACK ]           :=
       ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
     pcp[ PC_STACK_POINTER ]            := 0;
-    pcp[ PC_PCP_ELEMENTS_FAMILY ]      := 
+    pcp[ PC_PCP_ELEMENTS_FAMILY ]      :=
           NewFamily( "ElementsFamily<<coll>>", IsPcpElement, IsPcpElement );
-    pcp[ PC_PCP_ELEMENTS_TYPE ]        := 
+    pcp[ PC_PCP_ELEMENTS_TYPE ]        :=
           NewType( pcp![PC_PCP_ELEMENTS_FAMILY], IsPcpElementRep );
 
     return Objectify( NewType( FromTheLeftCollectorFamily,
@@ -77,12 +77,12 @@ InstallMethod( FromTheLeftCollector,
 ##
 #M  ViewObj( <coll> )
 ##
-InstallMethod( ViewObj, 
+InstallMethod( ViewObj,
         "for from-the-left collector",
         [ IsFromTheLeftCollectorRep ],
 
 function( coll )
-    
+
     Print( "<<from the left collector with ",
            coll![PC_NUMBER_OF_GENERATORS ],
            " generators>>" );
@@ -91,11 +91,11 @@ end );
 ##
 #M  PrintObj( <coll> )
 ##
-InstallMethod( PrintObj, 
+InstallMethod( PrintObj,
         "for from-the-left collector",
         [ IsFromTheLeftCollectorRep ],
 function( coll )
-    
+
     Print( "<<from the left collector with ",
            coll![PC_NUMBER_OF_GENERATORS ],
            " generators>>" );
@@ -121,7 +121,7 @@ end );
 ##
 #F NumberOfGenerators( <coll> )
 ##
-InstallGlobalFunction( NumberOfGenerators, 
+InstallGlobalFunction( NumberOfGenerators,
   coll -> coll![PC_NUMBER_OF_GENERATORS] );
 
 ##
@@ -133,7 +133,7 @@ InstallMethod( SetRelativeOrderNC,
 
 function( coll, g, order )
 
-    if order = 0 then 
+    if order = 0 then
         Unbind( coll![ PC_EXPONENTS ][g] );
         Unbind( coll![ PC_POWERS ][g] );
     else
@@ -147,7 +147,7 @@ InstallMethod( SetRelativeOrder,
 
 function( coll, g, order )
     local   n;
-    
+
     if order < 0 then
         Error( "relatve order must be non-negative" );
     fi;
@@ -156,7 +156,7 @@ function( coll, g, order )
     if g < 1 or g > n then
         Error( "Generator ", g, " out of range (1-", n, ")" );
     fi;
-    
+
     SetRelativeOrderNC( coll, g, order );
     OutdatePolycyclicCollector( coll );
 end );
@@ -169,7 +169,7 @@ InstallMethod( RelativeOrders,
         "from-the-left collector",
         [ IsFromTheLeftCollectorRep ],
 
-function( coll ) 
+function( coll )
     local n, r, i;
     n := coll![PC_NUMBER_OF_GENERATORS];
     r := ShallowCopy( coll![PC_EXPONENTS] );
@@ -186,14 +186,14 @@ end );
 ##
 InstallMethod( SetPowerNC,
         "for from-the-left collector, word as list",
-        [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsList ], 
+        [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsList ],
 
 function( pcp, g, w )
 
     if Length(w) mod 2 <> 0 then
         Error( "List has odd length: not a generator exponent list" );
     fi;
-    if w = [] then 
+    if w = [] then
         Unbind( pcp![ PC_POWERS ][g] );
     else
         pcp![ PC_POWERS ][g] := w;
@@ -202,16 +202,16 @@ end );
 
 InstallMethod( SetPower,
         "for from-the-left collector, word as list",
-        [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsList ], 
+        [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsList ],
 
 function( pcp, g, w )
     local   n,  i,  rhs;
-    
-    if not IsBound( pcp![ PC_EXPONENTS ][g] ) or 
+
+    if not IsBound( pcp![ PC_EXPONENTS ][g] ) or
                     pcp![ PC_EXPONENTS ][g] = 0 then
         Error( "relative order unknown of generator ", g );
     fi;
-    
+
     n := pcp![ PC_NUMBER_OF_GENERATORS ];
     if g < 1 or g > n then
         Error( "Generator ", g, " out of range (1-", n, ")" );
@@ -230,14 +230,14 @@ function( pcp, g, w )
             Add( rhs, w[i] ); Add( rhs, w[i+1] );
         fi;
     od;
-    
+
     SetPowerNC( pcp, g, rhs );
     OutdatePolycyclicCollector( pcp );
-end );    
+end );
 
 InstallMethod( SetPower,
         "from-the-left collector, word",
-         [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsWord ], 
+         [ IsFromTheLeftCollectorRep and IsMutable, IsPosInt, IsWord ],
 
 function( pcp, g, w )
      SetPower( pcp, g, ExtRepOfObj(w) );
@@ -282,7 +282,7 @@ InstallMethod( SetConjugateNC,
         [ IsFromTheLeftCollectorRep and IsMutable, IsInt, IsInt, IsList ],
 
 function( coll, h, g, w )
-        
+
     if Length(w) mod 2 <> 0 then
         Error( "List has odd length: not a generator exponent list" );
     fi;
@@ -300,13 +300,13 @@ function( coll, h, g, w )
                 coll![ PC_INVERSECONJUGATES ][-h][g] := w;
             fi;
         fi;
-    else    
-        if h > 0 then 
+    else
+        if h > 0 then
             if w = coll![ PC_GENERATORS ][h] then
                 Unbind( coll![ PC_CONJUGATESINVERSE ][h][-g] );
             else
                 coll![ PC_CONJUGATESINVERSE ][h][-g] := w;
-            fi;	
+            fi;
         else
             if w = coll![ PC_INVERSES ][-h] then
                 Unbind( coll![ PC_INVERSECONJUGATESINVERSE ][-h][-g] );
@@ -323,7 +323,7 @@ InstallMethod( SetConjugate,
 
 function( coll, h, g, w )
     local   i,  rhs;
-    
+
     if AbsInt( h ) <= AbsInt( g ) then
         Error( "Left generator not smaller than right generator" );
     fi;
@@ -333,14 +333,14 @@ function( coll, h, g, w )
     if AbsInt( g ) < 1 then
         Error( "Right generators too small" );
     fi;
-    
+
     # check the conjugate and copy it
     rhs := [];
     for i in [1,3..Length(w)-1] do
         if not IsInt(w[i]) or not IsInt(w[i+1]) then
             Error( "List of integers expected" );
         fi;
-        
+
         if w[i] <= g or w[i] > coll![PC_NUMBER_OF_GENERATORS ] then
             Error( "Generator in word out of range" );
         fi;
@@ -349,7 +349,7 @@ function( coll, h, g, w )
             Add( rhs, w[i] ); Add( rhs, w[i+1] );
         fi;
     od;
-    
+
     SetConjugateNC( coll, h, g, rhs );
     OutdatePolycyclicCollector( coll );
 end );
@@ -438,7 +438,7 @@ InstallMethod( SetCommutator,
 
 function( coll, h, g, comm )
     local   i,  conj;
-    
+
     if AbsInt( h ) <= AbsInt( g ) then
         Error( "Left generator not smaller than right generator" );
     fi;
@@ -448,7 +448,7 @@ function( coll, h, g, comm )
     if AbsInt( g ) < 1 then
         Error( "Right generators too small" );
     fi;
-    
+
     for i in [1,3..Length(comm)-1] do
         if not IsInt(comm[i]) or not IsInt(comm[i+1]) then
             Error( "List of integers expected" );
@@ -457,7 +457,7 @@ function( coll, h, g, comm )
             Error( "Generator in word out of range" );
         fi;
     od;
-    
+
     # h^g = h * [h,g]
     conj := [ h, 1 ];
     Append( conj, comm );
@@ -484,10 +484,8 @@ end );
 #M  ObjByExponents( <coll>, <exponent list> )
 ##
 InstallMethod( ObjByExponents,
-        true,
         [ IsFromTheLeftCollectorRep, IsList ],
-        0,
-        function( coll, exps ) 
+        function( coll, exps )
     local   w,  i;
 
     if Length(exps) > NumberOfGenerators(coll) then
@@ -523,9 +521,9 @@ end );
 #############################################################################
 ##
 ##  The following functions implement part of the fundamental arithmetic
-##  based on from-the-left collector collectors.  These functions are 
+##  based on from-the-left collector collectors.  These functions are
 ##
-##  FromTheLeftCollector_Solution, 
+##  FromTheLeftCollector_Solution,
 ##  FromTheLeftCollector_Inverse.
 ##
 
@@ -551,7 +549,7 @@ BindGlobal( "FromTheLeftCollector_Solution", function( coll, u, v )
             Append( x, g );
 
             uu := ShallowCopy( u );
-            while CollectWordOrFail( coll, u, g ) = fail do 
+            while CollectWordOrFail( coll, u, g ) = fail do
                 u := ShallowCopy( uu );
             od;
         fi;
@@ -559,13 +557,13 @@ BindGlobal( "FromTheLeftCollector_Solution", function( coll, u, v )
 
     return x;
 end );
-                                
+
 ##
 #F  FromTheLeftCollector_Inverse( <coll>, <w> )
 ##                                    inverse of a word wrt a pc presentation
 ##
 BindGlobal( "FromTheLeftCollector_Inverse", function( coll, w )
-    
+
     Info( InfoFromTheLeftCollector, 3, "computing an inverse" );
     return FromTheLeftCollector_Solution( coll, w, [] );
 end );
@@ -585,10 +583,10 @@ end );
 ##
 #F  FromTheLeftCollector_SetCommute( <coll> )
 ##
-InstallGlobalFunction( FromTheLeftCollector_SetCommute, 
+InstallGlobalFunction( FromTheLeftCollector_SetCommute,
   function( coll )
     local   com,  cnj,  icnj,  cnji,  icnji,  n,  g,  again,  h;
-    
+
     Info( InfoFromTheLeftCollector, 1, "Computing commute array" );
 
     n     := coll![ PC_NUMBER_OF_GENERATORS ];
@@ -615,7 +613,7 @@ InstallGlobalFunction( FromTheLeftCollector_SetCommute,
         again := true;
         h := n;
         while again and h > com[g+1] do
-            if IsBound(  cnj[h][g] ) or IsBound(  icnj[h][g] ) or 
+            if IsBound(  cnj[h][g] ) or IsBound(  icnj[h][g] ) or
                IsBound( cnji[h][g] ) or IsBound( icnji[h][g] ) then
                 again := false;
             else
@@ -623,15 +621,15 @@ InstallGlobalFunction( FromTheLeftCollector_SetCommute,
             fi;
         od;
 
-        if h = g+1 and 
-           not (IsBound(  cnj[h][g] ) or IsBound(  icnj[h][g] ) or 
+        if h = g+1 and
+           not (IsBound(  cnj[h][g] ) or IsBound(  icnj[h][g] ) or
                 IsBound( cnji[h][g] ) or IsBound( icnji[h][g] ) ) then
             com[g] := g;
-        else    
+        else
             com[g] := h;
         fi;
     od;
-    
+
     coll![ PC_COMMUTE ] := com;
 end );
 
@@ -639,7 +637,7 @@ end );
 #F  FromTheLeftCollector_CompleteConjugate
 ##
 ##        # The following approach only works if the presentation is
-##        # nilpotent. 
+##        # nilpotent.
 ##        # [b,a^-1] = a * [a,b] * a^-1;
 ##        cnj := coll![ PC_CONJUGATES ][j][i];
 ##        comm := cnj{[3..Length(cnj)]};
@@ -649,12 +647,12 @@ end );
 ##        CollectWordOrFail( coll, ev, [ i, -1 ] );
 ##        # wipe out a, prepend b
 ##        ev[i] := 0;  ev[j] := 1;
-##        
-                    
-InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate, 
+##
+
+InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate,
   function( coll )
     local   G,  gens,  n,  i,  missing,  j,  images;
-    
+
     Info( InfoFromTheLeftCollector, 1, "Completing conjugate relations" );
 
     G := PcpGroupByCollectorNC( coll );
@@ -664,12 +662,12 @@ InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate,
     for i in [n,n-1..1 ] do
         Info( InfoFromTheLeftCollector, 2,
               "Conjugating by generator ", i );
-        
+
         # Does generator i have infinite order?
         if not IsBound( coll![ PC_EXPONENTS ][i] ) then
             missing := false;
             for j in [n,n-1..i+1] do
-                if IsBound( coll![ PC_CONJUGATES ][j][i] ) and 
+                if IsBound( coll![ PC_CONJUGATES ][j][i] ) and
                    not IsBound( coll![ PC_CONJUGATESINVERSE ][j][i] ) then
                     missing := true;
                     break;
@@ -684,13 +682,13 @@ InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate,
                 # build the images under conjugation
                 for j in [i+1..n] do
                     if IsBound( coll![PC_CONJUGATES][j][i] ) then
-                        Add( images, PcpElementByGenExpListNC( coll, 
+                        Add( images, PcpElementByGenExpListNC( coll,
                                      coll![PC_CONJUGATES][j][i] ) );
                     else
                         Add( images, gens[j] );
                     fi;
                 od;
-                Info( InfoFromTheLeftCollector, 2, 
+                Info( InfoFromTheLeftCollector, 2,
                       "images for generator ", i, " done" );
 
                 images := CgsParallel( images, gens{[i+1..n]} );
@@ -702,15 +700,15 @@ InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate,
                 fi;
                 images := images[2];
                 for j in [n,n-1..i+1] do
-                    if IsBound( coll![ PC_CONJUGATES ][j][i] ) and 
+                    if IsBound( coll![ PC_CONJUGATES ][j][i] ) and
                        not IsBound( coll![ PC_CONJUGATESINVERSE ][j][i] ) then
-                        coll![ PC_CONJUGATESINVERSE ][j][i] := 
+                        coll![ PC_CONJUGATESINVERSE ][j][i] :=
                           ObjByExponents( coll, images[j-i]!.exponents );
                     fi;
                 od;
             fi;
         fi;
-           
+
         Info( InfoFromTheLeftCollector, 2,
               "computing inverses of conjugate relations" );
 
@@ -718,19 +716,19 @@ InstallGlobalFunction( FromTheLeftCollector_CompleteConjugate,
         for j in [n,n-1..i+1] do
             if not IsBound( coll![ PC_EXPONENTS ][j] ) then
 
-                if IsBound( coll![ PC_CONJUGATES ][j][i] ) and 
+                if IsBound( coll![ PC_CONJUGATES ][j][i] ) and
                    not IsBound( coll![ PC_INVERSECONJUGATES ][j][i] ) then
-                    coll![ PC_INVERSECONJUGATES ][j][i] := 
+                    coll![ PC_INVERSECONJUGATES ][j][i] :=
                       FromTheLeftCollector_Inverse( coll,
                               coll![ PC_CONJUGATES ][j][i] );
                 fi;
                 if IsBound( coll![ PC_CONJUGATESINVERSE ][j][i] ) and
                    not IsBound( coll![ PC_INVERSECONJUGATESINVERSE ][j][i] ) then
-                    coll![ PC_INVERSECONJUGATESINVERSE ][j][i] := 
+                    coll![ PC_INVERSECONJUGATESINVERSE ][j][i] :=
                       FromTheLeftCollector_Inverse( coll,
-                              coll![ PC_CONJUGATESINVERSE ][j][i] ); 
+                              coll![ PC_CONJUGATESINVERSE ][j][i] );
                 fi;
-                
+
             fi;
         od;
     od;
@@ -739,10 +737,10 @@ end );
 ##
 #F  FromTheLeftCollector_CompletePowers( <coll> )
 ##
-InstallGlobalFunction( FromTheLeftCollector_CompletePowers, 
+InstallGlobalFunction( FromTheLeftCollector_CompletePowers,
   function( coll )
     local   n,  i;
-    
+
     Info( InfoFromTheLeftCollector, 1, "Completing power relations" );
 
     n := coll![ PC_NUMBER_OF_GENERATORS ];
@@ -767,7 +765,7 @@ BindGlobal( "FromTheLeftCollector_SetNilpotentCommute",  function( coll )
     # class and weights of collector
     wt := coll![PC_WEIGHTS];
     cl := wt[ Length(wt) ];
-    
+
     ncomm := [1..n];
     for g in [1..n] do
         if 3*wt[g] > cl then
@@ -798,13 +796,13 @@ BindGlobal( "FromTheLeftCollector_SetWeights", function( cc )
     ##      -- wt is increasing
     ##      -- wt(j) + wt(i) <= wt(g) for j > i and all g in the rhs
     ##         commutator relations [j,i]
- 
+
     ##  Run through the (positive) commutator relations and make the weight
     ##  of each generator of a rhs large enough.
     for h in [1..ngens] do
         for g in [1..h-1] do
             cnj := GetConjugateNC( cc, h, g );
-            if cnj[1] <> h or cnj[2] <> 1 then 
+            if cnj[1] <> h or cnj[2] <> 1 then
                 ##  The conjugate relation is not a commutator.
                 return fail;
             fi;
@@ -816,9 +814,9 @@ BindGlobal( "FromTheLeftCollector_SetWeights", function( cc )
         od;
     od;
     cc![PC_WEIGHTS] := weights;
-    
+
     class := weights[ Length(weights) ];
-    astart := 1; 
+    astart := 1;
     while 2 * weights[ astart ] <= class do astart := astart+1; od;
     cc![PC_ABELIAN_START] := astart;
 
@@ -832,10 +830,8 @@ InstallMethod( IsWeightedCollector,
 function( coll )
 
     if FromTheLeftCollector_SetWeights( coll ) <> fail then
-        SetFeatureObj( coll, IsWeightedCollector, 
-                true and USE_COMBINATORIAL_COLLECTOR );
-
-        return true and USE_COMBINATORIAL_COLLECTOR;
+    	# FIXME: properties should never depend on external state!
+        return USE_COMBINATORIAL_COLLECTOR;
     fi;
     return false;
 end );
@@ -845,18 +841,18 @@ end );
 #F  IsPcpNormalFormObj ( <ftl>, <w> )
 ##
 ## checks whether <w> is in normal form.
-## 
+##
 InstallGlobalFunction( IsPcpNormalFormObj,
   function( ftl, w )
   local k; # loop variable
-  
-  if not IsSortedList( w{[1,3..Length(w)-1]} ) then 
+
+  if not IsSortedList( w{[1,3..Length(w)-1]} ) then
     return false;
   fi;
   for k in [1,3..Length(w)-1] do
-    if IsBound( ftl![ PC_EXPONENTS ][ w[k] ]) and 
+    if IsBound( ftl![ PC_EXPONENTS ][ w[k] ]) and
       ( not w[k+1] < ftl![ PC_EXPONENTS ][ w[k] ] or
-        not w[k+1] >= 0 ) then 
+        not w[k+1] >= 0 ) then
       return false;
     fi;
   od;
@@ -867,13 +863,13 @@ InstallGlobalFunction( IsPcpNormalFormObj,
 ############################################################################
 ##
 #P  IsPolycyclicPresentation( <ftl> )
-## 
+##
 ## checks whether the input-presentation is a polycyclic presentation, i.e.
 ## whether the right-hand-sides of the relations are normal.
 ##
-InstallMethod( IsPolycyclicPresentation, 
-  "FromTheLeftCollector", 
-  [ IsFromTheLeftCollectorRep ], 0, 
+InstallMethod( IsPolycyclicPresentation,
+  "FromTheLeftCollector",
+  [ IsFromTheLeftCollectorRep ],
   function( ftl )
   local n, 	# number of generators of <ftl>
 	i,j;	# loop variables
@@ -882,16 +878,16 @@ InstallMethod( IsPolycyclicPresentation,
 
   # check power relations
   for i in [1..n] do
-    if IsBound( ftl![ PC_POWERS ][i] ) and 
-       not IsPcpNormalFormObj( ftl, ftl![ PC_POWERS ][i]) then 
+    if IsBound( ftl![ PC_POWERS ][i] ) and
+       not IsPcpNormalFormObj( ftl, ftl![ PC_POWERS ][i]) then
        Info( InfoFromTheLeftCollector, 1, "bad power relation g",i,"^",ftl![ PC_EXPONENTS ][i],
             " = ", ftl![ PC_POWERS ][i] );
       return false;
     fi;
   od;
-  
+
   # check conjugacy relations
-  for i in [ 1 .. n ] do 
+  for i in [ 1 .. n ] do
     for j in [ i+1 .. n ] do
       if IsBound( ftl![ PC_CONJUGATES ][j][i] ) and
          not IsPcpNormalFormObj( ftl, ftl![ PC_CONJUGATES ][j][i] ) then
@@ -918,8 +914,8 @@ InstallMethod( IsPolycyclicPresentation,
   od;
 
   # check commutator relations
-  for i in [ 1 .. n ] do 
-    for j in [ i+1 .. n ] do 
+  for i in [ 1 .. n ] do
+    for j in [ i+1 .. n ] do
       if IsBound( ftl![ PC_COMMUTATORS ][j][i] ) and
          not IsPcpNormalFormObj( ftl, ftl![ PC_COMMUTATORS ][j][i] ) then
         return false;
@@ -955,16 +951,16 @@ function( coll )
     if not IsPolycyclicPresentation( coll ) then
        Error("the input presentation is not a polcyclic presentation");
     fi;
-    
+
     FromTheLeftCollector_SetCommute( coll );
 
     ## We have to declare the collector up to date now because the following
     ## functions need to collect and are careful enough.
-    SetFeatureObj( coll, IsUpToDatePolycyclicCollector, true );
+    SetFilterObj( coll, IsUpToDatePolycyclicCollector );
 
     FromTheLeftCollector_CompleteConjugate( coll );
     FromTheLeftCollector_CompletePowers( coll );
-    
+
     if IsWeightedCollector( coll ) then
         FromTheLeftCollector_SetNilpotentCommute( coll );
     fi;
@@ -987,7 +983,7 @@ end );
 ##		      i = -j (j i)		j > i,    j not in I
 ##		     -i = -j (j -i)             j > i,  i,j not in I
 ##
-if not IsBound( InfoConsistency ) then 
+if not IsBound( InfoConsistency ) then
     BindGlobal( "InfoConsistency", function( arg ) end );
 fi;
 InstallMethod( IsConfluent,
@@ -996,7 +992,7 @@ InstallMethod( IsConfluent,
 
 function( coll )
     local   n,  k,  j,  i,  ev1,  w,  ev2;
-    
+
     n := coll![ PC_NUMBER_OF_GENERATORS ];
 
     # k (j i) = (k j) i
@@ -1009,10 +1005,10 @@ function( coll )
                 w := ObjByExponents( coll, ev1 );
                 ev1 := ExponentsByObj( coll, [k,1] );
                 CollectWordOrFail( coll, ev1, w );
-                
+
                 ev2 := ListWithIdenticalEntries( n, 0 );
                 CollectWordOrFail( coll, ev2, [k,1,j,1,i,1] );
-                
+
                 if ev1 <> ev2 then
                     Print( "Inconsistency at ", k, " ", j, " ", i, "\n" );
                     return false;
@@ -1020,16 +1016,16 @@ function( coll )
             od;
         od;
     od;
-    
+
     # j^m i = j^(m-1) (j i)
     for j in [n,n-1..1] do
         for i in [j-1,j-2..1] do
             if IsBound(coll![ PC_EXPONENTS ][j]) then
                 InfoConsistency( "checking ", j, "^m ", i, "\n" );
                 ev1 := ListWithIdenticalEntries( n, 0 );
-                CollectWordOrFail( coll, ev1, [j, coll![ PC_EXPONENTS ][j]-1, 
+                CollectWordOrFail( coll, ev1, [j, coll![ PC_EXPONENTS ][j]-1,
                                                j, 1, i,1] );
-                
+
                 ev2 := ListWithIdenticalEntries( n, 0 );
                 CollectWordOrFail( coll, ev2, [j,1,i,1] );
                 w := ObjByExponents( coll, ev2 );
@@ -1043,7 +1039,7 @@ function( coll )
             fi;
         od;
     od;
-    
+
     # j * i^m = (j i) * i^(m-1)
     for i in [n,n-1..1] do
         if IsBound(coll![ PC_EXPONENTS ][i]) then
@@ -1053,11 +1049,11 @@ function( coll )
                 if IsBound( coll![ PC_POWERS ][i] ) then
                     CollectWordOrFail( coll, ev1, coll![ PC_POWERS ][i] );
                 fi;
-                
+
                 ev2 := ListWithIdenticalEntries( n, 0 );
                 CollectWordOrFail( coll, ev2,
                         [ j,1,i,coll![ PC_EXPONENTS ][i] ] );
-                
+
                 if ev1 <> ev2 then
                     Print( "Inconsistency at ", j, " ", i, "^m\n" );
                     return false;
@@ -1065,26 +1061,26 @@ function( coll )
             od;
         fi;
     od;
-    
+
     # i^m i = i i^m
     for i in [n,n-1..1] do
         if IsBound( coll![ PC_EXPONENTS ][i] ) then
             ev1 := ListWithIdenticalEntries( n, 0 );
             CollectWordOrFail( coll, ev1, [ i,coll![ PC_EXPONENTS ][i]+1 ] );
-            
+
             ev2 := ExponentsByObj( coll, [i,1] );
             if IsBound( coll![ PC_POWERS ][i] ) then
                 CollectWordOrFail( coll, ev2, coll![ PC_POWERS ][i] );
             fi;
-            
+
             if ev1 <> ev2 then
                 Print( "Inconsistency at ", i, "^(m+1)\n" );
                 return false;
             fi;
         fi;
     od;
-        
-    # j = (j -i) i 
+
+    # j = (j -i) i
     for i in [n,n-1..1] do
         if not IsBound( coll![ PC_EXPONENTS ][i] ) then
             for j in [i+1..n] do
@@ -1099,7 +1095,7 @@ function( coll )
             od;
         fi;
     od;
-    
+
     # i = -j (j i)
     for j in [n,n-1..1] do
         if not IsBound( coll![ PC_EXPONENTS ][j] ) then
@@ -1110,12 +1106,12 @@ function( coll )
                 w := ObjByExponents( coll, ev1 );
                 ev1 := ExponentsByObj( coll, [j,-1] );
                 CollectWordOrFail( coll, ev1, w );
-                
+
                 if ev1 <> ExponentsByObj( coll, [i,1] ) then
                     Print( "Inconsistency at ", -j, " ", j, " ", i, "\n" );
                     return false;
                 fi;
-                
+
                 # -i = -j (j -i)
                 if not IsBound( coll![ PC_EXPONENTS ][i] ) then
                     InfoConsistency( "checking ", -j, " ", j, " ", -i, "\n" );
@@ -1124,10 +1120,10 @@ function( coll )
                     w := ObjByExponents( coll, ev1 );
                     ev1 := ExponentsByObj( coll, [j,-1] );
                     CollectWordOrFail( coll, ev1, w );
-                    
-                    if ExponentsByObj( coll, [i,-1] ) 
+
+                    if ExponentsByObj( coll, [i,-1] )
                        <> ev1 then
-                        Print( "Inconsistency at ", 
+                        Print( "Inconsistency at ",
                                -j, " ", j, " ", -i, "\n" );
                         return false;
                     fi;

@@ -14,10 +14,10 @@ InstallGlobalFunction( AbelianPcpGroup, function( arg )
     if Length(arg) = 1 and IsInt(arg[1]) then
         n := arg[1];
         r := List([1..n], x -> 0);
-    elif Length(arg) = 1 and IsList(arg[1]) then 
+    elif Length(arg) = 1 and IsList(arg[1]) then
         n := Length(arg[1]);
         r := arg[1];
-    elif Length(arg) = 2 then 
+    elif Length(arg) = 2 then
         n := arg[1];
         r := arg[2];
     fi;
@@ -43,10 +43,10 @@ InstallGlobalFunction( DihedralPcpGroup, function( n )
     local coll, m;
     coll := FromTheLeftCollector( 2 );
     SetRelativeOrder( coll, 1, 2 );
-    if IsInt( n ) then 
+    if IsInt( n ) then
         m := n/2;
         if not IsInt( m ) then return fail; fi;
-        SetRelativeOrder( coll, 2, m ); 
+        SetRelativeOrder( coll, 2, m );
         SetConjugate( coll, 2,  1, [2,m-1] );
     else
         SetConjugate( coll, 2,  1, [2,-1] );
@@ -87,7 +87,7 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
 
     # read of pc presentation
     for i in [1..l] do
-  
+
         # commutators
         for j in [i+1..l] do
             v := Comm( g[j], g[i] );
@@ -100,7 +100,7 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
                     o := [j,1,k,-1];
                     if p > 0 then o[4] := o[4] mod p; fi;
                 else
-                    Error("commutator out of range"); 
+                    Error("commutator out of range");
                 fi;
 
                 SetConjugate( c, j, i, o );
@@ -108,8 +108,8 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
         od;
 
         # powers
-        if p > 0 then 
-            SetRelativeOrder( c, i, p ); 
+        if p > 0 then
+            SetRelativeOrder( c, i, p );
             v := g[i]^p;
             if v <> v^0 then Error("power out of range"); fi;
         fi;
@@ -123,7 +123,7 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
 
     # check
     # IsConfluent(c);
-    
+
     return G;
 end );
 
@@ -159,7 +159,7 @@ InstallGlobalFunction( SubgroupUnitriangularPcpGroup, function( mats )
             r := MappedVector( v, g{[c+1..c+n-i]} );
             m := r^-1 * m;
             c := c + n-i;
-            Append( e, v ); 
+            Append( e, v );
         od;
         Add( h, MappedVector( e, Pcp(G) ) );
     od;
@@ -213,7 +213,7 @@ end);
 
 #############################################################################
 ##
-#F PDepth(G, e) 
+#F PDepth(G, e)
 ##
 PDepth := function(G, e)
     local l, i;

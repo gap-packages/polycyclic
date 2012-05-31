@@ -33,9 +33,9 @@ SchurCoversByCoclass := function(ccpsfile, p,r,d)
             if G!.mord > 1 and r = i+l-1 then
                 Print("start group ",j," of ",NrCcCovers(p,i,d),"\n");
                 new := SchurCovers(G);
-                for H in new do 
+                for H in new do
                     c := CoverCode(H);
-                    AppendTo(file, c,", \n"); 
+                    AppendTo(file, c,", \n");
                     if c[2] = p then Add(res, c); fi;
                 od;
             fi;
@@ -45,7 +45,7 @@ SchurCoversByCoclass := function(ccpsfile, p,r,d)
     # 2. step : abelian groups of rank d and coclass r
     Print("abelian groups \n");
     for q in Partitions(r+1) do
-        if Length(q) = d then 
+        if Length(q) = d then
             G := AbelianPcpGroup(Length(q), List(q, x -> p^x));
             c := CoverCode(G);
             AppendTo(file, c,", \n");
@@ -60,9 +60,9 @@ SchurCoversByCoclass := function(ccpsfile, p,r,d)
         Print("start group ",j," of ",Length(res),"\n");
         G := CodeCover(res[j]);
         new := SchurCovers(G);
-        for H in new do 
+        for H in new do
             c := CoverCode(H);
-            AppendTo(file, c,", \n"); 
+            AppendTo(file, c,", \n");
             if c[2] = p then Add(res, c); fi;
         od;
         j := j+1;

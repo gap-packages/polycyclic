@@ -23,7 +23,7 @@ end;
 AddToCRSystem := function( sys, mat )
     local v;
     for v in mat do
-        if IsBound( sys.full ) and sys.full then 
+        if IsBound( sys.full ) and sys.full then
             Add( sys.base, v );
         elif not v = sys.null and not v in sys.base then
             Add( sys.base, v );
@@ -98,7 +98,7 @@ AddEquationsCREndo := function( sys, t )
         AddEquationsCRNorm( sys[i], l, true );
     od;
 end;
-    
+
 AddEquationsCR := function( sys, t1, t2, flag  )
     local t;
 
@@ -110,13 +110,13 @@ AddEquationsCR := function( sys, t1, t2, flag  )
     SubtractTailVectors( t, t2 );
 
     # check case
-    if IsList(sys) then 
+    if IsList(sys) then
         AddEquationsCREndo( sys, t );
-    else 
+    else
         AddEquationsCRNorm( sys, t, flag );
     fi;
 end;
-     
+
 #############################################################################
 ##
 ## Some small helpers
@@ -148,14 +148,14 @@ PermuteMat := function( M, rho, sig )
 end;
 
 PermuteVec := function( v, rho )
-    return List([1..Length(v)], i -> v[i^rho]); 
+    return List([1..Length(v)], i -> v[i^rho]);
 end;
 
 #############################################################################
 ##
 ## ImageCR( A, sys )
 ##
-## returns a basis of the image of sys. Additionally, it returns the 
+## returns a basis of the image of sys. Additionally, it returns the
 ## transformation from the given generating set and the nullspace of the
 ## given generating set.
 ##
@@ -183,9 +183,9 @@ ImageCRNorm := function( A, sys )
        TriangulizeMat(tmp.relations);
     fi;
 
-    # return 
-    return rec( basis := tmp.basis, 
-                transf := tmp.transformation, 
+    # return
+    return rec( basis := tmp.basis,
+                transf := tmp.transformation,
                 fixpts := tmp.relations );
 end;
 
@@ -198,7 +198,7 @@ ImageCREndo := function( A, sys )
         e := A.mats[1][i]!.exp;
         n := Length(mat)/Length(e);
         m := Length(mat[1])/Length(e);
-        rho := MatPerm(m, e)^-1; 
+        rho := MatPerm(m, e)^-1;
         sig := MatPerm(n, e)^-1;
         mat := PermuteMat( mat, rho, sig );
         K[i] := KernelSystemGauss( mat, e, p );
@@ -209,7 +209,7 @@ ImageCREndo := function( A, sys )
 end;
 
 ImageCR := function( A, sys )
-    if IsList(sys) then 
+    if IsList(sys) then
         return ImageCREndo( A, sys );
     else
         return ImageCRNorm( A, sys );
@@ -232,9 +232,9 @@ KernelCRNorm := function( A, sys )
 
     # the nullspace
     if Length( mat ) = 0 then
-        null := IdentityMat( sys.dim * sys.len ); 
+        null := IdentityMat( sys.dim * sys.len );
         if A.char > 0 then null := null * One( A.field ); fi;
-    elif A.char > 0 then 
+    elif A.char > 0 then
         null := TriangulizedNullspaceMat( mat );
     else
         null := PcpNullspaceIntMat( mat );
@@ -254,7 +254,7 @@ KernelCREndo := function( A, sys )
         e := A.mats[1][i]!.exp;
         n := Length(mat)/Length(e);
         m := Length(mat[1])/Length(e);
-        rho := MatPerm(m, e); 
+        rho := MatPerm(m, e);
         sig := MatPerm(n, e);
         mat := PermuteMat( mat, rho, sig );
         K[i] := KernelSystemGauss( mat, e, p );
@@ -264,7 +264,7 @@ KernelCREndo := function( A, sys )
 end;
 
 KernelCR := function( A, sys )
-    if IsList(sys) then 
+    if IsList(sys) then
         return KernelCREndo( A, sys );
     else
         return KernelCRNorm( A, sys );

@@ -13,11 +13,11 @@ PcpGroupToPcGroup := function( G )
     pcp := Pcp( G );
     rel := RelativeOrdersOfPcp( pcp );
     if ForAny( rel, x -> x = 0 ) then return fail; fi;
- 
+
     n := Length( pcp );
     F := FreeGroup( n );
     f := GeneratorsOfGroup( F );
-    
+
     rws := SingleCollector( F, rel );
     for i in [1..n] do
 
@@ -38,7 +38,7 @@ PcpGroupToPcGroup := function( G )
     return GroupByRwsNC( rws );
 end;
 
-InstallMethod( IsomorphismPcGroup, true, [IsPcpGroup], 0, 
+InstallMethod( IsomorphismPcGroup, [IsPcpGroup],
 function( G )
     local K, H, g, k, h, hom;
     if not IsFinite(G) then TryNextMethod(); fi;
@@ -81,8 +81,8 @@ PcpGroupToFpGroup := function( G )
             w := MappedVector( e, f );
             v := f[i]^f[j];
             Add( r, v/w );
- 
-            if rel[j] = 0 then 
+
+            if rel[j] = 0 then
                 e := ExponentsByPcp( pcp, pcp[i]^(pcp[j]^-1) );
                 w := MappedVector( e, f );
                 v := f[i]^(f[j]^-1);
@@ -93,11 +93,11 @@ PcpGroupToFpGroup := function( G )
     return F/r;
 end;
 
-InstallMethod( IsomorphismFpGroup, true, [IsPcpGroup], 0,
+InstallMethod( IsomorphismFpGroup, [IsPcpGroup],
 function( G )
     local H, hom;
     H := PcpGroupToFpGroup( G );
-    hom := GroupHomomorphismByImagesNC( G, H, AsList(Pcp(G)), 
+    hom := GroupHomomorphismByImagesNC( G, H, AsList(Pcp(G)),
            GeneratorsOfGroup(H));
     SetIsBijective( hom, true );
     return hom;
@@ -111,7 +111,7 @@ PcGroupToPcpGroup := function( G )
     local g, r, n, i, coll, h, e, w, j;
 
     g := Pcgs( G );
-    r := RelativeOrders( g ); 
+    r := RelativeOrders( g );
     n := Length( g );
 
     coll := FromTheLeftCollector( n );
@@ -152,6 +152,7 @@ end );
 
 InstallMethod( IsomorphismPcpGroup,
     [ IsPcpGroup ],
+    SUM_FLAGS,
     IdentityMapping );
 
 
@@ -193,7 +194,7 @@ fi;
 ## Convert special fp groups to pcp groups.
 ##
 ClassifyRelationsOfFpGroup := function( fpgroup )
-    local   gens,  rels,  allpowers,  conflicts,  relations,  rel,  n,  
+    local   gens,  rels,  allpowers,  conflicts,  relations,  rel,  n,
             l,  g1,  e1,  g2,  e2,  g3,  e3,  g4,  e4;
 
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup(fpgroup) );
@@ -228,7 +229,7 @@ ClassifyRelationsOfFpGroup := function( fpgroup )
 
         if n = 1 or n = 2 then
             Add( allpowers, rel );
-            
+
         # ignore the trivial word
         elif 2 < n  then
 
@@ -239,8 +240,8 @@ ClassifyRelationsOfFpGroup := function( fpgroup )
             e2 := ExponentSyllable(  rel, 2 );
             g3 := GeneratorSyllable( rel, 3 );
             e3 := ExponentSyllable(  rel, 3 );
-            if 3 < n  then 
-                g4 := GeneratorSyllable( rel, 4 ); 
+            if 3 < n  then
+                g4 := GeneratorSyllable( rel, 4 );
                 e4 := ExponentSyllable(  rel, 4 );
             fi;
 
@@ -249,14 +250,14 @@ ClassifyRelationsOfFpGroup := function( fpgroup )
 
                 # a^-1 b^-1 a b is a commutator
                 if 3 < n and e2 = -1 and e4 = 1 and g2 = g4 and g2 < g1  then
-                    if IsBound( relations.commpp[g1][g2] )  or 
+                    if IsBound( relations.commpp[g1][g2] )  or
                        IsBound( relations.conjpp[g1][g2] ) then
                         Add( conflicts, rel );
                     else
                         #Print( rel, " -> [", g1, ", ", g2, "]\n" );
                         relations.commpp[g1][g2] := Subword( rel, 5, l )^-1;
                     fi;
-                    
+
                 # a^-1 b a b^-1 is a commutator
                 elif 3 < n and e2 = 1 and e4 = -1 and g2 = g4 and g2 < g1  then
                     if IsBound(relations.commpn[g1][g2]) or
@@ -350,16 +351,16 @@ ClassifyRelationsOfFpGroup := function( fpgroup )
         g1 := GeneratorSyllable( rel, 1 );
         e1 := ExponentSyllable(  rel, 1 );
         l  := Length( rel );
-        
+
         if e1 > 0 then
-            if (relations.rods[g1] <> 0 and relations.rods[g1] <> e1) 
+            if (relations.rods[g1] <> 0 and relations.rods[g1] <> e1)
                or IsBound(relations.powersp[g1]) then
                 Add( conflicts, rel );
             fi;
             relations.rods[g1]     := e1;
             relations.powersp[g1] := Subword( rel, e1+1, l )^-1;
         else
-            if (relations.rods[g1] <> 0 and relations.rods[g1] <> -e1) 
+            if (relations.rods[g1] <> 0 and relations.rods[g1] <> -e1)
                or IsBound(relations.powersp[g1]) then
                 Add( conflicts, rel );
             fi;
@@ -433,7 +434,7 @@ IsomorphismPcpGroupFromFpGroupWithPcPres := function(G)
     local H, hom;
 
     H := PcpGroupFpGroupPcPres( G );
-    hom := GroupHomomorphismByImagesNC( G, H, 
+    hom := GroupHomomorphismByImagesNC( G, H,
                    GeneratorsOfGroup( G ), GeneratorsOfGroup(H) );
     SetIsBijective( hom, true );
     return hom;
