@@ -224,19 +224,20 @@ function( G )
 end );
 
 # Finite groups are torsion free if and only if they are trivial
-InstallImmediateMethod( IsTorsionFree, "for finite groups",
+InstallImmediateMethod( IsTorsionFree,
     IsGroup and IsFinite and HasIsTrivial,
     0,
     IsTrivial );
 
 # Finite groups are free abelian if and only if they are trivial
-InstallImmediateMethod( IsFreeAbelian, "for abelian groups",
+InstallImmediateMethod( IsFreeAbelian,
     IsGroup and IsFinite and HasIsTrivial,
     0,
     IsTrivial );
 
-# In general, a group is free abelian if it is abelian and its abelian invariants are all 0.
-InstallMethod( IsFreeAbelian, [IsGroup],
+# In general, a finitely generated group is free abelian if and only
+# if it is abelian and its abelian invariants are all 0.
+InstallMethod( IsFreeAbelian, [IsFinitelyGeneratedGroup],
     grp -> IsAbelian(grp) and ForAll( AbelianInvariants( grp ), x -> x = 0 )
     );
 

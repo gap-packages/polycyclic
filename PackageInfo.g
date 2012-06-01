@@ -4,18 +4,18 @@
 #W                                                              Werner Nickel
 #W                                                                   Max Horn
 ##
-#H  @(#)$Id: PackageInfo.g,v 1.46 2012/05/31 16:42:22 gap Exp $
+#H  @(#)$Id: PackageInfo.g,v 1.47 2012/06/01 09:42:53 gap Exp $
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.10",
-Date        := "31/05/2012",
+Version     := "2.10.1",
+Date        := "01/06/2012",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "2.10">
-##  <!ENTITY RELEASEDATE "31 May 2012">
+##  <!ENTITY VERSION "2.10.1">
+##  <!ENTITY RELEASEDATE "1 June 2012">
 ##  <#/GAPDoc>
 
 Persons          := [

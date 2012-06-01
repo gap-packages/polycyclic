@@ -7,6 +7,13 @@
  us know.
 ===========================================================================
 
+2.10.1 (2012-06-01)
+	o Fixed generic IsFreeAbelian method to only apply to finitely
+	  generated groups
+	o Removed "name strings" from two InstallImmediateMethod calls;
+	  this should have no effect on any user, and is done to silence
+	  some pedantic warnings in the GAP test suite
+
 2.10 (2012-05-31)
 	o Added methods for GAP's Epicentre and EpimorphismSchurCover attribute
 	o Added group constructors that allow construction extraspecial groups
