@@ -367,7 +367,7 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
 #    Print( "#  QuotientBySystem: Dealing with ",
 #           Length(M), "x", Length(M[1]), "-matrix\n" );
 
-    if M = 0*M or USE_NFMI then
+    if M = 0*M or USE_NFMI@ then
         D := NormalFormIntMat(M,13);
         Q := D.coltrans;
         D := D.normal;
@@ -420,7 +420,7 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
         od;
     od;
 
-    if CHECKPCP then
+    if CHECK_SCHUR_PCP@ then
         return PcpGroupByCollector(c);
     else
         UpdatePolycyclicCollector(c);

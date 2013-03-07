@@ -459,7 +459,7 @@ their corresponding natural homomorphisms.
 <Section Label="Homomorphisms for pcp-groups">
 <Heading>Homomorphisms for pcp-groups</Heading>
 
-Polycyclic provides code for defining group homomorphisms by
+&Polycyclic; provides code for defining group homomorphisms by
 generators  and images where either the source or the range or both
 are pcp groups. All methods provided by GAP for such group
 homomorphisms are supported, in particular the following:
@@ -604,18 +604,18 @@ following methods can be used to view the pcp presentation of the group.
 <Description>
 	returns an isomorphism from <A>G</A> onto a pcp-group <A>H</A>. There are various
 	methods installed for this operation and some of these methods are part
-	of the Polycyclic package, while others may be part of other packages.
+	of the &Polycyclic; package, while others may be part of other packages.
 	<P/>
 
-	For example, Polycyclic contains methods for this function in the case
+	For example, &Polycyclic; contains methods for this function in the case
 	that <A>G</A> is a finite pc-group or a finite solvable permutation group.
 	<P/>
 
 	Other examples for methods for IsomorphismPcpGroup are the methods for
-	the case that <A>G</A> is a crystallographic group (see Cryst) or the case
-	that <A>G</A> is an almost crystallographic group (see AClib). A method for
+	the case that <A>G</A> is a crystallographic group (see &Cryst;) or the case
+	that <A>G</A> is an almost crystallographic group (see &AClib;). A method for
 	the case that <A>G</A> is a rational polycyclic matrix group is included in
-	the Polenta package.
+	the &Polenta; package.
 </Description>
 </ManSection>
 

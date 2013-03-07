@@ -45,7 +45,7 @@ function( tgroup )
     local  coll,  mats,  mgroup,  phi;
 
     ## Does the group have power relations?
-    if not ForAll( RelativeOrdersOfPcp( Pcp(tgroup) ), o->o = 0 ) then
+    if not IsTorsionFree( tgroup ) then
         Error("there are power relations in the collector of the pcp-group");
         ## Here we could compute the upper central series and construct an
         ## isomorphism to a group defined along the upper central series.
@@ -297,11 +297,11 @@ ExtendRep:=function( col, new, mats)
         #
         # where I_2 is the 2x2 identity matrix.
 
-      M:= MutableIdentityMat( dim+2 );
+      M:= IdentityMat( dim+2 );
       M[dim+1][dim+2]:=1;
       exrep:= [ M ];
       for i in [1..Length(mats)] do
-        M:= MutableNullMat( dim+2, dim+2 );
+        M:= NullMat( dim+2, dim+2 );
         for k in [1..dim] do
           for l in [1..dim] do
              M[k][l]:=mats[i][k][l];
@@ -661,7 +661,7 @@ Representation:= function( col )
   local n,m,mats,i;
 
   n:= NumberOfGenerators( col );
-  m:=MutableIdentityMat(2);
+  m:=IdentityMat(2);
   m[1][2]:=1;
   mats:=[m];
   for i in [2..n] do

@@ -1,7 +1,3 @@
-Documentation:
-* change doc/Makefile to enforce LANG=C
-* complete switch to GAPDoc: Verify everything converted fine, then remove old docs
-
 Misc:
 * redo stuff in /etc; need a new script for making release tarballs
 * Add GPL header to all files
@@ -17,17 +13,6 @@ Code:
 * add some of my new internal code
 * add unit tests
 * IsomorphismPcpGroupFromFpGroupWithPcPres
-  should this be Installed as a global function, considering that 
-  it is documented now?
-  other new globals (write protected):
-    IsPcpElementCollection( ... )*
-    IsPcpElementFamily( ... )*
-  other new globals (not write protected):
-	PcpFamily*
-	PcpType*
-	PolycyclicPkgName*
-	USE_CANONICAL_PCS*
-	USE_NORMED_PCS*
 
 * MappedVector is used by lots of code, and also by 3rd party
   packages -> make it official & document it.
@@ -35,19 +20,14 @@ Code:
 
 * add support for cohomology over arbitrary finite modules
 
-* set CanEasilyCompareElements / CanEasilyCompareElementsFamily ?
-* CanEasilySortElements / CanEasilySortElementsFamily ?
-
 * Should we use InstallSubsetMaintenance etc.?
 
 * the methods for IsomorphismPcpGroup could be improved, e.g. the
   one starting with a permutation group, or with a pc group
 
 * Maybe add IsFreeAbelian, IsTorsionFree, property to GAP, and just install
-  methods for pcp groups in polycyclic. CAREFUL with GAP 4.4 compatibility,
-  and also beware of issues where users upgrade from an old polycyclic
-  version to newer GAP... ideally, such a change should be made
-  *before* GAP 4.5 is introduced.
+  methods for pcp groups in polycyclic. But beware of issues where users
+  upgrade to a newer GAP but retain an old Polycyclic version, and vice versa.
 
 * The third parameter "snf" in  Pcp( U, "snf" )
   is really an "option", and should be replaced by use of ValueOption()
@@ -56,23 +36,12 @@ Code:
 * Looking at the code in SchurExtension (and elsewhere), perhaps we should
   add a CollectorForPcp operation?
 
-* Get rid of global variables and functions (they pollute the global namespace
-  and are a liability, as they can be overwritten by chance).
-  CHECK_CENT
-
 * Add code for computing conjugacy classes of elements
 
 * Implement ConjugacySubgroupsBySeries
 
 * implement missing Sylow subgroup code (borrow from the corresponding
   pcgroup code)
-
-* Remove dependency on nq? Only undocumented functions
-    NonAbelianTensorSquareFp
-    NonAbelianTensorSquarePlusFp
-    NonAbelianTensorSquareViaNq
-  If we do so, also remove the declaration of and call to
-    NqEpimorphismNilpotentQuotient
 
 * The documentation in methods.xml, last section, mentions
    "two libraries of Schur tower p-groups", but then fails to list
@@ -89,28 +58,24 @@ Code:
   NonAbelianExteriorSquare => NonabelianExteriorSquare
   ...
 
-* Add a method for EpimorphismSchurCover
-
 * Turn D!.crossedPairing (set by NonAbelianExteriorSquareEpimorphism)
   into an attribute or so?
 
-* There is lots of dead/unused code in polycyclic, e.g.
+* There is lots of dead/unused/undocumented code in polycyclic, e.g.
    CollectedOneCRNew
    CRRecordWithAction
    -> there is actually a *ton* of code related to that, dealing with "smats"
      "super" and other undocumented CR record entries.
   Decide what to keep of that and what to remove
+  
+  More unused code:
+    - everything in gap/matrep/affine.gi
 
 * in gap/matrix/latbases.gi, there is a function "LatticeBasis"
   perhaps BaseIntMat could / should be used instead?
-
-* in gap/matrix/hnf.gi, there is a function "HNFIntMatRowOps"
-  What advantages does it have, exactly, over HermiteNormalFormIntegerMatTransform?
-  And likewise for HNFIntMat vs. HermiteNormalFormIntegerMat
-  They are used by "NormalFormConsistencyRelations" and "DiagonalFormIntMat" in the same file,
-  and the long comments in there sound as if they might be "better" in some special
-  cases... would be good to know if that is actually true, by finding such cases
-  in real-world examples and documenting them.
+  similary, study the possibility of replacing
+   PcpNullspaceIntMat -> NullspaceIntMat,
+   LatticeIntersection -> BaseIntersectionIntMats
 
 * Document (in the manual) the return values of ComplementClasses, ComplementClassesEfaPcps
   and so on. They seem to be some kind of list of records
@@ -156,3 +121,40 @@ converting back.
   also add a method for it (this should be quite cheap)
 
 * figure out why EfaSeriesParent is not directly installed as method for EfaSeries...
+
+
+* consider removing "documentation" for built-in GAP operations like
+  ClosureGroup, \in etc. and just document for which operations we provide
+  special methods (if at all)
+
+* Why does SubgroupByIgs use
+    U := SubgroupNC( Parent(arg[1]), pcs );
+  this contradicts what the documentation of SubgroupByIgs says... but we
+  can't just simply change this, as some code might rely on the old "bad"
+  behavior...
+
+
+* Right now one can do horribly evil things like modifying a collector
+  that is already "in use" by some groups:
+	gap> G:=HeisenbergPcpGroup(3);
+	Pcp-group with orders [ 0, 0, 0, 0, 0, 0, 0 ]
+	gap> coll:=Collector(G);
+	<<from the left collector with 7 generators>>
+	gap> GetConjugate(coll, 2, 1);
+	[ 2, 1 ]
+	gap> SetConjugate(coll, 2, 1, []);
+	gap> G.2*G.1;
+	Error, Collector is out of date called from
+	CollectWordOrFail( clt, e, f ) called from
+	<function "unknown">( <arguments> )
+	called from read-eval loop at line 44 of *stdin*
+	you can 'quit;' to quit to outer loop, or
+	you can 'return;' to continue
+	brk> 
+
+  One could argue that as soon as a collector is "in use" by a group, it
+  should be sealed / finalized / made read-only.
+  
+  As a bonus, this would allow us to store the PcpGroupByCollectorNC(coll) of the collector
+
+* replace PrintObj / ViewObj methods by PrintString / ViewString methods

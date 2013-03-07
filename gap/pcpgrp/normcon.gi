@@ -5,7 +5,6 @@
 ##  Computing normalizers of subgroups.
 ##  Solving the conjugacy problem for subgroups.
 ##
-if not IsBound( CHECK_NORM ) then CHECK_NORM := false; fi;
 
 #############################################################################
 ##
@@ -95,7 +94,7 @@ NormalizerOfIntersection := function( C, N, I )
         F := GF(p);
         act := InducedByField( act, F );
         int := VectorspaceBasis( int*One(F) );
-        stb := PcpOrbitStabilizer( int, fac, act, OnVectorspaceBases );
+        stb := PcpOrbitStabilizer( int, fac, act, OnSubspacesByCanonicalBasis );
         stb := AddIgsToIgs( stb.stab, AsList(pcp) );
         return SubgroupByIgs( C, stb );
 
@@ -288,7 +287,7 @@ NormalizerBySeries := function( G, U, efa )
         C := NormalizerOfComplement( C, H, N, I );
 
         # add checking if required
-        if CHECK_NORM then
+        if CHECK_NORM@ then
             Info( InfoPcpGrp, 1, "  check result ");
             H := Image( hom, U );
             if ForAny( Igs(C), x -> H^x <> H ) then

@@ -4,18 +4,11 @@
 ##
 ##  The orbit-stabilizer algorithm for subgroups of Z^d.
 ##
-if not IsBound( CHECK_INTNORM ) then CHECK_INTNORM := false; fi;
 
 #############################################################################
 ##
-#F Action functions OnVectorspace/LatticeBases( base, mat )
+#F Action function LatticeBases( base, mat )
 ##
-OnVectorspaceBases := function( base, mat )
-    local imgs;
-    imgs := base * mat;
-    TriangulizeMat( imgs );
-    return imgs;
-end;
 
 OnLatticeBases := function( base, mat )
     local imgs;
@@ -504,7 +497,7 @@ NormalizerIntegralAction := function( G, linG, U )
     F := GF(3);
     t := InducedByField( linG, F );
     I := VectorspaceBasis( U * One(F) );
-    S := PcpOrbitStabilizer( I, Pcp(G), t, OnVectorspaceBases );
+    S := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
     S := SubgroupByIgs( G, S.stab );
     linS := InducedByPcp( Pcp(G), Pcp(S), linG );
 
@@ -537,7 +530,7 @@ NormalizerIntegralAction := function( G, linG, U )
     N := SubgroupByIgs( G, N );
 
     # do a temporary check
-    if CHECK_INTNORM then
+    if CHECK_INTNORM@ then
         Info( InfoIntNorm, 1, "checking results");
         if not CheckNormalizer(G, N, linG, U) then
             Error("wrong norm in integral action");
@@ -579,7 +572,7 @@ ConjugacyIntegralAction := function( G, linG, U, W )
     t := InducedByField( linG, F );
     I := VectorspaceBasis( U * One(F) );
     J := VectorspaceBasis( W * One(F) );
-    os := PcpOrbitStabilizer( I, Pcp(G), t, OnVectorspaceBases );
+    os := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
     j := Position( os.orbit, J );
     if IsBool(j) then return false; fi;
     g := TransversalElement( j, os, One(G) );
@@ -623,7 +616,7 @@ ConjugacyIntegralAction := function( G, linG, U, W )
     T := SubgroupByIgs( T, t );
 
     # do a temporary check
-    if CHECK_INTNORM then
+    if CHECK_INTNORM@ then
         Info( InfoIntNorm, 1, "checking results");
         if not CheckNormalizer( G, T, linG, U) then
             Error("wrong norm in integral action");

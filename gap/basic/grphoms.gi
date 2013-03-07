@@ -102,28 +102,49 @@ end );
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . for G and H pcp groups
 ##
+if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
+InstallMethod( GroupGeneralMappingByImagesNC,
+               "for pcp group, pcp group, list, list",
+               [IsPcpGroup, IsPcpGroup, IsList, IsList],
+               GroupGeneralMappingByImages_for_pcp );
+else
 InstallMethod( GroupGeneralMappingByImages,
                "for pcp group, pcp group, list, list",
                [IsPcpGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
+fi;
 
 #############################################################################
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . . . .  for G pcp group
 ##
+if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
+InstallMethod( GroupGeneralMappingByImagesNC,
+               "for pcp group, group, list, list",
+               [IsPcpGroup, IsGroup, IsList, IsList],
+               GroupGeneralMappingByImages_for_pcp );
+else
 InstallMethod( GroupGeneralMappingByImages,
                "for pcp group, group, list, list",
                [IsPcpGroup, IsGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
+fi;
 
 #############################################################################
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . . . .  for H pcp group
 ##
+if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
+InstallMethod( GroupGeneralMappingByImagesNC,
+               "for group, pcp group, list, list",
+               [IsGroup, IsPcpGroup, IsList, IsList],
+               GroupGeneralMappingByImages_for_pcp );
+else
 InstallMethod( GroupGeneralMappingByImages,
                "for group, pcp group, list, list",
                [IsGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
+fi;
 
 
 #############################################################################
@@ -185,39 +206,6 @@ function( hom )
 end );
 
 
-# The above code relies on a ImagesSource method for GHBIs
-# which avoids ImagesSet etc.; this is the case in GAP 4.5
-# but not in 4.4 and earlier, so we add one there.
-if not CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
-  InstallMethod( ImagesSource, "for GHBI",
-      [ IsGroupGeneralMappingByImages ],
-      hom -> SubgroupNC( Range( hom ), MappingGeneratorsImages(hom)[2] ) );
-fi;
-
-
-## The following two methods for IsTotal and IsSurjective are obsolete;
-## indeed, the default methods in GAP do almost the same thing, except
-## they use "IsSubset" instead of "=", use SubgroupNC instead of
-## Subgroup, and the subgroups are computed via ImagesSource /
-## PreImagesRange. (For this to be true in GAP 4.4, we need the new
-## ImagesSource method in GAP 4.5 for GHBIs, see above.
-
-# InstallMethod( IsTotal,
-#                "for FromPcpGHBI",
-#                [IsFromPcpGHBI], 0,
-# function(hom)
-#     return Subgroup(Source(hom),MappingGeneratorsImages(hom)[1])
-#            = Source(hom);
-# end );
-#
-# InstallMethod( IsSurjective,
-#                "for ToPcpGHBI",
-#                [IsToPcpGHBI], 0,
-# function(hom)
-#     return Subgroup(Range(hom),MappingGeneratorsImages(hom)[2])
-#            = Range(hom);
-# end );
-
 #############################################################################
 ##
 #M  Images
@@ -225,7 +213,7 @@ fi;
 InstallMethod( ImagesRepresentative,
                "for FromPcpGHBI",
                FamSourceEqFamElm,
-               [ IsFromPcpGHBI, IsMultiplicativeElementWithInverse ],
+               [ IsFromPcpGHBI, IsPcpElement ],
 function( hom, elm )
     local e;
     if Length(hom!.igs_gens_to_imgs[1]) = 0 then return One(Range(hom)); fi;
@@ -244,7 +232,7 @@ end );
 InstallMethod( PreImagesRepresentative,
                "for ToPcpGHBI",
                FamRangeEqFamElm,
-               [ IsToPcpGHBI, IsMultiplicativeElementWithInverse ],
+               [ IsToPcpGHBI, IsPcpElement ],
 function( hom, elm )
     local e;
     if Length(hom!.igs_imgs_to_gens[1]) = 0 then return One(hom!.Source); fi;

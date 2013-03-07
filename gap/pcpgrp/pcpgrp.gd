@@ -26,26 +26,6 @@ DeclareGlobalFunction( "NilpotentByAbelianNormalSubgroup" );
 # polyz.gi
 DeclareGlobalFunction( "PolyZNormalSubgroup" );
 
-# torsion.gi
-DeclareAttribute( "TorsionSubgroup", IsGroup );
-DeclareAttribute( "NormalTorsionSubgroup", IsGroup );
-DeclareAttribute( "FiniteSubgroupClasses", IsGroup );
-DeclareGlobalFunction( "RootSet" );
-
-DeclareProperty(  "IsTorsionFree", IsGroup );
-InstallSubsetMaintenance( IsTorsionFree, IsGroup and IsTorsionFree, IsGroup );
-InstallTrueMethod( IsTorsionFree, IsGroup and IsTrivial );
-InstallTrueMethod( IsTorsionFree, IsFreeGroup );
-
-
-DeclareProperty( "IsFreeAbelian", IsGroup );
-InstallSubsetMaintenance( IsFreeAbelian, IsGroup and IsFreeAbelian, IsGroup );
-InstallTrueMethod( IsFreeAbelian, IsGroup and IsTrivial );
-InstallTrueMethod( IsFreeAbelian, IsFinitelyGeneratedGroup and IsTorsionFree and IsAbelian);
-InstallTrueMethod( IsAbelian, IsGroup and IsFreeAbelian );
-InstallTrueMethod( IsTorsionFree, IsGroup and IsFreeAbelian );
-
-
 # schur and tensor
 DeclareAttribute( "SchurExtension", IsGroup );
 DeclareAttribute( "SchurExtensionEpimorphism", IsGroup );

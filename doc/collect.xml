@@ -10,7 +10,7 @@ the generators of <M>G</M> is called <E>collection</E>.  The basic idea in
 collection is the following.  Given a word in the defining generators,
 one scans the word for occurrences of adjacent generators (or their
 inverses) in the wrong order or occurrences of subwords <M>g_i^{e_i}</M>
-with <M>i\in I</M> and <M>e_i</M> not in the range <M>0\ldots r_{i-1}</M>.  In the
+with <M>i\in I</M> and <M>e_i</M> not in the range <M>0\ldots r_{i}-1</M>.  In the
 first case, the appropriate conjugacy relation is used to move the
 generator with the smaller index to the left.  In the second case, one
 uses the appropriate power relation to move the exponent of <M>g_i</M> into

@@ -5,7 +5,6 @@
 ##  Computing centralizers of elements and subgroups.
 ##  Solving the conjugacy problem for elements.
 ##
-if not IsBound( CHECK_CENT ) then CHECK_CENT := false; fi;
 
 #############################################################################
 ##
@@ -138,8 +137,8 @@ CentralizerBySeries := function( G, elms, pcps )
     od;
 
     # add checking if required
-    if CHECK_CENT then
-        Print("check result \n");
+    if CHECK_CENT@ then
+        Info( InfoPcpGrp, 1, "check result");
         for g in elms do
             if ForAny( Igs(C), x -> Comm(g,x) <> One(G) ) then
                 Error("centralizer is not centralizing");
@@ -310,7 +309,7 @@ ConjugacyElementsBySeries := function( G, g, h, pcps )
     od;
 
     # add checking if required
-    if CHECK_CENT then
+    if CHECK_CENT@ then
         Info( InfoPcpGrp, 1, "check result");
         if g^k <> h then Error("conjugating element is incorrect"); fi;
     fi;

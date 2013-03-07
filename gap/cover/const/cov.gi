@@ -32,7 +32,7 @@ SchurCovers := function(G)
 
     # determine Z = Z(K) cap RK'
     D := ProductPcpGroups(K, R, DerivedSubgroup(K));
-    Z := Intersection(Center(K), D);
+    Z := Intersection(Centre(K), D);
 
     # determine phi(G) in K
     P := Subgroup(K, Concatenation(Igs(D), List(Pcp(K,D), x -> x^p)));
@@ -78,7 +78,7 @@ SchurCovers := function(G)
     c := FactorsComplementClasses( A, H, f, t, m );
 
     # adjust if necessary
-    if IsPcGroup(G) and not CODEONLY then
+    if IsPcGroup(G) and not CODEONLY@ then
         for i in [1..Length(c)] do
             c[i] := PcpGroupToPcGroup(RefinedPcpGroup(c[i]));
         od;

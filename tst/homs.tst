@@ -1,9 +1,7 @@
 gap> START_TEST("Test of homs between various group types");
 
-gap> TestHom := function(A,B,gens_A,gens_B)
+gap> TestHomHelper := function(A,B,gens_A,gens_B)
 >   local map, inv, H;
-> #  Display(List(gens_A,g->IndependentGeneratorExponents(A,g)));
-> #  Display(List(gens_B,g->IndependentGeneratorExponents(B,g)));
 >   
 >   map:=GroupGeneralMappingByImages(A,B,gens_A,gens_B);
 >   inv:=GroupGeneralMappingByImages(B,A,gens_B,gens_A);
@@ -17,37 +15,33 @@ gap> TestHom := function(A,B,gens_A,gens_B)
 >   Display(List([PreImagesRange(map),CoKernel(map),ImagesSource(map),Kernel(map)],Size));
 >   Display(List([PreImagesRange(inv),CoKernel(inv),ImagesSource(inv),Kernel(inv)],Size));
 > end;;
-gap> 
-gap> filters:=[IsPermGroup,IsPcGroup,IsPcpGroup];;
-gap> for i1 in [1..Length(filters)] do
->   f1:=filters[i1];
->   for i2 in [1..Length(filters)] do
->     f2:=filters[i2];
->     Print("### Starting test (", i1, ",", i2, ") ###\n");
->     A:=AbelianGroup(f1,[35,15]);;
->     B:=AbelianGroup(f2,[35,15]);;
->     iA := IndependentGeneratorsOfAbelianGroup(A);
->     iB := IndependentGeneratorsOfAbelianGroup(B);
->     
->     TestHom(A,B,iA,iB);
->     
->     gens_A:=ShallowCopy(iA);
->     gens_B:=ShallowCopy(iB);
->     gens_A:=gens_A{[1..3]};
->     gens_B:=gens_B{[1..3]};
->     TestHom(A,B,gens_A,gens_B);
->     
->     gens_A[1]:=One(gens_A[1]);;
->     gens_A[2]:=MappedVector([ 0, 1, 0, 6 ], iA);;
->     gens_B[3]:=One(gens_B[3]);;
->     
->     TestHom(A,B,gens_A,gens_B);
->     
->     gens_A[1]:=MappedVector([ 2, 1, 1, 0 ], iA);
->     TestHom(A,B,gens_A,gens_B); 
->   od;
-> od;
-### Starting test (1,1) ###
+gap> TestHomFromFilterToFilter := function(f1, f2)
+>   local A, B, iA, iB, gens_A, gens_B;
+>   A:=AbelianGroup(f1,[35,15]);;
+>   B:=AbelianGroup(f2,[35,15]);;
+>   iA := IndependentGeneratorsOfAbelianGroup(A);
+>   iB := IndependentGeneratorsOfAbelianGroup(B);
+>   
+>   TestHomHelper(A,B,iA,iB);
+>   
+>   gens_A:=ShallowCopy(iA);
+>   gens_B:=ShallowCopy(iB);
+>   gens_A:=gens_A{[1..3]};
+>   gens_B:=gens_B{[1..3]};
+>   TestHomHelper(A,B,gens_A,gens_B);
+>   
+>   gens_A[1]:=One(gens_A[1]);;
+>   gens_A[2]:=MappedVector([ 0, 1, 0, 6 ], iA);;
+>   gens_B[3]:=One(gens_B[3]);;
+>   
+>   TestHomHelper(A,B,gens_A,gens_B);
+>   
+>   gens_A[1]:=MappedVector([ 2, 1, 1, 0 ], iA);
+>   TestHomHelper(A,B,gens_A,gens_B); 
+> end;;
+
+
+gap> TestHomFromFilterToFilter(IsPermGroup,IsPermGroup);
 true
 true
 true
@@ -76,7 +70,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (1,2) ###
+gap> TestHomFromFilterToFilter(IsPermGroup,IsPcGroup);
 true
 true
 true
@@ -105,7 +99,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (1,3) ###
+gap> TestHomFromFilterToFilter(IsPermGroup,IsPcpGroup);
 true
 true
 true
@@ -134,7 +128,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (2,1) ###
+gap> TestHomFromFilterToFilter(IsPcGroup,IsPermGroup);
 true
 true
 true
@@ -163,7 +157,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (2,2) ###
+gap> TestHomFromFilterToFilter(IsPcGroup,IsPcGroup);
 true
 true
 true
@@ -192,7 +186,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (2,3) ###
+gap> TestHomFromFilterToFilter(IsPcGroup,IsPcpGroup);
 true
 true
 true
@@ -221,7 +215,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (3,1) ###
+gap> TestHomFromFilterToFilter(IsPcpGroup,IsPermGroup);
 true
 true
 true
@@ -250,7 +244,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (3,2) ###
+gap> TestHomFromFilterToFilter(IsPcpGroup,IsPcGroup);
 true
 true
 true
@@ -279,7 +273,7 @@ true
 [ false, false, true, false ]
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
-### Starting test (3,3) ###
+gap> TestHomFromFilterToFilter(IsPcpGroup,IsPcpGroup);
 true
 true
 true

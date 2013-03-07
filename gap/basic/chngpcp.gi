@@ -52,7 +52,7 @@ end;
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 RefinedPcpGroup := function( G )
-    local refExponents, pcs, rel, new, ord, map, i, f, g, j, n, c, t, H, h;
+    local refExponents, pcs, rel, new, ord, map, i, f, g, j, n, c, t, H;
 
     # refined exponents
     refExponents := function( pcs, g, map )
@@ -102,8 +102,8 @@ RefinedPcpGroup := function( G )
 
     # create group and add a bijection
     H := PcpGroupByCollector( c );
-    h := GroupHomomorphismByImagesNC( G, H, new, Igs(H) );
-    H!.bijection := h;
+    H!.bijection := GroupHomomorphismByImagesNC( G, H, new, Igs(H) );
+    SetIsBijective( H!.bijection, true );
     UseIsomorphismRelation( G, H );
     return H;
 end;
@@ -172,7 +172,7 @@ PcpGroupByPcps := function( pcps )
     H := GroupOfPcp( pcps[1] );
     G := PcpGroupByCollector( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
-    SetKernelOfMultiplicativeGeneralMapping(G!.bijection, TrivialSubgroup(G));
+    SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
     return G;
 end;
@@ -224,7 +224,7 @@ PcpGroupByEfaPcps := function( pcps )
     H := GroupOfPcp( pcps[1] );
     G := PcpGroupByCollector( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
-    SetKernelOfMultiplicativeGeneralMapping(G!.bijection, TrivialSubgroup(G));
+    SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
     return G;
 end;

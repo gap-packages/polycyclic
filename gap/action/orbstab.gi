@@ -4,8 +4,6 @@
 ##
 ##  The orbit-stabilizer algorithm for elements of Z^d.
 ##
-if not IsBound( CHECK_INTSTAB ) then CHECK_INTSTAB := false; fi;
-if not IsBound( USED_PRIMES ) then USED_PRIMES := [3]; fi;
 
 #############################################################################
 ##
@@ -297,8 +295,7 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
             fi;
             Info( InfoIntStab, 2, "  spaces: ", List(subs,Length));
 
-            take := subs[Length(subs)];
-            Unbind( subs[Length(subs)] );
+            take := Remove(subs);
 
             # induce action to subspace if necessary
             if Length( take ) < d then
@@ -395,8 +392,7 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
                 subs := List( subs, PurifyRationalBase );
             fi;
             Info( InfoIntStab, 2, "  spaces: ", List(subs,Length));
-            take := subs[Length(subs)];
-            Unbind( subs[Length(subs)] );
+            take := Remove(subs);
 
             # set up element and do a check
             u := f * InducedByPcp( pcp, g, mats )^-1 - e;
@@ -544,7 +540,7 @@ StabilizerIntegralAction := function( G, mats, e )
     # compute modulo 3 first
     S := G;
     actS := mats;
-    for p in USED_PRIMES do
+    for p in USED_PRIMES@ do
         Info( InfoIntStab, 1, "reducing by stabilizer mod ",p);
         T := StabilizerModPrime( S, actS, e, p );
         Info( InfoIntStab, 1, "  obtained reduction by ",Index(S,T));
@@ -583,7 +579,7 @@ StabilizerIntegralAction := function( G, mats, e )
     stab := SubgroupByIgs( G, stab );
 
     # do a temporary check
-    if CHECK_INTSTAB then
+    if CHECK_INTSTAB@ then
         Info( InfoIntStab, 1, "checking results");
         if not CheckStabilizer(G, stab, mats, e) then
             Error("wrong stab in integral action");
@@ -668,7 +664,7 @@ OrbitIntegralAction := function( G, mats, e, f )
     T := SubgroupByIgs( T, t );
 
     # do a temporary check
-    if CHECK_INTSTAB then
+    if CHECK_INTSTAB@ then
         Info( InfoIntStab, 1, "checking results");
         if not CheckStabilizer(G, T, mats, e) then
             Error("wrong stab in integral action");

@@ -29,12 +29,12 @@ function( G )
     if Size(G) = 1 then return []; fi;
     g := Igs(G);
     s := [g[1]];
-    U := Subgroup( G, s );
+    U := SubgroupNC( G, s );
     i := 1;
     while IndexNC(G,U) > 1 do
         i := i+1;
         Add( s, g[i] );
-        V := Subgroup( G, s );
+        V := SubgroupNC( G, s );
         if IndexNC(V, U) > 1 then
             U := V;
         else
@@ -50,9 +50,12 @@ end );
 ##
 InstallMethod( SylowSubgroupOp, [IsPcpGroup, IsPosInt],
 function( G, p )
+    local iso;
     if not IsFinite(G) then
         Error("sorry: function is not installed");
     fi;
-    TryNextMethod();
+    # HACK: Until we write a proper native method, use that for pc groups
+    iso := IsomorphismPcGroup(G);
+    return PreImagesSet(iso, SylowSubgroup(Image(iso),p));
 end );
 

@@ -10,6 +10,10 @@
 DeclareSynonym( "IsPcpGroup", IsGroup and IsPcpElementCollection );
 InstallTrueMethod( IsPolycyclicGroup, IsPcpGroup );
 
+InstallTrueMethod( CanEasilySortElements, IsPcpGroup );
+InstallTrueMethod( KnowsHowToDecompose, IsPcpGroup );
+
+
 #############################################################################
 ##
 ## An igs/ngs/cgs is an attribute of a pcp group.

@@ -1,13 +1,3 @@
-
-if not IsBound( USE_NFMI ) then
-    USE_NFMI := false;
-fi;
-
-if not IsBound( CHECKPCP ) then
-    CHECKPCP := false;
-fi;
-
-
 #############################################################################
 ##
 #A ReduceTail
@@ -383,7 +373,7 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
 
     od;
 
-    if CHECKPCP then
+    if CHECK_SCHUR_PCP@ then
         S := PcpGroupByCollector(c);
     else
         UpdatePolycyclicCollector(c);
@@ -409,5 +399,5 @@ InstallMethod(Epicentre, "for pcp groups", [IsPcpGroup],
 function (G)
 	local epi;
 	epi := SchurExtensionEpimorphism(G);
-	return Image(epi,Center(Source(epi)));
+	return Image(epi,Centre(Source(epi)));
 end);

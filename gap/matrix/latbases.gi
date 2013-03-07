@@ -114,7 +114,7 @@ NaturalHomomorphismByLattices := function( V, U )
     inv  := [];
 
     imgs := TransposedMat( new.coltrans );
-    prei := InverseIntMat( new.coltrans );
+    prei := Inverse( new.coltrans );
     for i in [1..n] do
         if new.normal[i][i] <> 1 then
             Add( cyc, LinearCombination( F.gens, prei[i] ) );

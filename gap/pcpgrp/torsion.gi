@@ -385,8 +385,7 @@ SupplementClassesCR := function( C )
     # lift from U to R-classes of complements
     com := [];
     while Length( orbs ) > 0 do
-        orb := orbs[Length(orbs)];
-        Unbind( orbs[Length(orbs)] );
+        orb := Remove(orbs);
         D := InduceToFactor( C, orb );
         AddInversesCR( D );
         t := ComplementClassesCR( D );

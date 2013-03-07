@@ -48,54 +48,6 @@ end;
 
 #############################################################################
 ##
-#F  DiagonalBlockMat( <mats> )
-##
-##  Construct a matrix with the matrices in <mats> along the diagonal.
-##
-DiagonalBlockMat := function( mats )
-    local   n,  M,  m,  d;
-
-    n := Sum( mats, m->Length(mats[1]) );
-    M := NullMat( n, n );
-
-    n := 0;
-    for m in mats do
-        d := Length(m);
-        M{[1..d] + n}{[1..d] + n} := m;
-        n := n + d;
-    od;
-
-    return M;
-end;
-
-Example := function( k, mats )
-    local   l,  d,  perm,  example,  i,  ex,  j,  jj,  T;
-
-    l := Length( mats );
-    d := Length( mats[1] );
-    perm := [2..l]; perm[l] := 1; perm := PermList( perm );
-
-    example := [];
-    for i in [1..k] do
-        ex := DiagonalBlockMat( mats );
-        mats := Permuted( mats, perm );
-        for j in [0,d..(l-1)*d] do
-            for jj in [0,d..j-d] do
-                ex{ [1..d] + j }{ [1..d] + jj } := RandomMat( d,d,[-1..1] );
-            od;
-        od;
-        Add( example, ex );
-    od;
-
-    repeat
-        T := RandomUnimodularMat( l*d );
-        until Maximum( Flat( T ) ) <= 12;
-
-    return T * example * T^-1;
-end;
-
-#############################################################################
-##
 #F  RowsWithLeadingIndexHNF( <hnf> )
 ##
 ##  Given an integer matrix <hnf> in Hermite Normal Form, return a list that
@@ -180,7 +132,7 @@ CompletionToUnimodularMat := function( M )
     P{[1..d]}{[d+1..n]} := NullMat( d, n-d );
     P{[d+1..n]}         := IdentityMat( n ){[d+1..n]};
 
-    compl := P^-1 * InverseIntMat( nf.coltrans );
+    compl := P^-1 * Inverse( nf.coltrans );
     if compl{[1..d]} <> M then
         return Error( "\n\n\tCompletion to unimodular matrix failed\n\n" );
     fi;

@@ -23,6 +23,9 @@ UpdateCounter := function( ind, gens, c )
         i := i - 1;
     od;
 
+    if IsSortedList(gens) and not IsEmpty(gens) and Depth(gens[Length(gens)]) < i then
+        return i + 1;
+    fi;
     # now try to add elements from gens
     repeat
         g := First( gens, x -> Depth(x) = i and LeadingExponent(x) = 1 );
@@ -94,7 +97,7 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
             c := UpdateCounter( ind, todo, c );
         od;
 
-        # now add powers and commutatorss
+        # now add powers and commutators
         for d in f do
             g := ind[d];
             if d <= Length( rels ) and rels[d] > 0 and d < c then
@@ -214,9 +217,8 @@ AddIgsToIgs := function( pcs1, pcs2 )
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
-        g := todo[Length(todo)];
+        g := Remove(todo);
         d := Depth( g );
-        Unbind( todo[Length(todo)] );
 
         # shift g into ind
         while d < c do
@@ -323,7 +325,7 @@ CyclicDecomposition := function( pcp )
     inv  := [];
 
     imgs := TransposedMat( new.coltrans );
-    prei := InverseIntMat( new.coltrans );
+    prei := Inverse( new.coltrans );
     for i in [1..n] do
         if new.normal[i][i] <> 1 then
             g := MappedVector( prei[i], pcp );
@@ -415,10 +417,10 @@ InstallGlobalFunction( Pcp, function( arg )
     fi;
 
     # do we want to norm the pcs or make it canonical?
-    if USE_CANONICAL_PCS then
+    if USE_CANONICAL_PCS@ then
         numer := Cgs( U );
         denom := Cgs( denom );
-    elif USE_NORMED_PCS then
+    elif USE_NORMED_PCS@ then
         numer := Ngs( U );
         denom := Ngs( denom );
     else
@@ -712,12 +714,7 @@ PcpGroupByPcp := function( pcp )
     r := RelativeOrdersOfPcp( pcp );
     n := Length( g );
 
-    # a special case - create a trivial pc group
-    if n = 0 then
-        return Subgroup( AbelianPcpGroup( 1, [2] ), [] );
-    fi;
-
-    # otherwise create a collector
+    # create a collector
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
         if r[i] > 0 then

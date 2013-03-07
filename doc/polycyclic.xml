@@ -1,11 +1,14 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE Book SYSTEM "gapdoc.dtd"
-   [ <!ENTITY Polycyclic "<Package>Polycyclic</Package>">
+   [ 
+     <!ENTITY Polycyclic "<Package>Polycyclic</Package>">
+     <!ENTITY AClib "<Package>AClib</Package>">
+     <!ENTITY Alnuth "<Package>Alnuth</Package>">
+     <!ENTITY Cryst "<Package>Cryst</Package>">
+     <!ENTITY Polenta "<Package>Polenta</Package>">
      <#Include Label="PKGVERSIONDATA">
    ]>
-
-<!-- Documentation of the Example package. -->
 
 <Book Name="polycyclic">
 
@@ -25,24 +28,24 @@
       Germany
     </Address>
     <Email>
-      beick at tu-bs.de
+      beick@tu-bs.de
     </Email>
     <Homepage>http://www.icm.tu-bs.de/~beick</Homepage>
   </Author>
   <Author>
     Max Horn                          <!-- REQUIRED -->
     <Address>
-      AG Algebra und Diskrete Mathematik<Br/>
-      Institut Computational Mathematics<Br/>
-      TU Braunschweig<Br/>
-      Pockelsstr. 14<Br/>
-      D-38106 Braunschweig<Br/>
+      AG Algebra<Br/>
+      Mathematisches Institut<Br/>
+      Justus-Liebig-Universität Gießen<Br/>
+      Arndtstrasse 2<Br/>
+      D-35392 Gießen<Br/>
       Germany
     </Address>
     <Email>
-      mhorn at tu-bs.de
+      max.horn@math.uni-giessen.de
     </Email>
-    <Homepage>http://www.icm.tu-bs.de/~mhorn</Homepage>
+    <Homepage>http://www.quendi.de/math.php</Homepage>
   </Author>
   <Author> Werner Nickel
     <!-- <Email>nickel@mathematik.tu-darmstadt.de</Email> -->
@@ -84,7 +87,6 @@
 <Heading>Obsolete Functions and Name Changes</Heading>
 <#Include Label="Obsolete">
 </Appendix>
-
 
 <Bibliography Databases="polycyclicbib.xml" />
 <TheIndex/>

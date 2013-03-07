@@ -46,12 +46,12 @@ end );
 ##
 #F Print( <G> )
 ##
-InstallMethod( PrintObj, [ IsPcpGroup ],
+InstallMethod( PrintObj, "for a pcp group", [ IsPcpGroup ],
 function( G )
     Print("Pcp-group with orders ",  List( Igs(G), RelativeOrderPcp ) );
 end );
 
-InstallMethod( ViewObj, [ IsPcpGroup ], SUM_FLAGS,
+InstallMethod( ViewObj, "for a pcp group", [ IsPcpGroup ], SUM_FLAGS,
 function( G )
     Print("Pcp-group with orders ",  List( Igs(G), RelativeOrderPcp ) );
 end );
@@ -84,7 +84,7 @@ end );
 ##
 #M Membershiptest for pcp groups
 ##
-InstallMethod( \in,
+InstallMethod( \in, "for a pcp element and a pcp group",
                IsElmsColls, [IsPcpElement, IsPcpGroup],
 function( g, G )
     return ReducedByIgs( Igs(G), g ) = One(G);
@@ -94,7 +94,7 @@ end );
 ##
 #M Random( G )
 ##
-InstallMethod( Random, [ IsPcpGroup ],
+InstallMethod( Random, "for a pcp group", [ IsPcpGroup ],
 function( G )
     local pcp, rel, g, i;
     pcp := Pcp(G);
@@ -147,7 +147,8 @@ end;
 ##
 #M IsSubset for pcp groups
 ##
-InstallMethod( IsSubset, IsIdenticalObj, [ IsPcpGroup, IsPcpGroup ], SUM_FLAGS,
+InstallMethod( IsSubset, "for pcp groups",
+               IsIdenticalObj, [ IsPcpGroup, IsPcpGroup ], SUM_FLAGS,
 function( H, U )
     if Parent(U) = H then return true; fi;
     return ForAll( GeneratorsOfGroup(U), x -> x in H );
@@ -157,7 +158,8 @@ end );
 ##
 #M IsNormal( H, U ) . . . . . . . . . . . . . . .test if U is normalized by H
 ##
-InstallMethod( IsNormalOp, IsIdenticalObj, [ IsPcpGroup, IsPcpGroup ],
+InstallMethod( IsNormalOp, "for pcp groups",
+               IsIdenticalObj, [ IsPcpGroup, IsPcpGroup ],
 function( H, U )
     local u, h;
     for h in GeneratorsOfPcp( Pcp(H, U)) do
@@ -198,7 +200,8 @@ InstallTrueMethod( CanComputeSizeAnySubgroup, IsPcpGroup );
 ##
 #M IndexNC/Index( <pcpgrp>, <pcpgrp> )
 ##
-InstallMethod( IndexNC, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+InstallMethod( IndexNC, "for pcp groups",
+               IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( H, U )
     local pcp, rel;
     pcp := Pcp( H, U );
@@ -210,7 +213,8 @@ function( H, U )
     fi;
 end );
 
-InstallMethod( IndexOp, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+InstallMethod( IndexOp, "for pcp groups",
+               IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( H, U )
     if not IsSubgroup( H, U ) then
         Error("H must be contained in G");
@@ -222,7 +226,7 @@ end );
 ##
 #M <pcpgrp> = <pcpgrp>
 ##
-InstallMethod( \=,
+InstallMethod( \=, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( G, H )
     return Cgs( G ) = Cgs( H );
@@ -232,7 +236,7 @@ end);
 ##
 #M ClosureGroup( <pcpgrp>, <pcpgrp> )
 ##
-InstallMethod( ClosureGroup,
+InstallMethod( ClosureGroup, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( G, H )
     local P;
@@ -256,7 +260,8 @@ end );
 ##
 #M CommutatorSubgroup( G, H )
 ##
-InstallMethod( CommutatorSubgroup, IsIdenticalObj, [ IsPcpGroup, IsPcpGroup],
+InstallMethod( CommutatorSubgroup, "for pcp groups",
+               IsIdenticalObj, [ IsPcpGroup, IsPcpGroup],
 function( G, H )
     local pcsG, pcsH, coms, i, j, U, u;
 
@@ -293,14 +298,16 @@ end );
 ##
 #M DerivedSubgroup( G )
 ##
-InstallMethod( DerivedSubgroup, [ IsPcpGroup ], G -> CommutatorSubgroup(G, G) );
+InstallMethod( DerivedSubgroup, "for a pcp group",
+               [ IsPcpGroup ], G -> CommutatorSubgroup(G, G) );
 
 #############################################################################
 ##
 #M PRump( G, p ). . . . . smallest normal subgroup N of G with G/N elementary
 ##                        abelian p-group.
 ##
-InstallMethod( PRumpOp, [IsPcpGroup, IsPosInt],
+InstallMethod( PRumpOp, "for a pcp group and a prime",
+               [IsPcpGroup, IsPosInt],
 function( G, p )
     local D, pcp, new;
     D := DerivedSubgroup(G);
@@ -313,7 +320,7 @@ end );
 ##
 #M IsNilpotentGroup( <pcpgrp> )
 ##
-InstallMethod( IsNilpotentGroup,
+InstallMethod( IsNilpotentGroup, "for a pcp group with known lower central series",
                [ IsPcpGroup and HasLowerCentralSeriesOfGroup ],
 function( G )
     local   lcs;
@@ -322,7 +329,7 @@ function( G )
     return IsTrivial( lcs[ Length(lcs) ] );
 end );
 
-InstallMethod( IsNilpotentGroup,
+InstallMethod( IsNilpotentGroup, "for a pcp group",
                [IsPcpGroup],
 function( G )
     local l, U, V, pcp, n;
@@ -363,7 +370,8 @@ end );
 ##
 #M IsElementaryAbelian( <pcpgrp> )
 ##
-InstallMethod( IsElementaryAbelian, [ IsPcpGroup ],
+InstallMethod( IsElementaryAbelian, "for a pcp group",
+               [ IsPcpGroup ],
 function( G )
     local rel, p;
     if not IsFinite(G) or not IsAbelian(G) then return false; fi;
@@ -378,12 +386,14 @@ end );
 ##
 #F AbelianInvariants( <pcpgrp > )
 ##
-InstallMethod( AbelianInvariants, [ IsPcpGroup ],
+InstallMethod( AbelianInvariants, "for a pcp group",
+               [ IsPcpGroup ],
 function( G )
     return AbelianInvariantsOfList( RelativeOrdersOfPcp( Pcp(G, DerivedSubgroup(G), "snf") ) );
 end );
 
-InstallMethod( AbelianInvariants, [IsPcpGroup and IsAbelian],
+InstallMethod( AbelianInvariants, "for an abelian pcp group",
+               [IsPcpGroup and IsAbelian],
 function( G )
     return AbelianInvariantsOfList( RelativeOrdersOfPcp( Pcp(G, "snf") ) );
 end );
@@ -458,7 +468,8 @@ end );
 ##
 #A  IndependentGeneratorsOfAbelianGroup( <A> )
 ##
-InstallMethod(IndependentGeneratorsOfAbelianGroup, [IsPcpGroup and IsAbelian],
+InstallMethod(IndependentGeneratorsOfAbelianGroup, "for an abelian pcp group",
+               [IsPcpGroup and IsAbelian],
 function( G )
 	if not IsBound( G!.indgens ) then
 		ComputeIndependentGeneratorsOfAbelianPcpGroup( G );
@@ -474,8 +485,9 @@ end );
 if IsBound( IndependentGeneratorExponents ) then
 # IndependentGeneratorExponents was introduced in GAP 4.5.x
 
-InstallMethod(IndependentGeneratorExponents, IsCollsElms,
-  [IsPcpGroup and IsAbelian, IsMultiplicativeElementWithInverse],
+InstallMethod(IndependentGeneratorExponents, "for an abelian pcp group and an element",
+               IsCollsElms,
+               [IsPcpGroup and IsAbelian, IsPcpElement],
 function( G, elm )
 	local exp, rels, i;
 
@@ -503,7 +515,7 @@ fi;
 ##
 #F NormalClosure( K, U )
 ##
-InstallMethod( NormalClosureOp,
+InstallMethod( NormalClosureOp, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( K, U )
     local tmpN, newN, done, id, gensK, pcsN, k, n, c, N;

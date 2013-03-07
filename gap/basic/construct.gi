@@ -24,7 +24,7 @@ InstallMethod( AbelianGroupCons,
     "pcp group",
     [ IsPcpGroup, IsList ],
 function( filter, ints )
-     local coll, i, n, r, grp;
+    local coll, i, n, r, grp;
 
     if not ForAll( ints, IsInt )  then
         Error( "<ints> must be a list of integers" );
@@ -70,6 +70,29 @@ function(filter,size)
     SetIsElementaryAbelian( grp, true );
     return grp;
 end);
+
+
+#############################################################################
+##
+#M  FreeAbelianGroupCons( <IsPcpGroup>, <rank> )
+##
+
+if IsBound(FreeAbelianGroupCons) then
+
+InstallMethod( FreeAbelianGroupCons,
+    "pcp group",
+    [ IsPcpGroup,  IsInt and IsPosRat ],
+function( filter, rank )
+    local coll, grp;
+    # construct group
+    coll := FromTheLeftCollector( rank );
+    UpdatePolycyclicCollector( coll );
+    grp := PcpGroupByCollectorNC( coll );
+    SetIsFreeAbelian( grp, true );
+    return grp;
+end );
+
+fi;
 
 
 #############################################################################
@@ -164,8 +187,6 @@ end );
 #M  QuaternionGroupCons( <IsPcpGroup>, <n> )
 ##
 
-if CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
-
 InstallMethod( QuaternionGroupCons,
     "pcp group",
     [ IsPcpGroup and IsFinite, IsPosInt ],
@@ -187,8 +208,6 @@ function( filter, n )
     grp := PcpGroupByCollectorNC( coll );
     return grp;
 end );
-
-fi;
 
 #############################################################################
 ##

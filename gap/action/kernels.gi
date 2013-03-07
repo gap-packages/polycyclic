@@ -209,7 +209,6 @@ end;
 ##
 ## Warning: G must be integral!
 ##
-if not IsBound( VERIFY ) then VERIFY := true; fi;
 KernelOfCongruenceMatrixActionGAP := function( G, mats )
     local p, U, pcp, K, gens, acts, rell, tmps;
 
@@ -231,7 +230,7 @@ KernelOfCongruenceMatrixActionGAP := function( G, mats )
     until Index( G, U ) = 1 or Index( U, K ) = 1;
 
     # verify if desired
-    if Index( G, U ) > 1 and VERIFY then
+    if Index( G, U ) > 1 and VERIFY@ then
         gens := Pcp( G, U );
         acts := InducedByPcp( pcp, gens, mats );
         if not VerifyIndependence( acts ) then
@@ -245,9 +244,9 @@ end;
 
 #############################################################################
 ##
-#F KernelOfCongruenceMatrixActionKANT( G, mats ) . . G acts as ss cong subgrp
+#F KernelOfCongruenceMatrixActionALNUTH( G, mats ) . G acts as ss cong subgrp
 ##
-KernelOfCongruenceMatrixActionKANT := function( G, mats )
+KernelOfCongruenceMatrixActionALNUTH := function( G, mats )
     local H, base, prim, fact, full, f, s, h, imats, F, rels, gens;
 
     # the trivial case
@@ -307,11 +306,10 @@ end;
 ##
 #F KernelOfCongruenceMatrixAction( G, mats )  . . . . . . . . header function
 ##
-if not IsBound( UseKANT ) then UseKANT := true; fi;
 KernelOfCongruenceMatrixAction := function( G, mats )
     if ForAll( mats, x -> x = x^0 ) then return G; fi;
-    if UseKANT then
-        return KernelOfCongruenceMatrixActionKANT( G, mats );
+    if USE_ALNUTH@ then
+        return KernelOfCongruenceMatrixActionALNUTH( G, mats );
     else
         return KernelOfCongruenceMatrixActionGAP( G, mats );
     fi;

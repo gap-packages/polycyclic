@@ -329,7 +329,7 @@ InstallGlobalFunction( TwoCoboundariesCR, function( A )
     for i in [1..n] do
         t := [];
         for j in [1..l] do
-            if IsBound(R[j][i]) then t[i] := R[j][i]; fi;
+            if IsBound(R[j][i]) then t[j] := TransposedMat(R[j][i]); fi;
         od;
         if IsList(sys) then
             AddEquationsCREndo( sys, t );

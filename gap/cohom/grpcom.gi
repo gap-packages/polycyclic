@@ -332,12 +332,11 @@ InstallGlobalFunction( ComplementClasses, function( arg )
 end );
 
 
-if CompareVersionNumbers( GAPInfo.Version, "4.5.0") then
-
 InstallMethod( ComplementClassesRepresentatives, "for pcp groups",
-  IsIdenticalObj, [IsPcpGroup,IsPcpGroup],
+               IsIdenticalObj, [IsPcpGroup,IsPcpGroup],
 function( G, N )
+    if not IsNormal(G, N) then
+        Error("N must be normal in G");
+    fi;
     return List(ComplementClasses(G, N), r -> r.repr);
-end);
-
-fi;
+end );

@@ -9,8 +9,9 @@ This is the package `Polycyclic' written for GAP 4.  It provides a
 basis for working with polycyclic groups defined by polycyclic
 presentations.
 
-To have the  full functionality of the package  available you need the
-GAP 4 package Alnuth and the Computer Algebra System Kant installed.
+To have the full functionality of the package available you need at
+least GAP version 4.5 and the GAP 4 package Alnuth and its dependencies
+must be installed.
 
 The features of this package include
         
@@ -32,7 +33,7 @@ The features of this package include
 
         - solutions to the conjugacy problems for elements and subgroups
 
-        - computation of Torsion and various finite subgroups
+        - computation of torsion and various finite subgroups
 
         - computation of various subgroups of finite index
 
@@ -48,8 +49,7 @@ or if there is a bug, we would appreciate it very much  if you send us
 an email.
 
 Bettina Eick  <beick@tu-bs.de>
-Werner Nickel <nickel@mathematik.tu-darmstadt.de>
-Max Horn      <mhorn@tu-bs.de>
+Max Horn      <max.horn@math.uni-giessen.de>
 
 You  can also reach  us by sending an email   to the general GAP email
 address for problems with GAP:

@@ -83,7 +83,7 @@ InverseCohMapping := function( coh, base )
 
     # compute full basis
     l := Length( coh.sol );
-    mat := MutableIdentityMat( l );
+    mat := IdentityMat( l );
     if not IsBool( coh.fld ) then mat := mat * One( coh.fld ); fi;
 
     # extend base to full lattice

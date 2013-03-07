@@ -20,22 +20,6 @@ ReduceMod := function(vec, rels)
     return List([1..Length(vec)], i -> vec[i] mod rels[i]);
 end;
 
-AsMat := function(aut, m)
-    return List(m, x -> ExponentsByPcp(m,Image(aut,x)));
-end;
-
-IntMat := function(mat,e)
-    if IsPrime(e) then
-        return List(mat, IntVecFFE);
-    else
-        return List(mat, x -> List(x, ExtRepOfObj));
-    fi;
-end;
-
-InvertMod := function(mat, d)
-    return IntMat((mat * One(ZmodnZ(d)))^-1,d);
-end;
-
 ProductPcpGroups := function(G, U, V)
     return Subgroup(G, Concatenation(Igs(U), Igs(V)));
 end;

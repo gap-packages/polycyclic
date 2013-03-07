@@ -138,8 +138,7 @@ LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
     orbs := OrbitsInvariantSubspaces( C, C.dim );
     com  := [];
     while Length( orbs ) > 0 do
-        o := orbs[Length(orbs)];
-        Unbind( orbs[Length(orbs)] );
+        o := Remove(orbs);
         t := cl.open / p^(l - Length(o.repr));
         if IsInt( t ) then
 

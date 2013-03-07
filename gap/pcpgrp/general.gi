@@ -70,9 +70,9 @@ AbelianIntersection := function( baseN, baseU )
 
     # otherwise compute
     id := List( [1..n], x -> 0 );
-    ls := MutableIdentityMat( n );
-    rs := MutableIdentityMat( n );
-    is := MutableIdentityMat( n );
+    ls := IdentityMat( n );
+    rs := IdentityMat( n );
+    is := IdentityMat( n );
 
     for g in baseU do
         d := PositionNonZero( g );

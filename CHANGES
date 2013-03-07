@@ -7,6 +7,24 @@
  us know.
 ===========================================================================
 
+2.11 (2013-03-07)
+	o Added a fast SylowSubgroup method (via IsomorphismPcGroup)
+    o Add FreeAbelianGroup constructor method (feature will only be available
+      in a future GAP release)
+    o Replaced some internal code dealing with integer matrices with calls
+      to equivalent GAP functions; for some things (e.g. inverting a matrix),
+      this can be a lot faster
+    o Fixed regressions in 2-cohomology code (introduced in 2.9), which caused
+      TwoCoboundariesCR and TwoCohomologyCR to produce errors or wrong results
+    o Fixed infinite recursion in LowerCentralSeriesOfGroup for non-nilpotent
+      pcp groups (thanks to Andreas Distler for noticing and fixing this)
+    o Removed support for GAP 4.4, now GAP 4.5 or newer is required
+    o Removed some obsolete code
+    o Removed or hid multiple undocumented internal functions (such as AsMat,
+      IntMat, OnVectorspace, VERIFY, ...) to reduce the pollution of the
+      global namespace
+	o Various minor tweaks
+
 2.10.1 (2012-06-01)
 	o Fixed generic IsFreeAbelian method to only apply to finitely
 	  generated groups
@@ -99,7 +117,7 @@
 	  dealing with Schur towers of p-groups of fixed coclass.
 	o Fixed email address of Bettina Eick
 
-2.5 (???)
+2.5 (2008-11-25)
 	o Added SchurCovers
 	o Added dependency on autpgrp package
 	o Added GroupHomomorphismByImagesNC implementation for when the source
@@ -107,7 +125,10 @@
 	o Compute size of newly constructed group in PcpGroupByCollectorNC
 	o Various other fixes and improvements
 
-2.4 (2008-11-09)
+2.4 (2008-11-12)
+    o Fixed a bug in DirectProduct for PcpGroups
+
+2.3 (2008-11-09)
 	o Removed compatibility with GAP versions before 4.3
 	o Added WhiteheadQuadraticFunctor
 	o Added IsPolycyclicPresentation
@@ -121,10 +142,6 @@
 	o Implemented Embedding for WreathProduct
 	o Extended AbelianPcpGroup to accept types of arguments (undocumented)
 	o Various other fixes and improvements
-
-2.3:
-	We are not sure whether this version was ever released. If you
-	happen to know, and maybe even have a copy, please let us know.
 
 2.2 (2007-06-22)
 	o Added support for non-abelian tensor and exterior squares

@@ -46,8 +46,7 @@ LowIndexNormalsEaLayer := function( G, U, pcp, d, act )
     invs := Filtered( invs, x -> l - Length( x ) <= d );
     com  := [];
     while Length( invs ) > 0 do
-        o := invs[Length(invs)];
-        Unbind( invs[Length(invs)] );
+        o := Remove(invs);
         t := U!.open / p^(l - Length(o));
         if IsInt( t ) then
 

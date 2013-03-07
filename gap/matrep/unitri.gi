@@ -170,14 +170,15 @@ InstallGlobalFunction( "SiftUpperUnitriMat", function( gens, level, M )
                     M := R^(-c) * M;
                 fi;
                 rr := r; r := d; d := rr;
-                RR := R; R := M; M := RR;            od;
+                RR := R; R := M; M := RR;
+            od;
             if d <> level.diags[ h ] then
                 level.diags[ h ] := d;
                 level.matrices[ h ] := M;
                 level.inverses[ h ] := M^-1;
                 InfoMatrixNq( "\n" );
                 FormCommutators( gens, level, h );
- InfoMatrixNq( "#I  continuing reduction on level ", level.weight, " with " );
+                InfoMatrixNq( "#I  continuing reduction on level ", level.weight, " with " );
             fi;
             d := r;
             M := R;

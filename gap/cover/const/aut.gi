@@ -9,7 +9,7 @@ AddPermOper := function(A)
     # points
     base := IdentityMat( r, GF(p) );
     V    := GF(p)^r;
-    norm := NormedVectors( V );
+    norm := NormedRowVectors( V );
 
     # oper
     f    := function( pt, a ) return NormedRowVector( pt * a ); end;
@@ -136,7 +136,22 @@ AutomorphismActionCover := function( G, C )
 end;
 
 InducedAutCover := function(aut, f, t, e)
-    local actT, invF, trs;
+    local actT, invF, trs, AsMat, InvertMod;
+
+    AsMat := function(aut, m)
+        return List(m, x -> ExponentsByPcp(m,Image(aut,x)));
+    end;
+
+    InvertMod := function(mat, e)
+        mat := (mat * One(ZmodnZ(e)))^-1;
+
+        if IsPrime(e) then
+            return List(mat, IntVecFFE);
+        else
+            return List(mat, x -> List(x, ExtRepOfObj));
+        fi;
+    end;
+
 
     # construct linear actions on t and f/f^e
     actT := AsMat(aut,t);

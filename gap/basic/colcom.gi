@@ -29,49 +29,52 @@
 
 # Collect various statistics about the combinatorial collection process
 # for debugging purposes.
-Counter         := 0;
-CompleteCommGen := 0;
-WholeCommWord   := 0;
-CommRestWord    := 0;
-CommGen         := 0;
-CombColl        := 0;
-CombCollStack   := 0;
-OrdColl         := 0;
-StepByStep      := 0;
-ThreeWtGen      := 0;
-ThreeWtGenStack := 0;
+CombCollStats := rec(
+    Counter         := 0,
+    CompleteCommGen := 0,
+    WholeCommWord   := 0,
+    CommRestWord    := 0,
+    CommGen         := 0,
+    CombColl        := 0,
+    CombCollStack   := 0,
+    OrdColl         := 0,
+    StepByStep      := 0,
+    ThreeWtGen      := 0,
+    ThreeWtGenStack := 0,
 
-Count_Length := 0;
-Count_Weight := 0;
+    Count_Length := 0,
+    Count_Weight := 0,
+);
+
 
 DisplayCombCollStats := function()
 
-    Print( "Calls to combinatorial collector: ", Counter,         "\n" );
-    Print( "Completely collected generators:  ", CompleteCommGen, "\n" );
-    Print( "Whole words collected:            ", WholeCommWord,   "\n" );
-    Print( "Rest of word collected:           ", CommRestWord,    "\n" );
-    Print( "Commuting generator collected:    ", CommGen,         "\n" );
-    Print( "Triple weight generators:         ", ThreeWtGen,      "\n" );
-    Print( "    of those had to be stacked:   ", ThreeWtGenStack, "\n" );
-    Print( "Step by step collection:          ", StepByStep,      "\n" );
-    Print( "Combinatorial collection:         ", CombColl,        "\n" );
-    Print( "    of those had to be stacked:   ", CombCollStack,   "\n" );
-    Print( "Ordinary collection:              ", OrdColl,         "\n" );
+    Print( "Calls to combinatorial collector: ", CombCollStats.Counter,         "\n" );
+    Print( "Completely collected generators:  ", CombCollStats.CompleteCommGen, "\n" );
+    Print( "Whole words collected:            ", CombCollStats.WholeCommWord,   "\n" );
+    Print( "Rest of word collected:           ", CombCollStats.CommRestWord,    "\n" );
+    Print( "Commuting generator collected:    ", CombCollStats.CommGen,         "\n" );
+    Print( "Triple weight generators:         ", CombCollStats.ThreeWtGen,      "\n" );
+    Print( "    of those had to be stacked:   ", CombCollStats.ThreeWtGenStack, "\n" );
+    Print( "Step by step collection:          ", CombCollStats.StepByStep,      "\n" );
+    Print( "Combinatorial collection:         ", CombCollStats.CombColl,        "\n" );
+    Print( "    of those had to be stacked:   ", CombCollStats.CombCollStack,   "\n" );
+    Print( "Ordinary collection:              ", CombCollStats.OrdColl,         "\n" );
 end;
 
 ClearCombCollStats := function()
 
-    Counter         := 0;
-    CompleteCommGen := 0;
-    WholeCommWord   := 0;
-    CommRestWord    := 0;
-    CommGen         := 0;
-    CombColl        := 0;
-    CombCollStack   := 0;
-    OrdColl         := 0;
-    StepByStep      := 0;
-    ThreeWtGen      := 0;
-    ThreeWtGenStack := 0;
+    CombCollStats.Counter         := 0;
+    CombCollStats.CompleteCommGen := 0;
+    CombCollStats.WholeCommWord   := 0;
+    CombCollStats.CommRestWord    := 0;
+    CombCollStats.CommGen         := 0;
+    CombCollStats.CombColl        := 0;
+    CombCollStats.CombCollStack   := 0;
+    CombCollStats.OrdColl         := 0;
+    CombCollStats.StepByStep      := 0;
+    CombCollStats.ThreeWtGen      := 0;
+    CombCollStats.ThreeWtGenStack := 0;
 end;
 
 
@@ -125,9 +128,9 @@ AddIntoExponentVector := function( ev, word, start, e )
     Info( InfoCombinatorialFromTheLeftCollector, 5,
           " Adding ", word, "^", e, " from ", start );
 
-    Count_Length := Count_Length + Length(word);
+    CombCollStats.Count_Length := CombCollStats.Count_Length + Length(word);
     if start <= Length(word) then
-        Count_Weight := Count_Weight + word[start];
+        CombCollStats.Count_Weight := CombCollStats.Count_Weight + word[start];
     fi;
 
     for i in [start,start+2..Length(word)-1] do
@@ -143,9 +146,9 @@ end;
 
     InfoCombi := InfoCombinatorialFromTheLeftCollector;
 
-    Counter := Counter + 1;
+    CombCollStats.Counter := CombCollStats.Counter + 1;
     Info( InfoCombi, 4,
-          "Entering combinatorial collector (", Counter, ") ",
+          "Entering combinatorial collector (", CombCollStats.Counter, ") ",
            ev, " * ", w );
 
     ## Check if the word is normed
@@ -231,7 +234,7 @@ end;
             ##  Check if there is a single commuting generator on the stack
             ##  and collect.
             if Length( wst[stp] ) = 1 and com[g] = g then
-                CompleteCommGen := CompleteCommGen + 1;
+                CombCollStats.CompleteCommGen := CombCollStats.CompleteCommGen + 1;
 
                 Info( InfoCombi, 5,
                       " collecting single generator ", g );
@@ -249,7 +252,7 @@ end;
             ##  can only do this if the word on the stack is normed.
             ##  Therefore, we cannot do this for the first word on the stack.
             elif (IsNormed or stp > 1) and sst[stp] = 1 and g = com[g] then
-                WholeCommWord := WholeCommWord + 1;
+                CombCollStats.WholeCommWord := CombCollStats.WholeCommWord + 1;
 
                 Info( InfoCombi, 5,
                       " collecting a whole word ",
@@ -265,7 +268,7 @@ end;
                 sst[  stp ] := Length( wst[stp] ) - 1;
 
             elif (IsNormed or stp > 1) and g = com[g] then
-                CommRestWord := CommRestWord + 1;
+                CombCollStats.CommRestWord := CombCollStats.CommRestWord + 1;
 
                 Info( InfoCombi, 5,
                       " collecting the rest of a word ",
@@ -280,7 +283,7 @@ end;
                 sst[  stp ] := Length( wst[ stp ] ) - 1;
 
             elif g = com[g] then
-                CommGen := CommGen + 1;
+                CombCollStats.CommGen := CombCollStats.CommGen + 1;
 
                 Info( InfoCombi, 5,
                       " collecting a commuting generators ",
@@ -297,7 +300,7 @@ end;
                 est[stp] := 0;
 
             elif (IsNormed or stp > 1) and 3*wt[g] > class then
-                ThreeWtGen := ThreeWtGen + 1;
+                CombCollStats.ThreeWtGen := CombCollStats.ThreeWtGen + 1;
 
                 Info( InfoCombi, 5,
                       " collecting generator ", g, " with w(g)=", wt[g],
@@ -331,7 +334,7 @@ end;
                     fi;
                     if IsBound(pow[g]) then
                         ##  Put entries of the exponent vector onto the stack
-                        ThreeWtGenStack := ThreeWtGenStack + 1;
+                        CombCollStats.ThreeWtGenStack := CombCollStats.ThreeWtGenStack + 1;
                         for i in Reversed( [g+1 .. com[g]] ) do
                             if ev[i] <> 0 then
                                 stp := stp + 1;
@@ -358,7 +361,7 @@ end;
                 fi;
 
             else                 ##  we have to move <gn> step by step
-                StepByStep := StepByStep + 1;
+                CombCollStats.StepByStep := CombCollStats.StepByStep + 1;
 
                 Info( InfoCombi, 5, " else-case, generator ", g );
 
@@ -372,7 +375,7 @@ end;
 
                 if IsNormed or stp > 1 then
                     ##  Do combinatorial collection as far as possible.
-                    CombColl := CombColl + 1;
+                    CombCollStats.CombColl := CombCollStats.CombColl + 1;
                     for h in Reversed( [com2[g]+1..com[g]] ) do
                         if ev[h] > 0 and IsBound( cnj[h][g] ) then
                             AddIntoExponentVector( ev, cnj[h][g], 3, ev[h] );
@@ -402,7 +405,7 @@ end;
                    (ev[g] < 0 or ev[g] >= exp[g]) and IsBound(pow[g]) then
 
                     if h+1 <= com[g] then
-                        CombCollStack := CombCollStack + 1;
+                        CombCollStats.CombCollStack := CombCollStats.CombCollStack + 1;
                     fi;
 
                     for j in Reversed( [h+1..com[g]] ) do
@@ -424,7 +427,7 @@ end;
 
                 ##  We finish with ordinary collection from the left.
                 if g <> h then
-                    OrdColl := OrdColl + 1;
+                    CombCollStats.OrdColl := CombCollStats.OrdColl + 1;
                 fi;
 
                 Info( InfoCombi, 5,

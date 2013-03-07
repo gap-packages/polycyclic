@@ -33,11 +33,9 @@ AdditiveIgsParallel := function( gens, imgs )
     # loop over to-do list until it is empty
     # c := [];
     while Length( todo ) > 0  do
-        g  := todo[Length(todo)];
-        gg := tododo[Length(todo)];
+        g  := Remove(todo);
+        gg := Remove(tododo);
         d  := PositionNonZero( g );
-        Unbind( todo[Length(todo)] );
-        Unbind( tododo[Length(tododo)] );
 
         # shift g into ind
         while d < n+1 do
@@ -177,7 +175,7 @@ AdditiveFactorPcp := function( base, sub, r )
 
     # first the case that r = p
     if r > 0 then
-        gens := MutableIdentityMat( l ) * One( GF(r) );
+        gens := IdentityMat( l ) * One( GF(r) );
         zero := 0 * gens[1];
         full := Concatenation( prei, denom );
         fimg := Concatenation( gens, List( denom, x -> zero ) );
@@ -216,7 +214,7 @@ AdditiveFactorPcp := function( base, sub, r )
 
     # rewrite rels and prei
     tmps := TransposedMat( new.coltrans );
-    invs := InverseIntMat( new.coltrans );
+    invs := Inverse( new.coltrans );
     newr := [];
     newp := [];
     oldg := [];

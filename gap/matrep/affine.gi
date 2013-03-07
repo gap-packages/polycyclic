@@ -4,8 +4,6 @@ AdjustPresentation := function( G )
     return PcpGroupBySeries( UpperCentralSeriesOfGroup(G), "snf" );
 end;
 
-if not IsBound( FULL ) then FULL := false; fi;
-
 ExtendAffine := function( mats, coc )
     local d, l, r, c;
     d := Length( mats[1] );

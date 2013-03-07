@@ -15,11 +15,11 @@ InstallMethod( LowerCentralSeriesOfGroup, [IsPcpGroup],
 function( G )
     local ser, U;
     ser := [G];
-    U   := ShallowCopy( G );
+    U   := DerivedSubgroup( G );
     G!.isNormal := true;
-    while Length(Igs(U)) > 0 do
-        U := CommutatorSubgroup( U, G );
+    while U <> ser[Length( ser )] do
         Add( ser, U );
+        U := CommutatorSubgroup( U, G );
     od;
     Unbind( G!.isNormal );
     return ser;

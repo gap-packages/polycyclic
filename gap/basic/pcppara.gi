@@ -59,11 +59,9 @@ function( pcs, gens, ppcs, pgens )
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
-        g  := todo[Length(todo)];
-        gg := tododo[Length(todo)];
+        g  := Remove(todo);
+        gg := Remove(tododo);
         d  := Depth( g );
-        Unbind( todo[Length(todo)] );
-        Unbind( tododo[Length(tododo)] );
 
         # shift g into ind
         changed := [];

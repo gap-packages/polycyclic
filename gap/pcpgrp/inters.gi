@@ -7,7 +7,8 @@
 ##
 #F NormalIntersection( N, U ) . . . . . . . . . . . . . . . . . . . .U \cap N
 ##
-InstallMethod( NormalIntersection, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+InstallMethod( NormalIntersection, "for pcp groups",
+               IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( N, U )
     local G, igs, igsN, igsU, n, s, I, id, ls, rs, is, g, d, al, ar, e, tm;
 
@@ -110,7 +111,8 @@ end );
 ##
 #M Intersection( N, U )
 ##
-InstallMethod( Intersection2, IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+InstallMethod( Intersection2, "for pcp groups",
+               IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( U, V )
     # check for trivial cases
     if IsInt(Size(U)) and IsInt(Size(V)) then

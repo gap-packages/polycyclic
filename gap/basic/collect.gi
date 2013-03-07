@@ -56,7 +56,10 @@ function( nrgens )
       ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
     pcp[ PC_STACK_POINTER ]            := 0;
     pcp[ PC_PCP_ELEMENTS_FAMILY ]      :=
-          NewFamily( "ElementsFamily<<coll>>", IsPcpElement, IsPcpElement );
+          NewFamily( "ElementsFamily<<coll>>",
+              IsPcpElement,
+              IsPcpElement and CanEasilySortElements,
+              CanEasilySortElements );
     pcp[ PC_PCP_ELEMENTS_TYPE ]        :=
           NewType( pcp![PC_PCP_ELEMENTS_FAMILY], IsPcpElementRep );
 

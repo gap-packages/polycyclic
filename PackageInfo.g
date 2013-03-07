@@ -4,18 +4,18 @@
 #W                                                              Werner Nickel
 #W                                                                   Max Horn
 ##
-#H  @(#)$Id: PackageInfo.g,v 1.47 2012/06/01 09:42:53 gap Exp $
+#H  @(#)$Id$
 ##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.10.1",
-Date        := "01/06/2012",
+Version     := "2.11",
+Date        := "07/03/2013",
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "2.10.1">
-##  <!ENTITY RELEASEDATE "1 June 2012">
+##  <!ENTITY VERSION "2.11">
+##  <!ENTITY RELEASEDATE "07 March 2013">
 ##  <#/GAPDoc>
 
 Persons          := [
@@ -50,17 +50,16 @@ Persons          := [
        FirstNames    := "Max",
        IsAuthor      := true,
        IsMaintainer  := true,
-       Email         := "mhorn@tu-bs.de",
-       WWWHome       := "http://www.icm.tu-bs.de/~mhorn",
-       PostalAddress := Concatenation(
-               "AG Algebra und Diskrete Mathematik\n",
-               "Institut Computational Mathematics\n",
-               "TU Braunschweig\n",
-               "Pockelsstr. 14\n",
-               "D-38106 Braunschweig\n",
-               "Germany" ),
-       Place         := "Braunschweig",
-       Institution   := "TU Braunschweig"
+       Email         := "max.horn@math.uni-giessen.de",
+       WWWHome       := "http://www.quendi.de/math.php",
+       PostalAddress := Concatenation( "AG Algebra\n",
+                                       "Mathematisches Institut\n",
+                                       "Justus-Liebig-Universität Gießen\n",
+                                       "Arndtstrasse 2\n",
+                                       "35392 Gießen\n",
+                                       "Germany" ),
+       Place         := "Gießen, Germany",
+       Institution   := "Justus-Liebig-Universität Gießen"
      )
     ],
 
@@ -91,7 +90,7 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.4",
+  GAP                    := ">= 4.5",
   NeededOtherPackages    := [["alnuth", "1.0"],
                              ["autpgrp","1.4"]],
   SuggestedOtherPackages := [ ],

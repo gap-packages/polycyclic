@@ -339,6 +339,14 @@ end;
 ##    We return a diagonal form of M and the matrix of column operations in
 ##    the same format as NormalFormIntMat()
 ##
+##    An example where this performs much better than NormalFormIntMat is
+##    given by
+##       G:=HeisenbergPcpGroup(2);
+##       NonAbelianTensorSquarePlusEpimorphism(G);
+##    Timing the call to NormalFormConsistencyRelations and comparing it to
+##    an equivalent NormalFormIntMat call yielded 50 msec vs. 1000 msec,
+##    i.e. a speedup by factor 20.
+##
 NormalFormConsistencyRelations := function( M )
     local   nf,  Q,  rows,  cols,  small,  nfim,  QQ;
 

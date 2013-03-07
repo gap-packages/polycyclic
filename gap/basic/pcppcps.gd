@@ -48,9 +48,3 @@ DeclareGlobalFunction( "IsTailPcp" );
 ##
 DeclareGlobalFunction( "Pcp" );
 
-#############################################################################
-##
-## Introduce two global variables to steer the usage of pcps
-##
-if not IsBound( USE_NORMED_PCS ) then USE_NORMED_PCS := false; fi;
-if not IsBound( USE_CANONICAL_PCS ) then USE_CANONICAL_PCS := true; fi;

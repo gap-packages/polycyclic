@@ -121,4 +121,41 @@ gap> Normalizer(B,A);
 Pcp-group with orders [ 0 ]
 
 
+gap> # In polycyclic 2.9 and 2.10, the code for 2-cohomology computations was broken.
+gap> G := UnitriangularPcpGroup(3,0);
+Pcp-group with orders [ 0, 0, 0 ]
+gap> mats := G!.mats;
+[ [ [ 1, 1, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ], 
+  [ [ 1, 0, 0 ], [ 0, 1, 1 ], [ 0, 0, 1 ] ], 
+  [ [ 1, 0, 1 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ] ]
+gap> C := CRRecordByMats(G,mats);;
+gap> cc := TwoCohomologyCR(C);;
+gap> cc.factor.rels;
+[ 2, 0, 0 ]
+gap> c := cc.factor.prei[2];
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 1 ]
+gap> cc.gcb;
+[ [ 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1 ], 
+  [ -1, 0, 1, 1, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 1 ] ]
+gap> cc.gcc;
+[ [ 1, 0, 0, 0, 0, -2, -1, 0, 1, 1, -1, -1, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 0, 1, 0, 0, -2, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 0, 0, 1, 0, 0, -1, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0 ], 
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 1 ], 
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1 ] ]
+
+
+gap> # LowerCentralSeriesOfGroup for non-nilpotent pcp-groups used to trigger
+gap> # an infinite recursion
+gap> G := PcGroupToPcpGroup(SmallGroup(6,1));
+Pcp-group with orders [ 2, 3 ]
+gap> LowerCentralSeriesOfGroup(G);
+[ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
+
+
 gap> STOP_TEST( "bugfix.tst", 10000000);

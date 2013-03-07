@@ -20,26 +20,16 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ##
 
-
-
-# add obsolete stuff here
-# like obsolete names in polycyclic:
-#
-# SchurMultPcpGroup
-#   -> new code really should use AbelianInvariantsMultiplier instead
-#
-# TODO: Add documentations
-
 #############################################################################
 ##
 ##  <#GAPDoc Label="Obsolete">
-##  With Polycyclic 3.0, the package interface was changed. This
-##  was done to get the names of Polycyclic functions to agree with the
-##  general naming conventions used throughout GAP. Also, some polycyclic
+##  Over time, the interface of &Polycyclic; has changed. This
+##  was done to get the names of &Polycyclic; functions to agree with the
+##  general naming conventions used throughout GAP. Also, some &Polycyclic;
 ##  operations duplicated functionality that was already available in
-##  the core of GAP under a different name; in these cases, whenever possible
-##  we now install the polycyclic code as methods for the existing GAP
-##  operations.
+##  the core of GAP under a different name. In these cases, whenever possible
+##  we now install the &Polycyclic; code as methods for the existing GAP
+##  operations instead of introducing new operations.
 ##  <P/>
 ##  For backward compatibility, we still provide the old, obsolete
 ##  names as aliases. However, please consider switching to the new names

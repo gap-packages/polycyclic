@@ -60,7 +60,7 @@ pc-presentation.
 <P/>
 
 A pc-presentation can be interpreted as a <E>rewriting system</E> in the
-following way.  One needs need to add a new generator <M>G_i</M> for each
+following way.  One needs to add a new generator <M>G_i</M> for each
 generator <M>g_i</M> together with the relations <M>g_iG_i = 1</M> and <M>G_ig_i =
 1</M>.  Any occurrence in a relation of an inverse generator <M>g_i^{-1}</M>
 is replaced by <M>G_i</M>.  In this way one obtains a monoid presentation

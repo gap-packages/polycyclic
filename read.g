@@ -5,10 +5,29 @@
 #W                                                                   Max Horn
 ##
 
+
+#############################################################################
+##
+## Introduce various global variables to steer the behavior of polycyclic
+##
+if not IsBound( CHECK_CENT@ ) then CHECK_CENT@ := false; fi;
+if not IsBound( CHECK_INTNORM@ ) then CHECK_INTNORM@ := false; fi;
+if not IsBound( CHECK_INTSTAB@ ) then CHECK_INTSTAB@ := false; fi;
+if not IsBound( CHECK_NORM@ ) then CHECK_NORM@ := false; fi;
+if not IsBound( CHECK_SCHUR_PCP@ ) then CHECK_SCHUR_PCP@ := false; fi;
+if not IsBound( CODEONLY@ ) then CODEONLY@ := false; fi;
+if not IsBound( USE_ALNUTH@ ) then USE_ALNUTH@ := true; fi;
+if not IsBound( USE_CANONICAL_PCS@ ) then USE_CANONICAL_PCS@ := true; fi;
+if not IsBound( USE_NFMI@ ) then USE_NFMI@ := false; fi;
+if not IsBound( USE_NORMED_PCS@ ) then USE_NORMED_PCS@ := false; fi;
+if not IsBound( USED_PRIMES@ ) then USED_PRIMES@ := [3]; fi;
+if not IsBound( VERIFY@ ) then VERIFY@ := true; fi;
+
+
+
 ##
 ## matrix -- basics about matrices, rational spaces, lattices and modules
 ##
-ReadPackage( "polycyclic", "gap/matrix/intmat.gi");
 ReadPackage( "polycyclic", "gap/matrix/rowbases.gi");
 ReadPackage( "polycyclic", "gap/matrix/latbases.gi");
 ReadPackage( "polycyclic", "gap/matrix/lattices.gi");
