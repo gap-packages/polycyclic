@@ -1,13 +1,3 @@
-
-#############################################################################
-##
-#F ValuationInt( m, p )
-##
-ValuationInt := function( m, p )
-    if m = 1 then return 0; fi;
-    return Length( Filtered( Factors(m), x -> x = p ) );
-end;
-
 #############################################################################
 ##
 #F ExponentRelationMatrix( pcp )

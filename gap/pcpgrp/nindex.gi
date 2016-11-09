@@ -92,7 +92,7 @@ LowIndexNormalsFaLayer := function( G, U, adj, l, act )
         for i in [1..pr[2]] do
            use := adj[pr[1]][i];
            for L in todo do
-                d   := ValuationInt( L!.open, pr[1] );
+                d   := Valuation( L!.open, pr[1] );
                 tmp := LowIndexNormalsEaLayer( G, L, use, d, act );
                 Append( news, tmp );
             od;
@@ -152,7 +152,7 @@ LowIndexNormalsBySeries := function( G, n, pcps )
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );
             elif l > 1 then
-                d := ValuationInt( l, p );
+                d := Valuation( l, p );
                 tmp := LowIndexNormalsEaLayer( G, U, pcp, d, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );

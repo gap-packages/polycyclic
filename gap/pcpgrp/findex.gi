@@ -180,7 +180,7 @@ LowIndexSubgroupsFaLayer := function( clG, adj, l, act )
         for i in [1..pr[2]] do
             use := adj[pr[1]][i];
             for cl in todo do
-                d   := ValuationInt( cl.open, pr[1] );
+                d   := Valuation( cl.open, pr[1] );
                 tmp := LowIndexSubgroupsEaLayer( cl, use, d, act );
                 Append( news, tmp );
             od;
@@ -265,7 +265,7 @@ LowIndexSubgroupsBySeries := function( G, n, pcps )
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );
             elif l > 1 then
-                d := ValuationInt( l, p );
+                d := Valuation( l, p );
                 tmp := LowIndexSubgroupsEaLayer( cl, pcp, d, act );
                 Info( InfoPcpGrp, 2, " found ", Length(tmp), " new groups");
                 Append( new, tmp );
