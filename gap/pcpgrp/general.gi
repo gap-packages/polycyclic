@@ -164,7 +164,7 @@ function(G)
     local D, nat, H, prm, max, p, rep;
     D := DerivedSubgroup(G);
     if Index(G,D) = infinity then return fail; fi;
-    nat := NaturalHomomorphism(G,D);
+    nat := NaturalHomomorphismByNormalSubgroup(G,D);
     H := Image(nat);
     prm := Set(Factors(Size(H)));
     max := [];

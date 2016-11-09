@@ -272,7 +272,7 @@ NormalizerBySeries := function( G, U, efa )
         M := efa[i+1];
 
         # determine factor C/M
-        hom := NaturalHomomorphism( G, M );
+        hom := NaturalHomomorphismByNormalSubgroup( G, M );
         if Size(M) > 1 then
             N := Image( hom, N );
             C := Image( hom, C );

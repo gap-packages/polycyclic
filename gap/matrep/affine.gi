@@ -23,7 +23,7 @@ NextStepRepresentation := function( G, i, mats )
     Print("starting level ",i,"\n");
     pcp := Pcp(G);
     N := SubgroupByIgs( G, pcp{[i+1..Length(pcp)]} );
-    hom := NaturalHomomorphism( G, N );
+    hom := NaturalHomomorphismByNormalSubgroup( G, N );
     F := Image( hom, G );
     Add( mats, mats[1]^0 );
 

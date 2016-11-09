@@ -48,5 +48,9 @@ DeclareAttribute( "IsomorphismPcpGroup", IsGroup );
 DeclareAttribute( "PcpGroupByEfaSeries", IsGroup );
 DeclareGlobalFunction( "NaturalHomomorphismByPcp" );
 
-DeclareOperation( "NaturalHomomorphism", [IsPcpGroup, IsPcpGroup] );
 
+# The following is for backwards compatibility with older versions of
+# polycyclic, which provided a NaturalHomomorphism operation. A few
+# packages use that directly, so we need to provide this until they
+# change.
+DeclareOperation( "NaturalHomomorphism", [IsPcpGroup, IsPcpGroup] );

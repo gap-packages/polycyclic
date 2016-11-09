@@ -51,6 +51,9 @@ end );
 ##
 #F NaturalHomomorphism( G, N )
 ##
+# This exists only for backwards compatibility; we may remove it once all
+# packages have switched to using NaturalHomomorphismByNormalSubgroup. Or at
+# least change it to print a warning...
 InstallMethod( NaturalHomomorphism,
         "for pcp groups", IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( G, N )
@@ -58,8 +61,13 @@ function( G, N )
     return NaturalHomomorphismByPcp( Pcp( G, N ) );
 end );
 
-InstallMethod( NaturalHomomorphismByNormalSubgroupNCOrig,
+#############################################################################
+##
+#F NaturalHomomorphismByNormalSubgroupOp( G, N )
+##
+InstallMethod( NaturalHomomorphismByNormalSubgroupOp,
         "for pcp groups", IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
-        NaturalHomomorphism );
-
-
+function( G, N )
+    if Size(N) = 1 then return IdentityMapping( G ); fi;
+    return NaturalHomomorphismByPcp( Pcp( G, N ) );
+end );

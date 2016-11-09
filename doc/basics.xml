@@ -434,7 +434,7 @@ However, it is also possible to explicitly construct factor groups and
 their corresponding natural homomorphisms.
 
 <ManSection>
-<Meth Name="NaturalHomomorphism" Arg="G, N"/>
+<Meth Name="NaturalHomomorphismByNormalSubgroup" Arg="G, N"/>
 <Description>
 	returns  the natural homomorphism   <M>G \to  G/N</M>.  Its image  is the
 	factor group <M>G/N</M>.
