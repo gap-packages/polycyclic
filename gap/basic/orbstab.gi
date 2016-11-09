@@ -63,7 +63,7 @@ end;
 ##
 # FIXME: This function is documented and should be turned into a GlobalFunction
 PcpOrbitStabilizer := function( e, pcp, act, op )
-    local  rels, orbit, trans, trels, tword, stab, word, w, i, f, j, n, t, s;
+    local  rels, orbit, dict, trans, trels, tword, stab, word, w, i, f, j, n, t, s, k;
 
     # check relative orders
     if IsList( pcp ) then
@@ -74,6 +74,8 @@ PcpOrbitStabilizer := function( e, pcp, act, op )
 
     # set up
     orbit := [e];
+    dict := NewDictionary(e, true);
+    AddDictionary(dict, e, 1);
     trans := [];
     trels := [];
     tword := [];
@@ -85,7 +87,7 @@ PcpOrbitStabilizer := function( e, pcp, act, op )
 
         # get new point
         f := op( e, act[i] );
-        j := Position( orbit, f );
+        j := LookupDictionary( dict, f );
 
         # if it is new, add all blocks
         n := orbit;
@@ -94,11 +96,14 @@ PcpOrbitStabilizer := function( e, pcp, act, op )
         while IsBool( j ) do
             n := List( n, x -> op( x, act[i] ) );
             Append( t, n );
-            j := Position( orbit, op( n[1], act[i] ) );
+            j := LookupDictionary( dict, op( n[1], act[i] ) );
             s := s + 1;
         od;
 
         # add to orbit
+        for k in [1..Length(t)] do
+            AddDictionary( dict, t[k], Length(orbit) + k );
+        od;
         Append( orbit, t );
 
         # add to transversal
@@ -165,7 +170,7 @@ end;
 #F RandomPcpOrbitStabilizer( e, pcp, act, op )
 ##
 RandomPcpOrbitStabilizer := function( e, pcp, act, op )
-    local  one, acts, gens, O, T, S, count, i, j, t, g, im, index, l, s;
+    local  one, acts, gens, O, dict, T, S, count, i, j, t, g, im, index, l, s;
 
     # a trivial check
     if Length( pcp ) = 0 then return rec( orbit := [e], stab := pcp ); fi;
@@ -177,6 +182,8 @@ RandomPcpOrbitStabilizer := function( e, pcp, act, op )
 
     # set up
     O := [ e ];            # orbit
+    dict := NewDictionary(e, true);
+    AddDictionary(dict, e, 1);
     T := [ one ];          # transversal
     S := [];               # stabilizer
 
@@ -191,9 +198,10 @@ RandomPcpOrbitStabilizer := function( e, pcp, act, op )
         for j in [1..Length(gens)] do
             im := op( e, acts[j] );
 
-            index := Position( O, im );
+            index := LookupDictionary( O, im );
             if index = fail then
                 Add( O, im );
+                AddDictionary( dict, im, Length(O) );
                 Add( T, t * gens[j] );
 
                 if Length(O) > 500 then

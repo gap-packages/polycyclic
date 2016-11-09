@@ -1,17 +1,19 @@
 AgOrbitCover := function( A, pt, act )
-    local pcgs, rels, orbit, i, y, j, p, l, s, k, t, h;
+    local pcgs, rels, orbit, dict, i, y, j, p, l, s, k, t, h;
 
     pcgs := A.agAutos;
     rels := A.agOrder;
 
     # initialise orbit
     orbit := [pt];
+    dict := NewDictionary( pt, true );
+    AddDictionary( dict, pt, 1 );
 
     # Start constructing orbit.
     i := Length( pcgs );
     while i >= 1 do
         y := act( pt, pcgs[i] );
-        j := Position( orbit, y );
+        j := LookupDictionary( dict, y );
         if IsBool( j ) then
             p := rels[i];
             l := Length( orbit );
@@ -21,6 +23,7 @@ AgOrbitCover := function( A, pt, act )
                 t := s + l;
                 for h  in [1..l]  do
                     orbit[h+t] := act( orbit[h+s], pcgs[i] );
+                    AddDictionary( dict, orbit[h+t], h+t );
                 od;
                 s := t;
             od;
@@ -32,23 +35,31 @@ AgOrbitCover := function( A, pt, act )
 end;
 
 HybridOrbitCover := function( A, pt, act )
-    local block, orbit, new, k, i, j, y;
+    local block, l, orbit, dict, new, k, i, j, y;
 
     # get block
     block := AgOrbitCover( A, pt, act );
+    l  := Length( block );
 
     # set up orbit
     orbit := [block];
+    dict := NewDictionary( block[1], true );
+    for j in [1..l] do
+        AddDictionary( dict, block[j], [1, j] );
+    od;
 
     # loop
     k := 1;
     while k <= Length( orbit ) do
         for i in [ 1..Length( A.glAutos ) ] do
             y := act( orbit[k][1], A.glAutos[i] );
-            j := BlockPosition( orbit, y );
+            j := LookupDictionary( dict, y );
             if IsBool( j ) then
                 new := List( orbit[k], x -> act(x, A.glAutos[i]) );
                 Add( orbit, new );
+                for j in [1..l] do
+                    AddDictionary( dict, new[j], [Length(orbit), j] );
+                od;
             fi;
         od;
         k := k + 1;
