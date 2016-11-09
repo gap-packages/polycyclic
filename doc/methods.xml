@@ -544,7 +544,7 @@ group. We refer to <Cite Key="Eic01"/> for a description of the underlying metho
 
 There are (very few) functions which are available for nilpotent groups only.
 First, there are the different central series. These are available for all
-groups, but for nilpotent groups they terminate and provide series though
+groups, but for nilpotent groups they terminate and provide series through
 the full group. Secondly, the determination of a minimal generating set is
 available for nilpotent groups only.
 
