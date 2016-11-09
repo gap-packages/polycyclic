@@ -132,7 +132,7 @@ end;
 NonAbelianTensorSquareViaNq := function( G )
     local   tsfp,  phi;
 
-    if RequirePackage("nq") = fail then
+    if LoadPackage("nq") = fail then
         Error( "NQ package is not installed" );
     fi;
 
