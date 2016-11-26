@@ -29,15 +29,6 @@ end );
 
 
 ##
-#F  SetDeepThoughtBoundary  . . .  set the generator from which on DT is used
-##
-BindGlobal( "SetDeepThoughtBound", function( coll, n )
-
-    coll![ PC_DEEP_THOUGHT_BOUND ] := n;
-end );
-
-
-##
 ##  Methods for  CollectWordOrFail.
 ##
 InstallMethod(CollectWordOrFail,

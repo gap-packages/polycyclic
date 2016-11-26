@@ -42,7 +42,6 @@ function( nrgens )
     pcp[ PC_INVERSECOMMUTATORSINVERSE ] := List( [1..nrgens], i -> [] );
 
     pcp[ PC_DEEP_THOUGHT_POLS ]        := [];
-    pcp[ PC_DEEP_THOUGHT_BOUND ]       := 666666;
 
     # Initialise the various stacks.
     pcp[ PC_STACK_SIZE ]               := 1024 * nrgens;
