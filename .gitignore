@@ -18,6 +18,8 @@
 /doc/*.tex
 /doc/*.toc
 /doc/manual.pdf
+/doc/polycyclicbib.xml.bib
+/doc/title.xml
 
 /gh-pages/
 /tmp/

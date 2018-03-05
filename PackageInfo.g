@@ -13,10 +13,6 @@ PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
 Version     := "2.11",
 Date        := "07/03/2013",
-##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "2.11">
-##  <!ENTITY RELEASEDATE "07 March 2013">
-##  <#/GAPDoc>
 
 Persons          := [
   rec( LastName      := "Eick",
@@ -132,6 +128,25 @@ Keywords := [
   "maximal subgroups",
   "Schur cover",
   "Schur multiplicator",
-  ]
+  ],
+
+AutoDoc := rec(
+    TitlePage := rec(
+        Copyright := """<Index>License</Index>
+&copyright; 2003-2018 by Bettina Eick, Max Horn and Werner Nickel<P/>
+The &Polycyclic; package is free software;
+you can redistribute it and/or modify it under the terms of the
+<URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL>
+as published by the Free Software Foundation; either version 2 of the License,
+or (at your option) any later version.
+""",
+        Acknowledgements := """
+We appreciate very much all past and future comments, suggestions and
+contributions to this package and its documentation provided by &GAP;
+users and developers.
+""",
+    )
+),
+
 ));
 

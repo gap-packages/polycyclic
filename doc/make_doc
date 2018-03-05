@@ -1,5 +1,0 @@
-#!/bin/sh
-
-export GAP=${1:-gap}
-
-$GAP -A -q -T < make_doc.g

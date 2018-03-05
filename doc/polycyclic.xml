@@ -12,60 +12,7 @@
 
 <Book Name="polycyclic">
 
-<TitlePage>
-  <Title>&Polycyclic;</Title>
-<!--  <Subtitle>Algorithms for working with polycyclic groups</Subtitle> -->
-  <Version>Version &VERSION;</Version>
-  <Date>&RELEASEDATE;</Date>
-  <Author>
-    Bettina Eick                          <!-- REQUIRED -->
-    <Address>
-      AG Algebra und Diskrete Mathematik<Br/>
-      Institut Computational Mathematics<Br/>
-      TU Braunschweig<Br/>
-      Pockelsstr. 14<Br/>
-      D-38106 Braunschweig<Br/>
-      Germany
-    </Address>
-    <Email>
-      beick@tu-bs.de
-    </Email>
-    <Homepage>http://www.icm.tu-bs.de/~beick</Homepage>
-  </Author>
-  <Author>
-    Max Horn                          <!-- REQUIRED -->
-    <Address>
-      AG Algebra<Br/>
-      Mathematisches Institut<Br/>
-      Justus-Liebig-Universität Gießen<Br/>
-      Arndtstrasse 2<Br/>
-      D-35392 Gießen<Br/>
-      Germany
-    </Address>
-    <Email>
-      max.horn@math.uni-giessen.de
-    </Email>
-    <Homepage>http://www.quendi.de/math.php</Homepage>
-  </Author>
-  <Author> Werner Nickel
-    <!-- <Email>nickel@mathematik.tu-darmstadt.de</Email> -->
-    <Homepage>http://www.mathematik.tu-darmstadt.de/~nickel</Homepage>
-  </Author>
-    <Copyright>
-    <Index>License</Index>
-    &copyright; 2003-2012 by Bettina Eick, Max Horn and Werner Nickel<P/>
-    The &Polycyclic; package is free software;
-    you can redistribute it and/or modify it under the terms of the
-    <URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL>
-    as published by the Free Software Foundation; either version 2 of the License,
-    or (at your option) any later version.
-  </Copyright>
-  <Acknowledgements>
-    We appreciate very much all past and future comments, suggestions and
-    contributions to this package and its documentation provided by &GAP;
-    users and developers.
-  </Acknowledgements>
-</TitlePage>
+<#Include SYSTEM "title.xml">
 
 <TableOfContents/>
 
