@@ -1,48 +1,46 @@
-name: GitHubPagesForGAP
-version: 0.2
-date: 2017-02-04
+name: Polycyclic
+version: 2.11
+date: 2013-03-07
 description: |
-    A GitHub Pages generator for GAP packages
+    Computation with polycyclic groups
 
 authors:
+    - name: Bettina Eick
+      url: mailto:beick@tu-bs.de
+    - name: Werner Nickel
+      url: http://www.mathematik.tu-darmstadt.de/~nickel/
     - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: A. U. Thor
+      url: http://www.quendi.de/math.php
 
 maintainers:
+    - name: Bettina Eick
+      url: mailto:beick@tu-bs.de
     - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: Jan Itor
+      url: http://www.quendi.de/math.php
 
-GAP: ">=4.8.1"
+GAP: ">= 4.5"
 
 needed-pkgs:
-    - name: "GAPDoc"
-      version: ">= 1.2"
-      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "IO"
-      version: ">= 4.1"
-      url: "https://gap-packages.github.io/io"
+    - name: "alnuth"
+      version: "1.0"
+      url: "https://gap-packages.github.io/alnuth"
+    - name: "autpgrp"
+      version: "1.4"
+      url: "http://www.icm.tu-bs.de/~beick/so.html"
 
-suggested-pkgs:
-    - name: "orb"
-      version: ">= 4.2"
-      url: "https://gap-packages.github.io/orb"
-
-www: https://gap-system.github.io/GitHubPagesForGAP/
-readme: README.md
-packageinfo: https://gap-system.github.io/GitHubPagesForGAP/PackageInfo.g
-github: https://github.com/gap-system/GitHubPagesForGAP
+www: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/
+readme: README
+packageinfo: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.gz
+      url: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/polycyclic-2.11.tar.gz
     - name: .tar.bz2
-      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.bz2
+      url: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/polycyclic-2.11.tar.bz2
 
 abstract: |
-    This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
+    This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.
 
-status: other
+status: accepted
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
