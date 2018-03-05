@@ -67,12 +67,18 @@ Status         := "accepted",
 CommunicatedBy := "Charles Wright (Eugene)",
 AcceptDate     := "01/2004",
 
-PackageWWWHome := "http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/",
-
-ArchiveFormats := ".tar.gz .tar.bz2",
-ArchiveURL     := Concatenation( ~.PackageWWWHome, "polycyclic-", ~.Version ),
-README_URL     := Concatenation( ~.PackageWWWHome, "README" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+PackageWWWHome  := "https://gap-packages.github.io/polycyclic/",
+README_URL      := Concatenation( ~.PackageWWWHome, "README" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+SourceRepository := rec(
+    Type := "git",
+    URL := "https://github.com/gap-packages/polycyclic",
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/polycyclic-", ~.Version ),
+ArchiveFormats := ".tar.gz",
 
 AbstractHTML   := Concatenation(
   "This package provides various algorithms for computations ",
@@ -100,8 +106,6 @@ Dependencies    := rec(
 AvailabilityTest := ReturnTrue,
 
 TestFile := "tst/testall.g",
-
-Autoload         := true,
 
 Keywords := [
   "finitely generated nilpotent groups",
