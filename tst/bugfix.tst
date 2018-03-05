@@ -1,6 +1,6 @@
 gap> START_TEST("Test for various former bugs");
 
-
+#
 gap> # The following used to trigger an error starting with:
 gap> # "SolutionMat: matrix and vector incompatible called from"
 gap> K:=AbelianPcpGroup([3,3,3]);;
@@ -8,7 +8,7 @@ gap> A:=Subgroup(K,[K.1]);;
 gap> cr:=CRRecordBySubgroup(K,A);;
 gap> ExtensionsCR(cr);;
 
-
+#
 # Comparing homomorphisms used to be broken
 gap> K:=AbelianPcpGroup(1,[3]);;
 gap> hom1:=GroupHomomorphismByImages(K,K,[K.1],[K.1]);;
@@ -20,17 +20,17 @@ true
 gap> hom2=IdentityMapping(K);
 true
 
-
+#
 gap> # The following incorrectly triggered an error at some point
 gap> IsTorsionFree(ExamplesOfSomePcpGroups(5));
 true
 
-
+#
 gap> # Verify IsGeneratorsOfMagmaWithInverses warnings are silenced
 gap> IsGeneratorsOfMagmaWithInverses(GeneratorsOfGroup(ExamplesOfSomePcpGroups(5)));
 true
 
-
+#
 gap> # Check for a bug reported 2012-01-19 by Robert Morse
 gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
 Pcp-group with orders [ 2, 2, 2, 2, 3 ]
@@ -40,7 +40,7 @@ Pcp-group with orders [ 8 ]
 gap> NonAbelianExteriorSquare(Centre(g));
 Pcp-group with orders [  ]
 
-
+#
 gap> # Check for a bug reported 2012-01-19 by Robert Morse
 gap> F := FreeGroup("x","y");
 <free group on the generators [ x, y ]>
@@ -57,7 +57,7 @@ gap> # The next command used to trigger an error
 gap> NonAbelianTensorSquare(Image(iso*iso1));
 Pcp-group with orders [ 2, 2, 3, 2, 2, 2, 2 ]
 
-
+#
 gap> # The problem with the previous example is/was that Igs(G)
 gap> # is set to a non-standard value:
 gap> Igs(G);
@@ -76,7 +76,7 @@ gap> mapi:=MappingGeneratorsImages(hom);;
 gap> GroupHomomorphismByImages(Source(hom),Range(hom),mapi[1],mapi[2]) <> fail;
 true
 
-
+#
 gap> # Check for bug computing Schur extension of infinite cyclic groups,
 gap> # found by Max Horn 2012-05-25
 gap> G:=AbelianPcpGroup(1,[0]);
@@ -85,7 +85,7 @@ gap> # The next command used to trigger an error
 gap> SchurExtension(G);
 Pcp-group with orders [ 0 ]
 
-
+#
 gap> # Check for bug computing Schur extensions of subgroups, found by MH 2012-05-25.
 gap> G:=HeisenbergPcpGroup(2);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
@@ -95,7 +95,7 @@ gap> # The next command used to trigger an error
 gap> SchurExtension(H);
 Pcp-group with orders [ 0, 0, 0, 0, 0, 0 ]
 
-
+#
 gap> # Check for bug computing Schur extensions of subgroups, found by MH 2012-05-25.
 gap> G:=HeisenbergPcpGroup(2);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
@@ -105,7 +105,7 @@ gap> # The next command used to trigger an error
 gap> SchurExtension(H);
 Pcp-group with orders [ 0, 0, 0 ]
 
-
+#
 gap> # Check for bug computing normalizer of two subgroups, found by MH 2012-05-30.
 gap> # The problem was caused by incorrect resp. overly restrictive use of Parent().
 gap> G:=HeisenbergPcpGroup(2);
@@ -120,7 +120,7 @@ gap> # The following used to trigger the error "arguments must have a common par
 gap> Normalizer(B,A);
 Pcp-group with orders [ 0 ]
 
-
+#
 gap> # In polycyclic 2.9 and 2.10, the code for 2-cohomology computations was broken.
 gap> G := UnitriangularPcpGroup(3,0);
 Pcp-group with orders [ 0, 0, 0 ]
@@ -149,7 +149,7 @@ gap> cc.gcc;
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 1 ], 
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1 ] ]
 
-
+#
 gap> # LowerCentralSeriesOfGroup for non-nilpotent pcp-groups used to trigger
 gap> # an infinite recursion
 gap> G := PcGroupToPcpGroup(SmallGroup(6,1));
@@ -157,5 +157,5 @@ Pcp-group with orders [ 2, 3 ]
 gap> LowerCentralSeriesOfGroup(G);
 [ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
 
-
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);

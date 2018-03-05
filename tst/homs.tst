@@ -1,5 +1,6 @@
 gap> START_TEST("Test of homs between various group types");
 
+#
 gap> TestHomHelper := function(A,B,gens_A,gens_B)
 >   local map, inv, H;
 >   
@@ -40,7 +41,7 @@ gap> TestHomFromFilterToFilter := function(f1, f2)
 >   TestHomHelper(A,B,gens_A,gens_B); 
 > end;;
 
-
+#
 gap> TestHomFromFilterToFilter(IsPermGroup,IsPermGroup);
 true
 true
@@ -303,7 +304,7 @@ true
 [ 525, 5, 15, 175 ]
 [ 15, 175, 525, 5 ]
 
-
+#
 gap> G:=AbelianGroup(IsPcpGroup,[2,3,2]);;
 gap> map:=GroupGeneralMappingByImages(G,G,[G.1],[G.3]);;
 gap> Size(PreImagesSet(map,G));
@@ -320,5 +321,5 @@ gap> Size(ImagesSource(map2));
 gap> Size(PreImagesRange(map2));
 1
 
+#
 gap> STOP_TEST( "homs.tst", 10000000);
-
