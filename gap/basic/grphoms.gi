@@ -102,50 +102,28 @@ end );
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . for G and H pcp groups
 ##
-if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
 InstallMethod( GroupGeneralMappingByImagesNC,
                "for pcp group, pcp group, list, list",
                [IsPcpGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
-else
-InstallMethod( GroupGeneralMappingByImages,
-               "for pcp group, pcp group, list, list",
-               [IsPcpGroup, IsPcpGroup, IsList, IsList],
-               GroupGeneralMappingByImages_for_pcp );
-fi;
 
 #############################################################################
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . . . .  for G pcp group
 ##
-if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
 InstallMethod( GroupGeneralMappingByImagesNC,
                "for pcp group, group, list, list",
                [IsPcpGroup, IsGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
-else
-InstallMethod( GroupGeneralMappingByImages,
-               "for pcp group, group, list, list",
-               [IsPcpGroup, IsGroup, IsList, IsList],
-               GroupGeneralMappingByImages_for_pcp );
-fi;
 
 #############################################################################
 ##
 #M GGMBI( G, H ) . . . . . . . . . . . . . . . . . . . . . .  for H pcp group
 ##
-if IsBound(GroupGeneralMappingByImagesNC) then # GAP 4.6.3 and newer
 InstallMethod( GroupGeneralMappingByImagesNC,
                "for group, pcp group, list, list",
                [IsGroup, IsPcpGroup, IsList, IsList],
                GroupGeneralMappingByImages_for_pcp );
-else
-InstallMethod( GroupGeneralMappingByImages,
-               "for group, pcp group, list, list",
-               [IsGroup, IsPcpGroup, IsList, IsList],
-               GroupGeneralMappingByImages_for_pcp );
-fi;
-
 
 #############################################################################
 ##

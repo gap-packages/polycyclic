@@ -92,9 +92,9 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.5",
-  NeededOtherPackages    := [["alnuth", "1.0"],
-                             ["autpgrp","1.4"]],
+  GAP                    := ">= 4.8",
+  NeededOtherPackages    := [["alnuth", "3.0"],
+                             ["autpgrp","1.8"]],
   SuggestedOtherPackages := [ ],
   ExternalConditions     := [ ]
 ),
