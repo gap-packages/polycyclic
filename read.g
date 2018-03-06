@@ -124,15 +124,10 @@ ReadPackage( "polycyclic", "gap/exam/metacyc.gi");
 ReadPackage( "polycyclic", "gap/exam/metagrp.gi");
 
 ##
-## schur covers and schur towers of p-groups
+## schur covers of p-groups
 ##
 ReadPackage( "polycyclic", "gap/cover/const/bas.gi"); # basic stuff
 ReadPackage( "polycyclic", "gap/cover/const/orb.gi"); # orbits
 ReadPackage( "polycyclic", "gap/cover/const/aut.gi"); # automorphisms
 ReadPackage( "polycyclic", "gap/cover/const/com.gi"); # complements
 ReadPackage( "polycyclic", "gap/cover/const/cov.gi"); # Schur covers
-#ReadPackage( "polycyclic", "gap/cover/const/ord.gi"); # order
-#ReadPackage( "polycyclic", "gap/cover/const/ccc.gi"); # coclass
-#ReadPackage( "polycyclic", "gap/cover/trees/xtree.gi"); # cover trees
-
-

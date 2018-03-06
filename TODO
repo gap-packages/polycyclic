@@ -43,10 +43,6 @@ Code:
 * implement missing Sylow subgroup code (borrow from the corresponding
   pcgroup code)
 
-* The documentation in methods.xml, last section, mentions
-   "two libraries of Schur tower p-groups", but then fails to list
-   methods for these, nor do I see such libraries in polycyclic. Huh?
-
 * Rename various operations/attributes/properties to better fit into the GAP
   naming conventions; also, in some cases, polycyclic adds new operations
   for things that already have different names in GAP; that should be changed

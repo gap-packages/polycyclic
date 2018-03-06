@@ -935,15 +935,11 @@ true
 
 
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
-<Section Label="Schur covers and Schur towers">
-<Heading>Schur covers and Schur towers</Heading>
+<Section Label="Schur covers">
+<Heading>Schur covers</Heading>
 
-A finite <M>p</M>-group <A>G</A> is a Schur tower, if <M>G/\gamma_{i+1}(G)</M> is a
-Schur cover of <M>G/\gamma_i(G)</M> for every <M>i</M>, where <M>\gamma_i(G)</M> is
-the <M>i</M>-th term of the lower central series of <M>G</M>. This section
-contains a function to determine the Schur covers of a finite <M>p</M>-group
-up to isomorphism and it gives access to two libraries of Schur tower
-<M>p</M>-groups.
+This section contains a function to determine the Schur covers of a finite
+<M>p</M>-group up to isomorphism.
 
 <ManSection>
 <Func Name="SchurCovers" Arg="G"/>
