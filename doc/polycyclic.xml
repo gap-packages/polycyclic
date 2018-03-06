@@ -7,7 +7,6 @@
      <!ENTITY Alnuth "<Package>Alnuth</Package>">
      <!ENTITY Cryst "<Package>Cryst</Package>">
      <!ENTITY Polenta "<Package>Polenta</Package>">
-     <#Include Label="PKGVERSIONDATA">
    ]>
 
 <Book Name="polycyclic">
