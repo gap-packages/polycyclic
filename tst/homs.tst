@@ -321,5 +321,40 @@ gap> Size(ImagesSource(map2));
 gap> Size(PreImagesRange(map2));
 1
 
+# test that our custom IsSingleValue method really works, i.e. w don't fall
+# back to CoKernelOfMultiplicativeGeneralMapping, which won't terminate in
+# this example because it tries to compute a normal closure inside an infinite
+# matrix group.
+gap> H:=Group( [ [ [ -89, -144, 0 ], [ -144, -233, 0 ], [ 0, 0, 1 ] ],
+>  [ [ 63245986, 102334155, 0 ], [ 102334155, 165580141, 0 ], [ 0, 0, 1 ] ],
+>  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 3, -3, 1 ] ],
+>  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 3, 6, 1 ] ],
+>  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 3, 1 ] ],
+>  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ] ]);;
+gap> coll := FromTheLeftCollector( 6 );;
+gap> SetRelativeOrder( coll, 1, 10 );;
+gap> SetPower( coll, 1, [ 2, 3 ] );;
+gap> SetConjugate( coll, 3, 1, [ 3, -89, 5, 144, 6, 144 ] );;
+gap> SetConjugate( coll, 3, -1, [ 3, -233, 5, -144, 6, -144 ] );;
+gap> SetConjugate( coll, 3, 2, [ 3, 63245986, 5, -102334155, 6, -102334155 ] );;
+gap> SetConjugate( coll, 3, -2, [ 3, 165580141, 5, 102334155, 6, 102334155 ] );;
+gap> SetConjugate( coll, 4, 1, [ 3, -144, 4, -233, 5, -144 ] );;
+gap> SetConjugate( coll, 4, -1, [ 3, 144, 4, -89, 5, 144 ] );;
+gap> SetConjugate( coll, 4, 2, [ 3, 102334155, 4, 165580141, 5, 102334155 ] );;
+gap> SetConjugate( coll, 4, -2, [ 3, -102334155, 4, 63245986, 5, -102334155 ] );;
+gap> SetConjugate( coll, 5, 1, [ 4, -144, 5, -233, 6, -144 ] );;
+gap> SetConjugate( coll, 5, -1, [ 4, 144, 5, -89, 6, 144 ] );;
+gap> SetConjugate( coll, 5, 2, [ 4, 102334155, 5, 165580141, 6, 102334155 ] );;
+gap> SetConjugate( coll, 5, -2, [ 4, -102334155, 5, 63245986, 6, -102334155 ] );;
+gap> SetConjugate( coll, 6, 1, [ 3, 144, 4, 144, 6, -89 ] );;
+gap> SetConjugate( coll, 6, -1, [ 3, -144, 4, -144, 6, -233 ] );;
+gap> SetConjugate( coll, 6, 2, [ 3, -102334155, 4, -102334155, 6, 63245986 ] );;
+gap> SetConjugate( coll, 6, -2, [ 3, 102334155, 4, 102334155, 6, 165580141 ] );;
+gap> UpdatePolycyclicCollector( coll );
+gap> G := PcpGroupByCollectorNC( coll );
+Pcp-group with orders [ 10, 0, 0, 0, 0, 0 ]
+gap> hom := GroupHomomorphismByImages(G, H);
+fail
+
 #
 gap> STOP_TEST( "homs.tst", 10000000);

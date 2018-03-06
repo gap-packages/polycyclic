@@ -149,11 +149,71 @@ fi;
 
 #############################################################################
 ##
+#M  IsSingleValued( <IsFromPcpGHBI> )
+##
+##  This method is very similar to our CoKernelOfMultiplicativeGeneralMapping
+##  method. However, a crucial difference is the call to 'NormalClosure'
+##  at the end of CoKernelOfMultiplicativeGeneralMapping, which won't
+##  terminate if the range is e.g. an infinite matrix group.
+InstallMethod( IsSingleValued,
+    "for IsFromPcpGHBI",
+    [ IsFromPcpGHBI ],
+function( hom )
+	local gens, imgs, i, j, a, b, mapi;
+
+	if IsTrivial(Range(hom)) then
+		return true;
+	fi;
+
+    gens := hom!.igs_gens_to_imgs[1];
+    imgs := hom!.igs_gens_to_imgs[2];
+
+    # check relators
+    for i in [1..Length( gens )] do
+        if RelativeOrderPcp( gens[i] ) > 0 then
+            a := gens[i]^RelativeOrderPcp( gens[i] );
+            a := MappedVector(ExponentsByIgs(gens, a), imgs);
+            b := imgs[i]^RelativeOrderPcp( gens[i] );
+            if a <> b then return false; fi;
+        fi;
+        for j in [1..i-1] do
+            a := gens[i] ^ gens[j];
+            a := MappedVector(ExponentsByIgs(gens, a), imgs);
+            b := imgs[i] ^ imgs[j];
+            if a <> b then return false; fi;
+
+            if RelativeOrderPcp( gens[i] ) = 0 then
+                a := gens[i] ^ (gens[j]^-1);
+                a := MappedVector(ExponentsByIgs(gens, a), imgs);
+                b := imgs[i] ^ (imgs[j]^-1);
+                if a <> b then return false; fi;
+            fi;
+        od;
+    od;
+
+	# we still need to test any additional generators. This matters
+	# for generalized mappings which are not total or not single valued,
+	# such as the "inverse" of a non-surjective / non-injective group
+	# homomorphism.
+	mapi := MappingGeneratorsImages( hom );
+	for i in [1..Length(mapi[1])] do
+		a := mapi[1][i];
+		a := MappedVector(ExponentsByIgs(gens, a), imgs);
+		b := mapi[2][i];
+        if a <> b then return false; fi;
+	od;
+
+	return true;
+end );
+
+
+#############################################################################
+##
 #M  CoKernelOfMultiplicativeGeneralMapping
 ##
 InstallMethod( CoKernelOfMultiplicativeGeneralMapping,
-               "for PcpGHBI",
-               [ IsFromPcpGHBI],
+               "for IsFromPcpGHBI",
+               [ IsFromPcpGHBI ],
 function( hom )
 	local C, gens, imgs, i, j, a, b, mapi;
 
