@@ -11,7 +11,7 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.11",
+Version     := "2.12dev",
 Date        := "07/03/2013",
 
 Persons          := [
