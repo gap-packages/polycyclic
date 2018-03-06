@@ -198,7 +198,7 @@ RandomPcpOrbitStabilizer := function( e, pcp, act, op )
         for j in [1..Length(gens)] do
             im := op( e, acts[j] );
 
-            index := LookupDictionary( O, im );
+            index := LookupDictionary( dict, im );
             if index = fail then
                 Add( O, im );
                 AddDictionary( dict, im, Length(O) );
