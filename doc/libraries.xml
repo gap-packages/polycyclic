@@ -72,8 +72,8 @@ There are the following generic pcp-groups available.
 <ManSection>
 <Func Name="HeisenbergPcpGroup" Arg="n"/>
 <Description>
-      returns the Heisenberg group on <M>2<A>n</A></M> generators as pcp-group.
-      This gives a group of Hirsch length <M>3<A>n</A></M>.
+      returns the Heisenberg group on <M>2<A>n</A>+1</M> generators as pcp-group.
+      This gives a group of Hirsch length <M>2<A>n</A>+1</M>.
 </Description>
 </ManSection>
 
