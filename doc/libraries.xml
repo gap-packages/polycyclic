@@ -50,7 +50,8 @@ There are the following generic pcp-groups available.
 	Infinite metacyclic groups are classified in <Cite Key="B-K00"/>. Every
 	infinite metacyclic group <M>G</M> is isomorphic to a finitely presented
 	group <M>G(m,n,r)</M> with two generators <M>a</M> and <M>b</M> and relations of the
-	form <M>a^n = b^m = 1</M> and <M>[a,b] = a^{1-r}</M>, where <M>m,n,r</M> are three
+	form <M>a^m = b^n = 1</M> and <M>[a,b] = a^{1-r}</M>, where (differing from the
+	conventions used by GAP) we have <M>[a,b] = a b a^-1 b^-1</M>, and <M>m,n,r</M> are three
 	non-negative integers with <M>mn=0</M> and <M>r</M> relatively prime to <M>m</M>.
 	If <M>r \equiv -1</M> mod <M>m</M> then <M>n</M> is even, and if <M>r \equiv 1</M> mod
 	<M>m</M> then <M>m=0</M>. Also <M>m</M> and <M>n</M> must not be <M>1</M>.
