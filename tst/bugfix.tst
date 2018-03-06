@@ -158,4 +158,53 @@ gap> LowerCentralSeriesOfGroup(G);
 [ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
 
 #
+# bug in StabilizerIntegralAction, see https://github.com/gap-packages/polycyclic/issues/15
+#
+gap> P:=PolynomialRing(Integers);; x:=P.1;;
+gap> G:=MaximalOrderByUnitsPcpGroup(x^4+x^3+x^2+x+1);
+Pcp-group with orders [ 10, 0, 0, 0, 0, 0 ]
+gap> pcps := PcpsOfEfaSeries(G);
+[ Pcp [ g1 ] with orders [ 2 ], Pcp [ g1^2 ] with orders [ 5 ], 
+  Pcp [ g2 ] with orders [ 0 ], Pcp [ g3, g4, g5, g6 ] with orders 
+    [ 0, 0, 0, 0 ] ]
+gap> mats := AffineActionByElement( Pcp(G), pcps[4], G.2 );
+[ [ [ 0, -1, 0, 0, 0 ], [ 0, 0, -1, 0, 0 ], [ 0, 0, 0, -1, 0 ], 
+      [ 1, 1, 1, 1, 0 ], [ 0, 0, 0, 0, 1 ] ], 
+  [ [ 1, 1, 0, 0, 0 ], [ 0, 1, 1, 0, 0 ], [ 0, 0, 1, 1, 0 ], 
+      [ -1, -1, -1, 0, 0 ], [ 0, 0, 0, 0, 1 ] ], 
+  [ [ 1, 0, 0, 0, 0 ], [ 0, 1, 0, 0, 0 ], [ 0, 0, 1, 0, 0 ], 
+      [ 0, 0, 0, 1, 0 ], [ 0, -1, 0, 0, 1 ] ], 
+  [ [ 1, 0, 0, 0, 0 ], [ 0, 1, 0, 0, 0 ], [ 0, 0, 1, 0, 0 ], 
+      [ 0, 0, 0, 1, 0 ], [ 0, 0, -1, 0, 1 ] ], 
+  [ [ 1, 0, 0, 0, 0 ], [ 0, 1, 0, 0, 0 ], [ 0, 0, 1, 0, 0 ], 
+      [ 0, 0, 0, 1, 0 ], [ 0, 0, 0, -1, 1 ] ], 
+  [ [ 1, 0, 0, 0, 0 ], [ 0, 1, 0, 0, 0 ], [ 0, 0, 1, 0, 0 ], 
+      [ 0, 0, 0, 1, 0 ], [ 1, 1, 1, 1, 1 ] ] ]
+gap> e := [ 0, 0, 0, 0, 1 ];
+[ 0, 0, 0, 0, 1 ]
+gap> stab := StabilizerIntegralAction( G, mats, e );
+Pcp-group with orders [ 10, 0 ]
+gap> CheckStabilizer(G, stab, mats, e);
+#I  Stabilizer not increasing: exiting.
+true
+
+#
+# bug in OrbitIntegralAction, see https://github.com/gap-packages/polycyclic/issues/21
+#
+gap> G:=ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> mats:=Representation(Collector(G));;
+gap> e:=[8,-4,5,2,13,-17,9];;
+gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
+[ 8, -4, 19, 34, 51, -17, 5 ]
+gap> o := OrbitIntegralAction( G, mats, e, f );
+rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16, 
+  stab := Pcp-group with orders [ 0 ] )
+gap> CheckOrbit(G, o.prei, mats, e, f);
+true
+gap> CheckStabilizer(G, o.stab, mats, e);
+#I  Orbit longer than limit: exiting.
+true
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);

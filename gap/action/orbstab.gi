@@ -249,28 +249,25 @@ end;
 #F StabilizerCongruenceAction( G, mats, e, ser )
 ##
 StabilizerCongruenceAction := function( G, mats, e, ser )
-    local d, l, pcp, S, i, actS, derS, nath, subs, full, T, actT, derT,
-          take, natb, act, der, ref, U, K;
+    local S, d, actS, derS, nath, K, T, actT, derT, full, subs, bas, tak,
+          act, der, U, f, comp, i, inv;
 
     # catch the trivial case
     if ForAll( mats, x -> e * x = e ) then return G; fi;
 
     # set up
-    pcp := Pcp( G );
-    l := Length( ser );
     S := G;
 
     # now use induction on this series
-    for i in [1..l-1] do
+    for i in [1..Length(ser)-1] do
         d := Length( ser[i] ) - Length( ser[i+1] );
-        Info( InfoIntStab, 2, "  ");
-        Info( InfoIntStab, 2, "  consider layer ", i, " of dim ",d);
+        Info( InfoIntStab, 2, "   consider layer ", i, " of dim ",d);
 
-        # get action of S on the full space
-        actS := InducedByPcp( pcp, Pcp(S), mats );
+        # reset
+        actS := InducedByPcp( Pcp(G), Pcp(S), mats );
         derS := List( actS, x -> e*x - e );
 
-        # induce action of mats to the current layer
+        # get layer
         nath := NaturalHomomorphismByLattices( ser[i], ser[i+1] );
         actS := List( actS, x -> InducedActionFactorByNHLB( x, nath ) );
         derS := List( derS, x -> ImageByNHLB( x, nath ) );
@@ -280,46 +277,37 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
         K := KernelOfCongruenceMatrixAction( S, actS );
 
         # set up for iteration
-        full := IdentityMat( Length(actS[1]) );
-        subs := [full];
+        T := S; actT := actS; derT := derS;
+        full := IdentityMat(d);
+        subs := RefineSplitting( actT, [full]  );
+        subs := List( subs, PurifyRationalBase );
+        comp := [];
 
         # now loop over irreducible submodules and compute stab T
-        T := S; actT := actS; derT := derS;
-        ref := ( d > 1 );
-        while Length( subs ) > 0 do
+        while Length(subs)>0 do
+            Info( InfoIntStab, 2, "  layer: ", List(subs,Length));
 
-            # refine and choose module
-            if ref then
-                subs := RefineSplitting( actT, subs );
-                subs := List( subs, PurifyRationalBase );
-            fi;
-            Info( InfoIntStab, 2, "  spaces: ", List(subs,Length));
+            bas := Concatenation(subs); Append(bas, comp); inv := bas^-1;
+            tak := Remove(subs, 1); f := Length(tak); Append(comp, tak);
 
-            take := Remove(subs);
-
-            # induce action to subspace if necessary
-            if Length( take ) < d then
-                natb := NaturalHomomorphismBySemiEchelonBases( full, take );
-                act := List(actT, x -> InducedActionSubspaceByNHSEB(x, natb));
-                der := List(derT, x -> ProjectionByNHSEB(x, natb));
-            else
-                act := actT;
-                der := derT;
-            fi;
+            act := List(actT, x -> bas*x*inv);
+            act := List(act, x -> x{[1..f]}{[1..f]});
+            der := List(derT, x -> x*inv);
+            der := List(der, x -> x{[1..f]});
 
             # stabilize
-            Info( InfoIntStab, 2, "  computing orbit by irreducible action");
             U := StabilizerIrreducibleAction( T, K, act, der );
-            l := Index( T, U );
-            T := SubgroupByIgs( T, Cgs(U) );
 
             # reset
-            ref := ( l > 1 );
-            if ref and Length( subs ) > 0 then
+            if Index(T,U) > 1 then
+                T := SubgroupByIgs( G, Cgs(U) );
                 K := NormalIntersection( K, T );
                 actT := InducedByPcp( Pcp(S), Pcp(T), actS );
-                derT := List( Pcp(T),
-                            x -> InducedDerivation(x, S, actS, derS));
+                derT := List(Pcp(T),x->InducedDerivation(x, S, actS, derS));
+                if Length(subs) > 0 then
+                    subs := RefineSplitting( actT, subs );
+                    subs := List( subs, PurifyRationalBase );
+                fi;
             fi;
 
             # do a check
@@ -328,7 +316,6 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
         S := T;
 
     od;
-    Info( InfoIntStab, 2, "  ");
     return S;
 end;
 
@@ -340,8 +327,8 @@ end;
 ## returns false otherwise.
 ##
 OrbitCongruenceAction := function( G, mats, e, f, ser )
-    local pcp, l, S, g, i, d, actS, derS, nath, K, full, subs, T, actT, derT,
-          take, natb, act, der, ref, o, u;
+    local S, d, actS, derS, nath, K, T, actT, derT, full, subs, bas, tak,
+          act, der, U, j, comp, g, t, o, u, inv, i;
 
     # catch some trivial cases
     if e = f then
@@ -353,22 +340,19 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
     fi;
 
     # set up
-    pcp := Pcp( G );
-    l := Length( ser );
     S := G;
     g := One( G );
 
     # now use induction on this series
-    for i in [1..l-1] do
+    for i in [1..Length(ser)-1] do
         d := Length( ser[i] ) - Length( ser[i+1] );
-        Info( InfoIntStab, 2, " ");
-        Info( InfoIntStab, 2, "  consider layer ", i, " of dim ",d);
+        Info( InfoIntStab, 2, "  consider layer ", i, " with dim ",d);
 
-        # get action of S on the full space
-        actS := InducedByPcp( pcp, Pcp(S), mats );
+        # reset
+        actS := InducedByPcp( Pcp(G), Pcp(S), mats );
         derS := List( actS, x -> e*x - e );
 
-        # induce action of mats to the current layer
+        # get layer
         nath := NaturalHomomorphismBySemiEchelonBases( ser[i], ser[i+1] );
         actS := List( actS, x -> InducedActionFactorByNHSEB( x, nath ) );
         derS := List( derS, x -> ImageByNHSEB( x, nath ) );
@@ -378,60 +362,57 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
         K := KernelOfCongruenceMatrixAction( S, actS );
 
         # set up for iteration
+        T := S; actT := actS; derT := derS;
         full := IdentityMat( Length(actS[1]) );
-        subs := [full];
+        subs := RefineSplitting( actT, [full] );
+        subs := List(subs, PurifyRationalBase );
+        comp := [];
 
         # now loop over irreducible submodules and compute stab T
-        T := S; actT := actS; derT := derS;
-        ref := ( d > 1 );
         while Length( subs ) > 0 do
+            Info( InfoIntStab, 2, "  layer: ", List(subs,Length));
 
-            # refine and choose module
-            if ref then
-                subs := RefineSplitting( actT, subs );
-                subs := List( subs, PurifyRationalBase );
-            fi;
-            Info( InfoIntStab, 2, "  spaces: ", List(subs,Length));
-            take := Remove(subs);
+            bas := Concatenation(subs); Append(bas, comp); inv := bas^-1;
+            tak := Remove(subs, 1); j := Length(tak); Append(comp, tak);
+
+            act := List(actT, x -> bas*x*inv);
+            act := List(act, x -> x{[1..j]}{[1..j]});
+            der := List(derT, x -> x*inv);
+            der := List(der, x -> x{[1..j]});
 
             # set up element and do a check
-            u := f * InducedByPcp( pcp, g, mats )^-1 - e;
+            t := InducedByPcp(Pcp(G), g, mats)^-1;
+            u := f*t-e;
             if Length(Pcp(T)) = 0 and u = 0*u then
                 return rec( stab := T, prei := g );
             elif Length(Pcp(T)) = 0 then
                 return false;
             fi;
-            u := ImageByNHSEB( u, nath );
 
-            # induce action to subspace if necessary
-            if Length( take ) < d then
-                natb := NaturalHomomorphismBySemiEchelonBases( full, take );
-                act := List(actT, x -> InducedActionSubspaceByNHSEB(x, natb));
-                der := List(derT, x -> ProjectionByNHSEB(x, natb));
-                u   := ProjectionByNHSEB( u, natb );
-            else
-                act := actT;
-                der := derT;
-            fi;
+            # induce to layer
+            u := ImageByNHSEB( u, nath ) * inv;
+            u := u{[1..j]};
 
             # find preimage h with u = h^der if it exists
-            Info( InfoIntStab, 2, "  computing orbit by irreducible action");
             o := OrbitIrreducibleAction( T, K, act, der, u );
             if IsBool(o) then return false; fi;
+            g := o.prei * g;
+            U := o.stab;
 
             # reset
-            ref := ( Index( T, o.stab ) > 1 );
-            g := o.prei * g;
-            if ref and Length( subs ) > 0 then
-                T := SubgroupByIgs(G, Cgs(o.stab));
+            if Index(T, U) > 1 then
+                T := SubgroupByIgs(G, Cgs(U));
                 K := NormalIntersection( K, T );
                 actT := InducedByPcp( Pcp(S), Pcp(T), actS );
-                derT := List(Pcp(T), x -> InducedDerivation(x, S, actS, derS));
-            fi;
+                derT := List(Pcp(T), x->InducedDerivation(x, S, actS, derS));
+                if Length(subs) > 0 then
+                    subs := RefineSplitting( actT, subs );
+                    subs := List( subs, PurifyRationalBase );
+                fi;
+            fi;;
         od;
         S := T;
     od;
-    Info( InfoIntStab, 2, " ");
     return rec( stab := S, prei := g );
 end;
 
