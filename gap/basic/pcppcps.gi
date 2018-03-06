@@ -108,6 +108,8 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
                 if not IsBool( ind[l] ) and ( d < c  or l < c ) then
                     k := Comm( g, ind[l] );
                     if Depth(k) < c then  Add( todo, k ); fi;
+                    k := Comm( g, ind[l]^-1 );
+                    if Depth(k) < c then  Add( todo, k ); fi;
                 fi;
             od;
         od;
