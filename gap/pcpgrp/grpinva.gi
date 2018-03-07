@@ -94,10 +94,21 @@ end;
 #F OrbitsInvariantSubspaces( C, d )
 ##
 OrbitsInvariantSubspaces := function( C, d )
-    local invs;
+    local invs, o, i, n, j;
     invs := InvariantSubspaces( C, d );
     if ForAny( C.smats, x -> x <> C.one ) then
-        return PcpOrbitsStabilizers( invs, C.super, C.smats, OnBasesCase );
+        o := PcpOrbitsStabilizers( invs, C.super, C.smats, OnBasesCase );
+
+        # purify stabilizer
+        for i in [1..Length(o)] do
+            n := [];
+            for j in [1..Length(o[i].stab)] do
+                n[j] := ExponentsByPcp(C.super, o[i].stab[j]);
+                n[j] := MappedVector( n[j], C.super);
+            od;
+            o[i].stab := n;
+        od;
+        return o;
     else
         return List( invs, x -> rec( repr := x, stab := C.super ) );
     fi;

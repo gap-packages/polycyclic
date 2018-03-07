@@ -341,4 +341,14 @@ gap> G = H;
 true
 
 #
+# Fix a bug computing ComplementClassesCR, see
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> LoadPackage("crystcat",false);;
+gap> G := FiniteSubgroupClasses(PcGroupToPcpGroup(PcGroupQClass(4, 29, 9)));;
+#I  Warning: the presentation has been extended to get a prime order pcgs
+gap> Length(G);
+86
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);
