@@ -20,6 +20,7 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "beick@tu-bs.de",
+       WWWHome       := "http://www.icm.tu-bs.de/~beick",
        PostalAddress := Concatenation(
                "AG Algebra und Diskrete Mathematik\n",
                "Institut Computational Mathematics\n",
