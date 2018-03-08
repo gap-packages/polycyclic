@@ -46,10 +46,10 @@ end;
 
 #############################################################################
 ##
-#F LiftBlockToPointNormalizer( CR, cc, C, H, HN )
+#F LiftBlockToPointNormalizer( CR, cc, C, H, HN, c )
 ##
-LiftBlockToPointNormalizer := function( CR, cc, C, H, HN )
-    local b, r, t, i, c, igs;
+LiftBlockToPointNormalizer := function( CR, cc, C, H, HN, c )
+    local b, r, t, i, d, igs;
 
     # set up b and t
     b := AddIgsToIgs( Igs(H), DenominatorOfPcp( CR.normal ) );
@@ -62,10 +62,10 @@ LiftBlockToPointNormalizer := function( CR, cc, C, H, HN )
 
     # add normalizer to centralizer and complement
     for i in [1..Length(t)] do
-        c := VectorByComplement( CR, H^t[i] );
-        if not IsBool( cc.fld ) then c := c * One( cc.fld ); fi;
-        c := cc.CocToCBElement( cc, c ) * cc.trf;
-        t[i] := t[i] * MappedVector( c, CR.normal );
+        d := VectorByComplement( CR, H^t[i] );
+        if not IsBool( cc.fld ) then d := d * One( cc.fld ); fi;
+        d := cc.CocToCBElement( cc, d-c ) * cc.trf;
+        t[i] := t[i] * MappedVector( d, CR.normal );
     od;
     return SubgroupByIgsAndIgs( C, t, b );
 end;
@@ -208,7 +208,7 @@ end;
 #F NormalizerOfComplement( C, H, N, I )
 ##
 NormalizerOfComplement := function( C, H, N, I )
-    local pcps, pcp, M, L, CR, cc, c;
+    local pcps, pcp, M, L, CR, cc, c, e;
 
     # catch the trivial case
     if IndexNC(H,I) = 1 or IndexNC(N,I) = 1 then return C; fi;
@@ -242,12 +242,12 @@ NormalizerOfComplement := function( C, H, N, I )
             Info( InfoPcpGrp, 2, "  H1 is of type ",cc.factor.rels);
             c := VectorByComplement( CR, H );
             if not IsBool( cc.fld ) then c := c * One( cc.fld ); fi;
-            c := cc.CocToFactor( cc, c );
-            C := StabilizerOfCocycle( CR, cc, C, c );
+            e := cc.CocToFactor( cc, c );
+            C := StabilizerOfCocycle( CR, cc, C, e );
         fi;
 
         # lift to point normalizer
-        C := LiftBlockToPointNormalizer( CR, cc, C, H, L );
+        C := LiftBlockToPointNormalizer( CR, cc, C, H, L, c );
     od;
     return C;
 end;
