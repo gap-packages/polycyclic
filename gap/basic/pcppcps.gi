@@ -123,6 +123,8 @@ IGSValFun := IGSValFun4;
 InstallGlobalFunction( AddToIgs, function( igs, gens )
     local col, rel, n, l, ind, g, i, nex, val, j, f, h, e, a, d, k, b, u, t;
 
+    if Length( gens ) = 0 then return igs; fi;
+
     # get information
     col := Collector( gens[1] );
     rel := RelativeOrders( col );
