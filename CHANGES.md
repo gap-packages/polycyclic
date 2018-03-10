@@ -1,5 +1,31 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+x.yy (2018-MM-DD)
+
+  * Improved performance of some orbit algorithms by using dictionaries
+  * Improved performance of AddToIgs for some examples where it previously
+    performed very badly
+  * Added custom IsSingleValued method for group homomorphisms whose Source is
+    an polycyclic groups, which can avoid an endless loop when the range is an
+    infinite group
+  * Fixed bug in NormalizerPcpGroup which could result in a break loop
+  * Fixed bug in ComplementClassesCR which could result in a break loop
+  * Fixed bug in OrbitIntegralAction which could result in a break loop
+  * Fixed bug in StabilizerIntegralAction which could result in a break loop
+  * Fixed bug in AddToIgs for infinite groups which could result in an invalid
+    output leading to strange results
+  * Fixed IsConjugate for pcp group elements to always return true and false
+    (instead of an element which conjugates the inputs to each other)
+  * Corrected documentation for HeisenbergPcpGroup to give correct number
+    of generators, an correct Hirsch length
+  * Corrected and clarified InfiniteMetacyclicPcpGroup documentation
+  * Deprecated NaturalHomomorphism, use NaturalHomomorphismByNormalSubgroup
+    instead (which is a standard GAP operation)
+  * Removed left-over traces of Schur towers in the manual and elsewhere
+  * Added more tests cases
+  * Changed tests to using TestDirectory
+  * Various minor tweaks
+
 2.11 (2013-03-07)
 
   * Added a fast SylowSubgroup method (via IsomorphismPcGroup)
