@@ -690,7 +690,7 @@ gap> SchurExtensionEpimorphism( gl23 );
 id, id, id, id, id ]
 gap> Kernel( last );
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> SchurMultiplicator( gl23 );
+gap> AbelianInvariantsMultiplier( gl23 );
 [  ]
 gap> Intersection( Kernel(epi), DerivedSubgroup( Source(epi) ) );
 [  ]
@@ -782,7 +782,7 @@ gap> G := ExamplesOfSomePcpGroups( 3 );
 Pcp-group with orders [ 0, 0 ]
 gap> G := DirectProduct( G,G );
 Pcp-group with orders [ 0, 0, 0, 0 ]
-gap> SchurMultiplicator( G );
+gap> AbelianInvariantsMultiplier( G );
 [ [ 0, 1 ], [ 2, 3 ] ]
 gap> epi := NonAbelianExteriorSquareEpimorphism( G );
 [ g2^-2*g5, g4^-2*g10, g6, g7, g8, g9 ] -> [ g2^-2, g4^-2, id, id, id, id ]
@@ -856,7 +856,7 @@ gap> JG := Kernel( alpha * gamma );
 Pcp-group with orders [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
 gap> Image( alpha, JG );
 Pcp-group with orders [ 2, 2, 2, 2 ]
-gap> SchurMultiplicator( G );
+gap> AbelianInvariantsMultiplier( G );
 [ [ 2, 4 ] ]
 ]]></Example>
 </Description>
