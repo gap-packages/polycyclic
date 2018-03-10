@@ -6,20 +6,15 @@ env:
 
 addons:
   apt_packages:
-    - pari-gp
     - libgmp-dev
     - libreadline-dev
 
 matrix:
   include:
-    - env: CFLAGS="-O2" CC=clang CXX=clang++
-      compiler: clang
     - env: CFLAGS="-O2"
-      compiler: gcc
-    - env: ABI=32
+    - env: CFLAGS="-O2" ABI=32
       addons:
         apt_packages:
-          - pari-gp:i386
           - libgmp-dev:i386
           - libreadline-dev:i386
           - gcc-multilib
