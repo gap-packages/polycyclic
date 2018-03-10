@@ -41,9 +41,174 @@ end;
 
 #############################################################################
 ##
+#F TailLimit
+##
+TailLimit := function( ind, c )
+    local k, i;
+    k := List(ind, x -> not IsBool(x) and LeadingExponent(x)=1);
+    i := c-1; while i > 0 and k[i]=true do i := i-1; od; i := i+1;
+    return i;
+end;
+
+#############################################################################
+##
+#F ReduceExpo
+##
+ReduceExpo := function( ind, gen, rel )
+    local i, j, a, b, q, f, k;
+
+    for i in [1..Length(ind)] do
+        if not IsBool(ind[i]) and rel[i]=0 then
+            b := LeadingExponent(ind[i]);
+            for j in [1..i-1] do
+                if not IsBool( ind[j] ) then
+                    a := Exponents(ind[j])[i];
+                    q := QuotientRemainder(a,b)[1];
+                    if q <> 0 then
+                        ind[j] := ind[j]*ind[i]^-q;
+                    fi;
+                fi;
+            od;
+            for j in [1..Length(gen)] do
+                a := Exponents(gen[j])[i];
+                q := QuotientRemainder(a,b)[1];
+                if q <> 0 then
+                    gen[j] := gen[j]*ind[i]^-q;
+                fi;
+            od;
+        fi;
+    od;
+end;
+
+#############################################################################
+##
+#F CheckIgs
+##
+CheckIgs := function( igs, gen )
+    local i, g, e, j;
+    for i in [1..Length(igs)] do
+        g := igs[i]^RelativeOrderPcp(igs[i]);
+        e := ExponentsByIgs(igs, g);
+        if e = fail then return i; fi;
+        for j in [1..i-1] do
+            g := Comm(igs[i], igs[j]);
+            e := ExponentsByIgs(igs,g);
+            if e = fail then return [i,j]; fi;
+        od;
+    od;
+    for i in [1..Length(gen)] do
+        e := ExponentsByIgs(igs, gen[i]);
+        if e = fail then return [i]; fi;
+    od;
+    return true;
+end;
+
+#############################################################################
+##
+#F ValFuns
+##
+IGSValFun1 := function(g) return 0; end;
+IGSValFun2 := function(g) return AbsInt(LeadingExponent(g)); end;
+IGSValFun3 := function(g)
+    return [AbsInt(LeadingExponent(g)),Length(Exponents(g))-Depth(g)];
+end;
+IGSValFun4 := function(g)
+    return [Length(Exponents(g))-Depth(g), AbsInt(LeadingExponent(g))];
+end;
+IGSValFun := IGSValFun4;
+#############################################################################
+##
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction( AddToIgs, function( igs, gens )
+    local col, rel, n, l, ind, g, i, nex, val, j, f, h, e, a, d, k, b, u, t;
+
+    # get information
+    col := Collector( gens[1] );
+    rel := RelativeOrders( col );
+    n   := NumberOfGenerators( col );
+    l   := n+1;
+
+    # set up
+    ind := ListWithIdenticalEntries(n, false );
+    for g in igs do ind[Depth(g)] := NormedPcpElement(g); od;
+
+    # do a reduction step
+    l := TailLimit( ind, l );
+    nex := Filtered(gens, x -> Depth(x)<l);
+    val := List(nex, x -> IGSValFun(x));
+
+    # loop over to-do list until it is empty
+    while Length( nex ) > 0 and l > 1 do
+        j := Position(val, Minimum(val));
+        g := Remove(nex, j);
+        i := Depth(g);
+        f := [];
+
+        # shift g into ind
+        while i < l do
+            h := ind[i];
+            if IsBool(h) then
+                ind[i] := NormedPcpElement(g);
+                g := g^0;
+                Add(f, i);
+            elif IsPrime(rel[i]) then
+                a := LeadingExponent(g);
+                g := g*h^-a;
+            else
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                e := Gcdex(a, b);
+                if e.coeff1 = 0 then
+                    g := (g^e.coeff3) * (h^e.coeff4);
+                else
+                    k := (g^e.coeff1) * (h^e.coeff2);
+                    g := (g^e.coeff3) * (h^e.coeff4);
+                    ind[i] := NormedPcpElement(k);
+                    Add(f, i);
+                fi;
+            fi;
+            i := Depth( g );
+        od;
+        l := TailLimit( ind, l );
+        ReduceExpo( ind, nex, rel );
+
+        # add powers and commutators
+        for i in f do
+            g := ind[i];
+            if rel[i] > 0 then
+                k := g ^ RelativeOrderPcp( g );
+                if Depth(k) < l then Add( nex, k ); fi;
+            fi;
+            for j in [1..l-1] do
+                if not IsBool( ind[j] ) then
+                    k := Comm( g, ind[j] );
+                    if Depth(k) < l then Add( nex, k ); fi;
+                    if rel[j] = 0 then
+                        k := Comm( g, ind[j]^-1 );
+                        if Depth(k) < l then  Add( nex, k ); fi;
+                    fi;
+                fi;
+            od;
+        od;
+
+        # reduce
+        nex := Filtered(nex, x -> Depth(x)<l);
+        val := List(nex, x -> IGSValFun(x));
+        Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
+    od;
+
+    # return resulting list
+    ind := Filtered( ind, x -> not IsBool( x ) );
+    if CHECK_IGS@ then
+        Info( InfoPcpGrp, 1, "checking igs ");
+        t := CheckIgs(ind, gens);
+        if t <> true then Error("igs is incorrect at ",t); fi;
+    fi;
+    return ind;
+end);
+
+AddToIgs_Old := function( igs, gens )
     local coll, rels, todo, n, ind, g, d, h, k, eg, eh, e, f, c, i, l;
 
     if Length( gens ) = 0 then return igs; fi;
@@ -121,7 +286,7 @@ InstallGlobalFunction( AddToIgs, function( igs, gens )
 
     # return resulting list
     return Filtered( ind, x -> not IsBool( x ) );
-end );
+end;
 
 #############################################################################
 ##

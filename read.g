@@ -11,6 +11,7 @@
 ## Introduce various global variables to steer the behavior of polycyclic
 ##
 if not IsBound( CHECK_CENT@ ) then CHECK_CENT@ := false; fi;
+if not IsBound( CHECK_IGS@ ) then CHECK_IGS@ := false; fi;
 if not IsBound( CHECK_INTNORM@ ) then CHECK_INTNORM@ := false; fi;
 if not IsBound( CHECK_INTSTAB@ ) then CHECK_INTSTAB@ := false; fi;
 if not IsBound( CHECK_NORM@ ) then CHECK_NORM@ := false; fi;
