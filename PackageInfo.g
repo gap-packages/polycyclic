@@ -4,15 +4,13 @@
 #W                                                              Werner Nickel
 #W                                                                   Max Horn
 ##
-#H  @(#)$Id$
-##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.12dev",
-Date        := "07/03/2013",
+Version     := "2.12",
+Date        := "18/03/2018",
 
 Persons          := [
   rec( LastName      := "Eick",

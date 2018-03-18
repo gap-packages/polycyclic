@@ -1,6 +1,6 @@
 This file describes changes in the GAP package 'polycyclic'.
 
-x.yy (2018-MM-DD)
+2.12 (2018-03-18)
 
   * Improved performance of some orbit algorithms by using dictionaries
   * Improved performance of AddToIgs for some examples where it previously
