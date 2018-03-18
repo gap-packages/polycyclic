@@ -13,7 +13,7 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
 
     hom  := rec( );
     if Length( gens ) <> Length( imgs ) then
-        Error("gens and imgs must have same length");
+        Error("<gens> and <imgs> must be lists of same length");
     fi;
 
     mapi := [Immutable(gens), Immutable(imgs)];
