@@ -1,42 +1,40 @@
 name: Polycyclic
-version: 2.11
-date: 2013-03-07
+version: 2.12
+date: 2018-03-18
 description: |
     Computation with polycyclic groups
 
 authors:
     - name: Bettina Eick
-      url: mailto:beick@tu-bs.de
+      url: http://www.icm.tu-bs.de/~beick
     - name: Werner Nickel
       url: http://www.mathematik.tu-darmstadt.de/~nickel/
     - name: Max Horn
-      url: http://www.quendi.de/math.php
+      url: http://www.quendi.de/math
 
 maintainers:
     - name: Bettina Eick
-      url: mailto:beick@tu-bs.de
+      url: http://www.icm.tu-bs.de/~beick
     - name: Max Horn
-      url: http://www.quendi.de/math.php
+      url: http://www.quendi.de/math
 
-GAP: ">= 4.5"
+GAP: ">= 4.7"
 
 needed-pkgs:
     - name: "alnuth"
-      version: "1.0"
+      version: "3.0"
       url: "https://gap-packages.github.io/alnuth"
     - name: "autpgrp"
-      version: "1.4"
-      url: "http://www.icm.tu-bs.de/~beick/so.html"
+      version: "1.6"
+      url: "https://gap-packages.github.io/autpgrp/"
 
-www: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/
+www: https://gap-packages.github.io/polycyclic/
 readme: README
-packageinfo: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/PackageInfo.g
+packageinfo: https://gap-packages.github.io/polycyclic/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/polycyclic-2.11.tar.gz
-    - name: .tar.bz2
-      url: http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/polycyclic-2.11.tar.bz2
+      url: https://github.com/gap-packages/polycyclic/releases/download/v2.12/polycyclic-2.12.tar.gz
 
 abstract: |
     This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.

@@ -1,0 +1,325 @@
+  
+  [1X8 [33X[0;0YCohomology for pcp-groups[133X[101X
+  
+  [33X[0;0YThe  [5XGAP[105X  4  package  [5XPolycyclic[105X  provides  methods to compute the first and
+  second cohomology group for a pcp-group [22XU[122X and a finite dimensional [22Xℤ U[122X or [22XFU[122X
+  module  [22XA[122X where [22XF[122X is a finite field. The algorithm for determining the first
+  cohomology group is outlined in [Eic00].[133X
+  
+  [33X[0;0YAs a preparation for the cohomology computation, we introduce the cohomology
+  records.  These  records  provide  the  technical  setup  for our cohomology
+  computations.[133X
+  
+  
+  [1X8.1 [33X[0;0YCohomology records[133X[101X
+  
+  [33X[0;0YCohomology  records provide the necessary technical setup for the cohomology
+  computations for polycyclic groups.[133X
+  
+  [1X8.1-1 CRRecordByMats[101X
+  
+  [33X[1;0Y[29X[2XCRRecordByMats[102X( [3XU[103X, [3Xmats[103X ) [32X function[133X
+  
+  [33X[0;0Ycreates  an external module. Let [3XU[103X be a pcp group which acts via the list of
+  matrices [3Xmats[103X on a vector space of the form [22Xℤ^n[122X or [22XF_p^n[122X. Then this function
+  creates a record which can be used as input for the cohomology computations.[133X
+  
+  [1X8.1-2 CRRecordBySubgroup[101X
+  
+  [33X[1;0Y[29X[2XCRRecordBySubgroup[102X( [3XU[103X, [3XA[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XCRRecordByPcp[102X( [3XU[103X, [3Xpcp[103X ) [32X function[133X
+  
+  [33X[0;0Ycreates  an  internal  module.  Let  [3XU[103X  be a pcp group and let [3XA[103X be a normal
+  elementary  or  free  abelian  normal subgroup of [3XU[103X or let [3Xpcp[103X be a pcp of a
+  normal elementary of free abelian subfactor of [3XU[103X. Then this function creates
+  a record which can be used as input for the cohomology computations.[133X
+  
+  [33X[0;0YThe returned cohomology record [3XC[103X contains the following entries:[133X
+  
+  [8X[3Xfactor[103X[8X[108X
+        [33X[0;6Ya  pcp  of  the  acting group. If the module is external, then this is
+        [3XPcp(U)[103X.  If  the  module is internal, then this is [3XPcp(U, A)[103X or [3XPcp(U,
+        GroupOfPcp(pcp))[103X.[133X
+  
+  [8X[3Xmats[103X[8X, [3Xinvs[103X[8X and [3Xone[103X[8X[108X
+        [33X[0;6Ythe  matrix  action of [3Xfactor[103X with acting matrices, their inverses and
+        the identity matrix.[133X
+  
+  [8X[3Xdim[103X[8X and [3Xchar[103X[8X[108X
+        [33X[0;6Ythe dimension and characteristic of the matrices.[133X
+  
+  [8X[3Xrelators[103X[8X and [3Xenumrels[103X[8X[108X
+        [33X[0;6Ythe right hand sides of the polycyclic relators of [3Xfactor[103X as generator
+        exponents  lists  and  a  description  for the corresponding left hand
+        sides.[133X
+  
+  [8X[3Xcentral[103X[8X[108X
+        [33X[0;6Yis  true,  if  the matrices [3Xmats[103X are all trivial. This is used locally
+        for efficiency reasons.[133X
+  
+  [33X[0;0YAnd additionally, if [22XC[122X defines an internal module, then it contains:[133X
+  
+  [8X[3Xgroup[103X[8X[108X
+        [33X[0;6Ythe original group [3XU[103X.[133X
+  
+  [8X[3Xnormal[103X[8X[108X
+        [33X[0;6Ythis is either [3XPcp(A)[103X or the input [3Xpcp[103X.[133X
+  
+  [8X[3Xextension[103X[8X[108X
+        [33X[0;6Yinformation on the extension of [3XA[103X by [3XU/A[103X.[133X
+  
+  
+  [1X8.2 [33X[0;0YCohomology groups[133X[101X
+  
+  [33X[0;0YLet  [22XU[122X  be  a  pcp-group  and [22XA[122X a free or elementary abelian pcp-group and a
+  [22XU[122X-module. By [22XZ^i(U, A)[122X be denote the group of [22Xi[122X-th cocycles and by [22XB^i(U, A)[122X
+  the [22Xi[122X-th coboundaries. The factor [22XZ^i(U,A) / B^i(U,A)[122X is the [22Xi[122X-th cohomology
+  group.  Since  [22XA[122X  is  elementary  or  free abelian, the groups [22XZ^i(U, A)[122X and
+  [22XB^i(U, A)[122X are elementary or free abelian groups as well.[133X
+  
+  [33X[0;0YThe  [5XPolycyclic[105X  package  provides  methods  to  compute  first  and  second
+  cohomology  group  for  a  polycyclic  group [3XU[103X. We write all involved groups
+  additively  and  we  use an explicit description by bases for them. Let [22XC[122X be
+  the cohomology record corresponding to [22XU[122X and [22XA[122X.[133X
+  
+  [33X[0;0YLet  [22Xf_1,  ...,  f_n[122X  be  the elements in the entry [22Xfactor[122X of the cohomology
+  record  [22XC[122X. Then we use the following embedding of the first cocycle group to
+  describe 1-cocycles and 1-coboundaries: [22XZ^1(U, A) -> A^n : δ ↦ (δ(f_1), ...,
+  δ(f_n))[122X[133X
+  
+  [33X[0;0YFor  the  second  cohomology  group we recall that each element of [22XZ^2(U, A)[122X
+  defines  an  extension  [22XH[122X  of  [22XA[122X  by [22XU[122X. Thus there is a pc-presentation of [22XH[122X
+  extending  the  pc-presentation  of  [22XU[122X  given  by the record [22XC[122X. The extended
+  presentation  is  defined by tails in [22XA[122X; that is, each relator in the record
+  entry  [22Xrelators[122X  is  extended by an element of [22XA[122X. The concatenation of these
+  tails  yields  a  vector  in  [22XA^l[122X  where [22Xl[122X is the length of the record entry
+  [22Xrelators[122X  of  [22XC[122X.  We use these tail vectors to describe [22XZ^2(U, A)[122X and [22XB^2(U,
+  A)[122X. Note that this description is dependent on the chosen presentation in [22XC[122X.
+  However,  the  factor  [22XZ^2(U,  A)/  B^2(U,  A)[122X  is independent of the chosen
+  presentation.[133X
+  
+  [33X[0;0YThe  following  functions  are available to compute explicitly the first and
+  second cohomology group as described above.[133X
+  
+  [1X8.2-1 OneCoboundariesCR[101X
+  
+  [33X[1;0Y[29X[2XOneCoboundariesCR[102X( [3XC[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XOneCocyclesCR[102X( [3XC[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XTwoCoboundariesCR[102X( [3XC[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XTwoCocyclesCR[102X( [3XC[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XOneCohomologyCR[102X( [3XC[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XTwoCohomologyCR[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0YThe  first  4  functions return bases of the corresponding group. The last 2
+  functions  need to describe a factor of additive abelian groups. They return
+  the following descriptions for these factors.[133X
+  
+  [8X[3Xgcc[103X[8X[108X
+        [33X[0;6Ythe basis of the cocycles of [3XC[103X.[133X
+  
+  [8X[3Xgcb[103X[8X[108X
+        [33X[0;6Ythe basis of the coboundaries of [3XC[103X.[133X
+  
+  [8X[3Xfactor[103X[8X[108X
+        [33X[0;6Ya  description  of the factor of cocycles by coboundaries. Usually, it
+        would be most convenient to use additive mappings here. However, these
+        are  not  available  in  case that [3XA[103X is free abelian and thus we use a
+        description of this additive map as record. This record contains[133X
+  
+        [8X[3Xgens[103X[8X[108X
+              [33X[0;12Ya base for the image.[133X
+  
+        [8X[3Xrels[103X[8X[108X
+              [33X[0;12Yrelative orders for the image.[133X
+  
+        [8X[3Ximgs[103X[8X[108X
+              [33X[0;12Ythe images for the elements in [3Xgcc[103X.[133X
+  
+        [8X[3Xprei[103X[8X[108X
+              [33X[0;12Ypreimages for the elements in [3Xgens[103X.[133X
+  
+        [8X[3Xdenom[103X[8X[108X
+              [33X[0;12Ythe kernel of the map; that is, another basis for [3Xgcb[103X.[133X
+  
+  [33X[0;0YThere  is  an  additional  function  which can be used to compute the second
+  cohomology  group  over  an  arbitrary finitely generated abelian group. The
+  finitely  generated  abelian  group should be realized as a factor of a free
+  abelian group modulo a lattice. The function is called as[133X
+  
+  [1X8.2-2 TwoCohomologyModCR[101X
+  
+  [33X[1;0Y[29X[2XTwoCohomologyModCR[102X( [3XC[103X, [3Xlat[103X ) [32X function[133X
+  
+  [33X[0;0Ywhere [3XC[103X is a cohomology record and [3Xlat[103X is a basis for a sublattice of a free
+  abelian module. The output format is the same as for [10XTwoCohomologyCR[110X.[133X
+  
+  
+  [1X8.3 [33X[0;0YExtended 1-cohomology[133X[101X
+  
+  [33X[0;0YIn some cases more information on the first cohomology group is of interest.
+  In  particular,  if  we have an internal module given and we want to compute
+  the  complements  using  the first cohomology group, then we need additional
+  information.  This  extended  version of first cohomology is obtained by the
+  following functions.[133X
+  
+  [1X8.3-1 OneCoboundariesEX[101X
+  
+  [33X[1;0Y[29X[2XOneCoboundariesEX[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns a record consisting of the entries[133X
+  
+  [8X[3Xbasis[103X[8X[108X
+        [33X[0;6Ya basis for [22XB^1(U, A) ≤ A^n[122X.[133X
+  
+  [8X[3Xtransf[103X[8X[108X
+        [33X[0;6YThere  is  a  derivation  mapping  from [22XA[122X to [22XB^1(U,A)[122X. This mapping is
+        described here as transformation from [22XA[122X to [3Xbasis[103X.[133X
+  
+  [8X[3Xfixpts[103X[8X[108X
+        [33X[0;6Ythe fixpoints of [22XA[122X. This is also the kernel of the derivation mapping.[133X
+  
+  [1X8.3-2 OneCocyclesEX[101X
+  
+  [33X[1;0Y[29X[2XOneCocyclesEX[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns a record consisting of the entries[133X
+  
+  [8X[3Xbasis[103X[8X[108X
+        [33X[0;6Ya basis for [22XZ^1(U, A) ≤ A^n[122X.[133X
+  
+  [8X[3Xtransl[103X[8X[108X
+        [33X[0;6Ya  special  solution.  This  is  only of interest in case that [22XC[122X is an
+        internal  module  and  in this case it gives the translation vector in
+        [22XA^n[122X used to obtain complements corresponding to the elements in [22Xbasis[122X.
+        If  [22XC[122X  is  not an internal module, then this vector is always the zero
+        vector.[133X
+  
+  [1X8.3-3 OneCohomologyEX[101X
+  
+  [33X[1;0Y[29X[2XOneCohomologyEX[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the combined information on the first cohomology group.[133X
+  
+  
+  [1X8.4 [33X[0;0YExtensions and Complements[133X[101X
+  
+  [33X[0;0YThe  natural  applications  of  first  and  second  cohomology  group is the
+  determination of extensions and complements. Let [22XC[122X be a cohomology record.[133X
+  
+  [1X8.4-1  ComplementCR[101X
+  
+  [33X[1;0Y[29X[2X ComplementCR[102X( [3XC[103X, [3Xc[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  the complement corresponding to the 1-cocycle [3Xc[103X. In the case that [3XC[103X
+  is  an  external  module, we construct the split extension of [22XU[122X with [22XA[122X first
+  and then determine the complement. In the case that [3XC[103X is an internal module,
+  the  vector  [3Xc[103X  must  be an element of the affine space corresponding to the
+  complements as described by [10XOneCocyclesEX[110X.[133X
+  
+  [1X8.4-2  ComplementsCR[101X
+  
+  [33X[1;0Y[29X[2X ComplementsCR[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  all complements using the correspondence to [22XZ^1(U,A)[122X. Further, this
+  function returns fail, if [22XZ^1(U,A)[122X is infinite.[133X
+  
+  [1X8.4-3  ComplementClassesCR[101X
+  
+  [33X[1;0Y[29X[2X ComplementClassesCR[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  complement  classes  using the correspondence to [22XH^1(U,A)[122X. Further,
+  this function returns fail, if [22XH^1(U,A)[122X is infinite.[133X
+  
+  [1X8.4-4  ComplementClassesEfaPcps[101X
+  
+  [33X[1;0Y[29X[2X ComplementClassesEfaPcps[102X( [3XU[103X, [3XN[103X, [3Xpcps[103X ) [32X function[133X
+  
+  [33X[0;0YLet  [22XN[122X  be  a  normal  subgroup  of  [22XU[122X. This function returns the complement
+  classes  to  [22XN[122X  in  [22XU[122X.  The  classes  are  computed  by  iteration  over the
+  [22XU[122X-invariant  efa  series  of  [22XN[122X  described by [3Xpcps[103X. If at some stage in this
+  iteration  infinitely  many  complements  are  discovered, then the function
+  returns  fail.  (Even  though  there  might  be only finitely many conjugacy
+  classes of complements to [22XN[122X in [22XU[122X.)[133X
+  
+  [1X8.4-5  ComplementClasses[101X
+  
+  [33X[1;0Y[29X[2X ComplementClasses[102X( [[3XV[103X, ][3XU[103X, [3XN[103X ) [32X function[133X
+  
+  [33X[0;0YLet  [22XN[122X and [22XU[122X be normal subgroups of [22XV[122X with [22XN ≤ U ≤ V[122X. This function attempts
+  to  compute  the [22XV[122X-conjugacy classes of complements to [22XN[122X in [22XU[122X. The algorithm
+  proceeds  by  iteration over a [22XV[122X-invariant efa series of [22XN[122X. If at some stage
+  in  this  iteration  infinitely  many  complements  are discovered, then the
+  algorithm returns fail.[133X
+  
+  [1X8.4-6 ExtensionCR[101X
+  
+  [33X[1;0Y[29X[2XExtensionCR[102X( [3XC[103X, [3Xc[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the extension corresponding to the 2-cocycle [22Xc[122X.[133X
+  
+  [1X8.4-7 ExtensionsCR[101X
+  
+  [33X[1;0Y[29X[2XExtensionsCR[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  all  extensions using the correspondence to [22XZ^2(U,A)[122X. Further, this
+  function returns fail, if [22XZ^2(U,A)[122X is infinite.[133X
+  
+  [1X8.4-8 ExtensionClassesCR[101X
+  
+  [33X[1;0Y[29X[2XExtensionClassesCR[102X( [3XC[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  extension  classes  using  the correspondence to [22XH^2(U,A)[122X. Further,
+  this function returns fail, if [22XH^2(U,A)[122X is infinite.[133X
+  
+  [1X8.4-9 SplitExtensionPcpGroup[101X
+  
+  [33X[1;0Y[29X[2XSplitExtensionPcpGroup[102X( [3XU[103X, [3Xmats[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the split extension of [3XU[103X by the [22XU[122X-module described by [3Xmats[103X.[133X
+  
+  
+  [1X8.5 [33X[0;0YConstructing pcp groups as extensions[133X[101X
+  
+  [33X[0;0YThis  section contains an example application of the second cohomology group
+  to  the  construction  of pcp groups as extensions. The following constructs
+  extensions  of  the  group  of upper unitriangular matrices with its natural
+  lattice.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X# get the group and its matrix action[128X[104X
+    [4X[25Xgap>[125X [27XG := UnitriangularPcpGroup(3,0);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xmats := G!.mats;[127X[104X
+    [4X[28X[ [ [ 1, 1, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ],[128X[104X
+    [4X[28X  [ [ 1, 0, 0 ], [ 0, 1, 1 ], [ 0, 0, 1 ] ],[128X[104X
+    [4X[28X  [ [ 1, 0, 1 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# set up the cohomology record[128X[104X
+    [4X[25Xgap>[125X [27XC := CRRecordByMats(G,mats);;[127X[104X
+    [4X[28X[128X[104X
+    [4X[28X# compute the second cohomology group[128X[104X
+    [4X[25Xgap>[125X [27Xcc := TwoCohomologyCR(C);;[127X[104X
+    [4X[28X[128X[104X
+    [4X[28X# the abelian invariants of H^2(G,M)[128X[104X
+    [4X[25Xgap>[125X [27Xcc.factor.rels;[127X[104X
+    [4X[28X[ 2, 0, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# construct an extension which corresponds to a cocycle that has[128X[104X
+    [4X[28X# infinite image in H^2(G,M)[128X[104X
+    [4X[25Xgap>[125X [27Xc := cc.factor.prei[2];[127X[104X
+    [4X[28X[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 1 ][128X[104X
+    [4X[25Xgap>[125X [27XH := ExtensionCR( CR, c);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# check that the extension does not split - get the normal subgroup[128X[104X
+    [4X[25Xgap>[125X [27XN := H!.module;[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# create the interal module[128X[104X
+    [4X[25Xgap>[125X [27XC := CRRecordBySubgroup(H,N);;[127X[104X
+    [4X[28X[128X[104X
+    [4X[28X# use the complements routine[128X[104X
+    [4X[25Xgap>[125X [27XComplementClassesCR(C);[127X[104X
+    [4X[28X[  ][128X[104X
+  [4X[32X[104X
+  

@@ -1,0 +1,46 @@
+  
+  [1X1 [33X[0;0YPreface[133X[101X
+  
+  [33X[0;0YA  group [22XG[122X is called [13Xpolycyclic[113X if there exists a subnormal series in [22XG[122X with
+  cyclic  factors.  Every  polycyclic  group is soluble and every supersoluble
+  group  is  polycyclic. The class of polycyclic groups is closed with respect
+  to  forming  subgroups,  factor groups and extensions. Polycyclic groups can
+  also  be  characterised  as  those  soluble groups in which each subgroup is
+  finitely generated.[133X
+  
+  [33X[0;0YK.  A.  Hirsch has initiated the investigation of polycyclic groups in 1938,
+  see  [Hir38a],  [Hir38b],  [Hir46],  [Hir52],  [Hir54],  and  their  central
+  position in infinite group theory has been recognised since.[133X
+  
+  [33X[0;0YA well-known result of Hirsch asserts that each polycyclic group is finitely
+  presented. In fact, a polycyclic group has a presentation which exhibits its
+  polycyclic   structure:   a   [13Xpc-presentation[113X  as  defined  in  the  Chapter
+  [14X'[33X[0;0YIntroduction to polycyclic presentations[133X'[114X. Pc-presentations allow efficient
+  computations with the groups they define. In particular, the word problem is
+  efficiently  solvable  in  a  group  given  by  a  pc-presentation. Further,
+  subgroups  and  factor  groups  of  groups given by a pc-presentation can be
+  handled effectively.[133X
+  
+  [33X[0;0YThe  [5XGAP[105X  4  package [5XPolycyclic[105X is designed for computations with polycyclic
+  groups which are given by a pc-presentation. The package contains methods to
+  solve  the  word  problem  in such groups and to handle subgroups and factor
+  groups  of  polycyclic  groups. Based on these basic algorithms we present a
+  collection  of  methods  to  construct  polycyclic groups and to investigate
+  their structure.[133X
+  
+  [33X[0;0YIn  [BCRS91]  and  [Seg90]  the  theory  of  problems which are decidable in
+  polycyclic-by-finite   groups  has  been  started.  As  a  result  of  these
+  investigation  we  know  that a large number of group theoretic problems are
+  decidable  by algorithms in polycyclic groups. However, practical algorithms
+  which  are  suitable  for computer implementations have not been obtained by
+  this  study.  We  have  developed  a new set of practical methods for groups
+  given  by  pc-presentations,  see for example [Eic00], and this package is a
+  collection of implementations for these and other methods.[133X
+  
+  [33X[0;0YWe  refer  to  [Rob82], page 147ff, and [Seg83] for background on polycyclic
+  groups. Further, in [Sim94] a variation of the basic methods for groups with
+  pc-presentation  is  introduced.  Finally, we note that the main GAP library
+  contains many practical algorithms to compute with finite polycyclic groups.
+  This  is  described  in  the  Section  on polycyclic groups in the reference
+  manual.[133X
+  

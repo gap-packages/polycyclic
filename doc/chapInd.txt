@@ -1,0 +1,204 @@
+  
+  
+  [1XIndex[101X
+  
+  [2X ComplementClasses[102X 8.4-5 
+  [2X ComplementClassesCR[102X 8.4-3 
+  [2X ComplementClassesEfaPcps[102X 8.4-4 
+  [2X ComplementCR[102X 8.4-1 
+  [2X ComplementsCR[102X 8.4-2 
+  [2X\/[102X 5.5-2 
+  [2X\=[102X 5.1-1 
+  [2X\[\][102X 5.4-3 
+  [2X\in[102X 5.1-5 
+  [2XAbelianInvariantsMultiplier[102X 7.9-4 
+  [2XAbelianPcpGroup[102X 6.1-1 
+  [2XAddHallPolynomials[102X 3.3-2 
+  [2XAddIgsToIgs[102X 5.3-5 
+  [2XAddToIgs[102X 5.3-5 
+  [2XAddToIgsParallel[102X 5.3-5 
+  [2XBurdeGrunewaldPcpGroup[102X 6.1-8 
+  [2XCentralizer[102X 7.3-1  7.3-2 
+  [2XCentre[102X 7.6-3 
+  [2XCgs[102X 5.3-3  5.3-3 
+  [2XCgsParallel[102X 5.3-3 
+  [2XClosureGroup[102X 5.1-7 
+  [2XCollector[102X 4.2-1 
+  [2XCommutatorSubgroup[102X 5.1-10 
+  [2XConjugacyIntegralAction[102X 7.2-3 
+  [2XCRRecordByMats[102X 8.1-1 
+  [2XCRRecordByPcp[102X 8.1-2 
+  [2XCRRecordBySubgroup[102X 8.1-2 
+  [2XDEBUG_COMBINATORIAL_COLLECTOR[102X 3.3-8 
+  [2XDecomposeUpperUnitriMat[102X 9.2-6 
+  [2XDenominatorOfPcp[102X 5.4-6 
+  [2XDepth[102X 4.2-5 
+  [2XDerivedSeriesOfGroup[102X 7.1-4 
+  [2XDihedralPcpGroup[102X 6.1-2 
+  [2XEfaSeries[102X 7.1-2 
+  [2XElements[102X 5.1-6 
+  [2XExampleOfMetabelianPcpGroup[102X 6.2-1 
+  [2XExamplesOfSomePcpGroups[102X 6.2-2 
+  [2XExponents[102X 4.2-2 
+  [2XExponentsByObj[102X 3.2-6 
+  [2XExponentsByPcp[102X 5.4-10 
+  [2XExtensionClassesCR[102X 8.4-8 
+  [2XExtensionCR[102X 8.4-6 
+  [2XExtensionsCR[102X 8.4-7 
+  [2XFactorGroup[102X 5.5-2 
+  [2XFactorOrder[102X 4.2-9 
+  [2XFCCentre[102X 7.6-4 
+  [2XFiniteSubgroupClasses[102X 7.4-4 
+  [2XFiniteSubgroupClassesBySeries[102X 7.4-5 
+  [2XFittingSubgroup[102X 7.6-1 
+  [2XFromTheLeftCollector[102X 3.1-1 
+  [2XFTLCollectorAppendTo[102X 3.3-5 
+  [2XFTLCollectorPrintTo[102X 3.3-4 
+  [2XGeneratorsOfPcp[102X 5.4-2 
+  [2XGenExpList[102X 4.2-3 
+  [2XGetConjugate[102X 3.2-3 
+  [2XGetConjugateNC[102X 3.2-3 
+  [2XGetPower[102X 3.2-2 
+  [2XGetPowerNC[102X 3.2-2 
+  [2XGroup[102X 4.3-2 
+  [2XGroupHomomorphismByImages[102X 5.6-1 
+  [2XGroupOfPcp[102X 5.4-8 
+  [2XHeisenbergPcpGroup[102X 6.1-6 
+  [2XHirschLength[102X 5.1-9 
+  [2XIgs[102X 5.3-1  5.3-1 
+  [2XIgsParallel[102X 5.3-1 
+  [2XImage[102X 5.6-3  5.6-3  5.6-3 
+  [2XIndex[102X 5.1-4 
+  [2XInfiniteMetacyclicPcpGroup[102X 6.1-5 
+  [2XIntersection[102X 7.3-3 
+  [2XIsAbelian[102X 5.2-4 
+  [2XIsConfluent[102X 3.1-7 
+  [2XIsConjugate[102X 7.3-1  7.3-2 
+  [2XIsElementaryAbelian[102X 5.2-5 
+  [2XIsFreeAbelian[102X 5.2-6 
+  [2XIsInjective[102X 5.6-6 
+  [2XIsMatrixRepresentation[102X 9.1-2 
+  [2XIsNilpotentByFinite[102X 7.6-2 
+  [2XIsNilpotentGroup[102X 5.2-3 
+  [2XIsNormal[102X 5.2-2 
+  [2XIsomorphismFpGroup[102X 5.9-4 
+  [2XIsomorphismPcGroup[102X 5.9-3 
+  [2XIsomorphismPcpGroup[102X 5.9-1 
+  [2XIsomorphismPcpGroupFromFpGroupWithPcPres[102X 5.9-2 
+  [2XIsomorphismUpperUnitriMatGroupPcpGroup[102X 9.2-1 
+  [2XIsPcpElement[102X 4.1-3 
+  [2XIsPcpElementRep[102X 4.1-4 
+  [2XIsSubgroup[102X 5.2-1 
+  [2XIsTorsionFree[102X 7.4-3 
+  [2XIsWeightedCollector[102X 3.3-1 
+  [2XKernel[102X 5.6-2 
+  [2XLeadingExponent[102X 4.2-6 
+  [2XLength[102X 5.4-4 
+  License .-1 
+  [2XLowerCentralSeriesOfGroup[102X 7.1-7 
+  [2XLowIndexNormalSubgroups[102X 7.5-3 
+  [2XLowIndexSubgroupClasses[102X 7.5-2 
+  [2XMakeNewLevel[102X 9.2-4 
+  [2XMaximalOrderByUnitsPcpGroup[102X 6.1-7 
+  [2XMaximalSubgroupClassesByIndex[102X 7.5-1 
+  [2XMinimalGeneratingSet[102X 7.7-1 
+  [2XNameTag[102X 4.2-4 
+  [2XNaturalHomomorphismByNormalSubgroup[102X 5.5-1 
+  [2XNgs[102X 5.3-2  5.3-2 
+  [2XNilpotentByAbelianByFiniteSeries[102X 7.6-6 
+  [2XNilpotentByAbelianNormalSubgroup[102X 7.5-4 
+  [2XNonAbelianExteriorSquare[102X 7.9-6 
+  [2XNonAbelianExteriorSquareEpimorphism[102X 7.9-5 
+  [2XNonAbelianExteriorSquarePlusEmbedding[102X 7.9-9 
+  [2XNonAbelianTensorSquare[102X 7.9-8 
+  [2XNonAbelianTensorSquareEpimorphism[102X 7.9-7 
+  [2XNonAbelianTensorSquarePlus[102X 7.9-11 
+  [2XNonAbelianTensorSquarePlusEpimorphism[102X 7.9-10 
+  [2XNormalClosure[102X 5.1-8 
+  [2XNormalizer[102X 7.3-2 
+  [2XNormalizerIntegralAction[102X 7.2-3 
+  [2XNormalTorsionSubgroup[102X 7.4-2 
+  [2XNormedPcpElement[102X 4.2-11 
+  [2XNormingExponent[102X 4.2-10 
+  [2XNumberOfGenerators[102X 3.2-4 
+  [2XNumeratorOfPcp[102X 5.4-7 
+  [2XObjByExponents[102X 3.2-5 
+  [2XOneCoboundariesCR[102X 8.2-1 
+  [2XOneCoboundariesEX[102X 8.3-1 
+  [2XOneCocyclesCR[102X 8.2-1 
+  [2XOneCocyclesEX[102X 8.3-2 
+  [2XOneCohomologyCR[102X 8.2-1 
+  [2XOneCohomologyEX[102X 8.3-3 
+  [2XOneOfPcp[102X 5.4-9 
+  [2XOrbitIntegralAction[102X 7.2-2 
+  [2XPcp[102X 5.4-1  5.4-1 
+  [2XPcpElementByExponents[102X 4.1-1 
+  [2XPcpElementByExponentsNC[102X 4.1-1 
+  [2XPcpElementByGenExpList[102X 4.1-2 
+  [2XPcpElementByGenExpListNC[102X 4.1-2 
+  [2XPcpGroupByCollector[102X 4.3-1 
+  [2XPcpGroupByCollectorNC[102X 4.3-1 
+  [2XPcpGroupByPcp[102X 5.4-11 
+  [2XPcpGroupBySeries[102X 5.7-2 
+  [2XPcpOrbitsStabilizers[102X 7.2-1 
+  [2XPcpOrbitStabilizer[102X 7.2-1 
+  [2XPcpsBySeries[102X 7.1-10 
+  [2XPcpSeries[102X 7.1-1 
+  [2XPcpsOfEfaSeries[102X 7.1-11 
+  [2XPolyZNormalSubgroup[102X 7.6-5 
+  [2XPreImage[102X 5.6-4 
+  [2XPreImagesRepresentative[102X 5.6-5 
+  [2XPrintPcpPresentation[102X 5.8-1  5.8-1 
+  [2XPRump[102X 5.1-11 
+  [2XRandom[102X 5.1-3 
+  [2XRandomCentralizerPcpGroup[102X 7.8-1  7.8-1 
+  [2XRandomNormalizerPcpGroup[102X 7.8-1 
+  [2XRanksLevels[102X 9.2-3 
+  [2XRefinedDerivedSeries[102X 7.1-5 
+  [2XRefinedDerivedSeriesDown[102X 7.1-6 
+  [2XRefinedPcpGroup[102X 5.7-1 
+  [2XRelativeIndex[102X 4.2-8 
+  [2XRelativeOrder[102X 4.2-7 
+  [2XRelativeOrders[102X 3.2-1 
+  [2XRelativeOrdersOfPcp[102X 5.4-5 
+  [2XSchurCover[102X 7.9-3 
+  [10XSchurCovering[110X A. 
+  [2XSchurCovers[102X 7.10-1 
+  [2XSchurExtension[102X 7.9-1 
+  [2XSchurExtensionEpimorphism[102X 7.9-2 
+  [10XSchurMultPcpGroup[110X A. 
+  [2XSemiSimpleEfaSeries[102X 7.1-3 
+  [2XSetCommutator[102X 3.1-5 
+  [2XSetConjugate[102X 3.1-4 
+  [2XSetConjugateNC[102X 3.1-4 
+  [2XSetPower[102X 3.1-3 
+  [2XSetPowerNC[102X 3.1-3 
+  [2XSetRelativeOrder[102X 3.1-2 
+  [2XSetRelativeOrderNC[102X 3.1-2 
+  [2XSiftUpperUnitriMat[102X 9.2-5 
+  [2XSiftUpperUnitriMatGroup[102X 9.2-2 
+  [2XSize[102X 5.1-2 
+  [2XSmallGeneratingSet[102X 5.1-12 
+  [2XSplitExtensionPcpGroup[102X 8.4-9 
+  [2XStabilizerIntegralAction[102X 7.2-2 
+  [2XString[102X 3.3-3 
+  [2XSubgroup[102X 4.3-3 
+  [2XSubgroupByIgs[102X 5.3-4  5.3-4 
+  [2XSubgroupUnitriangularPcpGroup[102X 6.1-4 
+  [2XTorsionByPolyEFSeries[102X 7.1-9 
+  [2XTorsionSubgroup[102X 7.4-1 
+  [2XTwoCoboundariesCR[102X 8.2-1 
+  [2XTwoCocyclesCR[102X 8.2-1 
+  [2XTwoCohomologyCR[102X 8.2-1 
+  [2XTwoCohomologyModCR[102X 8.2-2 
+  [2XUnitriangularMatrixRepresentation[102X 9.1-1 
+  [2XUnitriangularPcpGroup[102X 6.1-3 
+  [2XUpdatePolycyclicCollector[102X 3.1-6 
+  [2XUpperCentralSeriesOfGroup[102X 7.1-8 
+  [2XUSE_COMBINATORIAL_COLLECTOR[102X 3.3-9 
+  [2XUSE_LIBRARY_COLLECTOR[102X 3.3-7 
+  [2XUseLibraryCollector[102X 3.3-6 
+  [2XWhiteheadQuadraticFunctor[102X 7.9-12 
+  
+  
+  -------------------------------------------------------

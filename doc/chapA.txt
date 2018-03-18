@@ -1,0 +1,23 @@
+  
+  [1XA [33X[0;0YObsolete Functions and Name Changes[133X[101X
+  
+  [33X[0;0YOver time, the interface of [5XPolycyclic[105X has changed. This was done to get the
+  names  of  [5XPolycyclic[105X functions to agree with the general naming conventions
+  used   throughout   GAP.   Also,   some   [5XPolycyclic[105X  operations  duplicated
+  functionality  that  was  already  available  in  the  core  of  GAP under a
+  different  name.  In  these  cases,  whenever  possible  we  now install the
+  [5XPolycyclic[105X  code  as  methods  for  the  existing  GAP operations instead of
+  introducing new operations.[133X
+  
+  [33X[0;0YFor  backward  compatibility,  we  still  provide the old, obsolete names as
+  aliases.  However,  please  consider  switching  to the new names as soon as
+  possible.  The  old  names  may  be  completely removed at some point in the
+  future.[133X
+  
+  [33X[0;0YThe following function names were changed.[133X
+  
+        [13XOLD[113X               │ [13XNOW USE[113X                               
+        ──────────────────┼────────────────────────────────────  
+        [10XSchurCovering[110X     │ [2XSchurCover[102X ([14X7.9-3[114X)                    
+        [10XSchurMultPcpGroup[110X │ [2XAbelianInvariantsMultiplier[102X ([14X7.9-4[114X)   
+  

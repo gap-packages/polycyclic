@@ -1,0 +1,841 @@
+  
+  [1X7 [33X[0;0YHigher level methods for pcp-groups[133X[101X
+  
+  [33X[0;0YThis  is  a  description  of  some  higher level functions of the [5XPolycyclic[105X
+  package  of  GAP 4. Throughout this chapter we let [3XG[103X be a pc-presented group
+  and  we consider algorithms for subgroups [3XU[103X and [3XV[103X of [3XG[103X. For background and a
+  description of the underlying algorithms we refer to [Eic01a].[133X
+  
+  
+  [1X7.1 [33X[0;0YSubgroup series in pcp-groups[133X[101X
+  
+  [33X[0;0YMany  algorithm  for  pcp-groups work by induction using some series through
+  the  group.  In  this  section  we  provide  a  number  of useful series for
+  pcp-groups. An [13Xefa series[113X is a normal series with elementary or free abelian
+  factors.  See  [Eic00]  for  outlines  on  the algorithms of a number of the
+  available series.[133X
+  
+  [1X7.1-1 PcpSeries[101X
+  
+  [33X[1;0Y[29X[2XPcpSeries[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the polycyclic series of [3XU[103X defined by an igs of [3XU[103X.[133X
+  
+  [1X7.1-2 EfaSeries[101X
+  
+  [33X[1;0Y[29X[2XEfaSeries[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns a normal series of [3XU[103X with elementary or free abelian factors.[133X
+  
+  [1X7.1-3 SemiSimpleEfaSeries[101X
+  
+  [33X[1;0Y[29X[2XSemiSimpleEfaSeries[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns  an  efa  series  of  [3XU[103X  such  that  every  factor  in the series is
+  semisimple as a module for [3XU[103X over a finite field or over the rationals.[133X
+  
+  [1X7.1-4 DerivedSeriesOfGroup[101X
+  
+  [33X[1;0Y[29X[2XDerivedSeriesOfGroup[102X( [3XU[103X ) [32X method[133X
+  
+  [33X[0;0Ythe derived series of [3XU[103X.[133X
+  
+  [1X7.1-5 RefinedDerivedSeries[101X
+  
+  [33X[1;0Y[29X[2XRefinedDerivedSeries[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Ythe  derived  series of [3XU[103X refined to an efa series such that in each abelian
+  factor of the derived series the free abelian factor is at the top.[133X
+  
+  [1X7.1-6 RefinedDerivedSeriesDown[101X
+  
+  [33X[1;0Y[29X[2XRefinedDerivedSeriesDown[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Ythe  derived  series of [3XU[103X refined to an efa series such that in each abelian
+  factor of the derived series the free abelian factor is at the bottom.[133X
+  
+  [1X7.1-7 LowerCentralSeriesOfGroup[101X
+  
+  [33X[1;0Y[29X[2XLowerCentralSeriesOfGroup[102X( [3XU[103X ) [32X method[133X
+  
+  [33X[0;0Ythe  lower  central  series  of  [3XU[103X.  If  [3XU[103X does not have a largest nilpotent
+  quotient group, then this function may not terminate.[133X
+  
+  [1X7.1-8 UpperCentralSeriesOfGroup[101X
+  
+  [33X[1;0Y[29X[2XUpperCentralSeriesOfGroup[102X( [3XU[103X ) [32X method[133X
+  
+  [33X[0;0Ythe  upper  central series of [3XU[103X. This function always terminates, but it may
+  terminate at a proper subgroup of [3XU[103X.[133X
+  
+  [1X7.1-9 TorsionByPolyEFSeries[101X
+  
+  [33X[1;0Y[29X[2XTorsionByPolyEFSeries[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns an efa series of [3XU[103X such that all torsion-free factors are at the top
+  and  all finite factors are at the bottom. Such a series might not exist for
+  [3XU[103X and in this case the function returns fail.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(5);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIgs(G);[127X[104X
+    [4X[28X[ g1, g2, g3, g4 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XPcpSeries(G);[127X[104X
+    [4X[28X[ Pcp-group with orders [ 2, 0, 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [ 0, 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [  ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XList( PcpSeries(G), Igs );[127X[104X
+    [4X[28X[ [ g1, g2, g3, g4 ], [ g2, g3, g4 ], [ g3, g4 ], [ g4 ], [  ] ][128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YAlgorithms  for  pcp-groups  often use an efa series of [22XG[122X and work down over
+  the  factors  of  this series. Usually, pcp's of the factors are more useful
+  than the actual factors. Hence we provide the following.[133X
+  
+  [1X7.1-10 PcpsBySeries[101X
+  
+  [33X[1;0Y[29X[2XPcpsBySeries[102X( [3Xser[103X[, [3Xflag[103X] ) [32X function[133X
+  
+  [33X[0;0Yreturns  a  list of pcp's corresponding to the factors of the series. If the
+  parameter  [3Xflag[103X  is  present  and  equals  the  string  [21Xsnf[121X,  then  each pcp
+  corresponds to a decomposition of the abelian groups into direct factors.[133X
+  
+  [1X7.1-11 PcpsOfEfaSeries[101X
+  
+  [33X[1;0Y[29X[2XPcpsOfEfaSeries[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns a list of pcps corresponding to an efa series of [3XU[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(5);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0, 0, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XPcpsBySeries( DerivedSeriesOfGroup(G));[127X[104X
+    [4X[28X[ Pcp [ g1, g2, g3, g4 ] with orders [ 2, 2, 2, 2 ],[128X[104X
+    [4X[28X  Pcp [ g2^-2, g3^-2, g4^2 ] with orders [ 0, 0, 4 ],[128X[104X
+    [4X[28X  Pcp [ g4^8 ] with orders [ 0 ] ][128X[104X
+    [4X[25Xgap>[125X [27XPcpsBySeries( RefinedDerivedSeries(G));[127X[104X
+    [4X[28X[ Pcp [ g1, g2, g3 ] with orders [ 2, 2, 2 ],[128X[104X
+    [4X[28X  Pcp [ g4 ] with orders [ 2 ],[128X[104X
+    [4X[28X  Pcp [ g2^2, g3^2 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g4^2 ] with orders [ 2 ],[128X[104X
+    [4X[28X  Pcp [ g4^4 ] with orders [ 2 ],[128X[104X
+    [4X[28X  Pcp [ g4^8 ] with orders [ 0 ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XPcpsBySeries( DerivedSeriesOfGroup(G), "snf" );[127X[104X
+    [4X[28X[ Pcp [ g2, g3, g1 ] with orders [ 2, 2, 4 ],[128X[104X
+    [4X[28X  Pcp [ g4^2, g3^-2, g2^2*g4^2 ] with orders [ 4, 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g4^8 ] with orders [ 0 ] ][128X[104X
+    [4X[25Xgap>[125X [27XG.1^4 in DerivedSubgroup( G );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XG.1^2 = G.4;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27X PcpsOfEfaSeries( G );[127X[104X
+    [4X[28X[ Pcp [ g1 ] with orders [ 2 ],[128X[104X
+    [4X[28X  Pcp [ g2 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g3 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g4 ] with orders [ 0 ] ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.2 [33X[0;0YOrbit stabilizer methods for pcp-groups[133X[101X
+  
+  [33X[0;0YLet  [3XU[103X be a pcp-group which acts on a set [22XΩ[122X. One of the fundamental problems
+  in  algorithmic  group theory is the determination of orbits and stabilizers
+  of  points  in  [22XΩ[122X  under the action of [3XU[103X. We distinguish two cases: the case
+  that  all  considered orbits are finite and the case that there are infinite
+  orbits.  In  the latter case, an orbit cannot be listed and a description of
+  the orbit and its corresponding stabilizer is much harder to obtain.[133X
+  
+  [33X[0;0YIf the considered orbits are finite, then the following two functions can be
+  applied   to   compute   the   considered  orbits  and  their  corresponding
+  stabilizers.[133X
+  
+  [1X7.2-1 PcpOrbitStabilizer[101X
+  
+  [33X[1;0Y[29X[2XPcpOrbitStabilizer[102X( [3Xpoint[103X, [3Xgens[103X, [3Xacts[103X, [3Xoper[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XPcpOrbitsStabilizers[102X( [3Xpoints[103X, [3Xgens[103X, [3Xacts[103X, [3Xoper[103X ) [32X function[133X
+  
+  [33X[0;0YThe  input [3Xgens[103X can be an igs or a pcp of a pcp-group [3XU[103X. The elements in the
+  list  [3Xgens[103X act as the elements in the list [3Xacts[103X via the function [3Xoper[103X on the
+  given points; that is, [3Xoper( point, acts[i] )[103X applies the [22Xi[122Xth generator to a
+  given  point.  Thus the group defined by [3Xacts[103X must be a homomorphic image of
+  the  group  defined  by [3Xgens[103X. The first function returns a record containing
+  the  orbit  as component 'orbit' and and igs for the stabilizer as component
+  'stab'.  The second function returns a list of records, each record contains
+  'repr' and 'stab'. Both of these functions run forever on infinite orbits.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup( 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xmats := [ [[-1,0],[0,1]], [[1,1],[0,1]] ];;[127X[104X
+    [4X[25Xgap>[125X [27Xpcp := Pcp(G);[127X[104X
+    [4X[28XPcp [ g1, g2 ] with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XPcpOrbitStabilizer( [0,1], pcp, mats, OnRight );[127X[104X
+    [4X[28Xrec( orbit := [ [ 0, 1 ] ],[128X[104X
+    [4X[28X     stab := [ g1, g2 ],[128X[104X
+    [4X[28X     word := [ [ [ 1, 1 ] ], [ [ 2, 1 ] ] ] )[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YIf the considered orbits are infinite, then it may not always be possible to
+  determine  a  description  of  the orbits and their stabilizers. However, as
+  shown  in  [EO02]  and  [Eic02], it is possible to determine stabilizers and
+  check if two elements are contained in the same orbit if the given action of
+  the  polycyclic  group  is a unimodular linear action on a vector space. The
+  following functions are available for this case.[133X
+  
+  [1X7.2-2 StabilizerIntegralAction[101X
+  
+  [33X[1;0Y[29X[2XStabilizerIntegralAction[102X( [3XU[103X, [3Xmats[103X, [3Xv[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XOrbitIntegralAction[102X( [3XU[103X, [3Xmats[103X, [3Xv[103X, [3Xw[103X ) [32X function[133X
+  
+  [33X[0;0YThe  first  function  computes the stabilizer in [3XU[103X of the vector [3Xv[103X where the
+  pcp  group  [3XU[103X acts via [3Xmats[103X on an integral space and [3Xv[103X and [3Xw[103X are elements in
+  this  integral  space. The second function checks whether [3Xv[103X and [3Xw[103X are in the
+  same  orbit  and the function returns either [3Xfalse[103X or a record containing an
+  element in [3XU[103X mapping [3Xv[103X to [3Xw[103X and the stabilizer of [3Xv[103X.[133X
+  
+  [1X7.2-3 NormalizerIntegralAction[101X
+  
+  [33X[1;0Y[29X[2XNormalizerIntegralAction[102X( [3XU[103X, [3Xmats[103X, [3XB[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XConjugacyIntegralAction[102X( [3XU[103X, [3Xmats[103X, [3XB[103X, [3XC[103X ) [32X function[133X
+  
+  [33X[0;0YThe  first  function  computes  the  normalizer in [3XU[103X of the lattice with the
+  basis [3XB[103X, where the pcp group [3XU[103X acts via [3Xmats[103X on an integral space and [3XB[103X is a
+  subspace of this integral space. The second functions checks whether the two
+  lattices with the bases [3XB[103X and [3XC[103X are contained in the same orbit under [3XU[103X. The
+  function  returns either [3Xfalse[103X or a record with an element in [3XU[103X mapping [3XB[103X to
+  [3XC[103X and the stabilizer of [3XB[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X# get a pcp group and a free abelian normal subgroup[128X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(8);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xefa := EfaSeries(G);[127X[104X
+    [4X[28X[ Pcp-group with orders [ 0, 0, 0, 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [ 0, 0, 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [ 0, 0, 0 ],[128X[104X
+    [4X[28X  Pcp-group with orders [  ] ][128X[104X
+    [4X[25Xgap>[125X [27XN := efa[3];[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIsFreeAbelian(N);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# create conjugation action on N[128X[104X
+    [4X[25Xgap>[125X [27Xmats := LinearActionOnPcp(Igs(G), Pcp(N));[127X[104X
+    [4X[28X[ [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ],[128X[104X
+    [4X[28X  [ [ 0, 0, 1 ], [ 1, -1, 1 ], [ 0, 1, 0 ] ],[128X[104X
+    [4X[28X  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ],[128X[104X
+    [4X[28X  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ],[128X[104X
+    [4X[28X  [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# take an arbitrary vector and compute its stabilizer[128X[104X
+    [4X[25Xgap>[125X [27XStabilizerIntegralAction(G,mats, [2,3,4]);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIgs(last);[127X[104X
+    [4X[28X[ g1, g3, g4, g5 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# check orbits with some other vectors[128X[104X
+    [4X[25Xgap>[125X [27XOrbitIntegralAction(G,mats, [2,3,4],[3,1,5]);[127X[104X
+    [4X[28Xrec( stab := Pcp-group with orders [ 0, 0, 0, 0 ], prei := g2 )[128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XOrbitIntegralAction(G,mats, [2,3,4], [4,6,8]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[28X[128X[104X
+    [4X[28X# compute the orbit of a subgroup of Z^3 under the action of G[128X[104X
+    [4X[25Xgap>[125X [27XNormalizerIntegralAction(G, mats, [[1,0,0],[0,1,0]]);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIgs(last);[127X[104X
+    [4X[28X[ g1, g2^2, g3, g4, g5 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.3 [33X[0;0YCentralizers, Normalizers and Intersections[133X[101X
+  
+  [33X[0;0YIn  this  section we list a number of operations for which there are methods
+  installed to compute the corresponding features in polycyclic groups.[133X
+  
+  [1X7.3-1 Centralizer[101X
+  
+  [33X[1;0Y[29X[2XCentralizer[102X( [3XU[103X, [3Xg[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XIsConjugate[102X( [3XU[103X, [3Xg[103X, [3Xh[103X ) [32X method[133X
+  
+  [33X[0;0YThese  functions  solve the conjugacy problem for elements in pcp-groups and
+  they  can  be  used  to  compute  centralizers.  The  first method returns a
+  subgroup  of  the  given  group  [3XU[103X,  the  second  method  either  returns  a
+  conjugating element or false if no such element exists.[133X
+  
+  [33X[0;0YThe  methods  are  based  on  the  orbit  stabilizer algorithms described in
+  [EO02].  For  nilpotent  groups, an algorithm to solve the conjugacy problem
+  for elements is described in [Sim94].[133X
+  
+  [1X7.3-2 Centralizer[101X
+  
+  [33X[1;0Y[29X[2XCentralizer[102X( [3XU[103X, [3XV[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XNormalizer[102X( [3XU[103X, [3XV[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XIsConjugate[102X( [3XU[103X, [3XV[103X, [3XW[103X ) [32X method[133X
+  
+  [33X[0;0YThese  three functions solve the conjugacy problem for subgroups and compute
+  centralizers  and  normalizers  of subgroups. The first two functions return
+  subgroups  of  the  input  group [3XU[103X, the third function returns a conjugating
+  element or false if no such element exists.[133X
+  
+  [33X[0;0YThe  methods  are  based  on  the  orbit  stabilizer algorithms described in
+  [Eic02].  For nilpotent groups, an algorithm to solve the conjugacy problems
+  for subgroups is described in [Lo98b].[133X
+  
+  [1X7.3-3 Intersection[101X
+  
+  [33X[1;0Y[29X[2XIntersection[102X( [3XU[103X, [3XN[103X ) [32X function[133X
+  
+  [33X[0;0YA  general  method  to  compute intersections of subgroups of a pcp-group is
+  described  in  [Eic01a],  but  it  is  not  yet  implemented  here. However,
+  intersections  of  subgroups [22XU, N ≤ G[122X can be computed if [22XN[122X is normalising [22XU[122X.
+  See [Sim94] for an outline of the algorithm.[133X
+  
+  
+  [1X7.4 [33X[0;0YFinite subgroups[133X[101X
+  
+  [33X[0;0YThere  are  various  finite  subgroups of interest in polycyclic groups. See
+  [Eic00] for a description of the algorithms underlying the functions in this
+  section.[133X
+  
+  [1X7.4-1 TorsionSubgroup[101X
+  
+  [33X[1;0Y[29X[2XTorsionSubgroup[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0YIf the set of elements of finite order forms a subgroup, then we call it the
+  [13Xtorsion  subgroup[113X. This function determines the torsion subgroup of [3XU[103X, if it
+  exists, and returns fail otherwise. Note that a torsion subgroup does always
+  exist if [3XU[103X is nilpotent.[133X
+  
+  [1X7.4-2 NormalTorsionSubgroup[101X
+  
+  [33X[1;0Y[29X[2XNormalTorsionSubgroup[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0YEach  polycyclic  groups  has  a unique largest finite normal subgroup. This
+  function computes it for [3XU[103X.[133X
+  
+  [1X7.4-3 IsTorsionFree[101X
+  
+  [33X[1;0Y[29X[2XIsTorsionFree[102X( [3XU[103X ) [32X property[133X
+  
+  [33X[0;0YThis function checks if [3XU[103X is torsion free. It returns true or false.[133X
+  
+  [1X7.4-4 FiniteSubgroupClasses[101X
+  
+  [33X[1;0Y[29X[2XFiniteSubgroupClasses[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0YThere  exist  only  finitely many conjugacy classes of finite subgroups in a
+  polycyclic  group  [3XU[103X  and  this  function  can  be used to compute them. The
+  algorithm  underlying this function proceeds by working down a normal series
+  of  [3XU[103X with elementary or free abelian factors. The following function can be
+  used to give the algorithm a specific series.[133X
+  
+  [1X7.4-5 FiniteSubgroupClassesBySeries[101X
+  
+  [33X[1;0Y[29X[2XFiniteSubgroupClassesBySeries[102X( [3XU[103X, [3Xpcps[103X ) [32X function[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(15);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XTorsionSubgroup(G);[127X[104X
+    [4X[28XPcp-group with orders [ 5, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XNormalTorsionSubgroup(G);[127X[104X
+    [4X[28XPcp-group with orders [ 5, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XIsTorsionFree(G);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XFiniteSubgroupClasses(G);[127X[104X
+    [4X[28X[ Pcp-group with orders [ 5, 2 ]^G,[128X[104X
+    [4X[28X  Pcp-group with orders [ 2 ]^G,[128X[104X
+    [4X[28X  Pcp-group with orders [ 5 ]^G,[128X[104X
+    [4X[28X  Pcp-group with orders [  ]^G ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup( 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XTorsionSubgroup(G);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XNormalTorsionSubgroup(G);[127X[104X
+    [4X[28XPcp-group with orders [  ][128X[104X
+    [4X[25Xgap>[125X [27XIsTorsionFree(G);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XFiniteSubgroupClasses(G);[127X[104X
+    [4X[28X[ Pcp-group with orders [ 2 ]^G,[128X[104X
+    [4X[28X  Pcp-group with orders [ 2 ]^G,[128X[104X
+    [4X[28X  Pcp-group with orders [  ]^G ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.5 [33X[0;0YSubgroups of finite index and maximal subgroups[133X[101X
+  
+  [33X[0;0YHere  we outline functions to determine various types of subgroups of finite
+  index  in  polycyclic  groups.  Again,  see [Eic00] for a description of the
+  algorithms  underlying  the  functions  in  this  section. Also, we refer to
+  [Lo98a] for an alternative approach.[133X
+  
+  [1X7.5-1 MaximalSubgroupClassesByIndex[101X
+  
+  [33X[1;0Y[29X[2XMaximalSubgroupClassesByIndex[102X( [3XU[103X, [3Xp[103X ) [32X operation[133X
+  
+  [33X[0;0YEach  maximal  subgroup  of  a polycyclic group [3XU[103X has [3Xp[103X-power index for some
+  prime [3Xp[103X. This function can be used to determine the conjugacy classes of all
+  maximal subgroups of [3Xp[103X-power index for a given prime [3Xp[103X.[133X
+  
+  [1X7.5-2 LowIndexSubgroupClasses[101X
+  
+  [33X[1;0Y[29X[2XLowIndexSubgroupClasses[102X( [3XU[103X, [3Xn[103X ) [32X operation[133X
+  
+  [33X[0;0YThere  are  only  finitely  many  subgroups of a given index in a polycyclic
+  group  [3XU[103X. This function computes conjugacy classes of all subgroups of index
+  [3Xn[103X in [3XU[103X.[133X
+  
+  [1X7.5-3 LowIndexNormalSubgroups[101X
+  
+  [33X[1;0Y[29X[2XLowIndexNormalSubgroups[102X( [3XU[103X, [3Xn[103X ) [32X operation[133X
+  
+  [33X[0;0YThis function computes the normal subgroups of index [3Xn[103X in [3XU[103X.[133X
+  
+  [1X7.5-4 NilpotentByAbelianNormalSubgroup[101X
+  
+  [33X[1;0Y[29X[2XNilpotentByAbelianNormalSubgroup[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0YThis  function  returns a normal subgroup [3XN[103X of finite index in [3XU[103X such that [3XN[103X
+  is  nilpotent-by-abelian.  Such  a subgroup exists in every polycyclic group
+  and this function computes such a subgroup using LowIndexNormal. However, we
+  note   that   this   function   is  not  very  efficient  and  the  function
+  NilpotentByAbelianByFiniteSeries may well be more efficient on this task.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(2);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XMaximalSubgroupClassesByIndex( G, 61 );;[127X[104X
+    [4X[25Xgap>[125X [27Xmax := List( last, Representative );;[127X[104X
+    [4X[25Xgap>[125X [27XList( max, x -> Index( G, x ) );[127X[104X
+    [4X[28X[ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61, 226981 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XLowIndexSubgroupClasses( G, 61 );;[127X[104X
+    [4X[25Xgap>[125X [27Xlow := List( last, Representative );;[127X[104X
+    [4X[25Xgap>[125X [27XList( low, x -> Index( G, x ) );[127X[104X
+    [4X[28X[ 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,[128X[104X
+    [4X[28X  61, 61, 61, 61, 61, 61 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.6 [33X[0;0YFurther attributes for pcp-groups based on the Fitting subgroup[133X[101X
+  
+  [33X[0;0YIn  this  section  we  provide a variety of other attributes for pcp-groups.
+  Most  of  the  methods below are based or related to the Fitting subgroup of
+  the  given  group.  We refer to [Eic01b] for a description of the underlying
+  methods.[133X
+  
+  [1X7.6-1 FittingSubgroup[101X
+  
+  [33X[1;0Y[29X[2XFittingSubgroup[102X( [3XU[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns  the  Fitting  subgroup  of [3XU[103X; that is, the largest nilpotent normal
+  subgroup of [3XU[103X.[133X
+  
+  [1X7.6-2 IsNilpotentByFinite[101X
+  
+  [33X[1;0Y[29X[2XIsNilpotentByFinite[102X( [3XU[103X ) [32X property[133X
+  
+  [33X[0;0Ychecks whether the Fitting subgroup of [3XU[103X has finite index.[133X
+  
+  [1X7.6-3 Centre[101X
+  
+  [33X[1;0Y[29X[2XCentre[102X( [3XU[103X ) [32X method[133X
+  
+  [33X[0;0Yreturns the centre of [3XU[103X.[133X
+  
+  [1X7.6-4 FCCentre[101X
+  
+  [33X[1;0Y[29X[2XFCCentre[102X( [3XU[103X ) [32X method[133X
+  
+  [33X[0;0Yreturns  the  FC-centre  of [3XU[103X; that is, the subgroup containing all elements
+  having a finite conjugacy class in [3XU[103X.[133X
+  
+  [1X7.6-5 PolyZNormalSubgroup[101X
+  
+  [33X[1;0Y[29X[2XPolyZNormalSubgroup[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  a  normal  subgroup  [3XN[103X  of  finite  index  in  [3XU[103X, such that [3XN[103X has a
+  polycyclic series with infinite factors only.[133X
+  
+  [1X7.6-6 NilpotentByAbelianByFiniteSeries[101X
+  
+  [33X[1;0Y[29X[2XNilpotentByAbelianByFiniteSeries[102X( [3XU[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  a  normal  series  [22X1  ≤  F ≤ A ≤ U[122X such that [22XF[122X is nilpotent, [22XA/F[122X is
+  abelian  and  [22XU/A[122X  is  finite.  This  series  is  computed using the Fitting
+  subgroup and the centre of the Fitting factor.[133X
+  
+  
+  [1X7.7 [33X[0;0YFunctions for nilpotent groups[133X[101X
+  
+  [33X[0;0YThere  are  (very  few)  functions  which are available for nilpotent groups
+  only. First, there are the different central series. These are available for
+  all  groups,  but  for  nilpotent  groups  they terminate and provide series
+  through  the full group. Secondly, the determination of a minimal generating
+  set is available for nilpotent groups only.[133X
+  
+  [1X7.7-1 MinimalGeneratingSet[101X
+  
+  [33X[1;0Y[29X[2XMinimalGeneratingSet[102X( [3XU[103X ) [32X method[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups(14);[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 5, 5, 4, 0, 6,[128X[104X
+    [4X[28X  5, 5, 4, 0, 10, 6 ][128X[104X
+    [4X[25Xgap>[125X [27XIsNilpotent(G);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XPcpsBySeries( LowerCentralSeriesOfGroup(G));[127X[104X
+    [4X[28X[ Pcp [ g1, g2 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g3 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g4 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g5 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g6, g7 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g8 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g9, g10 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g11, g12, g13 ] with orders [ 5, 4, 0 ],[128X[104X
+    [4X[28X  Pcp [ g14, g15, g16, g17, g18 ] with orders [ 5, 5, 4, 0, 6 ],[128X[104X
+    [4X[28X  Pcp [ g19, g20, g21, g22, g23, g24 ] with orders [ 5, 5, 4, 0, 10, 6 ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XPcpsBySeries( UpperCentralSeriesOfGroup(G));[127X[104X
+    [4X[28X[ Pcp [ g1, g2 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g3 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g4 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g5 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g6, g7 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g8 ] with orders [ 0 ],[128X[104X
+    [4X[28X  Pcp [ g9, g10 ] with orders [ 0, 0 ],[128X[104X
+    [4X[28X  Pcp [ g11, g12, g13 ] with orders [ 5, 4, 0 ],[128X[104X
+    [4X[28X  Pcp [ g14, g15, g16, g17, g18 ] with orders [ 5, 5, 4, 0, 6 ],[128X[104X
+    [4X[28X  Pcp [ g19, g20, g21, g22, g23, g24 ] with orders [ 5, 5, 4, 0, 10, 6 ] ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XMinimalGeneratingSet(G);[127X[104X
+    [4X[28X[ g1, g2 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.8 [33X[0;0YRandom methods for pcp-groups[133X[101X
+  
+  [33X[0;0YBelow  we  introduce  a function which computes orbit and stabilizer using a
+  random  method.  This  function  tries  to  approximate  the  orbit  and the
+  stabilizer,  but  the  returned  orbit or stabilizer may be incomplete. This
+  function   is  used  in  the  random  methods  to  compute  normalizers  and
+  centralizers.  Note  that  deterministic methods for these purposes are also
+  available.[133X
+  
+  [1X7.8-1 RandomCentralizerPcpGroup[101X
+  
+  [33X[1;0Y[29X[2XRandomCentralizerPcpGroup[102X( [3XU[103X, [3Xg[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XRandomCentralizerPcpGroup[102X( [3XU[103X, [3XV[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XRandomNormalizerPcpGroup[102X( [3XU[103X, [3XV[103X ) [32X function[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup(0);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xmats := [[[-1, 0],[0,1]], [[1,1],[0,1]]];[127X[104X
+    [4X[28X[ [ [ -1, 0 ], [ 0, 1 ] ], [ [ 1, 1 ], [ 0, 1 ] ] ][128X[104X
+    [4X[25Xgap>[125X [27Xpcp := Pcp(G);[127X[104X
+    [4X[28XPcp [ g1, g2 ] with orders [ 2, 0 ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XRandomPcpOrbitStabilizer( [1,0], pcp, mats, OnRight ).stab;[127X[104X
+    [4X[28X#I  Orbit longer than limit: exiting.[128X[104X
+    [4X[28X[  ][128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27Xg := Igs(G)[1];[127X[104X
+    [4X[28Xg1[128X[104X
+    [4X[25Xgap>[125X [27XRandomCentralizerPcpGroup( G, g );[127X[104X
+    [4X[28X#I  Stabilizer not increasing: exiting.[128X[104X
+    [4X[28XPcp-group with orders [ 2 ][128X[104X
+    [4X[25Xgap>[125X [27XIgs(last);[127X[104X
+    [4X[28X[ g1 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.9 [33X[0;0YNon-abelian tensor product and Schur extensions[133X[101X
+  
+  [1X7.9-1 SchurExtension[101X
+  
+  [33X[1;0Y[29X[2XSchurExtension[102X( [3XG[103X ) [32X attribute[133X
+  
+  [33X[0;0YLet [3XG[103X be a polycyclic group with a polycyclic generating sequence consisting
+  of  [22Xn[122X  elements. This function computes the largest central extension [3XH[103X of [3XG[103X
+  such  that [3XH[103X is generated by [22Xn[122X elements. If [22XF/R[122X is the underlying polycyclic
+  presentation for [3XG[103X, then [3XH[103X is isomorphic to [22XF/[R,F][122X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup( 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XCentre( G );[127X[104X
+    [4X[28XPcp-group with orders [  ][128X[104X
+    [4X[25Xgap>[125X [27XH := SchurExtension( G );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XCentre( H );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XH/Centre(H);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XSubgroup( H, [H.1,H.2] ) = H;[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-2 SchurExtensionEpimorphism[101X
+  
+  [33X[1;0Y[29X[2XSchurExtensionEpimorphism[102X( [3XG[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns  the  projection  from  the Schur extension [22XG^*[122X of [3XG[103X onto [3XG[103X. See the
+  function  [10XSchurExtension[110X.  The  kernel  of  this  epimorphism  is the direct
+  product  of the Schur multiplicator of [3XG[103X and a direct product of [22Xn[122X copies of
+  [22Xℤ[122X  where [22Xn[122X is the number of generators in the polycyclic presentation for [3XG[103X.
+  The  Schur  multiplicator  is the intersection of the kernel and the derived
+  group of the source. See also the function [10XSchurCover[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgl23 := Range( IsomorphismPcpGroup( GL(2,3) ) );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 3, 2, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XSchurExtensionEpimorphism( gl23 );[127X[104X
+    [4X[28X[ g1, g2, g3, g4, g5, g6, g7, g8, g9, g10 ] -> [ g1, g2, g3, g4, g5,[128X[104X
+    [4X[28Xid, id, id, id, id ][128X[104X
+    [4X[25Xgap>[125X [27XKernel( last );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XAbelianInvariantsMultiplier( gl23 );[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XIntersection( Kernel(epi), DerivedSubgroup( Source(epi) ) );[127X[104X
+    [4X[28X[  ][128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YThere  is a crossed pairing from [3XG[103X into [22X(G^*)'[122X which can be defined via this
+  epimorphism:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup(0);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xepi := SchurExtensionEpimorphism( G );[127X[104X
+    [4X[28X[ g1, g2, g3, g4 ] -> [ g1, g2, id, id ][128X[104X
+    [4X[25Xgap>[125X [27XPreImagesRepresentative( epi, G.1 );[127X[104X
+    [4X[28Xg1[128X[104X
+    [4X[25Xgap>[125X [27XPreImagesRepresentative( epi, G.2 );[127X[104X
+    [4X[28Xg2[128X[104X
+    [4X[25Xgap>[125X [27XComm( last, last2 );[127X[104X
+    [4X[28Xg2^-2*g4[128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-3 SchurCover[101X
+  
+  [33X[1;0Y[29X[2XSchurCover[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Ycomputes  a Schur covering group of the polycyclic group [3XG[103X. A Schur covering
+  is  a  largest  central  extension  [3XH[103X  of  [3XG[103X  such  that the kernel [3XM[103X of the
+  projection of [3XH[103X onto [3XG[103X is contained in the commutator subgroup of [3XH[103X.[133X
+  
+  [33X[0;0YIf  [3XG[103X is given by a presentation [22XF/R[122X, then [3XM[103X is isomorphic to the subgroup [22XR
+  ∩ [F,F] / [R,F][122X. Let [22XC[122X be a complement to [22XR ∩ [F,F] / [R,F][122X in [22XR/[R,F][122X. Then
+  [22XF/C[122X is isomorphic to [3XH[103X and [22XR/C[122X is isomorphic to [3XM[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := AbelianPcpGroup( 3,[] );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xext := SchurCover( G );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XCentre( ext );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIsSubgroup( DerivedSubgroup( ext ), last );[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-4 AbelianInvariantsMultiplier[101X
+  
+  [33X[1;0Y[29X[2XAbelianInvariantsMultiplier[102X( [3XG[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns a list of the abelian invariants of the Schur multiplier of G.[133X
+  
+  [33X[0;0YNote  that  the  Schur  multiplicator  of  a  polycyclic group is a finitely
+  generated abelian group.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup( 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XDirectProduct( G, AbelianPcpGroup( 2, [] ) );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XAbelianInvariantsMultiplier( last );[127X[104X
+    [4X[28X[ 0, 2, 2, 2, 2 ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-5 NonAbelianExteriorSquareEpimorphism[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianExteriorSquareEpimorphism[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  the  epimorphism of the non-abelian exterior square of a polycyclic
+  group  [3XG[103X onto the derived group of [3XG[103X. The non-abelian exterior square can be
+  defined  as the derived subgroup of a Schur cover of [3XG[103X. The isomorphism type
+  of  the  non-abelian  exterior  square  is  unique despite the fact that the
+  isomorphism type of a Schur cover of a polycyclic groups need not be unique.
+  The derived group of a Schur cover has a natural projection onto the derived
+  group of [3XG[103X which is what the function returns.[133X
+  
+  [33X[0;0YThe kernel of the epimorphism is isomorphic to the Schur multiplicator of [3XG[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := ExamplesOfSomePcpGroups( 3 );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XG := DirectProduct( G,G );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XAbelianInvariantsMultiplier( G );[127X[104X
+    [4X[28X[ [ 0, 1 ], [ 2, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xepi := NonAbelianExteriorSquareEpimorphism( G );[127X[104X
+    [4X[28X[ g2^-2*g5, g4^-2*g10, g6, g7, g8, g9 ] -> [ g2^-2, g4^-2, id, id, id, id ][128X[104X
+    [4X[25Xgap>[125X [27XKernel( epi );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 2, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XCollected( AbelianInvariants( last ) );[127X[104X
+    [4X[28X[ [ 0, 1 ], [ 2, 3 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-6 NonAbelianExteriorSquare[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianExteriorSquare[102X( [3XG[103X ) [32X attribute[133X
+  
+  [33X[0;0Ycomputes  the  non-abelian  exterior  square of a polycylic group [3XG[103X. See the
+  explanation  for [10XNonAbelianExteriorSquareEpimorphism[110X. The natural projection
+  of  the non-abelian exterior square onto the derived group of [3XG[103X is stored in
+  the component [10X!.epimorphism[110X.[133X
+  
+  [33X[0;0YThere   is   a   crossed  pairing  from  [3XG[103X  into  [22XG∧  G[122X.  See  the  function
+  [10XSchurExtensionEpimorphism[110X  for details. The crossed pairing is stored in the
+  component [10X!.crossedPairing[110X. This is the crossed pairing [22Xλ[122X in [EN08].[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup(0);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XGwG := NonAbelianExteriorSquare( G );[127X[104X
+    [4X[28XPcp-group with orders [ 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xlambda := GwG!.crossedPairing;[127X[104X
+    [4X[28Xfunction( g, h ) ... end[128X[104X
+    [4X[25Xgap>[125X [27Xlambda( G.1, G.2 );[127X[104X
+    [4X[28Xg2^2*g4^-1[128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-7 NonAbelianTensorSquareEpimorphism[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianTensorSquareEpimorphism[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  for  a  polycyclic group [3XG[103X the projection of the non-abelian tensor
+  square  [22XG⊗  G[122X  onto  the non-abelian exterior square [22XG∧ G[122X. The range of that
+  epimorphism  has  the  component  [10X!.epimorphism[110X set to the projection of the
+  non-abelian  exterior  square  onto  the  derived  group  of [3XG[103X. See also the
+  function [10XNonAbelianExteriorSquare[110X.[133X
+  
+  [33X[0;0YWith  the  result  of  this  function  one  can  compute  the  groups in the
+  commutative  diagram at the beginning of the paper [EN08]. The kernel of the
+  returned  epimorphism  is  the  group [22X∇(G)[122X. The kernel of the composition of
+  this epimorphism and the above mention projection onto [22XG'[122X is the group [22XJ(G)[122X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup(0);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XG := DirectProduct(G,G);[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0, 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xalpha := NonAbelianTensorSquareEpimorphism( G );[127X[104X
+    [4X[28X[ g9*g25^-1, g10*g26^-1, g11*g27, g12*g28, g13*g29, g14*g30, g15, g16,[128X[104X
+    [4X[28Xg17,[128X[104X
+    [4X[28X  g18, g19, g20, g21, g22, g23, g24 ] -> [ g2^-2*g6, g4^-2*g12, g8,[128X[104X
+    [4X[28X  g9, g10,[128X[104X
+    [4X[28X  g11, id, id, id, id, id, id, id, id, id, id ][128X[104X
+    [4X[25Xgap>[125X [27Xgamma := Range( alpha )!.epimorphism;[127X[104X
+    [4X[28X[ g2^-2*g6, g4^-2*g12, g8, g9, g10, g11 ] -> [ g2^-2, g4^-2, id, id,[128X[104X
+    [4X[28Xid, id ][128X[104X
+    [4X[25Xgap>[125X [27XJG := Kernel( alpha * gamma );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XImage( alpha, JG );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 2, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XAbelianInvariantsMultiplier( G );[127X[104X
+    [4X[28X[ [ 2, 4 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-8 NonAbelianTensorSquare[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianTensorSquare[102X( [3XG[103X ) [32X attribute[133X
+  
+  [33X[0;0Ycomputes for a polycyclic group [3XG[103X the non-abelian tensor square [22XG⊗ G[122X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := AlternatingGroup( IsPcGroup, 4 );[127X[104X
+    [4X[28X<pc group of size 12 with 3 generators>[128X[104X
+    [4X[25Xgap>[125X [27XPcGroupToPcpGroup( G );[127X[104X
+    [4X[28XPcp-group with orders [ 3, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XNonAbelianTensorSquare( last );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 2, 2, 3 ][128X[104X
+    [4X[25Xgap>[125X [27XPcpGroupToPcGroup( last );[127X[104X
+    [4X[28X<pc group of size 24 with 4 generators>[128X[104X
+    [4X[25Xgap>[125X [27XDirectFactorsOfGroup( last );[127X[104X
+    [4X[28X[ Group([ f1, f2, f3 ]), Group([ f4 ]) ][128X[104X
+    [4X[25Xgap>[125X [27XList( last, Size );[127X[104X
+    [4X[28X[ 8, 3 ][128X[104X
+    [4X[25Xgap>[125X [27XIdGroup( last2[1] );[127X[104X
+    [4X[28X[ 8, 4 ]       # the quaternion group of Order 8[128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XG := DihedralPcpGroup( 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xten := NonAbelianTensorSquare( G );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 2, 2, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XIsAbelian( ten );[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.9-9 NonAbelianExteriorSquarePlusEmbedding[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianExteriorSquarePlusEmbedding[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  an  embedding  from  the  non-abelian  exterior square [22XG∧ G[122X into an
+  extensions  of [22XG∧ G[122X by [22XG× G[122X. For the significance of the group see the paper
+  [EN08]. The range of the epimorphism is the group [22Xτ(G)[122X in that paper.[133X
+  
+  [1X7.9-10 NonAbelianTensorSquarePlusEpimorphism[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianTensorSquarePlusEpimorphism[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns an epimorphisms of [22Xν(G)[122X onto [22Xτ(G)[122X. The group [22Xν(G)[122X is an extension of
+  the  non-abelian  tensor  square  [22XG⊗  G[122X  of  [22XG[122X by [22XG× G[122X. The group [22Xτ(G)[122X is an
+  extension  of  the non-abelian exterior square [22XG∧ G[122X by [22XG× G[122X. For details see
+  [EN08].[133X
+  
+  [1X7.9-11 NonAbelianTensorSquarePlus[101X
+  
+  [33X[1;0Y[29X[2XNonAbelianTensorSquarePlus[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the group [22Xν(G)[122X in [EN08].[133X
+  
+  [1X7.9-12 WhiteheadQuadraticFunctor[101X
+  
+  [33X[1;0Y[29X[2XWhiteheadQuadraticFunctor[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  Whitehead's  universal  quadratic  functor  of  [22XG[122X, see [EN08] for a
+  description.[133X
+  
+  
+  [1X7.10 [33X[0;0YSchur covers[133X[101X
+  
+  [33X[0;0YThis  section  contains a function to determine the Schur covers of a finite
+  [22Xp[122X-group up to isomorphism.[133X
+  
+  [1X7.10-1 SchurCovers[101X
+  
+  [33X[1;0Y[29X[2XSchurCovers[102X( [3XG[103X ) [32X function[133X
+  
+  [33X[0;0YLet  [3XG[103X  be  a finite [22Xp[122X-group defined as a pcp group. This function returns a
+  complete  and irredundant set of isomorphism types of Schur covers of [3XG[103X. The
+  algorithm implements a method of Nickel's Phd Thesis.[133X
+  

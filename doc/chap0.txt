@@ -1,0 +1,287 @@
+  
+  
+                                  [1X Polycyclic [101X
+  
+  
+                      [1X Computation with polycyclic groups [101X
+  
+  
+                                      2.12
+  
+  
+                                 18 March 2018
+  
+  
+                                  Bettina Eick
+  
+                                 Werner Nickel
+  
+                                    Max Horn
+  
+  
+  
+  Bettina Eick
+      Email:    [7Xmailto:beick@tu-bs.de[107X
+      Homepage: [7Xhttp://www.icm.tu-bs.de/~beick[107X
+      Address:  [33X[0;14YAG Algebra und Diskrete Mathematik[133X
+                [33X[0;14YInstitut Computational Mathematics[133X
+                [33X[0;14YTU Braunschweig[133X
+                [33X[0;14YPockelsstr. 14[133X
+                [33X[0;14YD-38106 Braunschweig[133X
+                [33X[0;14YGermany[133X
+  
+  
+  Werner Nickel
+      Homepage: [7Xhttp://www.mathematik.tu-darmstadt.de/~nickel/[107X
+  Max Horn
+      Email:    [7Xmailto:max.horn@math.uni-giessen.de[107X
+      Homepage: [7Xhttp://www.quendi.de/math[107X
+      Address:  [33X[0;14YAG Algebra[133X
+                [33X[0;14YMathematisches Institut[133X
+                [33X[0;14YJustus-Liebig-Universität Gießen[133X
+                [33X[0;14YArndtstraße 2[133X
+                [33X[0;14Y35392 Gießen[133X
+                [33X[0;14YGermany[133X
+  
+  
+  
+  -------------------------------------------------------
+  [1XCopyright[101X
+  [33X[0;0Y© 2003-2018 by Bettina Eick, Max Horn and Werner Nickel[133X
+  
+  [33X[0;0YThe  [5XPolycyclic[105X  package  is  free  software;you  can redistribute it and/or
+  modify   it   under   the   terms   of   theGNU   General   Public   License
+  ([7Xhttp://www.fsf.org/licenses/gpl.html[107X)as  published  by  the  Free  Software
+  Foundation;  either  version  2 of the License,or (at your option) any later
+  version.[133X
+  
+  
+  -------------------------------------------------------
+  [1XAcknowledgements[101X
+  [33X[0;0YWe   appreciate   very  much  all  past  and  future  comments,  suggestions
+  andcontributions  to this package and its documentation provided by [5XGAP[105Xusers
+  and developers.[133X
+  
+  
+  -------------------------------------------------------
+  
+  
+  [1XContents (polycyclic)[101X
+  
+  1 [33X[0;0YPreface[133X
+  2 [33X[0;0YIntroduction to polycyclic presentations[133X
+  3 [33X[0;0YCollectors[133X
+    3.1 [33X[0;0YConstructing a Collector[133X
+      3.1-1 FromTheLeftCollector
+      3.1-2 SetRelativeOrder
+      3.1-3 SetPower
+      3.1-4 SetConjugate
+      3.1-5 SetCommutator
+      3.1-6 UpdatePolycyclicCollector
+      3.1-7 IsConfluent
+    3.2 [33X[0;0YAccessing Parts of a Collector[133X
+      3.2-1 RelativeOrders
+      3.2-2 GetPower
+      3.2-3 GetConjugate
+      3.2-4 NumberOfGenerators
+      3.2-5 ObjByExponents
+      3.2-6 ExponentsByObj
+    3.3 [33X[0;0YSpecial Features[133X
+      3.3-1 IsWeightedCollector
+      3.3-2 AddHallPolynomials
+      3.3-3 String
+      3.3-4 FTLCollectorPrintTo
+      3.3-5 FTLCollectorAppendTo
+      3.3-6 UseLibraryCollector
+      3.3-7 USE_LIBRARY_COLLECTOR
+      3.3-8 DEBUG_COMBINATORIAL_COLLECTOR
+      3.3-9 USE_COMBINATORIAL_COLLECTOR
+  4 [33X[0;0YPcp-groups - polycyclically presented groups[133X
+    4.1 [33X[0;0YPcp-elements -- elements of a pc-presented group[133X
+      4.1-1 PcpElementByExponentsNC
+      4.1-2 PcpElementByGenExpListNC
+      4.1-3 IsPcpElement
+      4.1-4 IsPcpElementRep
+    4.2 [33X[0;0YMethods for pcp-elements[133X
+      4.2-1 Collector
+      4.2-2 Exponents
+      4.2-3 GenExpList
+      4.2-4 NameTag
+      4.2-5 Depth
+      4.2-6 LeadingExponent
+      4.2-7 RelativeOrder
+      4.2-8 RelativeIndex
+      4.2-9 FactorOrder
+      4.2-10 NormingExponent
+      4.2-11 NormedPcpElement
+    4.3 [33X[0;0YPcp-groups - groups of pcp-elements[133X
+      4.3-1 PcpGroupByCollector
+      4.3-2 Group
+      4.3-3 Subgroup
+  5 [33X[0;0YBasic methods and functions for pcp-groups[133X
+    5.1 [33X[0;0YElementary methods for pcp-groups[133X
+      5.1-1 \=
+      5.1-2 Size
+      5.1-3 Random
+      5.1-4 Index
+      5.1-5 \in
+      5.1-6 Elements
+      5.1-7 ClosureGroup
+      5.1-8 NormalClosure
+      5.1-9 HirschLength
+      5.1-10 CommutatorSubgroup
+      5.1-11 PRump
+      5.1-12 SmallGeneratingSet
+    5.2 [33X[0;0YElementary properties of pcp-groups[133X
+      5.2-1 IsSubgroup
+      5.2-2 IsNormal
+      5.2-3 IsNilpotentGroup
+      5.2-4 IsAbelian
+      5.2-5 IsElementaryAbelian
+      5.2-6 IsFreeAbelian
+    5.3 [33X[0;0YSubgroups of pcp-groups[133X
+      5.3-1 Igs
+      5.3-2 Ngs
+      5.3-3 Cgs
+      5.3-4 SubgroupByIgs
+      5.3-5 AddToIgs
+    5.4 [33X[0;0YPolycyclic presentation sequences for subfactors[133X
+      5.4-1 Pcp
+      5.4-2 GeneratorsOfPcp
+      5.4-3 \[\]
+      5.4-4 Length
+      5.4-5 RelativeOrdersOfPcp
+      5.4-6 DenominatorOfPcp
+      5.4-7 NumeratorOfPcp
+      5.4-8 GroupOfPcp
+      5.4-9 OneOfPcp
+      5.4-10 ExponentsByPcp
+      5.4-11 PcpGroupByPcp
+    5.5 [33X[0;0YFactor groups of pcp-groups[133X
+      5.5-1 NaturalHomomorphismByNormalSubgroup
+      5.5-2 \/
+    5.6 [33X[0;0YHomomorphisms for pcp-groups[133X
+      5.6-1 GroupHomomorphismByImages
+      5.6-2 Kernel
+      5.6-3 Image
+      5.6-4 PreImage
+      5.6-5 PreImagesRepresentative
+      5.6-6 IsInjective
+    5.7 [33X[0;0YChanging the defining pc-presentation[133X
+      5.7-1 RefinedPcpGroup
+      5.7-2 PcpGroupBySeries
+    5.8 [33X[0;0YPrinting a pc-presentation[133X
+      5.8-1 PrintPcpPresentation
+    5.9 [33X[0;0YConverting to and from a presentation[133X
+      5.9-1 IsomorphismPcpGroup
+      5.9-2 IsomorphismPcpGroupFromFpGroupWithPcPres
+      5.9-3 IsomorphismPcGroup
+      5.9-4 IsomorphismFpGroup
+  6 [33X[0;0YLibraries and examples of pcp-groups[133X
+    6.1 [33X[0;0YLibraries of various types of polycyclic groups[133X
+      6.1-1 AbelianPcpGroup
+      6.1-2 DihedralPcpGroup
+      6.1-3 UnitriangularPcpGroup
+      6.1-4 SubgroupUnitriangularPcpGroup
+      6.1-5 InfiniteMetacyclicPcpGroup
+      6.1-6 HeisenbergPcpGroup
+      6.1-7 MaximalOrderByUnitsPcpGroup
+      6.1-8 BurdeGrunewaldPcpGroup
+    6.2 [33X[0;0YSome assorted example groups[133X
+      6.2-1 ExampleOfMetabelianPcpGroup
+      6.2-2 ExamplesOfSomePcpGroups
+  7 [33X[0;0YHigher level methods for pcp-groups[133X
+    7.1 [33X[0;0YSubgroup series in pcp-groups[133X
+      7.1-1 PcpSeries
+      7.1-2 EfaSeries
+      7.1-3 SemiSimpleEfaSeries
+      7.1-4 DerivedSeriesOfGroup
+      7.1-5 RefinedDerivedSeries
+      7.1-6 RefinedDerivedSeriesDown
+      7.1-7 LowerCentralSeriesOfGroup
+      7.1-8 UpperCentralSeriesOfGroup
+      7.1-9 TorsionByPolyEFSeries
+      7.1-10 PcpsBySeries
+      7.1-11 PcpsOfEfaSeries
+    7.2 [33X[0;0YOrbit stabilizer methods for pcp-groups[133X
+      7.2-1 PcpOrbitStabilizer
+      7.2-2 StabilizerIntegralAction
+      7.2-3 NormalizerIntegralAction
+    7.3 [33X[0;0YCentralizers, Normalizers and Intersections[133X
+      7.3-1 Centralizer
+      7.3-2 Centralizer
+      7.3-3 Intersection
+    7.4 [33X[0;0YFinite subgroups[133X
+      7.4-1 TorsionSubgroup
+      7.4-2 NormalTorsionSubgroup
+      7.4-3 IsTorsionFree
+      7.4-4 FiniteSubgroupClasses
+      7.4-5 FiniteSubgroupClassesBySeries
+    7.5 [33X[0;0YSubgroups of finite index and maximal subgroups[133X
+      7.5-1 MaximalSubgroupClassesByIndex
+      7.5-2 LowIndexSubgroupClasses
+      7.5-3 LowIndexNormalSubgroups
+      7.5-4 NilpotentByAbelianNormalSubgroup
+    7.6 [33X[0;0YFurther attributes for pcp-groups based on the Fitting subgroup[133X
+      7.6-1 FittingSubgroup
+      7.6-2 IsNilpotentByFinite
+      7.6-3 Centre
+      7.6-4 FCCentre
+      7.6-5 PolyZNormalSubgroup
+      7.6-6 NilpotentByAbelianByFiniteSeries
+    7.7 [33X[0;0YFunctions for nilpotent groups[133X
+      7.7-1 MinimalGeneratingSet
+    7.8 [33X[0;0YRandom methods for pcp-groups[133X
+      7.8-1 RandomCentralizerPcpGroup
+    7.9 [33X[0;0YNon-abelian tensor product and Schur extensions[133X
+      7.9-1 SchurExtension
+      7.9-2 SchurExtensionEpimorphism
+      7.9-3 SchurCover
+      7.9-4 AbelianInvariantsMultiplier
+      7.9-5 NonAbelianExteriorSquareEpimorphism
+      7.9-6 NonAbelianExteriorSquare
+      7.9-7 NonAbelianTensorSquareEpimorphism
+      7.9-8 NonAbelianTensorSquare
+      7.9-9 NonAbelianExteriorSquarePlusEmbedding
+      7.9-10 NonAbelianTensorSquarePlusEpimorphism
+      7.9-11 NonAbelianTensorSquarePlus
+      7.9-12 WhiteheadQuadraticFunctor
+    7.10 [33X[0;0YSchur covers[133X
+      7.10-1 SchurCovers
+  8 [33X[0;0YCohomology for pcp-groups[133X
+    8.1 [33X[0;0YCohomology records[133X
+      8.1-1 CRRecordByMats
+      8.1-2 CRRecordBySubgroup
+    8.2 [33X[0;0YCohomology groups[133X
+      8.2-1 OneCoboundariesCR
+      8.2-2 TwoCohomologyModCR
+    8.3 [33X[0;0YExtended 1-cohomology[133X
+      8.3-1 OneCoboundariesEX
+      8.3-2 OneCocyclesEX
+      8.3-3 OneCohomologyEX
+    8.4 [33X[0;0YExtensions and Complements[133X
+      8.4-1  ComplementCR
+      8.4-2  ComplementsCR
+      8.4-3  ComplementClassesCR
+      8.4-4  ComplementClassesEfaPcps
+      8.4-5  ComplementClasses
+      8.4-6 ExtensionCR
+      8.4-7 ExtensionsCR
+      8.4-8 ExtensionClassesCR
+      8.4-9 SplitExtensionPcpGroup
+    8.5 [33X[0;0YConstructing pcp groups as extensions[133X
+  9 [33X[0;0YMatrix Representations[133X
+    9.1 [33X[0;0YUnitriangular matrix groups[133X
+      9.1-1 UnitriangularMatrixRepresentation
+      9.1-2 IsMatrixRepresentation
+    9.2 [33X[0;0YUpper unitriangular matrix groups[133X
+      9.2-1 IsomorphismUpperUnitriMatGroupPcpGroup
+      9.2-2 SiftUpperUnitriMatGroup
+      9.2-3 RanksLevels
+      9.2-4 MakeNewLevel
+      9.2-5 SiftUpperUnitriMat
+      9.2-6 DecomposeUpperUnitriMat
+  A [33X[0;0YObsolete Functions and Name Changes[133X
+  
+  
+  [32X

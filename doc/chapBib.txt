@@ -1,0 +1,84 @@
+  
+  
+  [1XReferences[101X
+  
+  [[20XBCRS91[120X]  [16XBaumslag,  G., Cannonito, F. B., Robinson, D. J. S. and Segal, D.[116X,
+  [17XThe  algorithmic  theory  of  polycyclic-by-finite  groups[117X,  [18XJ. Algebra[118X, [19X142[119X
+  (1991), 118--149.
+  
+  [[20XBK00[120X] [16XBeuerle, J. R. and Kappe, L.-C.[116X, [17XInfinite metacyclic groups and their
+  non-abelian  tensor  squares[117X,  [18XProc. Edinburgh Math. Soc. (2)[118X, [19X43[119X, 3 (2000),
+  651--662.
+  
+  [[20XdGN02[120X]   [16Xde   Graaf,   W.   A.   and   Nickel,  W.[116X,  [17XConstructing  faithful
+  representations  of  finitely-generated  torsion-free  nilpotent  groups[117X, [18XJ.
+  Symbolic Comput.[118X, [19X33[119X, 1 (2002), 31--41.
+  
+  [[20XEic00[120X]  [16XEick,  B.[116X, [17XComputing with infinite polycyclic groups[117X, in Groups and
+  Computation III, (DIMACS, 1999), Amer. Math. Soc. DIMACS Series (2000).
+  
+  [[20XEic01a[120X]   [16XEick,   B.[116X,   [17XComputations   with   polycyclic   groups[117X   (2001),
+  Habilitationsschrift, Kassel.
+  
+  [[20XEic01b[120X]  [16XEick,  B.[116X, [17XOn the Fitting subgroup of a polycyclic-by-finite group
+  and its applications[117X, [18XJ. Algebra[118X, [19X242[119X (2001), 176--187.
+  
+  [[20XEic02[120X]  [16XEick,  B.[116X,  [17XOrbit-stabilizer problems and computing normalizers for
+  polycyclic groups[117X, [18XJ. Symbolic Comput.[118X, [19X34[119X (2002), 1--19.
+  
+  [[20XEN08[120X]  [16XEick,  B.  and Nickel, W.[116X, [17XComputing the Schur multiplicator and the
+  non-abelian  tensor square of a polycyclic group[117X, [18XJ. Algebra[118X, [19X320[119X, 2 (2008),
+  927–-944.
+  
+  [[20XEO02[120X]  [16XEick,  B.  and  Ostheimer,  G.[116X,  [17XOn the orbit stabilizer problem for
+  integral matrix actions of polycyclic groups[117X, [18XAccepted by Math. Comp[118X (2002).
+  
+  [[20XHir38a[120X]  [16XHirsch,  K. A.[116X, [17XOn Infinite Soluble Groups (I)[117X, [18XProc. London Math.
+  Soc.[118X, [19X44[119X, 2 (1938), 53-60.
+  
+  [[20XHir38b[120X]  [16XHirsch, K. A.[116X, [17XOn Infinite Soluble Groups (II)[117X, [18XProc. London Math.
+  Soc.[118X, [19X44[119X, 2 (1938), 336-414.
+  
+  [[20XHir46[120X]  [16XHirsch,  K.  A.[116X,  [17XOn Infinite Soluble Groups (III)[117X, [18XJ. London Math.
+  Soc.[118X, [19X49[119X, 2 (1946), 184-94.
+  
+  [[20XHir52[120X]  [16XHirsch,  K.  A.[116X,  [17XOn  Infinite Soluble Groups (IV)[117X, [18XJ. London Math.
+  Soc.[118X, [19X27[119X (1952), 81-85.
+  
+  [[20XHir54[120X] [16XHirsch, K. A.[116X, [17XOn Infinite Soluble Groups (V)[117X, [18XJ. London Math. Soc.[118X,
+  [19X29[119X (1954), 250-251.
+  
+  [[20XLGS90[120X]  [16XLeedham-Green,  C.  R. and Soicher, L. H.[116X, [17XCollection from the left
+  and other strategies[117X, [18XJ. Symbolic Comput.[118X, [19X9[119X, 5-6 (1990), 665--675.
+  
+  [[20XLGS98[120X]  [16XLeedham-Green,  C. R. and Soicher, L. H.[116X, [17XSymbolic collection using
+  Deep Thought[117X, [18XLMS J. Comput. Math.[118X, [19X1[119X (1998), 9--24 (electronic).
+  
+  [[20XLo98a[120X]  [16XLo,  E. H.[116X, [17XEnumerating finite index subgroups of polycyclic groups[117X
+  (1998), Unpublished report.
+  
+  [[20XLo98b[120X] [16XLo, E. H.[116X, [17XFinding intersection and normalizer in finitely generated
+  nilpotent groups[117X, [18XJ. Symbolic Comput.[118X, [19X25[119X (1998), 45--59.
+  
+  [[20XMer97[120X]  [16XMerkwitz,  W. W.[116X, [17XSymbolische Multiplikation in nilpotenten Gruppen
+  mit Deep Thought[117X, Diplomarbeit, RWTH Aachen (1997).
+  
+  [[20XRob82[120X]  [16XRobinson, D. J.[116X, [17XA Course in the Theory of Groups[117X, Springer-Verlag,
+  Graduate Texts in Math., [19X80[119X, New York, Heidelberg, Berlin (1982).
+  
+  [[20XSeg83[120X]  [16XSegal, D.[116X, [17XPolycyclic Groups[117X, Cambridge University Press, Cambridge
+  (1983).
+  
+  [[20XSeg90[120X]  [16XSegal,  D.[116X, [17XDecidable properties of polycyclic groups[117X, [18XProc. London
+  Math. Soc. (3)[118X, [19X61[119X (1990), 497-528.
+  
+  [[20XSim94[120X]  [16XSims,  C. C.[116X, [17XComputation with finitely presented groups[117X, Cambridge
+  University  Press,  Encyclopedia  of  Mathematics  and its Applications, [19X48[119X,
+  Cambridge (1994).
+  
+  [[20XVL90[120X] [16XVaughan-Lee, M. R.[116X, [17XCollection from the left[117X, [18XJ. Symbolic Comput.[118X, [19X9[119X,
+  5-6 (1990), 725--733.
+  
+  
+  
+  [32X

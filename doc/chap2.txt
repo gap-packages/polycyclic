@@ -1,0 +1,74 @@
+  
+  [1X2 [33X[0;0YIntroduction to polycyclic presentations[133X[101X
+  
+  [33X[0;0YLet  [22XG[122X  be  a polycyclic group and let [22XG = C_1 ⊳ C_2 ... C_n⊳ C_n+1 = 1[122X be a
+  [13Xpolycyclic  series[113X, that is, a subnormal series of [22XG[122X with non-trivial cyclic
+  factors.  For  [22X1 ≤ i ≤ n[122X we choose [22Xg_i ∈ C_i[122X such that [22XC_i = ⟨ g_i, C_i+1 ⟩[122X.
+  Then the sequence [22X(g_1, ..., g_n)[122X is called a [13Xpolycyclic generating sequence
+  of  [22XG[122X[113X.  Let  [22XI[122X be the set of those [22Xi ∈ {1, ..., n}[122X with [22Xr_i := [C_i : C_i+1][122X
+  finite.  Each  element of [22XG[122X can be written [3Xuniquely[103X as [22Xg_1^e_1⋯ g_n^e_n[122X with
+  [22Xe_i∈ ℤ[122X for [22X1≤ i≤ n[122X and [22X0≤ e_i < r_i[122X for [22Xi∈ I[122X.[133X
+  
+  [33X[0;0YEach  polycyclic  generating  sequence  of [22XG[122X gives rise to a [13Xpower-conjugate
+  (pc-) presentation[113X for [22XG[122X with the conjugate relations[133X
+  
+  
+  [24X[33X[0;6Yg_j^{g_i} = g_{i+1}^{e(i,j,i+1)} \cdots g_n^{e(i,j,n)} \hbox{ for } 1 \leq i
+  < j \leq n,[133X
+  
+  [124X
+  
+  
+  [24X[33X[0;6Yg_j^{g_i^{-1}}  =  g_{i+1}^{f(i,j,i+1)} \cdots g_n^{f(i,j,n)} \hbox{ for } 1
+  \leq i < j \leq n,[133X
+  
+  [124X
+  
+  [33X[0;0Yand the power relations[133X
+  
+  
+  [24X[33X[0;6Yg_i^{r_i} = g_{i+1}^{l(i,i+1)} \cdots g_n^{l(i,n)} \hbox{ for } i \in I.[133X
+  
+  [124X
+  
+  [33X[0;0YVice  versa,  we  say that a group [22XG[122X is defined by a pc-presentation if [22XG[122X is
+  given  by  a presentation of the form above on generators [22Xg_1,...,g_n[122X. These
+  generators  are  the [13Xdefining generators[113X of [22XG[122X. Here, [22XI[122X is the set of [22X1≤ i≤ n[122X
+  such  that  [22Xg_i[122X  has  a power relation. The positive integer [22Xr_i[122X for [22Xi∈ I[122X is
+  called the [13Xrelative order[113X of [22Xg_i[122X. If [22XG[122X is given by a pc-presentation, then [22XG[122X
+  is polycyclic. The subgroups [22XC_i = ⟨ g_i, ..., g_n ⟩[122X form a subnormal series
+  [22XG  =  C_1  ≥  ...  ≥ C_n+1 = 1[122X with cyclic factors and we have that [22Xg_i^r_i∈
+  C_i+1[122X.  However,  some of the factors of this series may be smaller than [22Xr_i[122X
+  for [22Xi∈ I[122X or finite if [22Xinot\in I[122X.[133X
+  
+  [33X[0;0YIf  [22XG[122X  is  defined  by  a  pc-presentation,  then  each  element of [22XG[122X can be
+  described  by a word of the form [22Xg_1^e_1⋯ g_n^e_n[122X in the defining generators
+  with [22Xe_i∈ ℤ[122X for [22X1≤ i≤ n[122X and [22X0≤ e_i < r_i[122X for [22Xi∈ I[122X. Such a word is said to be
+  in [13Xcollected form[113X. In general, an element of the group can be represented by
+  more  than  one collected word. If the pc-presentation has the property that
+  each  element  of  [22XG[122X  has  precisely  one  word  in collected form, then the
+  presentation  is  called  [13Xconfluent[113X  or [13Xconsistent[113X. If that is the case, the
+  generators  with a power relation correspond precisely to the finite factors
+  in the polycyclic series and [22Xr_i[122X is the order of [22XC_i/C_i+1[122X.[133X
+  
+  [33X[0;0YThe  [5XGAP[105X  package  [5XPolycyclic[105X  is  designed for computations with polycyclic
+  groups  which  are  given by consistent pc-presentations. In particular, all
+  the functions described below assume that we compute with a group defined by
+  a  consistent  pc-presentation.  See Chapter [14X'[33X[0;0YCollectors[133X'[114X for a routine that
+  checks the consistency of a pc-presentation.[133X
+  
+  [33X[0;0YA  pc-presentation can be interpreted as a [13Xrewriting system[113X in the following
+  way.  One  needs  to add a new generator [22XG_i[122X for each generator [22Xg_i[122X together
+  with  the  relations [22Xg_iG_i = 1[122X and [22XG_ig_i = 1[122X. Any occurrence in a relation
+  of an inverse generator [22Xg_i^-1[122X is replaced by [22XG_i[122X. In this way one obtains a
+  monoid  presentation  for the group [22XG[122X. With respect to a particular ordering
+  on  the  set  of monoid words in the generators [22Xg_1,... g_n,G_1,... G_n[122X, the
+  [13Xwreath  product ordering[113X, this monoid presentation is a rewriting system. If
+  the pc-presentation is consistent, the rewriting system is confluent.[133X
+  
+  [33X[0;0YIn this package we do not address this aspect of pc-presentations because it
+  is  of  little  relevance  for  the  algorithms  implemented  here.  For the
+  definition  of  rewriting  systems and confluence in this context as well as
+  further  details  on  the connections between pc-presentations and rewriting
+  systems we recommend the book [Sim94].[133X
+  

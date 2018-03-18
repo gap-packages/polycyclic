@@ -1,0 +1,369 @@
+  
+  [1X3 [33X[0;0YCollectors[133X[101X
+  
+  [33X[0;0YLet  [22XG[122X  be  a group defined by a pc-presentation as described in the Chapter
+  [14X'[33X[0;0YIntroduction to polycyclic presentations[133X'[114X.[133X
+  
+  [33X[0;0YThe  process  for  computing the collected form for an arbitrary word in the
+  generators  of  [22XG[122X  is called [13Xcollection[113X. The basic idea in collection is the
+  following.  Given  a word in the defining generators, one scans the word for
+  occurrences of adjacent generators (or their inverses) in the wrong order or
+  occurrences  of  subwords  [22Xg_i^e_i[122X  with  [22Xi∈ I[122X and [22Xe_i[122X not in the range [22X0...
+  r_i-1[122X. In the first case, the appropriate conjugacy relation is used to move
+  the  generator  with  the smaller index to the left. In the second case, one
+  uses  the  appropriate  power  relation to move the exponent of [22Xg_i[122X into the
+  required range. These steps are repeated until a collected word is obtained.[133X
+  
+  [33X[0;0YThere  exist a number of different strategies for collecting a given word to
+  collected  form.  The  strategies implemented in this package are [13Xcollection
+  from  the  left[113X  as  described  by  [LGS90]  and  [Sim94]  and [13Xcombinatorial
+  collection from the left[113X by [VL90]. In addition, the package provides access
+  to  Hall  polynomials  computed  by Deep Thought for the multiplication in a
+  nilpotent group, see [Mer97] and [LGS98].[133X
+  
+  [33X[0;0YThe  first  step  in  defining  a  pc-presented  group  is setting up a data
+  structure  that  knows the pc-presentation and has routines that perform the
+  collection  algorithm with words in the generators of the presentation. Such
+  a data structure is called [13Xa collector[113X.[133X
+  
+  [33X[0;0YTo  describe  the  right hand sides of the relations in a pc-presentation we
+  use  [13Xgenerator  exponent  lists[113X; the word [22Xg_i_1^e_1g_i_2^e_2... g_i_k^e_k[122X is
+  represented by the generator exponent list [22X[i_1,e_1,i_2,e_2,...,i_k,e_k][122X.[133X
+  
+  
+  [1X3.1 [33X[0;0YConstructing a Collector[133X[101X
+  
+  [33X[0;0YA  collector  for a group given by a pc-presentation starts by setting up an
+  empty  data structure for the collector. Then the relative orders, the power
+  relations and the conjugate relations are added into the data structure. The
+  construction  is  finalised  by  calling  a  routine that completes the data
+  structure  for  the collector. The following functions provide the necessary
+  tools for setting up a collector.[133X
+  
+  [1X3.1-1 FromTheLeftCollector[101X
+  
+  [33X[1;0Y[29X[2XFromTheLeftCollector[102X( [3Xn[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  an  empty  data  structure  for  a  collector with [3Xn[103X generators. No
+  generator  has  a relative order, no right hand sides of power and conjugate
+  relations  are  defined.  Two  generators  for which no right hand side of a
+  conjugate  relation is defined commute. Therefore, the collector returned by
+  this function can be used to define a free abelian group of rank [3Xn[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xftl := FromTheLeftCollector( 4 );[127X[104X
+    [4X[28X<<from the left collector with 4 generators>>[128X[104X
+    [4X[25Xgap>[125X [27XPcpGroupByCollector( ftl );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XIsAbelian(last);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YIf the relative order of a generators has been defined (see [2XSetRelativeOrder[102X
+  ([14X3.1-2[114X)),  but  the  right hand side of the corresponding power relation has
+  not, then the order and the relative order of the generator are the same.[133X
+  
+  [1X3.1-2 SetRelativeOrder[101X
+  
+  [33X[1;0Y[29X[2XSetRelativeOrder[102X( [3Xcoll[103X, [3Xi[103X, [3Xro[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XSetRelativeOrderNC[102X( [3Xcoll[103X, [3Xi[103X, [3Xro[103X ) [32X operation[133X
+  
+  [33X[0;0Yset  the  relative  order  in  collector  [3Xcoll[103X  for  generator  [3Xi[103X to [3Xro[103X. The
+  parameter    [3Xcoll[103X   is   a   collector   as   returned   by   the   function
+  [2XFromTheLeftCollector[102X   ([14X3.1-1[114X),  [3Xi[103X  is  a  generator  number  and  [3Xro[103X  is  a
+  non-negative  integer.  The  generator  number  [3Xi[103X is an integer in the range
+  [22X1,...,n[122X where [22Xn[122X is the number of generators of the collector.[133X
+  
+  [33X[0;0YIf [3Xro[103X is [22X0,[122X then the generator with number [3Xi[103X has infinite order and no power
+  relation  can  be  specified.  As  a  side effect in this case, a previously
+  defined power relation is deleted.[133X
+  
+  [33X[0;0YIf  [3Xro[103X  is  the  relative  order  of  a generator with number [3Xi[103X and no power
+  relation is set for that generator, then [3Xro[103X is the order of that generator.[133X
+  
+  [33X[0;0YThe NC version of the function bypasses checks on the range of [3Xi[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xftl := FromTheLeftCollector( 4 );[127X[104X
+    [4X[28X<<from the left collector with 4 generators>>[128X[104X
+    [4X[25Xgap>[125X [27Xfor i in [1..4] do SetRelativeOrder( ftl, i, 3 ); od;[127X[104X
+    [4X[25Xgap>[125X [27XG := PcpGroupByCollector( ftl );[127X[104X
+    [4X[28XPcp-group with orders [ 3, 3, 3, 3 ][128X[104X
+    [4X[25Xgap>[125X [27XIsElementaryAbelian( G );[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.1-3 SetPower[101X
+  
+  [33X[1;0Y[29X[2XSetPower[102X( [3Xcoll[103X, [3Xi[103X, [3Xrhs[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XSetPowerNC[102X( [3Xcoll[103X, [3Xi[103X, [3Xrhs[103X ) [32X operation[133X
+  
+  [33X[0;0Yset  the  right hand side of the power relation for generator [3Xi[103X in collector
+  [3Xcoll[103X  to  (a  copy  of)  [3Xrhs[103X.  An  attempt  to set the right hand side for a
+  generator without a relative order results in an error.[133X
+  
+  [33X[0;0YRight hand sides are by default assumed to be trivial.[133X
+  
+  [33X[0;0YThe  parameter  [3Xcoll[103X  is  a  collector, [3Xi[103X is a generator number and [3Xrhs[103X is a
+  generators exponent list or an element from a free group.[133X
+  
+  [33X[0;0YThe  no-check (NC) version of the function bypasses checks on the range of [3Xi[103X
+  and stores [3Xrhs[103X (instead of a copy) in the collector.[133X
+  
+  [1X3.1-4 SetConjugate[101X
+  
+  [33X[1;0Y[29X[2XSetConjugate[102X( [3Xcoll[103X, [3Xj[103X, [3Xi[103X, [3Xrhs[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XSetConjugateNC[102X( [3Xcoll[103X, [3Xj[103X, [3Xi[103X, [3Xrhs[103X ) [32X operation[133X
+  
+  [33X[0;0Yset the right hand side of the conjugate relation for the generators [3Xj[103X and [3Xi[103X
+  with  [3Xj[103X  larger  than  [3Xi[103X.  The  parameter  [3Xcoll[103X  is a collector, [3Xj[103X and [3Xi[103X are
+  generator  numbers and [3Xrhs[103X is a generator exponent list or an element from a
+  free group. Conjugate relations are by default assumed to be trivial.[133X
+  
+  [33X[0;0YThe generator number [3Xi[103X can be negative in order to define conjugation by the
+  inverse of a generator.[133X
+  
+  [33X[0;0YThe  no-check (NC) version of the function bypasses checks on the range of [3Xi[103X
+  and [3Xj[103X and stores [3Xrhs[103X (instead of a copy) in the collector.[133X
+  
+  [1X3.1-5 SetCommutator[101X
+  
+  [33X[1;0Y[29X[2XSetCommutator[102X( [3Xcoll[103X, [3Xj[103X, [3Xi[103X, [3Xrhs[103X ) [32X operation[133X
+  
+  [33X[0;0Yset the right hand side of the conjugate relation for the generators [3Xj[103X and [3Xi[103X
+  with  [3Xj[103X larger than [3Xi[103X by specifying the commutator of [3Xj[103X and [3Xi[103X. The parameter
+  [3Xcoll[103X  is  a  collector, [3Xj[103X and [3Xi[103X are generator numbers and [3Xrhs[103X is a generator
+  exponent list or an element from a free group.[133X
+  
+  [33X[0;0YThe  generator  number  [3Xi[103X  can be negative in order to define the right hand
+  side of a commutator relation with the second generator being the inverse of
+  a generator.[133X
+  
+  [1X3.1-6 UpdatePolycyclicCollector[101X
+  
+  [33X[1;0Y[29X[2XUpdatePolycyclicCollector[102X( [3Xcoll[103X ) [32X operation[133X
+  
+  [33X[0;0Ycompletes  the data structures of a collector. This is usually the last step
+  in  setting  up  a collector. Among the steps performed is the completion of
+  the  conjugate  relations.  For  each  non-trivial  conjugate  relation of a
+  generator,  the corresponding conjugate relation of the inverse generator is
+  calculated.[133X
+  
+  [33X[0;0YNote  that [10XUpdatePolycyclicCollector[110X is automatically called by the function
+  [10XPcpGroupByCollector[110X (see [2XPcpGroupByCollector[102X ([14X4.3-1[114X)).[133X
+  
+  [1X3.1-7 IsConfluent[101X
+  
+  [33X[1;0Y[29X[2XIsConfluent[102X( [3Xcoll[103X ) [32X property[133X
+  
+  [33X[0;0Ytests if the collector [3Xcoll[103X is confluent. The function returns true or false
+  accordingly.[133X
+  
+  [33X[0;0YCompare Chapter [14X2[114X for a definition of confluence.[133X
+  
+  [33X[0;0YNote   that   confluence   is   automatically   checked   by   the  function
+  [10XPcpGroupByCollector[110X (see [2XPcpGroupByCollector[102X ([14X4.3-1[114X)).[133X
+  
+  [33X[0;0YThe  following  example  defines a collector for a semidirect product of the
+  cyclic group of order [22X3[122X with the free abelian group of rank [22X2[122X. The action of
+  the cyclic group on the free abelian group is given by the matrix[133X
+  
+  
+  [24X[33X[0;6Y\pmatrix{ 0 & 1 \cr -1 & -1}.[133X
+  
+  [124X
+  
+  [33X[0;0YThis leads to the following polycyclic presentation:[133X
+  
+  
+  [24X[33X[0;6Y\langle  g_1,g_2,g_3  |  g_1^3,  g_2^{g_1}=g_3,  g_3^{g_1}=g_2^{-1}g_3^{-1},
+  g_3^{g_2}=g_3\rangle.[133X
+  
+  [124X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xftl := FromTheLeftCollector( 3 );[127X[104X
+    [4X[28X<<from the left collector with 3 generators>>[128X[104X
+    [4X[25Xgap>[125X [27XSetRelativeOrder( ftl, 1, 3 );[127X[104X
+    [4X[25Xgap>[125X [27XSetConjugate( ftl, 2, 1, [3,1] );[127X[104X
+    [4X[25Xgap>[125X [27XSetConjugate( ftl, 3, 1, [2,-1,3,-1] );[127X[104X
+    [4X[25Xgap>[125X [27XUpdatePolycyclicCollector( ftl );[127X[104X
+    [4X[25Xgap>[125X [27XIsConfluent( ftl );[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YThe action of the inverse of [22Xg_1[122X on [22X⟨ g_2,g_2⟩[122X is given by the matrix[133X
+  
+  
+  [24X[33X[0;6Y\pmatrix{ -1 & -1 \cr 1 & 0}.[133X
+  
+  [124X
+  
+  [33X[0;0YThe   corresponding   conjugate  relations  are  automatically  computed  by
+  [10XUpdatePolycyclicCollector[110X. It is also possible to specify the conjugation by
+  inverse  generators.  Note  that  you  need to run [10XUpdatePolycyclicCollector[110X
+  after one of the set functions has been used.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XSetConjugate( ftl, 2, -1, [2,-1,3,-1] );[127X[104X
+    [4X[25Xgap>[125X [27XSetConjugate( ftl, 3, -1, [2,1] );[127X[104X
+    [4X[25Xgap>[125X [27XIsConfluent( ftl );[127X[104X
+    [4X[28XError, Collector is out of date called from[128X[104X
+    [4X[28XCollectWordOrFail( coll, ev1, [ j, 1, i, 1 ] ); called from[128X[104X
+    [4X[28X<function>( <arguments> ) called from read-eval-loop[128X[104X
+    [4X[28XEntering break read-eval-print loop ...[128X[104X
+    [4X[28Xyou can 'quit;' to quit to outer loop, or[128X[104X
+    [4X[28Xyou can 'return;' to continue[128X[104X
+    [4X[26Xbrk>[126X[104X
+    [4X[25Xgap>[125X [27XUpdatePolycyclicCollector( ftl );[127X[104X
+    [4X[25Xgap>[125X [27XIsConfluent( ftl );[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X3.2 [33X[0;0YAccessing Parts of a Collector[133X[101X
+  
+  [1X3.2-1 RelativeOrders[101X
+  
+  [33X[1;0Y[29X[2XRelativeOrders[102X( [3Xcoll[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns (a copy of) the list of relative order stored in the collector [3Xcoll[103X.[133X
+  
+  [1X3.2-2 GetPower[101X
+  
+  [33X[1;0Y[29X[2XGetPower[102X( [3Xcoll[103X, [3Xi[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XGetPowerNC[102X( [3Xcoll[103X, [3Xi[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns a copy of the generator exponent list stored for the right hand side
+  of the power relation of the generator [3Xi[103X in the collector [3Xcoll[103X.[133X
+  
+  [33X[0;0YThe  no-check (NC) version of the function bypasses checks on the range of [3Xi[103X
+  and does not create a copy before returning the right hand side of the power
+  relation.[133X
+  
+  [1X3.2-3 GetConjugate[101X
+  
+  [33X[1;0Y[29X[2XGetConjugate[102X( [3Xcoll[103X, [3Xj[103X, [3Xi[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XGetConjugateNC[102X( [3Xcoll[103X, [3Xj[103X, [3Xi[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  a  copy of the right hand side of the conjugate relation stored for
+  the generators [3Xj[103X and [3Xi[103X in the collector [3Xcoll[103X as generator exponent list. The
+  generator [3Xj[103X must be larger than [3Xi[103X.[133X
+  
+  [33X[0;0YThe  no-check (NC) version of the function bypasses checks on the range of [3Xi[103X
+  and [3Xj[103X and does not create a copy before returning the right hand side of the
+  power relation.[133X
+  
+  [1X3.2-4 NumberOfGenerators[101X
+  
+  [33X[1;0Y[29X[2XNumberOfGenerators[102X( [3Xcoll[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns the number of generators of the collector [3Xcoll[103X.[133X
+  
+  [1X3.2-5 ObjByExponents[101X
+  
+  [33X[1;0Y[29X[2XObjByExponents[102X( [3Xcoll[103X, [3Xexpvec[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  a  generator  exponent list for the exponent vector [3Xexpvec[103X. This is
+  the  inverse  operation to [10XExponentsByObj[110X. See [2XExponentsByObj[102X ([14X3.2-6[114X) for an
+  example.[133X
+  
+  [1X3.2-6 ExponentsByObj[101X
+  
+  [33X[1;0Y[29X[2XExponentsByObj[102X( [3Xcoll[103X, [3Xgenexp[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  an  exponent vector for the generator exponent list [3Xgenexp[103X. This is
+  the  inverse  operation  to  [10XObjByExponents[110X.  The  function assumes that the
+  generators in [3Xgenexp[103X are given in the right order and that the exponents are
+  in the right range.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := UnitriangularPcpGroup( 4, 0 );[127X[104X
+    [4X[28XPcp-group with orders [ 0, 0, 0, 0, 0, 0 ][128X[104X
+    [4X[25Xgap>[125X [27Xcoll := Collector ( G );[127X[104X
+    [4X[28X<<from the left collector with 6 generators>>[128X[104X
+    [4X[25Xgap>[125X [27XObjByExponents( coll, [6,-5,4,3,-2,1] );[127X[104X
+    [4X[28X[ 1, 6, 2, -5, 3, 4, 4, 3, 5, -2, 6, 1 ][128X[104X
+    [4X[25Xgap>[125X [27XExponentsByObj( coll, last );[127X[104X
+    [4X[28X[ 6, -5, 4, 3, -2, 1 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X3.3 [33X[0;0YSpecial Features[133X[101X
+  
+  [33X[0;0YIn this section we descibe collectors for nilpotent groups which make use of
+  the special structure of the given pc-presentation.[133X
+  
+  [1X3.3-1 IsWeightedCollector[101X
+  
+  [33X[1;0Y[29X[2XIsWeightedCollector[102X( [3Xcoll[103X ) [32X property[133X
+  
+  [33X[0;0Ychecks  if  there  is a function [22Xw[122X from the generators of the collector [3Xcoll[103X
+  into  the positive integers such that [22Xw(g) ≥ w(x)+w(y)[122X for all generators [22Xx[122X,
+  [22Xy[122X and all generators [22Xg[122X in (the normal of) [22X[x,y][122X. If such a function does not
+  exist,  false  is  returned.  If  such a function exists, it is computed and
+  stored  in  the  collector. In addition, the default collection strategy for
+  this collector is set to combinatorial collection.[133X
+  
+  [1X3.3-2 AddHallPolynomials[101X
+  
+  [33X[1;0Y[29X[2XAddHallPolynomials[102X( [3Xcoll[103X ) [32X function[133X
+  
+  [33X[0;0Yis  applicable  to a collector which passes [10XIsWeightedCollector[110X and computes
+  the Hall multiplication polynomials for the presentation stored in [3Xcoll[103X. The
+  default  strategy  for  this collector is set to evaluating those polynomial
+  when multiplying two elements.[133X
+  
+  [1X3.3-3 String[101X
+  
+  [33X[1;0Y[29X[2XString[102X( [3Xcoll[103X ) [32X attribute[133X
+  
+  [33X[0;0Yconverts a collector [3Xcoll[103X into a string.[133X
+  
+  [1X3.3-4 FTLCollectorPrintTo[101X
+  
+  [33X[1;0Y[29X[2XFTLCollectorPrintTo[102X( [3Xfile[103X, [3Xname[103X, [3Xcoll[103X ) [32X function[133X
+  
+  [33X[0;0Ystores a collector [3Xcoll[103X in the file [3Xfile[103X such that the file can be read back
+  using  the function 'Read' into [5XGAP[105X and would then be stored in the variable
+  [3Xname[103X.[133X
+  
+  [1X3.3-5 FTLCollectorAppendTo[101X
+  
+  [33X[1;0Y[29X[2XFTLCollectorAppendTo[102X( [3Xfile[103X, [3Xname[103X, [3Xcoll[103X ) [32X function[133X
+  
+  [33X[0;0Yappends  a  collector  [3Xcoll[103X  in the file [3Xfile[103X such that the file can be read
+  back into [5XGAP[105X and would then be stored in the variable [3Xname[103X.[133X
+  
+  [1X3.3-6 UseLibraryCollector[101X
+  
+  [33X[1;0Y[29X[2XUseLibraryCollector[102X[32X global variable[133X
+  
+  [33X[0;0Ythis  property  can  be  set  to  [9Xtrue[109X  for  a  collector  to force a simple
+  from-the-left  collection  strategy  implemented  in  the [5XGAP[105X language to be
+  used. Its main purpose is to help debug the collection routines.[133X
+  
+  [1X3.3-7 USE_LIBRARY_COLLECTOR[101X
+  
+  [33X[1;0Y[29X[2XUSE_LIBRARY_COLLECTOR[102X[32X global variable[133X
+  
+  [33X[0;0Ythis  global  variable  can  be set to [9Xtrue[109X to force all collectors to use a
+  simple  from-the-left collection strategy implemented in the [5XGAP[105X language to
+  be used. Its main purpose is to help debug the collection routines.[133X
+  
+  [1X3.3-8 DEBUG_COMBINATORIAL_COLLECTOR[101X
+  
+  [33X[1;0Y[29X[2XDEBUG_COMBINATORIAL_COLLECTOR[102X[32X global variable[133X
+  
+  [33X[0;0Ythis  global  variable can be set to [9Xtrue[109X to force the comparison of results
+  from  the combinatorial collector with the result of an identical collection
+  performed  by  a simple from-the-left collector. Its main purpose is to help
+  debug the collection routines.[133X
+  
+  [1X3.3-9 USE_COMBINATORIAL_COLLECTOR[101X
+  
+  [33X[1;0Y[29X[2XUSE_COMBINATORIAL_COLLECTOR[102X[32X global variable[133X
+  
+  [33X[0;0Ythis  global  variable  can  be  set  to  [9Xfalse[109X  in  order  to  prevent  the
+  combinatorial collector to be used.[133X
+  

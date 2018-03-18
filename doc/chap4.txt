@@ -1,0 +1,198 @@
+  
+  [1X4 [33X[0;0YPcp-groups - polycyclically presented groups[133X[101X
+  
+  
+  [1X4.1 [33X[0;0YPcp-elements -- elements of a pc-presented group[133X[101X
+  
+  [33X[0;0YA   [13Xpcp-element[113X   is   an  element  of  a  group  defined  by  a  consistent
+  pc-presentation  given  by  a  collector. Suppose that [22Xg_1, ..., g_n[122X are the
+  defining  generators  of  the  collector. Recall that each element [22Xg[122X in this
+  group can be written uniquely as a collected word [22Xg_1^e_1 ⋯ g_n^e_n[122X with [22Xe_i
+  ∈  ℤ[122X  and  [22X0  ≤  e_i  < r_i[122X for [22Xi ∈ I[122X. The integer vector [22X[e_1, ..., e_n][122X is
+  called  the  [13Xexponent  vector[113X  of  [22Xg[122X. The following functions can be used to
+  define  pcp-elements via their exponent vector or via an arbitrary generator
+  exponent word as introduced in Chapter [14X3[114X.[133X
+  
+  [1X4.1-1 PcpElementByExponentsNC[101X
+  
+  [33X[1;0Y[29X[2XPcpElementByExponentsNC[102X( [3Xcoll[103X, [3Xexp[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XPcpElementByExponents[102X( [3Xcoll[103X, [3Xexp[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  the  pcp-element  with  exponent vector [3Xexp[103X. The exponent vector is
+  considered relative to the defining generators of the pc-presentation.[133X
+  
+  [1X4.1-2 PcpElementByGenExpListNC[101X
+  
+  [33X[1;0Y[29X[2XPcpElementByGenExpListNC[102X( [3Xcoll[103X, [3Xword[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XPcpElementByGenExpList[102X( [3Xcoll[103X, [3Xword[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  the  pcp-element with generators exponent list [3Xword[103X. This list [3Xword[103X
+  consists  of  a  sequence  of  generator  numbers  and  their  corresponding
+  exponents  and is of the form [22X[i_1, e_i_1, i_2, e_i_2, ..., i_r, e_i_r][122X. The
+  generators  exponent  list is considered relative to the defining generators
+  of the pc-presentation.[133X
+  
+  [33X[0;0YThese functions return pcp-elements in the category [10XIsPcpElement[110X. Presently,
+  the  only  representation  implemented for this category is [10XIsPcpElementRep[110X.
+  (This allows us to be a little sloppy right now. The basic set of operations
+  for [10XIsPcpElement[110X has not been defined yet. This is going to happen in one of
+  the   next   version,   certainly   as   soon  as  the  need  for  different
+  representations arises.)[133X
+  
+  [1X4.1-3 IsPcpElement[101X
+  
+  [33X[1;0Y[29X[2XIsPcpElement[102X( [3Xobj[103X ) [32X Category[133X
+  
+  [33X[0;0Yreturns true if the object [3Xobj[103X is a pcp-element.[133X
+  
+  [1X4.1-4 IsPcpElementRep[101X
+  
+  [33X[1;0Y[29X[2XIsPcpElementRep[102X( [3Xobj[103X ) [32X Representation[133X
+  
+  [33X[0;0Yreturns true if the object [3Xobj[103X is represented as a pcp-element.[133X
+  
+  
+  [1X4.2 [33X[0;0YMethods for pcp-elements[133X[101X
+  
+  [33X[0;0YNow  we  can  describe  attributes  and functions for pcp-elements. The four
+  basic  attributes  of  a  pcp-element,  [10XCollector[110X, [10XExponents[110X, [10XGenExpList[110X and
+  [10XNameTag[110X  are  computed  at  the  creation  of  the  pcp-element.  All  other
+  attributes are determined at runtime.[133X
+  
+  [33X[0;0YLet [3Xg[103X be a pcp-element and [22Xg_1, ..., g_n[122X a polycyclic generating sequence of
+  the  underlying  pc-presented  group.  Let  [22XC_1,  ..., C_n[122X be the polycyclic
+  series defined by [22Xg_1, ..., g_n[122X.[133X
+  
+  [33X[0;0YThe  [13Xdepth[113X  of  a  non-trivial element [22Xg[122X of a pcp-group (with respect to the
+  defining  generators)  is the integer [22Xi[122X such that [22Xg ∈ C_i ∖ C_i+1[122X. The depth
+  of  the  trivial  element  is  defined  to be [22Xn+1[122X. If [22Xgnot=1[122X has depth [22Xi[122X and
+  [22Xg_i^e_i  ⋯  g_n^e_n[122X  is  the  collected  word for [22Xg[122X, then [22Xe_i[122X is the [13Xleading
+  exponent[113X of [22Xg[122X.[133X
+  
+  [33X[0;0YIf [22Xg[122X has depth [22Xi[122X, then we call [22Xr_i = [C_i:C_i+1][122X the [13Xfactor order[113X of [22Xg[122X. If [22Xr
+  <  ∞[122X,  then  the  smallest positive integer [22Xl[122X with [22Xg^l ∈ C_i+1[122X is the called
+  [13Xrelative  order[113X  of [22Xg[122X. If [22Xr=∞[122X, then the relative order of [22Xg[122X is defined to be
+  [22X0[122X.  The  index [22Xe[122X of [22X⟨ g,C_i+1⟩[122X in [22XC_i[122X is called [13Xrelative index[113X of [22Xg[122X. We have
+  that [22Xr = el[122X.[133X
+  
+  [33X[0;0YWe  call  a  pcp-element  [13Xnormed[113X,  if  its  leading exponent is equal to its
+  relative  index.  For each pcp-element [22Xg[122X there exists an integer [22Xe[122X such that
+  [22Xg^e[122X is normed.[133X
+  
+  [1X4.2-1 Collector[101X
+  
+  [33X[1;0Y[29X[2XCollector[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Ythe collector to which the pcp-element [3Xg[103X belongs.[133X
+  
+  [1X4.2-2 Exponents[101X
+  
+  [33X[1;0Y[29X[2XExponents[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  the  exponent  vector  of  the  pcp-element  [3Xg[103X  with respect to the
+  defining generating set of the underlying collector.[133X
+  
+  [1X4.2-3 GenExpList[101X
+  
+  [33X[1;0Y[29X[2XGenExpList[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  the  generators  exponent list of the pcp-element [3Xg[103X with respect to
+  the defining generating set of the underlying collector.[133X
+  
+  [1X4.2-4 NameTag[101X
+  
+  [33X[1;0Y[29X[2XNameTag[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Ythe  name used for printing the pcp-element [3Xg[103X. Printing is done by using the
+  name tag and appending the generator number of [3Xg[103X.[133X
+  
+  [1X4.2-5 Depth[101X
+  
+  [33X[1;0Y[29X[2XDepth[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns the depth of the pcp-element [3Xg[103X relative to the defining generators.[133X
+  
+  [1X4.2-6 LeadingExponent[101X
+  
+  [33X[1;0Y[29X[2XLeadingExponent[102X( [3Xg[103X ) [32X operation[133X
+  
+  [33X[0;0Yreturns  the  leading  exponent  of  pcp-element  [3Xg[103X relative to the defining
+  generators. If [3Xg[103X is the identity element, the functions returns 'fail'[133X
+  
+  [1X4.2-7 RelativeOrder[101X
+  
+  [33X[1;0Y[29X[2XRelativeOrder[102X( [3Xg[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns the relative order of the pcp-element [3Xg[103X with respect to the defining
+  generators.[133X
+  
+  [1X4.2-8 RelativeIndex[101X
+  
+  [33X[1;0Y[29X[2XRelativeIndex[102X( [3Xg[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns the relative index of the pcp-element [3Xg[103X with respect to the defining
+  generators.[133X
+  
+  [1X4.2-9 FactorOrder[101X
+  
+  [33X[1;0Y[29X[2XFactorOrder[102X( [3Xg[103X ) [32X attribute[133X
+  
+  [33X[0;0Yreturns  the  factor order of the pcp-element [3Xg[103X with respect to the defining
+  generators.[133X
+  
+  [1X4.2-10 NormingExponent[101X
+  
+  [33X[1;0Y[29X[2XNormingExponent[102X( [3Xg[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns a positive integer [22Xe[122X such that the pcp-element [3Xg[103X raised to the power
+  of [22Xe[122X is normed.[133X
+  
+  [1X4.2-11 NormedPcpElement[101X
+  
+  [33X[1;0Y[29X[2XNormedPcpElement[102X( [3Xg[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the normed element corresponding to the pcp-element [3Xg[103X.[133X
+  
+  
+  [1X4.3 [33X[0;0YPcp-groups - groups of pcp-elements[133X[101X
+  
+  [33X[0;0YA [13Xpcp-group[113X is a group consisting of pcp-elements such that all pcp-elements
+  in  the  group  share  the  same  collector.  Thus  the group [22XG[122X defined by a
+  polycyclic presentation and all its subgroups are pcp-groups.[133X
+  
+  [1X4.3-1 PcpGroupByCollector[101X
+  
+  [33X[1;0Y[29X[2XPcpGroupByCollector[102X( [3Xcoll[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XPcpGroupByCollectorNC[102X( [3Xcoll[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns a pcp-group build from the collector [3Xcoll[103X.[133X
+  
+  [33X[0;0YThe   function   calls  [2XUpdatePolycyclicCollector[102X  ([14X3.1-6[114X)  and  checks  the
+  confluence (see [2XIsConfluent[102X ([14X3.1-7[114X)) of the collector.[133X
+  
+  [33X[0;0YThe non-check version bypasses these checks.[133X
+  
+  [1X4.3-2 Group[101X
+  
+  [33X[1;0Y[29X[2XGroup[102X( [3Xgens[103X, [3Xid[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns the group generated by the pcp-elements [3Xgens[103X with identity [3Xid[103X.[133X
+  
+  [1X4.3-3 Subgroup[101X
+  
+  [33X[1;0Y[29X[2XSubgroup[102X( [3XG[103X, [3Xgens[103X ) [32X function[133X
+  
+  [33X[0;0Yreturns  a  subgroup  of  the  pcp-group  [3XG[103X  generated  by  the list [3Xgens[103X of
+  pcp-elements from [3XG[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27X ftl := FromTheLeftCollector( 2 );;[127X[104X
+    [4X[25Xgap>[125X [27X SetRelativeOrder( ftl, 1, 2 );[127X[104X
+    [4X[25Xgap>[125X [27X SetConjugate( ftl, 2, 1, [2,-1] );[127X[104X
+    [4X[25Xgap>[125X [27X UpdatePolycyclicCollector( ftl );[127X[104X
+    [4X[25Xgap>[125X [27X G:= PcpGroupByCollectorNC( ftl );[127X[104X
+    [4X[28XPcp-group with orders [ 2, 0 ][128X[104X
+    [4X[25Xgap>[125X [27XSubgroup( G, GeneratorsOfGroup(G){[2]} );[127X[104X
+    [4X[28XPcp-group with orders [ 0 ][128X[104X
+  [4X[32X[104X
+  

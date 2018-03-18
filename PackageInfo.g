@@ -4,19 +4,13 @@
 #W                                                              Werner Nickel
 #W                                                                   Max Horn
 ##
-#H  @(#)$Id$
-##
 
 SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.11",
-Date        := "07/03/2013",
-##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "2.11">
-##  <!ENTITY RELEASEDATE "07 March 2013">
-##  <#/GAPDoc>
+Version     := "2.12",
+Date        := "18/03/2018",
 
 Persons          := [
   rec( LastName      := "Eick",
@@ -24,6 +18,7 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "beick@tu-bs.de",
+       WWWHome       := "http://www.icm.tu-bs.de/~beick",
        PostalAddress := Concatenation(
                "AG Algebra und Diskrete Mathematik\n",
                "Institut Computational Mathematics\n",
@@ -51,11 +46,11 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "max.horn@math.uni-giessen.de",
-       WWWHome       := "http://www.quendi.de/math.php",
+       WWWHome       := "http://www.quendi.de/math",
        PostalAddress := Concatenation( "AG Algebra\n",
                                        "Mathematisches Institut\n",
                                        "Justus-Liebig-Universität Gießen\n",
-                                       "Arndtstrasse 2\n",
+                                       "Arndtstraße 2\n",
                                        "35392 Gießen\n",
                                        "Germany" ),
        Place         := "Gießen, Germany",
@@ -67,12 +62,18 @@ Status         := "accepted",
 CommunicatedBy := "Charles Wright (Eugene)",
 AcceptDate     := "01/2004",
 
-PackageWWWHome := "http://www.icm.tu-bs.de/ag_algebra/software/polycyclic/",
-
-ArchiveFormats := ".tar.gz .tar.bz2",
-ArchiveURL     := Concatenation( ~.PackageWWWHome, "polycyclic-", ~.Version ),
-README_URL     := Concatenation( ~.PackageWWWHome, "README" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+PackageWWWHome  := "https://gap-packages.github.io/polycyclic/",
+README_URL      := Concatenation( ~.PackageWWWHome, "README" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+SourceRepository := rec(
+    Type := "git",
+    URL := "https://github.com/gap-packages/polycyclic",
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/polycyclic-", ~.Version ),
+ArchiveFormats := ".tar.gz",
 
 AbstractHTML   := Concatenation(
   "This package provides various algorithms for computations ",
@@ -90,9 +91,9 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.5",
-  NeededOtherPackages    := [["alnuth", "1.0"],
-                             ["autpgrp","1.4"]],
+  GAP                    := ">= 4.7",
+  NeededOtherPackages    := [["alnuth", "3.0"],
+                             ["autpgrp","1.6"]],
   SuggestedOtherPackages := [ ],
   ExternalConditions     := [ ]
 ),
@@ -100,8 +101,6 @@ Dependencies    := rec(
 AvailabilityTest := ReturnTrue,
 
 TestFile := "tst/testall.g",
-
-Autoload         := true,
 
 Keywords := [
   "finitely generated nilpotent groups",
@@ -128,6 +127,24 @@ Keywords := [
   "maximal subgroups",
   "Schur cover",
   "Schur multiplicator",
-  ]
+  ],
+
+AutoDoc := rec(
+    TitlePage := rec(
+        Copyright := "<Index>License</Index>\
+&copyright; 2003-2018 by Bettina Eick, Max Horn and Werner Nickel<P/>\
+The &Polycyclic; package is free software;\
+you can redistribute it and/or modify it under the terms of the\
+<URL Text=\"GNU General Public License\">http://www.fsf.org/licenses/gpl.html</URL>\
+as published by the Free Software Foundation; either version 2 of the License,\
+or (at your option) any later version.",
+
+        Acknowledgements := "\
+We appreciate very much all past and future comments, suggestions and\
+contributions to this package and its documentation provided by &GAP;\
+users and developers.",
+    )
+),
+
 ));
 
