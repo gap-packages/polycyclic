@@ -6,6 +6,7 @@ env:
 
 addons:
   apt_packages:
+    - pari-gp
     - libgmp-dev
     - libreadline-dev
 
@@ -15,6 +16,7 @@ matrix:
     - env: CFLAGS="-O2" ABI=32
       addons:
         apt_packages:
+          - pari-gp:i386
           - libgmp-dev:i386
           - libreadline-dev:i386
           - gcc-multilib
