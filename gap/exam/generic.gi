@@ -61,57 +61,53 @@ end );
 #M UnitriangularPcpGroup( n, p ) . . . . . . . . for p = 0 we take UT( n, Z )
 ##
 InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
-    local l, c, g, r, i, j, h, f, k, v, o, G;
+    local F, l, c, e, g, r, pairs, i, j, k, o, G;
 
-    if not IsInt(n) or n <= 1 then return fail; fi;
-    if not (IsPrimeInt(p) or p=0) then return fail; fi;
-
+    if not IsPosInt(n) then return fail; fi;
+    if p = 0 then
+        F := Rationals;
+    elif IsPrimeInt(p) then
+        F := GF(p);
+    else
+        return fail;
+    fi;
     l := n*(n-1)/2;
     c := FromTheLeftCollector( l );
 
     # compute matrix generators
     g := [];
+    e := One(F);
     for i in [1..n-1] do
         for j in [1..n-i] do
-            r := IdentityMat( n );
-            r[j][i+j] := 1;
+            r := IdentityMat( n, F );
+            r[j][i+j] := e;
             Add( g, r );
         od;
     od;
 
-    # mod out p if necessary
-    if p > 0 then g := List( g, x -> x * One( GF(p) ) ); fi;
-
-    # get inverses
-    h := List( g, x -> x^-1 );
-
     # read of pc presentation
+    pairs := ListX([1..n-1], i -> [1..n-i], {i,j} -> [j, i+j]);
     for i in [1..l] do
 
         # commutators
         for j in [i+1..l] do
-            v := Comm( g[j], g[i] );
-            if v <> v^0 then
-                if v in g then
-                    k := Position( g, v );
-                    o := [j,1,k,1];
-                elif v in h then
-                    k := Position( h, v );
-                    o := [j,1,k,-1];
-                    if p > 0 then o[4] := o[4] mod p; fi;
-                else
-                    Error("commutator out of range");
-                fi;
-
+            if pairs[i][1] = pairs[j][2] then
+                k := Position(pairs, [pairs[j][1], pairs[i][2]]);
+                o := [j,1,k,1];
                 SetConjugate( c, j, i, o );
+            elif pairs[i][2] = pairs[j][1] then
+                k := Position(pairs, [pairs[i][1], pairs[j][2]]);
+                o := [j,1,k,-1];
+                if p > 0 then o[4] := o[4] mod p; fi;
+                SetConjugate( c, j, i, o );
+            else
+                # commutator is trivial
             fi;
         od;
 
         # powers
         if p > 0 then
             SetRelativeOrder( c, i, p );
-            v := g[i]^p;
-            if v <> v^0 then Error("power out of range"); fi;
         fi;
     od;
 
@@ -119,7 +115,6 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
     UpdatePolycyclicCollector( c );
     G := PcpGroupByCollectorNC( c );
     G!.mats := g;
-    G!.isomorphism := GroupHomomorphismByImagesNC( G, Group(g), Igs(G), g);
 
     # check
     # IsConfluent(c);

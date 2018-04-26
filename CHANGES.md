@@ -7,6 +7,7 @@ This file describes changes in the GAP package 'polycyclic'.
   * Replaced immediate methods for IsTorsionFree and IsFreeAbelian by
     implications, which have zero overhead, while immediate methods can slow
     down GAP
+  * Improved performance of UnitriangularPcpGroup for large n
 
 2.12 (2018-03-18)
 
