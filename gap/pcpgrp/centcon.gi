@@ -284,7 +284,7 @@ ConjugacyElementsBySeries := function( G, g, h, pcps )
             stb := PcpOrbitStabilizer( e*One(F), fac, act, OnRight );
 
             # extract results
-            j := Position( f*One(F), stb.orbit );
+            j := Position( stb.orbit, f*One(F) );
             if IsBool(j) then return false; fi;
             k := k * TransversalElement( j, stb, One(G) );
             stb := AddIgsToIgs( stb.stab, Igs(M) );

@@ -1,5 +1,10 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.13 (YYYY-MM-DD)
+
+  * Fixed bug in IsConjugate
+  * Fixed building the manual via makedoc.g on case-sensitive file systems
+
 2.12 (2018-03-18)
 
   * Improved performance of some orbit algorithms by using dictionaries
