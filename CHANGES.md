@@ -4,6 +4,9 @@ This file describes changes in the GAP package 'polycyclic'.
 
   * Fixed bug in IsConjugate
   * Fixed building the manual via makedoc.g on case-sensitive file systems
+  * Replaced immediate methods for IsTorsionFree and IsFreeAbelian by
+    implications, which have zero overhead, while immediate methods can slow
+    down GAP
 
 2.12 (2018-03-18)
 

@@ -223,18 +223,6 @@ function( G )
     return true;
 end );
 
-# Finite groups are torsion free if and only if they are trivial
-InstallImmediateMethod( IsTorsionFree,
-    IsGroup and IsFinite and HasIsTrivial,
-    0,
-    IsTrivial );
-
-# Finite groups are free abelian if and only if they are trivial
-InstallImmediateMethod( IsFreeAbelian,
-    IsGroup and IsFinite and HasIsTrivial,
-    0,
-    IsTrivial );
-
 # In general, a finitely generated group is free abelian if and only
 # if it is abelian and its abelian invariants are all 0.
 InstallMethod( IsFreeAbelian, [IsFinitelyGeneratedGroup],

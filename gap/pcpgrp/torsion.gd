@@ -29,7 +29,9 @@ DeclareGlobalFunction( "RootSet" );
 # TODO: declare IsTorsionFree for IsMagma or IsObject and not just IsGroup?
 DeclareProperty( "IsTorsionFree", IsGroup );
 InstallSubsetMaintenance( IsTorsionFree, IsGroup and IsTorsionFree, IsGroup );
+
 InstallTrueMethod( IsTorsionFree, IsGroup and IsTrivial );
+InstallTrueMethod( HasIsTorsionFree, IsGroup and IsFinite and IsNonTrivial );
 InstallTrueMethod( IsTorsionFree, IsFreeGroup );
 
 InstallIsomorphismMaintenance( IsTorsionFree, IsGroup and IsTorsionFree, IsGroup );
@@ -38,6 +40,7 @@ InstallIsomorphismMaintenance( IsTorsionFree, IsGroup and IsTorsionFree, IsGroup
 DeclareProperty( "IsFreeAbelian", IsGroup );
 InstallSubsetMaintenance( IsFreeAbelian, IsGroup and IsFreeAbelian, IsGroup );
 InstallTrueMethod( IsFreeAbelian, IsGroup and IsTrivial );
+InstallTrueMethod( HasIsFreeAbelian, IsGroup and IsFinite and IsNonTrivial );
 InstallTrueMethod( IsFreeAbelian, IsFinitelyGeneratedGroup and IsTorsionFree and IsAbelian);
 
 InstallIsomorphismMaintenance( IsFreeAbelian, IsGroup and IsFreeAbelian, IsGroup );
