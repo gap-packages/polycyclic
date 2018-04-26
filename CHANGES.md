@@ -1,6 +1,6 @@
 This file describes changes in the GAP package 'polycyclic'.
 
-2.13 (YYYY-MM-DD)
+2.13 (2018-04-26)
 
   * Fixed bug in IsConjugate
   * Fixed building the manual via makedoc.g on case-sensitive file systems
