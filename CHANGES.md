@@ -1,5 +1,9 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.13.1 (2018-04-27)
+
+  * Removed a regression test case which failed if no other packages are loaded
+
 2.13 (2018-04-26)
 
   * Fixed bug in IsConjugate

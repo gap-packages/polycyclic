@@ -74,17 +74,7 @@ Pcp-group with orders [ 5, 5 ]
 gap> ImagesSet(iso,I) = J;
 true
 
-# infinite group example where the intersection algroithm isn't implemented (non-normalizing case)
-gap> G := SpaceGroupPcpGroup(3,99 : noassert);;
-gap> g := GeneratorsOfGroup(G);;
-gap> H1:=Subgroup(G,[g[2], g[3]*g[4], g[6]^3]);
-Pcp-group with orders [ 2, 2, 0, 0 ]
-gap> H2:=Subgroup(G,[g[1], g[4]*g[5]]);
-Pcp-group with orders [ 2, 2, 0, 0, 0 ]
-gap> Intersection(H1,H2);
-Error, sorry: intersection for non-normal groups not yet installed
-
-# infinite group example where the intersection algroithm isn't implemented (non-normalizing case)
+# infinite group example where the intersection algorithm isn't implemented (non-normalizing case)
 gap> G := ExamplesOfSomePcpGroups(8);;
 gap> g := GeneratorsOfGroup(G);;
 gap> H1:=Subgroup(G,[g[2], g[3]*g[4]]);
