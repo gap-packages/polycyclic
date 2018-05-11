@@ -56,7 +56,7 @@ InstallGlobalFunction( OneCoboundariesEX, function( A )
 end );
 
 InstallGlobalFunction( OneCoboundariesCR, function( A )
-    return OneCoboundariesEX( A );
+    return OneCoboundariesEX( A ).basis;
 end );
 
 #############################################################################

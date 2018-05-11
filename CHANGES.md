@@ -1,5 +1,10 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+X.YY (YYYY-MM-D)
+
+  * Fixed a bug in OneCoboundariesCR which lead to an error in OneCohomologyCR
+  * ...
+
 2.13.1 (2018-04-27)
 
   * Removed a regression test case which failed if no other packages are loaded
