@@ -86,7 +86,7 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
     od;
 
     # read of pc presentation
-    pairs := ListX([1..n-1], i -> [1..n-i], {i,j} -> [j, i+j]);
+    pairs := ListX([1..n-1], i -> [1..n-i], function(i,j) return [j, i+j]; end);
     for i in [1..l] do
 
         # commutators

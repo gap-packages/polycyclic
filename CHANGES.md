@@ -3,6 +3,7 @@ This file describes changes in the GAP package 'polycyclic'.
 X.YY (YYYY-MM-D)
 
   * Fixed a bug in OneCoboundariesCR which lead to an error in OneCohomologyCR
+  * Restored compatibility with GAP versions before 4.9
   * ...
 
 2.13.1 (2018-04-27)
