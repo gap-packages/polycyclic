@@ -1,12 +1,11 @@
 This file describes changes in the GAP package 'polycyclic'.
 
-X.YY (YYYY-MM-D)
+2.14 (2018-05-12)
 
   * Fixed a bug in OneCoboundariesCR which lead to an error in OneCohomologyCR
   * Fixed a bug where the normal closure of an abelian subgroup could end up
     being flagged as abelian, even though it was not
   * Restored compatibility with GAP versions before 4.9
-  * ...
 
 2.13.1 (2018-04-27)
 

@@ -9,8 +9,8 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.13.1",
-Date        := "27/04/2018",
+Version     := "2.14",
+Date        := "12/05/2018",
 
 Persons          := [
   rec( LastName      := "Eick",
