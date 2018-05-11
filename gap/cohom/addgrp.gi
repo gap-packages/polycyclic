@@ -14,7 +14,7 @@
 ##
 AdditiveIgsParallel := function( gens, imgs )
     local n, zero, ind, indd, todo, tododo, g, gg, d, h, hh, k, eg,
-          eh, e, c, i, sub;
+          eh, e, c, is;
 
     if Length( gens ) = 0 then return [gens, imgs]; fi;
 

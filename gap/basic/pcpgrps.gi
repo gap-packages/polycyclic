@@ -530,7 +530,6 @@ function( K, U )
     gensK := List( gensK, x -> ReducedByIgs( pcsN, x ) );
     gensK := Filtered( gensK, x -> x <> id );
 
-    done := false;
     repeat
         done := true;
         tmpN := ShallowCopy( pcsN );

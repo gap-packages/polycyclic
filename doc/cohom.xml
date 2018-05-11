@@ -139,8 +139,8 @@ and second cohomology group as described above.
 <Func Name="OneCohomologyCR" Arg="C"/>
 <Func Name="TwoCohomologyCR" Arg="C"/>
 <Description>
-	The first 4 functions return bases of the corresponding group. The
-	last 2 functions need to describe a factor of additive abelian groups.
+	The first four functions return bases of the corresponding group. The
+	last two functions need to describe a factor of additive abelian groups.
 	They return the following descriptions for these factors.
 	<List>
 		<Mark><A>gcc</A></Mark>
