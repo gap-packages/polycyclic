@@ -6,10 +6,10 @@
                       [1X Computation with polycyclic groups [101X
   
   
-                                     2.13.1
+                                      2.14
   
   
-                                 27 April 2018
+                                  12 May 2018
   
   
                                   Bettina Eick

@@ -1,6 +1,6 @@
 name: Polycyclic
-version: 2.13.1
-date: 2018-04-27
+version: 2.14
+date: 2018-05-12
 description: |
     Computation with polycyclic groups
 
@@ -34,7 +34,7 @@ packageinfo: https://gap-packages.github.io/polycyclic/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/polycyclic/releases/download/v2.13.1/polycyclic-2.13.1.tar.gz
+      url: https://github.com/gap-packages/polycyclic/releases/download/v2.14/polycyclic-2.14.tar.gz
 
 abstract: |
     This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.

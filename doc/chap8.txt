@@ -110,9 +110,9 @@
   [33X[1;0Y[29X[2XOneCohomologyCR[102X( [3XC[103X ) [32X function[133X
   [33X[1;0Y[29X[2XTwoCohomologyCR[102X( [3XC[103X ) [32X function[133X
   
-  [33X[0;0YThe  first  4  functions return bases of the corresponding group. The last 2
-  functions  need to describe a factor of additive abelian groups. They return
-  the following descriptions for these factors.[133X
+  [33X[0;0YThe  first  four functions return bases of the corresponding group. The last
+  two  functions  need  to  describe a factor of additive abelian groups. They
+  return the following descriptions for these factors.[133X
   
   [8X[3Xgcc[103X[8X[108X
         [33X[0;6Ythe basis of the cocycles of [3XC[103X.[133X
