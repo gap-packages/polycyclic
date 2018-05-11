@@ -549,7 +549,9 @@ function( K, U )
     until done;
 
     # set up result
-    return SubgroupByIgs( Parent(U), pcsN );
+    N := Group( pcsN );
+    SetIgs( N, pcsN );
+    return N;
 end);
 
 #############################################################################
