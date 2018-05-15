@@ -171,13 +171,13 @@ end;
     astart := coc![ PC_ABELIAN_START ];
 
     ##  the four stacks
-    wst   := coc![ PC_WORD_STACK ];
-    west  := coc![ PC_WORD_EXPONENT_STACK ];
-    sst   := coc![ PC_SYLLABLE_STACK ];
-    est   := coc![ PC_EXPONENT_STACK ];
+    wst   := [ ];
+    west  := [ ];
+    sst   := [ ];
+    est   := [ ];
 
     ##  initialise
-    bottom    := coc![ PC_STACK_POINTER ];
+    bottom    := 0;
     stp       := bottom + 1;
     wst[stp]  := w;
     west[stp] := 1;

@@ -13,12 +13,12 @@ CollectPolycyclicGap := function( pcp, ev, w )
     exp := pcp![ PC_EXPONENTS ];
     com := pcp![ PC_COMMUTE ];
 
-    wst  := pcp![ PC_WORD_STACK ];
-    west := pcp![ PC_WORD_EXPONENT_STACK ];
-    sst  := pcp![ PC_SYLLABLE_STACK ];
-    est  := pcp![ PC_EXPONENT_STACK ];
+    wst  := [ ];
+    west := [ ];
+    sst  := [ ];
+    est  := [ ];
 
-    bottom    := pcp![ PC_STACK_POINTER ];
+    bottom    := 0;
     stp       := bottom + 1;
     wst[stp]  := w;
     west[stp] := 1;
@@ -125,9 +125,6 @@ CollectPolycyclicGap := function( pcp, ev, w )
                     for hh in [com[g],com[g]-1..h+1] do
                         if ev[hh] <> 0 then
                             stp := stp+1;
-                            if stp > pcp![ PC_STACK_SIZE ] then
-                                return fail;
-                            fi;
                             if ev[hh] > 0 then
                                 wst[stp]  := pcp![ PC_GENERATORS ][hh];
                                 west[stp] := ev[hh];
@@ -147,9 +144,6 @@ CollectPolycyclicGap := function( pcp, ev, w )
                 while h > g do
                     if ev[h] <> 0 then
                         stp := stp+1;
-                        if stp > pcp![ PC_STACK_SIZE ] then
-                            return fail;
-                        fi;
                         if ev[h] > 0 then
                             if IsBound( cnj[h][g] ) then
                                 wst[stp]  := cnj[h][g];
@@ -180,9 +174,6 @@ CollectPolycyclicGap := function( pcp, ev, w )
                 ev[g] := ev[g] - exp[g];
                 if IsBound( pow[g] ) then
                     stp := stp+1;
-                    if stp > pcp![ PC_STACK_SIZE ] then
-                        return fail;
-                    fi;
                     wst[stp]  := pow[g];
                     west[stp] := 1;
                     sst[stp]  := 1;
