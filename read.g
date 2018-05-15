@@ -24,7 +24,18 @@ if not IsBound( USE_NORMED_PCS@ ) then USE_NORMED_PCS@ := false; fi;
 if not IsBound( USED_PRIMES@ ) then USED_PRIMES@ := [3]; fi;
 if not IsBound( VERIFY@ ) then VERIFY@ := true; fi;
 
-
+##
+## Starting with GAP 4.10, the kernel function CollectPolycyclic does not use
+## the stacks inside the pcp collector objects anymore, so we can omit them,
+## to considerably reduce their size. To simplify the transition to this while
+## GAP 4.10 is under development, GAP versions which have the modified
+## 'CollectPolycyclic' set the global constant NO_STACKS_INSIDE_COLLECTORS to
+## true. If this global is missing, that means the stacks are in fact needed,
+## and thus we set NO_STACKS_INSIDE_COLLECTORS to false in that case.
+##
+if not IsBound(NO_STACKS_INSIDE_COLLECTORS) then
+  BindGlobal("NO_STACKS_INSIDE_COLLECTORS", false);
+fi;
 
 ##
 ## matrix -- basics about matrices, rational spaces, lattices and modules
