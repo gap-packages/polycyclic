@@ -54,9 +54,24 @@ exponent word as introduced in Chapter <Ref Chap="Collectors"/>.
 </ManSection>
 
 <ManSection>
+<Filt Name="IsPcpElementCollection" Arg="obj" Type='Category'/>
+<Description>
+	returns true if the object <A>obj</A> is a collection of pcp-elements.
+</Description>
+</ManSection>
+
+<ManSection>
 <Filt Name="IsPcpElementRep" Arg="obj" Type='Representation'/>
 <Description>
 	returns true if the object <A>obj</A> is represented as a pcp-element.
+</Description>
+</ManSection>
+
+<ManSection>
+<Filt Name="IsPcpGroup" Arg="obj" Type='Filter'/>
+<Description>
+	returns true if the object <A>obj</A> is a group 
+        and also a pcp-element collection.
 </Description>
 </ManSection>
 
