@@ -9,7 +9,7 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.14",
+Version     := "2.14dev",
 Date        := "12/05/2018",
 
 Persons          := [
@@ -91,7 +91,7 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.7",
+  GAP                    := ">= 4.9",
   NeededOtherPackages    := [["alnuth", "3.0"],
                              ["autpgrp","1.6"]],
   SuggestedOtherPackages := [ ],
