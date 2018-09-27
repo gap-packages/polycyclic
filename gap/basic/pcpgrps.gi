@@ -94,17 +94,18 @@ end );
 ##
 #M Random( G )
 ##
-InstallMethod( Random, "for a pcp group", [ IsPcpGroup ],
-function( G )
+InstallMethodWithRandomSource( Random, "for a random source and a pcp group",
+                               [ IsRandomSource, IsPcpGroup ],
+function( rs, G )
     local pcp, rel, g, i;
     pcp := Pcp(G);
     rel := RelativeOrdersOfPcp( pcp );
     g   := [];
     for i in [1..Length(rel)] do
         if rel[i] = 0 then
-            g[i] := Random( Integers );
+            g[i] := Random( rs, Integers );
         else
-            g[i] := Random( [0..rel[i]-1] );
+            g[i] := Random( rs, 0, rel[i]-1 );
         fi;
     od;
     return MappedVector( g, pcp );
