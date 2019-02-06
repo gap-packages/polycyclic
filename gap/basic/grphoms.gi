@@ -7,74 +7,86 @@
 ##
 ## Functions to deal with homomorphisms to and from pcp groups.
 ##
+## This function is modified version of GAP's DoGGMBINC
 
 BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
-    local mapi, filter, type, hom, pcgs, p, l, obj_args;
+  local mapi, filter, type, hom, pcgs, p, l, obj_args;
 
-    hom  := rec( );
-    if Length( gens ) <> Length( imgs ) then
-        Error("<gens> and <imgs> must be lists of same length");
+  hom  := rec( );
+  if Length(gens)<>Length(imgs) then
+    Error("<gens> and <imgs> must be lists of same length");
+  fi;
+
+  if not HasIsHandledByNiceMonomorphism(G) and ValueOption("noassert")<>true then
+    Assert( 2, ForAll( gens, x -> x in G ) );
+  fi;
+  if not HasIsHandledByNiceMonomorphism(H) and ValueOption("noassert")<>true then
+    Assert( 2, ForAll( imgs, x -> x in H ) );
+  fi;
+
+  mapi := [Immutable(gens), Immutable(imgs)];
+
+  filter := IsGroupGeneralMappingByImages and HasSource and HasRange
+            and HasMappingGeneratorsImages;
+
+  if IsPcpGroup(G) then
+    hom!.igs_gens_to_imgs := IgsParallel( gens, imgs );
+    filter := filter and IsFromPcpGHBI;
+  elif IsPcGroup( G ) and IsPrimeOrdersPcgs(Pcgs(G))  then
+    filter := filter and IsPcGroupGeneralMappingByImages;
+    pcgs  := CanonicalPcgsByGeneratorsWithImages( Pcgs(G), mapi[1], mapi[2] );
+    hom.sourcePcgs       := pcgs[1];
+    hom.sourcePcgsImages := pcgs[2];
+    if pcgs[1]=Pcgs(G) then
+      filter := filter and IsTotal;
     fi;
+  elif IsPcgs( gens )  then
+    filter := filter and IsGroupGeneralMappingByPcgs;
+    hom.sourcePcgs       := mapi[1];
+    hom.sourcePcgsImages := mapi[2];
 
-    mapi := [Immutable(gens), Immutable(imgs)];
-
-    filter := IsGroupGeneralMappingByImages
-            and HasSource and HasRange and HasMappingGeneratorsImages;
-
-	if IsPcpGroup(G) then
-        hom!.igs_gens_to_imgs := IgsParallel( gens, imgs );
-        filter := IsFromPcpGHBI;
-	elif IsPcGroup( G ) and IsPrimeOrdersPcgs(Pcgs(G))  then
-		filter := filter and IsPcGroupGeneralMappingByImages;
-		pcgs  := CanonicalPcgsByGeneratorsWithImages( Pcgs(G), mapi[1], mapi[2] );
-		hom.sourcePcgs       := pcgs[1];
-		hom.sourcePcgsImages := pcgs[2];
-		if pcgs[1]=Pcgs(G) then
-			filter := filter and IsTotal;
-		fi;
-	elif IsPcgs( gens )  then
-		filter := filter and IsGroupGeneralMappingByPcgs;
-		hom.sourcePcgs       := mapi[1];
-		hom.sourcePcgsImages := mapi[2];
-    elif IsSubgroupFpGroup(G) then
-	  if HasIsWholeFamily(G) and IsWholeFamily(G)
-		# total on free generators
-		and Set(FreeGeneratorsOfFpGroup(G))=Set(List(gens,UnderlyingElement))
-		then
-		  l:=List(gens,UnderlyingElement);
-		  p:=List(l,i->Position(FreeGeneratorsOfFpGroup(G),i));
-		  # test for duplicate generators, same images
-		  if Length(gens)=Length(FreeGeneratorsOfFpGroup(G)) or
-			ForAll([1..Length(gens)],x->imgs[x]=imgs[Position(l,l[x])]) then
-			filter := filter and IsFromFpGroupStdGensGeneralMappingByImages;
-			hom.genpositions:=p;
-		  else
-			filter := filter and IsFromFpGroupGeneralMappingByImages;
-		  fi;
-	  else
-		filter := filter and IsFromFpGroupGeneralMappingByImages;
-	  fi;
-    elif IsPermGroup(G) then
-        filter := filter and IsPermGroupGeneralMappingByImages;
+  # Do we map a subgroup of a free group or an fp group by a subset of its
+  # standard generators?
+  # (So we can used MappedWord for mapping)?
+  elif IsSubgroupFpGroup(G) then
+    if HasIsWholeFamily(G) and IsWholeFamily(G)
+      # total on free generators
+      and Set(FreeGeneratorsOfFpGroup(G))=Set(List(gens,UnderlyingElement))
+      then
+        l:=List(gens,UnderlyingElement);
+        p:=List(l,i->Position(FreeGeneratorsOfFpGroup(G),i));
+        # test for duplicate generators, same images
+        if Length(gens)=Length(FreeGeneratorsOfFpGroup(G)) or
+          ForAll([1..Length(gens)],x->imgs[x]=imgs[Position(l,l[x])]) then
+          filter := filter and IsFromFpGroupStdGensGeneralMappingByImages;
+          hom.genpositions:=p;
+        else
+          filter := filter and IsFromFpGroupGeneralMappingByImages;
+        fi;
+    else
+      filter := filter and IsFromFpGroupGeneralMappingByImages;
     fi;
+  elif IsPermGroup(G) then
+      filter := filter and IsPermGroupGeneralMappingByImages;
+  fi;
 
-	if IsPcpGroup(H) then
-        hom!.igs_imgs_to_gens := IgsParallel( imgs, gens );
-        filter := filter and IsToPcpGHBI;
-    elif IsSubgroupFpGroup(H) then
-        filter := filter and IsToFpGroupGeneralMappingByImages;
-    elif IsPcGroup(H) then
-        filter := filter and IsToPcGroupGeneralMappingByImages;
-    elif IsPermGroup(H) then
-        filter := filter and IsToPermGroupGeneralMappingByImages;
-    fi;
+  if IsPermGroup(H) then
+    filter := filter and IsToPermGroupGeneralMappingByImages;
+  elif IsPcGroup(H) then
+    filter := filter and IsToPcGroupGeneralMappingByImages;
+  elif IsSubgroupFpGroup(H) then
+    filter := filter and IsToFpGroupGeneralMappingByImages;
+  elif IsPcpGroup(H) then
+    hom!.igs_imgs_to_gens := IgsParallel( imgs, gens );
+    filter := filter and IsToPcpGHBI;
+  fi;
 
-   obj_args := [
-	 hom,
-	 , # Here the type will be inserted
-	 Source, G,
-	 Range, H,
-	 MappingGeneratorsImages, mapi ];
+  obj_args := [
+    hom,
+    , # Here the type will be inserted
+    Source, G,
+    Range, H,
+    MappingGeneratorsImages, mapi ];
 
   if HasGeneratorsOfGroup(G)
      and IsIdenticalObj(GeneratorsOfGroup(G),mapi[1]) then
@@ -95,7 +107,7 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
 
   CallFuncList(ObjectifyWithAttributes, obj_args);
 
-    return hom;
+  return hom;
 end );
 
 #############################################################################
