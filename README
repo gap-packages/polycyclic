@@ -71,9 +71,6 @@ directories:
 
         doc             the manual
 
-        htm             the manual as web pages, start with the page
-                        htm/chapters.htm 
-
         gap             the GAP code, it contains
 
                 action   actions of polycyclic groups and orbit-stabilizer
@@ -83,8 +80,6 @@ directories:
                 matrep   matrix representations for pcp groups
                 matrix   basic stuff for matrices and lattices
                 pcpgrp   higher level functions for pcp groups
-
-        etc              developers' stuff
 
 
 
@@ -107,9 +102,7 @@ also the GAP 4 manual about the installation of GAP packages.
     polycyclic.tar is present in pkg and that the current directory is
     pkg.  All that needs to be done is to unpack the archive.
 
-    sh > gunzip polycyclic.tar.gz        # for the gzipped tar-archive
-                                         # skip if you have the .tar version
-    sh > tar xf polycyclic.tar 
+    sh > tar xzf polycyclic.tar.gz 
 
     The tar-command has unpacked the code into a directory called
     'polycyclic' in the current directory. You can check if GAP
@@ -132,10 +125,7 @@ also the GAP 4 manual about the installation of GAP packages.
     sh > cd mygap
     sh > mkdir pkg
     sh > mv polycyclic.tar.gz pkg
-    sh > gunzip polycyclic.tar.gz        # for the gzipped tar-archive
-                                         # skip if you have the .tar version
-
-    sh > tar xf polycyclic.tar 
+    sh > tar xzf polycyclic.tar 
 
     The tar-command has unpacked the code into a directory called
     'polycyclic' in the current directory. You can check if GAP
@@ -148,5 +138,4 @@ also the GAP 4 manual about the installation of GAP packages.
     [... startup messages ...]
     gap> LoadPackage("polycyclic");
     true
-    gap>     
-
+    gap> 
