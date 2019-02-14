@@ -10,7 +10,8 @@ SetPackageInfo( rec(
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
 Version     := "2.14dev",
-Date        := "12/05/2018",
+Date        := "12/05/2018", # dd/mm/yyyy format
+License     := "GPL-2.0-or-later",
 
 Persons          := [
   rec( LastName      := "Eick",
