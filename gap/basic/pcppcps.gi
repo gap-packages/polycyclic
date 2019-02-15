@@ -120,174 +120,175 @@ IGSValFun := IGSValFun4;
 ##
 #F AddToIgs( <igs>, <gens> )
 ##
-InstallGlobalFunction( AddToIgs, function( igs, gens )
-    local col, rel, n, l, ind, g, i, nex, val, j, f, h, e, a, d, k, b, u, t;
+InstallGlobalFunction(AddToIgs, function(igs, gens)
+    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, e, a, d, k, b, u, t;
 
-    if Length( gens ) = 0 then return igs; fi;
+    if Length(gens) = 0 then return igs; fi;
 
     # get information
-    col := Collector( gens[1] );
-    rel := RelativeOrders( col );
-    n   := NumberOfGenerators( col );
-    l   := n+1;
+    coll := Collector(gens[1]);
+    rels := RelativeOrders(coll);
+    n    := NumberOfGenerators(coll);
+    c    := n+1;
 
     # set up
-    ind := ListWithIdenticalEntries(n, false );
+    ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := NormedPcpElement(g); od;
 
     # do a reduction step
-    l := TailLimit( ind, l );
-    nex := Filtered(gens, x -> Depth(x)<l);
-    val := List(nex, x -> IGSValFun(x));
+    c := TailLimit(ind, c);
+    todo := Set(Filtered(gens, x -> Depth(x) < c));
+    val := List(todo, x -> IGSValFun(x));
 
     # loop over to-do list until it is empty
-    while Length( nex ) > 0 and l > 1 do
+    while Length(todo) > 0 and c > 1 do
         j := Position(val, Minimum(val));
-        g := Remove(nex, j);
-        i := Depth(g);
+        g := Remove(todo, j);
+        d := Depth(g);
         f := [];
 
         # shift g into ind
-        while i < l do
-            h := ind[i];
+        while d < c do
+            h := ind[d];
             if IsBool(h) then
-                ind[i] := NormedPcpElement(g);
+                ind[d] := NormedPcpElement(g);
                 g := g^0;
-                Add(f, i);
-            elif IsPrime(rel[i]) then
+                Add(f, d);
+            elif IsPrime(rels[d]) then
                 a := LeadingExponent(g);
                 g := g*h^-a;
             else
+                # reduce g with h
                 a := LeadingExponent(g);
                 b := LeadingExponent(h);
                 e := Gcdex(a, b);
-                if e.coeff1 = 0 then
-                    g := (g^e.coeff3) * (h^e.coeff4);
-                else
+
+                if e.coeff1 <> 0 then
                     k := (g^e.coeff1) * (h^e.coeff2);
-                    g := (g^e.coeff3) * (h^e.coeff4);
-                    ind[i] := NormedPcpElement(k);
-                    Add(f, i);
+                    ind[d] := NormedPcpElement(k);
+                    Add(f, d);
                 fi;
+
+                # adjust g
+                g := (g^e.coeff3) * (h^e.coeff4);
             fi;
-            i := Depth( g );
+            d := Depth(g);
         od;
-        l := TailLimit( ind, l );
-        ReduceExpo( ind, nex, rel );
+        c := TailLimit(ind, c);
+        ReduceExpo(ind, todo, rels);
 
         # add powers and commutators
-        for i in f do
-            g := ind[i];
-            if rel[i] > 0 then
-                k := g ^ RelativeOrderPcp( g );
-                if Depth(k) < l then Add( nex, k ); fi;
+        for d in f do
+            g := ind[d];
+            if rels[d] > 0 then
+                k := g ^ RelativeOrderPcp(g);
+                if Depth(k) < c then Add(todo, k); fi;
             fi;
-            for j in [1..l-1] do
-                if not IsBool( ind[j] ) then
-                    k := Comm( g, ind[j] );
-                    if Depth(k) < l then Add( nex, k ); fi;
-                    if rel[j] = 0 then
-                        k := Comm( g, ind[j]^-1 );
-                        if Depth(k) < l then  Add( nex, k ); fi;
+            for j in [1..c-1] do
+                if not IsBool(ind[j]) then
+                    k := Comm(g, ind[j]);
+                    if Depth(k) < c then Add(todo, k); fi;
+                    if rels[j] = 0 then
+                        k := Comm(g, ind[j]^-1);
+                        if Depth(k) < c then Add(todo, k); fi;
                     fi;
                 fi;
             od;
         od;
 
         # reduce
-        nex := Filtered(nex, x -> Depth(x)<l);
-        val := List(nex, x -> IGSValFun(x));
+        todo := Filtered(todo, x -> Depth(x)<c);
+        val := List(todo, x -> IGSValFun(x));
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
     # return resulting list
-    ind := Filtered( ind, x -> not IsBool( x ) );
+    ind := Filtered(ind, x -> not IsBool(x));
     if CHECK_IGS@ then
-        Info( InfoPcpGrp, 1, "checking igs ");
+        Info(InfoPcpGrp, 1, "checking igs ");
         t := CheckIgs(ind, gens);
         if t <> true then Error("igs is incorrect at ",t); fi;
     fi;
     return ind;
 end);
 
-AddToIgs_Old := function( igs, gens )
-    local coll, rels, todo, n, ind, g, d, h, k, eg, eh, e, f, c, i, l;
+AddToIgs_Old := function(igs, gens)
+    local coll, rels, todo, n, ind, g, d, h, k, a, b, e, f, c, i, l;
 
-    if Length( gens ) = 0 then return igs; fi;
+    if Length(gens) = 0 then return igs; fi;
 
     # get information
-    coll := Collector( gens[1] );
-    rels := RelativeOrders( coll );
-    n    := NumberOfGenerators( coll );
+    coll := Collector(gens[1]);
+    rels := RelativeOrders(coll);
+    n    := NumberOfGenerators(coll);
 
     # create new list from igs
-    ind  := ListWithIdenticalEntries(n, false );
+    ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := g; od;
 
     # set counter and add tail as far as possible
-    c := UpdateCounter( ind, gens, n+1 );
+    c := UpdateCounter(ind, gens, n+1);
 
     # create a to-do list and a pointer
-    todo := Set( Filtered( gens, x -> Depth( x ) < c ) );
+    todo := Set(Filtered(gens, x -> Depth(x) < c));
 
     # loop over to-do list until it is empty
-    while Length( todo ) > 0 and c > 1 do
+    while Length(todo) > 0 and c > 1 do
 
-        g := Remove( todo );
-        d := Depth( g );
+        g := Remove(todo);
+        d := Depth(g);
         f := [];
 
         # shift g into ind
         while d < c do
             h := ind[d];
-            if not IsBool( h ) then
-
+            if IsBool(h) then
+                ind[d] := g;
+                g := g^0;
+                Add(f, d);
+            else
                 # reduce g with h
-                eg := LeadingExponent( g );
-                eh := LeadingExponent( h );
-                e  := Gcdex( eg, eh );
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                e := Gcdex(a, b);
 
                 # adjust ind[d] by gcd
                 ind[d] := (g^e.coeff1) * (h^e.coeff2);
-                if e.coeff1 <> 0 then Add( f, d ); fi;
+                if e.coeff1 <> 0 then
+                    Add(f, d);
+                fi;
 
                 # adjust g
                 g := (g^e.coeff3) * (h^e.coeff4);
-            else
-
-                # just add g into ind
-                ind[d] := g;
-                g := g^0;
-                Add( f, d );
             fi;
-            d := Depth( g );
-            c := UpdateCounter( ind, todo, c );
+            d := Depth(g);
+            c := UpdateCounter(ind, todo, c);
         od;
 
-        # now add powers and commutators
+        # add powers and commutators
         for d in f do
             g := ind[d];
-            if d <= Length( rels ) and rels[d] > 0 and d < c then
-                k := g ^ RelativeOrderPcp( g );
-                if Depth(k) < c then  Add( todo, k ); fi;
+            if d <= Length(rels) and rels[d] > 0 and d < c then
+                k := g ^ RelativeOrderPcp(g);
+                if Depth(k) < c then Add(todo, k); fi;
             fi;
             for l in [1..n] do
-                if not IsBool( ind[l] ) and ( d < c  or l < c ) then
-                    k := Comm( g, ind[l] );
-                    if Depth(k) < c then  Add( todo, k ); fi;
-                    k := Comm( g, ind[l]^-1 );
-                    if Depth(k) < c then  Add( todo, k ); fi;
+                if not IsBool(ind[l]) and (d < c  or l < c) then
+                    k := Comm(g, ind[l]);
+                    if Depth(k) < c then Add(todo, k); fi;
+                    k := Comm(g, ind[l]^-1);
+                    if Depth(k) < c then Add(todo, k); fi;
                 fi;
             od;
         od;
 
         # try sorting
-        Sort( todo );
+        Sort(todo);
 
     od;
 
     # return resulting list
-    return Filtered( ind, x -> not IsBool( x ) );
+    return Filtered(ind, x -> not IsBool(x));
 end;
 
 #############################################################################
