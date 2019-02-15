@@ -63,7 +63,7 @@ ReduceExpo := function( ind, gen, rel )
             for j in [1..i-1] do
                 if not IsBool( ind[j] ) then
                     a := Exponents(ind[j])[i];
-                    q := QuotientRemainder(a,b)[1];
+                    q := QuoInt(a,b);
                     if q <> 0 then
                         ind[j] := ind[j]*ind[i]^-q;
                     fi;
@@ -71,7 +71,7 @@ ReduceExpo := function( ind, gen, rel )
             od;
             for j in [1..Length(gen)] do
                 a := Exponents(gen[j])[i];
-                q := QuotientRemainder(a,b)[1];
+                q := QuoInt(a,b);
                 if q <> 0 then
                     gen[j] := gen[j]*ind[i]^-q;
                 fi;
