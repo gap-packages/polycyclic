@@ -121,7 +121,7 @@ IGSValFun := IGSValFun4;
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, e, a, d, k, b, u, t;
+    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, e, a, k, b, u, t;
 
     if Length(gens) = 0 then return igs; fi;
 
