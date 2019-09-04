@@ -63,7 +63,7 @@ CommunicatedBy := "Charles Wright (Eugene)",
 AcceptDate     := "01/2004",
 
 PackageWWWHome  := "https://gap-packages.github.io/polycyclic/",
-README_URL      := Concatenation( ~.PackageWWWHome, "README" ),
+README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 SourceRepository := rec(
     Type := "git",
