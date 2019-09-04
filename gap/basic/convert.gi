@@ -38,7 +38,7 @@ PcpGroupToPcGroup := function( G )
     return GroupByRwsNC( rws );
 end;
 
-InstallMethod( IsomorphismPcGroup, [IsPcpGroup],
+InstallMethod( IsomorphismPcGroup, [IsPcpGroup], NICE_FLAGS,
 function( G )
     local K, H, g, k, h, hom;
     if not IsFinite(G) then TryNextMethod(); fi;
@@ -93,7 +93,7 @@ PcpGroupToFpGroup := function( G )
     return F/r;
 end;
 
-InstallMethod( IsomorphismFpGroup, [IsPcpGroup],
+InstallMethod( IsomorphismFpGroup, [IsPcpGroup], NICE_FLAGS,
 function( G )
     local H, hom;
     H := PcpGroupToFpGroup( G );
@@ -141,7 +141,7 @@ PcGroupToPcpGroup := function( G )
     return PcpGroupByCollector( coll );
 end;
 
-InstallMethod( IsomorphismPcpGroup, [IsPcGroup],
+InstallMethod( IsomorphismPcpGroup, [IsPcGroup], NICE_FLAGS,
 function( G )
     local H, hom;
     H := PcGroupToPcpGroup( G );
