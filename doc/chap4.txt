@@ -45,11 +45,23 @@
   
   [33X[0;0Yreturns true if the object [3Xobj[103X is a pcp-element.[133X
   
-  [1X4.1-4 IsPcpElementRep[101X
+  [1X4.1-4 IsPcpElementCollection[101X
+  
+  [33X[1;0Y[29X[2XIsPcpElementCollection[102X( [3Xobj[103X ) [32X Category[133X
+  
+  [33X[0;0Yreturns true if the object [3Xobj[103X is a collection of pcp-elements.[133X
+  
+  [1X4.1-5 IsPcpElementRep[101X
   
   [33X[1;0Y[29X[2XIsPcpElementRep[102X( [3Xobj[103X ) [32X Representation[133X
   
   [33X[0;0Yreturns true if the object [3Xobj[103X is represented as a pcp-element.[133X
+  
+  [1X4.1-6 IsPcpGroup[101X
+  
+  [33X[1;0Y[29X[2XIsPcpGroup[102X( [3Xobj[103X ) [32X Filter[133X
+  
+  [33X[0;0Yreturns true if the object [3Xobj[103X is a group and also a pcp-element collection.[133X
   
   
   [1X4.2 [33X[0;0YMethods for pcp-elements[133X[101X

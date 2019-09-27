@@ -1,6 +1,6 @@
 name: Polycyclic
-version: 2.14
-date: 2018-05-12
+version: 2.15
+date: 2019-09-27
 description: |
     Computation with polycyclic groups
 
@@ -10,15 +10,15 @@ authors:
     - name: Werner Nickel
       url: http://www.mathematik.tu-darmstadt.de/~nickel/
     - name: Max Horn
-      url: http://www.quendi.de/math
+      url: https://www.quendi.de/math
 
 maintainers:
     - name: Bettina Eick
       url: http://www.icm.tu-bs.de/~beick
     - name: Max Horn
-      url: http://www.quendi.de/math
+      url: https://www.quendi.de/math
 
-GAP: ">= 4.7"
+GAP: ">= 4.9"
 
 needed-pkgs:
     - name: "alnuth"
@@ -29,12 +29,12 @@ needed-pkgs:
       url: "https://gap-packages.github.io/autpgrp/"
 
 www: https://gap-packages.github.io/polycyclic/
-readme: README
+readme: README.md
 packageinfo: https://gap-packages.github.io/polycyclic/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/polycyclic/releases/download/v2.14/polycyclic-2.14.tar.gz
+      url: https://github.com/gap-packages/polycyclic/releases/download/v2.15/polycyclic-2.15.tar.gz
 
 abstract: |
     This package provides various algorithms for computations with polycyclic groups defined by polycyclic presentations.

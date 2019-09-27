@@ -9,8 +9,9 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.14",
-Date        := "12/05/2018",
+Version     := "2.15",
+Date        := "27/09/2019", # dd/mm/yyyy format
+License     := "GPL-2.0-or-later",
 
 Persons          := [
   rec( LastName      := "Eick",
@@ -45,16 +46,15 @@ Persons          := [
        FirstNames    := "Max",
        IsAuthor      := true,
        IsMaintainer  := true,
-       Email         := "max.horn@math.uni-giessen.de",
-       WWWHome       := "http://www.quendi.de/math",
-       PostalAddress := Concatenation( "AG Algebra\n",
-                                       "Mathematisches Institut\n",
-                                       "Justus-Liebig-Universität Gießen\n",
-                                       "Arndtstraße 2\n",
-                                       "35392 Gießen\n",
+       Email         := "max.horn@uni-siegen.de",
+       WWWHome       := "https://www.quendi.de/math",
+       PostalAddress := Concatenation( "Department Mathematik\n",
+                                       "Universität Siegen\n",
+                                       "Walter-Flex-Straße 3\n",
+                                       "57072 Siegen\n",
                                        "Germany" ),
-       Place         := "Gießen, Germany",
-       Institution   := "Justus-Liebig-Universität Gießen"
+       Place         := "Siegen, Germany",
+       Institution   := "Universität Siegen"
      )
     ],
 
@@ -63,7 +63,7 @@ CommunicatedBy := "Charles Wright (Eugene)",
 AcceptDate     := "01/2004",
 
 PackageWWWHome  := "https://gap-packages.github.io/polycyclic/",
-README_URL      := Concatenation( ~.PackageWWWHome, "README" ),
+README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 SourceRepository := rec(
     Type := "git",
@@ -91,7 +91,7 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.7",
+  GAP                    := ">= 4.9",
   NeededOtherPackages    := [["alnuth", "3.0"],
                              ["autpgrp","1.6"]],
   SuggestedOtherPackages := [ ],

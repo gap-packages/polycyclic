@@ -87,7 +87,9 @@
   [2XIsomorphismPcpGroupFromFpGroupWithPcPres[102X 5.9-2 
   [2XIsomorphismUpperUnitriMatGroupPcpGroup[102X 9.2-1 
   [2XIsPcpElement[102X 4.1-3 
-  [2XIsPcpElementRep[102X 4.1-4 
+  [2XIsPcpElementCollection[102X 4.1-4 
+  [2XIsPcpElementRep[102X 4.1-5 
+  [2XIsPcpGroup[102X 4.1-6 
   [2XIsSubgroup[102X 5.2-1 
   [2XIsTorsionFree[102X 7.4-3 
   [2XIsWeightedCollector[102X 3.3-1 

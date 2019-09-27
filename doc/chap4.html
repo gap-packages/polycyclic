@@ -28,7 +28,9 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X786DB93F7862D903">4.1-1 PcpElementByExponentsNC</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X7BBB358C7AA64135">4.1-2 PcpElementByGenExpListNC</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X86083E297D68733B">4.1-3 IsPcpElement</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X7F2C83AD862910B9">4.1-4 IsPcpElementRep</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X8695069A7D5073B7">4.1-4 IsPcpElementCollection</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X7F2C83AD862910B9">4.1-5 IsPcpElementRep</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X8470284A78A6C41B">4.1-6 IsPcpGroup</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap4.html#X790471D07A953E12">4.2 <span class="Heading">Methods for pcp-elements</span></a>
 </span>
@@ -87,12 +89,26 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPcpElement</code>( <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
 <p>returns true if the object <var class="Arg">obj</var> is a pcp-element.</p>
 
+<p><a id="X8695069A7D5073B7" name="X8695069A7D5073B7"></a></p>
+
+<h5>4.1-4 IsPcpElementCollection</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPcpElementCollection</code>( <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
+<p>returns true if the object <var class="Arg">obj</var> is a collection of pcp-elements.</p>
+
 <p><a id="X7F2C83AD862910B9" name="X7F2C83AD862910B9"></a></p>
 
-<h5>4.1-4 IsPcpElementRep</h5>
+<h5>4.1-5 IsPcpElementRep</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPcpElementRep</code>( <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;representation&nbsp;)</td></tr></table></div>
 <p>returns true if the object <var class="Arg">obj</var> is represented as a pcp-element.</p>
+
+<p><a id="X8470284A78A6C41B" name="X8470284A78A6C41B"></a></p>
+
+<h5>4.1-6 IsPcpGroup</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPcpGroup</code>( <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;filter&nbsp;)</td></tr></table></div>
+<p>returns true if the object <var class="Arg">obj</var> is a group and also a pcp-element collection.</p>
 
 <p><a id="X790471D07A953E12" name="X790471D07A953E12"></a></p>
 
