@@ -1,5 +1,14 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.15 (2019-09-27)
+
+  - Added license information to package metadata
+  - Add support for random sources to Random method for pcp-groups
+  - Documented IsPcpGroup and IsPcpElementCollection
+  - Increased rank for IsomorphismPcGroup and IsomorphismFpGroup methods for
+    pcp-groups, to ensure they are still used when all GAP packages are loaded
+  - Some janitorial changes
+
 2.14 (2018-05-12)
 
   * Fixed a bug in OneCoboundariesCR which lead to an error in OneCohomologyCR
