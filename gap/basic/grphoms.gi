@@ -17,12 +17,12 @@ BindGlobal( "GroupGeneralMappingByImages_for_pcp", function( G, H, gens, imgs )
     Error("<gens> and <imgs> must be lists of same length");
   fi;
 
-  if not HasIsHandledByNiceMonomorphism(G) and ValueOption("noassert")<>true then
-    Assert( 2, ForAll( gens, x -> x in G ) );
-  fi;
-  if not HasIsHandledByNiceMonomorphism(H) and ValueOption("noassert")<>true then
-    Assert( 2, ForAll( imgs, x -> x in H ) );
-  fi;
+#   if not HasIsHandledByNiceMonomorphism(G) and ValueOption("noassert")<>true then
+#     Assert( 2, ForAll( gens, x -> x in G ) );
+#   fi;
+#   if not HasIsHandledByNiceMonomorphism(H) and ValueOption("noassert")<>true then
+#     Assert( 2, ForAll( imgs, x -> x in H ) );
+#   fi;
 
   mapi := [Immutable(gens), Immutable(imgs)];
 
