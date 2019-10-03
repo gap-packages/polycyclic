@@ -1,5 +1,9 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.15.1 (2019-10-03)
+
+  - Fix a regression that could lead to an infinite loop in IsomorphismPcGroup
+
 2.15 (2019-09-27)
 
   - Added license information to package metadata
