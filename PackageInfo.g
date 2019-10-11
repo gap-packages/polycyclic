@@ -9,8 +9,8 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.15.1",
-Date        := "03/10/2019", # dd/mm/yyyy format
+Version     := "2.15.2",
+Date        := "11/10/2019", # dd/mm/yyyy format
 License     := "GPL-2.0-or-later",
 
 Persons          := [
@@ -19,12 +19,11 @@ Persons          := [
        IsAuthor      := true,
        IsMaintainer  := true,
        Email         := "beick@tu-bs.de",
-       WWWHome       := "http://www.icm.tu-bs.de/~beick",
+       WWWHome       := "http://www.iaa.tu-bs.de/beick",
        PostalAddress := Concatenation(
-               "AG Algebra und Diskrete Mathematik\n",
-               "Institut Computational Mathematics\n",
+               "Institut Analysis und Algebra\n",
                "TU Braunschweig\n",
-               "Pockelsstr. 14\n",
+               "Universitätsplatz 2\n",
                "D-38106 Braunschweig\n",
                "Germany" ),
        Place         := "Braunschweig",
