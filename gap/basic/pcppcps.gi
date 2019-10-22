@@ -23,9 +23,11 @@ UpdateCounter := function( ind, gens, c )
         i := i - 1;
     od;
 
-    if IsSortedList(gens) and not IsEmpty(gens) and Depth(gens[Length(gens)]) < i then
+    if IsSortedList(gens) and not IsEmpty(gens) and 
+       Depth(gens[Length(gens)]) < i then
         return i + 1;
     fi;
+
     # now try to add elements from gens
     repeat
         g := First( gens, x -> Depth(x) = i and LeadingExponent(x) = 1 );
@@ -116,12 +118,13 @@ IGSValFun4 := function(g)
     return [Length(Exponents(g))-Depth(g), AbsInt(LeadingExponent(g))];
 end;
 IGSValFun := IGSValFun4;
+
 #############################################################################
 ##
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, e, a, k, b, u, t;
+    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, e, a, k, b, u, t, r;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -133,7 +136,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
 
     # set up
     ind  := ListWithIdenticalEntries(n, false);
-    for g in igs do ind[Depth(g)] := NormedPcpElement(g); od;
+    for g in igs do ind[Depth(g)] := g; od;
 
     # do a reduction step
     c := TailLimit(ind, c);
@@ -149,31 +152,35 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
 
         # shift g into ind
         while d < c do
-            h := ind[d];
-            if IsBool(h) then
+
+            r := FactorOrder(g);
+            a := LeadingExponent(g);
+
+            # shift in
+            if IsBool(ind[d]) then 
                 ind[d] := NormedPcpElement(g);
-                g := g^0;
-                Add(f, d);
-            elif IsPrime(rels[d]) then
-                a := LeadingExponent(g);
-                g := g*h^-a;
-            else
-                # reduce g with h
-                a := LeadingExponent(g);
-                b := LeadingExponent(h);
+                Add(f,d);
+            elif not IsPrime(r) then 
+                b := LeadingExponent(ind[d]);
                 e := Gcdex(a, b);
-
-                if e.coeff1 <> 0 then
-                    k := (g^e.coeff1) * (h^e.coeff2);
-                    ind[d] := NormedPcpElement(k);
-                    Add(f, d);
+                if e.coeff1 <> 0 then 
+                    ind[d] := NormedPcpElement((g^e.coeff1)*(ind[d]^e.coeff2));
+                    Add(f,d);
                 fi;
+            fi;
 
-                # adjust g
-                g := (g^e.coeff3) * (h^e.coeff4);
+            # divide off
+            if g = ind[d] then 
+                g := g^0;
+            else
+                b := LeadingExponent(ind[d]);
+                e := Gcdex(a,b);
+                g := g^e.coeff3 * ind[d]^e.coeff4;
             fi;
             d := Depth(g);
         od;
+
+        # adjust
         c := TailLimit(ind, c);
         ReduceExpo(ind, todo, rels);
 
