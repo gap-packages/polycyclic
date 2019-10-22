@@ -546,8 +546,11 @@ AddTailInfo := function( pcp )
     depg := List( gens, Depth );
     # if not IsSortedList( deps ) then Error("add tail info"); fi;
 
-    # set tail to an integer - this is the bad case cenario
+    # set tail to an integer 
     pcp!.tail := Maximum( depg ) + 1;
+    return;
+
+    # the remainder of this function does not what it is supposed to do!
     if not IsSortedList( deps ) then return; fi;
 
     # now figure out whether we can do better
