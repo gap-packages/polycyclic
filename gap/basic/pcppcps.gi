@@ -548,9 +548,11 @@ AddTailInfo := function( pcp )
 
     # set tail to an integer 
     pcp!.tail := Maximum( depg ) + 1;
+
+    # FIXME: the remainder of this function does not what it is supposed to
+    # do, so we skip it for now
     return;
 
-    # the remainder of this function does not what it is supposed to do!
     if not IsSortedList( deps ) then return; fi;
 
     # now figure out whether we can do better
