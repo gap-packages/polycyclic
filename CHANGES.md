@@ -1,5 +1,10 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.16 (2020-MM-DD)
+  - Fix a bug in `NormalIntersection` which could lead to wrong results;
+    this also affected other operations, such `Core` `Intersection`.
+  - Some janitorial changes
+
 2.15.1 (2019-10-03)
 
   - Fix a regression that could lead to an infinite loop in IsomorphismPcGroup
