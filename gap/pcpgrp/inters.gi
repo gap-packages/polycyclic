@@ -5,8 +5,16 @@
 
 #############################################################################
 ##
-#F NormalIntersection( N, U ) . . . . . . . . . . . . . . . . . . . .U \cap N
+#F NormalIntersection( N, U ) . . . . . . . . . . . . . . . . . . .  U \cap N
 ##
+## The core idea here is that the intersection U \cap N equals the kernel of
+## the natural homomorphism \phi : U \to UN/N ; see also section 8.8.1 of
+## the "Handbook of computational group theory".
+## So we can apply the methods for computing kernels of homomorphisms, but we
+## need the group UN for this as well, at least implicitly.
+##
+## The resulting algorithm is quite similar to the Zassenhaus algorithm for
+## simultaneously computing the intersection and sum of two vector spaces.
 InstallMethod( NormalIntersection, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( N, U )
@@ -34,7 +42,7 @@ function( N, U )
         return N;
     fi;
 
-    # if N is a tail
+    # if N is a tail, we can read off the result directly
     s := Depth( igsN[1] );
     if Length( igsN ) = n-s+1 and
        ForAll( igsN, x -> LeadingExponent(x) = 1 ) then
@@ -44,9 +52,9 @@ function( N, U )
 
     # otherwise compute
     id := One(G);
-    ls := ListWithIdenticalEntries( n, id );
-    rs := ListWithIdenticalEntries( n, id );
-    is := ListWithIdenticalEntries( n, id );
+    ls := ListWithIdenticalEntries( n, id ); # ls = left side
+    rs := ListWithIdenticalEntries( n, id ); # rs = right side
+    is := ListWithIdenticalEntries( n, id ); # is = intersection
 
     for g in igsU do
         d := Depth( g );
@@ -60,13 +68,14 @@ function( N, U )
         if ls[d] = id then
             ls[d] := g;
         else
-            Add( I, g );
+            Add( I, [ g, id ] );
         fi;
     od;
 
-    # enter the pairs [ u, 1 ] of <I> into [ <ls>, <rs> ]
-    for al in I do
-        ar := id;
+    # enter the pairs [ ar, al ] of <I> into [ <ls>, <rs> ]
+    for tm in I do
+        al := tm[1];
+        ar := tm[2];
         d  := Depth( al );
 
         # compute sum and intersection
@@ -83,11 +92,22 @@ function( N, U )
 
         # we have a new sum generator
         if al <> id then
-            ls[d] := al;
+            Assert(1, ls[d] = id);
+            ls[d] := al; # new generator of UN
             rs[d] := ar;
+
+            tm := RelativeOrder( al );
+            if tm > 0 then
+                al := al^tm;
+                ar := ar^tm;
+                Add( I, [ al, ar ] );
+            fi;
 
         # we have a new intersection generator
         elif ar <> id then
+            Assert(1, al = id);
+            # here we have al=id; so ar is in the intersection;
+            # filter it into the polycyclic sequence `is`
             d := Depth( ar );
             while ar <> id and is[d] <> id  do
                 e  := Gcdex(LeadingExponent( is[d] ), LeadingExponent( ar ));
