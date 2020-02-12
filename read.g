@@ -38,6 +38,15 @@ if not IsBound(NO_STACKS_INSIDE_COLLECTORS) then
 fi;
 
 ##
+## Starting with GAP 4.11, MultRowVector has been renamed to MultVector.
+## In order to stay compatible with older GAP releases, we define MultVector
+## if it is missing.
+##
+if not IsBound(MultVector) then
+  DeclareSynonym( "MultVector", MultRowVector );
+fi;
+
+##
 ## matrix -- basics about matrices, rational spaces, lattices and modules
 ##
 ReadPackage( "polycyclic", "gap/matrix/rowbases.gi");
