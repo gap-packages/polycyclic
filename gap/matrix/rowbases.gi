@@ -173,7 +173,7 @@ AddVectorEchelonBase := function( base, vec )
     if l = Length(vec)+1 then return; fi;
 
     # norm vector
-    MultRowVector( vec, vec[l]^-1 );
+    MultVector( vec, vec[l]^-1 );
 
     # finally add vector to base
     base[Length(base)+1] := vec;
