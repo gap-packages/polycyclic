@@ -373,6 +373,12 @@ rec(
       rels := [ 0, 0 ] ), gcb := [  ], gcc := [ [ 1, 0 ], [ 0, 1 ] ] )
 
 #
+# Test for a regression in TorsionSubgroup (reported by Sam Tertooy)
+#
+gap> TorsionSubgroup(AbelianPcpGroup([4,3]));
+Pcp-group with orders [ 4, 3 ]
+
+#
 # Fix a bug in NormalClosureOp which resulted in a non-abelian group
 # being in the IsAbelian (and even the IsCyclic) filter.
 # <https://github.com/gap-packages/polycyclic/issues/28>
