@@ -49,7 +49,7 @@ or if there is a bug, we would appreciate it very much  if you could
 report this via <https://github.com/gap-packages/polycyclic/issues>,
 or by sending us an email.
  - Bettina Eick  <beick@tu-bs.de>
- - Max Horn      <max.horn@uni-siegen.de>
+ - Max Horn      <horn@mathematik.uni-kl.de>
 
 
 Contents
