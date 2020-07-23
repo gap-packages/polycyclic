@@ -285,9 +285,9 @@ InstallMethod( PreImagesRepresentative,
                [ IsToPcpGHBI, IsPcpElement ],
 function( hom, elm )
     local e;
-    if Length(hom!.igs_imgs_to_gens[1]) = 0 then return One(hom!.Source); fi;
     e := ExponentsByIgs(hom!.igs_imgs_to_gens[1], elm);
     if e = fail then return fail; fi;
+    if Length(e) = 0 then return One(hom!.Source); fi;
     return MappedVector(e, hom!.igs_imgs_to_gens[2]);
 end );
 
