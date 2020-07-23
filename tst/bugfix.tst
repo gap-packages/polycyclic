@@ -429,4 +429,29 @@ gap> Pcp(Intersection(sub, sub2));
 Pcp [ g2^2, g4 ] with orders [ 0, 2 ]
 
 #
+# For trivial homomorphisms, only the identity has a preimage!
+# <https://github.com/gap-packages/polycyclic/issues/39>
+#
+gap> G := AbelianPcpGroup( [ 2 ] );
+Pcp-group with orders [ 2 ]
+gap> phi := GroupHomomorphismByImages( G, G, [ G.1 ], [ Identity( G ) ] );
+[ g1 ] -> [ id ]
+gap> PreImagesRepresentative( phi, One(G) );
+id
+gap> PreImagesRepresentative( phi, G.1 );
+fail
+
+#
+gap> G := AbelianPcpGroup( [ 2, 2 ] );
+Pcp-group with orders [ 2, 2 ]
+gap> phi := GroupHomomorphismByImages( G, G, [ G.1, G.2 ], [ Identity( G ), G.2 ] );
+[ g1, g2 ] -> [ id, g2 ]
+gap> PreImagesRepresentative( phi, One(G) );
+id
+gap> PreImagesRepresentative( phi, G.2 );
+g2
+gap> PreImagesRepresentative( phi, G.1 );
+fail
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);
