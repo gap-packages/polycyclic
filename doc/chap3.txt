@@ -337,7 +337,7 @@
   
   [1X3.3-6 UseLibraryCollector[101X
   
-  [33X[1;0Y[29X[2XUseLibraryCollector[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XUseLibraryCollector[102X [32X global variable[133X
   
   [33X[0;0Ythis  property  can  be  set  to  [9Xtrue[109X  for  a  collector  to force a simple
   from-the-left  collection  strategy  implemented  in  the [5XGAP[105X language to be
@@ -345,7 +345,7 @@
   
   [1X3.3-7 USE_LIBRARY_COLLECTOR[101X
   
-  [33X[1;0Y[29X[2XUSE_LIBRARY_COLLECTOR[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XUSE_LIBRARY_COLLECTOR[102X [32X global variable[133X
   
   [33X[0;0Ythis  global  variable  can  be set to [9Xtrue[109X to force all collectors to use a
   simple  from-the-left collection strategy implemented in the [5XGAP[105X language to
@@ -353,7 +353,7 @@
   
   [1X3.3-8 DEBUG_COMBINATORIAL_COLLECTOR[101X
   
-  [33X[1;0Y[29X[2XDEBUG_COMBINATORIAL_COLLECTOR[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XDEBUG_COMBINATORIAL_COLLECTOR[102X [32X global variable[133X
   
   [33X[0;0Ythis  global  variable can be set to [9Xtrue[109X to force the comparison of results
   from  the combinatorial collector with the result of an identical collection
@@ -362,7 +362,7 @@
   
   [1X3.3-9 USE_COMBINATORIAL_COLLECTOR[101X
   
-  [33X[1;0Y[29X[2XUSE_COMBINATORIAL_COLLECTOR[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XUSE_COMBINATORIAL_COLLECTOR[102X [32X global variable[133X
   
   [33X[0;0Ythis  global  variable  can  be  set  to  [9Xfalse[109X  in  order  to  prevent  the
   combinatorial collector to be used.[133X

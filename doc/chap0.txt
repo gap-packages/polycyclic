@@ -6,10 +6,10 @@
                       [1X Computation with polycyclic groups [101X
   
   
-                                     2.15.1
+                                      2.16
   
   
-                                 3 October 2019
+                                  25 July 2020
   
   
                                   Bettina Eick
@@ -22,11 +22,10 @@
   
   Bettina Eick
       Email:    [7Xmailto:beick@tu-bs.de[107X
-      Homepage: [7Xhttp://www.icm.tu-bs.de/~beick[107X
-      Address:  [33X[0;14YAG Algebra und Diskrete Mathematik[133X
-                [33X[0;14YInstitut Computational Mathematics[133X
+      Homepage: [7Xhttp://www.iaa.tu-bs.de/beick[107X
+      Address:  [33X[0;14YInstitut Analysis und Algebra[133X
                 [33X[0;14YTU Braunschweig[133X
-                [33X[0;14YPockelsstr. 14[133X
+                [33X[0;14YUniversitätsplatz 2[133X
                 [33X[0;14YD-38106 Braunschweig[133X
                 [33X[0;14YGermany[133X
   
@@ -34,12 +33,12 @@
   Werner Nickel
       Homepage: [7Xhttp://www.mathematik.tu-darmstadt.de/~nickel/[107X
   Max Horn
-      Email:    [7Xmailto:max.horn@uni-siegen.de[107X
+      Email:    [7Xmailto:horn@mathematik.uni-kl.de[107X
       Homepage: [7Xhttps://www.quendi.de/math[107X
-      Address:  [33X[0;14YDepartment Mathematik[133X
-                [33X[0;14YUniversität Siegen[133X
-                [33X[0;14YWalter-Flex-Straße 3[133X
-                [33X[0;14Y57072 Siegen[133X
+      Address:  [33X[0;14YFachbereich Mathematik[133X
+                [33X[0;14YTU Kaiserslautern[133X
+                [33X[0;14YGottlieb-Daimler-Straße 48[133X
+                [33X[0;14Y67663 Kaiserslautern[133X
                 [33X[0;14YGermany[133X
   
   
