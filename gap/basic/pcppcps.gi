@@ -153,29 +153,31 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         # shift g into ind
         while d < c do
 
+            h := ind[d];
             r := FactorOrder(g);
             a := LeadingExponent(g);
 
             # shift in
-            if IsBool(ind[d]) then 
+            if IsBool(h) then 
                 ind[d] := NormedPcpElement(g);
                 Add(f,d);
-            elif not IsPrime(r) then 
-                b := LeadingExponent(ind[d]);
+                h := ind[d];
+            elif not IsPrime(r) then
+                b := LeadingExponent(h);
                 e := Gcdex(a, b);
                 if e.coeff1 <> 0 then 
-                    ind[d] := NormedPcpElement((g^e.coeff1)*(ind[d]^e.coeff2));
+                    ind[d] := NormedPcpElement((g^e.coeff1)*(h^e.coeff2));
                     Add(f,d);
                 fi;
             fi;
 
             # divide off
-            if g = ind[d] then 
+            if g = h then 
                 g := g^0;
             else
-                b := LeadingExponent(ind[d]);
+                b := LeadingExponent(h);
                 e := Gcdex(a,b);
-                g := g^e.coeff3 * ind[d]^e.coeff4;
+                g := g^e.coeff3 * h^e.coeff4;
             fi;
             d := Depth(g);
         od;
