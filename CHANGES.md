@@ -1,11 +1,12 @@
 This file describes changes in the GAP package 'polycyclic'.
 
-2.16 (2020-MM-DD)
+2.16 (2020-07-25)
   - Fix a bug in `NormalIntersection` which could lead to wrong results;
     this also affected other operations, such `Core`, `Intersection`
   - Fix `PreImagesRepresentative` for trivial homomorphisms (it used to return
     the identity fo the source as preimage for all elements in the range,
     instead of returning fail for all but the identity of the range)
+  - Fix some bugs in `AddToIgs` and `AddTailInfo`
   - Some janitorial changes
 
 2.15.1 (2019-10-03)
