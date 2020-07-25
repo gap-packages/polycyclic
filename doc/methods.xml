@@ -729,7 +729,7 @@ g2^-2*g4
 	and <M>R/C</M> is isomorphic to <A>M</A>.
 
 <Example><![CDATA[
-gap> G := AbelianPcpGroup( 3,[] );
+gap> G := AbelianPcpGroup( 3 );
 Pcp-group with orders [ 0, 0, 0 ]
 gap> ext := SchurCover( G );
 Pcp-group with orders [ 0, 0, 0, 0, 0, 0 ]
@@ -753,7 +753,7 @@ true
 <Example><![CDATA[
 gap> G := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]
-gap> DirectProduct( G, AbelianPcpGroup( 2, [] ) );
+gap> DirectProduct( G, AbelianPcpGroup( 2 ) );
 Pcp-group with orders [ 0, 0, 2, 0 ]
 gap> AbelianInvariantsMultiplier( last );
 [ 0, 2, 2, 2, 2 ]

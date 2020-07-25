@@ -7,11 +7,14 @@
 
 There are the following generic pcp-groups available.
 <ManSection>
-<Func Name="AbelianPcpGroup" Arg="n, rels"/>
+<Func Name="AbelianPcpGroup" Arg="n[, rels]"/>
+<Func Name="AbelianPcpGroup" Arg="rels"/>
 <Description>
       constructs the   abelian  group  on  <A>n</A>  generators  such  that
       generator <M>i</M> has  order <M>rels[i]</M>. If  this  order is infinite,
-      then <M>rels[i]</M> should be either unbound or 0.
+      then <M>rels[i]</M> should be either unbound or 0 or infinity.
+      If <A>n</A> is not provided then the length of <A>rels</A> is used.
+      If <A>rels</A> is omitted then all generators will have infinite order.
 </Description>
 </ManSection>
 
