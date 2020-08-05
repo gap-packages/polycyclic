@@ -26,7 +26,7 @@ InstallMethod( AbelianGroupCons,
 function( filter, ints )
     local coll, i, n, r, grp;
 
-    if not ForAll( ints, IsInt )  then
+    if not ForAll( ints, x -> IsInt(x) or IsInfinity(x) )  then
         Error( "<ints> must be a list of integers" );
     fi;
     # We allow 0, and interpret it as indicating an infinite factor.
