@@ -25,7 +25,7 @@ InstallGlobalFunction( AbelianPcpGroup, function( arg )
     # construct group
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
-        if IsBound( r[i] ) and r[i] > 0 then
+        if IsBound( r[i] ) and r[i] > 0 and r[i] <> infinity then
             SetRelativeOrder( coll, i, r[i] );
         fi;
     od;
