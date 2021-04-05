@@ -8,7 +8,7 @@ on:
 jobs:
   # The CI test job
   test:
-    name: ${{ matrix.gap-branch }} ${{ matrix.ABI }}
+    name: ${{ matrix.gap-branch }}
     runs-on: ubuntu-latest
     # Don't run this twice on PRs for branches pushed to the same repository
     if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
@@ -20,10 +20,6 @@ jobs:
           - stable-4.11
           - stable-4.10
           - stable-4.9
-        ABI: ['']
-        include:
-          - gap-branch: master
-            ABI: 32
 
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +30,6 @@ jobs:
       - uses: gap-actions/setup-gap-for-packages@v1
         with:
           GAPBRANCH: ${{ matrix.gap-branch }}
-          ABI: ${{ matrix.ABI }}
       - uses: gap-actions/run-test-for-packages@v1
 
   # The documentation job
@@ -51,7 +46,7 @@ jobs:
         with:
           use-latex: 'true'
       - name: 'Upload documentation'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: manual
           path: ./doc/manual.pdf
