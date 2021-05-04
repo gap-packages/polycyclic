@@ -87,7 +87,6 @@ PackageDoc     := rec(
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Computation with polycyclic groups",
-  Autoload  := true
 ),
 
 Dependencies    := rec(
