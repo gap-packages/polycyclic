@@ -99,16 +99,20 @@ InstallMethodWithRandomSource( Random, "for a random source and a pcp group",
 function( rs, G )
     local pcp, rel, g, i;
     pcp := Pcp(G);
-    rel := RelativeOrdersOfPcp( pcp );
-    g   := [];
-    for i in [1..Length(rel)] do
-        if rel[i] = 0 then
-            g[i] := Random( rs, Integers );
-        else
-            g[i] := Random( rs, 0, rel[i]-1 );
-        fi;
-    od;
-    return MappedVector( g, pcp );
+    if Length( pcp ) = 0 then
+        return One( G );
+    else
+	    rel := RelativeOrdersOfPcp( pcp );
+        g   := [];
+        for i in [1..Length(rel)] do
+            if rel[i] = 0 then
+                g[i] := Random( rs, Integers );
+            else
+                g[i] := Random( rs, 0, rel[i]-1 );
+            fi;
+        od;
+        return MappedVector( g, pcp );
+    fi;
 end );
 
 #############################################################################

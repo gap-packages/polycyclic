@@ -480,4 +480,11 @@ gap> HirschLength( Ker );
 5
 
 #
+# Fix a bug causing Random to fail for the trivial group
+# <https://github.com/gap-packages/polycyclic/issues/59>
+#
+gap> Random( TrivialGroup( IsPcpGroup ) );
+id
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);
