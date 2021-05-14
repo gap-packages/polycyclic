@@ -297,7 +297,7 @@ ConjugacyElementsBySeries := function( G, g, h, pcps )
             M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             f := ExponentsByPcp( pcp, c^-1*h ); Add( f, 1 );
             fac := Pcp( C, M );
-            act := AffineActionByElement( fac, pcp, g );
+            act := AffineActionByElement( fac, pcp, c );
             nat := NaturalHomomorphismByNormalSubgroup( C, M );
             stb := OrbitIntegralAction( Image(nat), act, e, f );
 
