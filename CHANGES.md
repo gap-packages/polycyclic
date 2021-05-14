@@ -1,5 +1,10 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+X.YY (YYYY-MM-DD)
+  - Fix a bug in `PreImagesSet` which lead to a "method not found" error
+    if the given input set was not contained in the image of the given
+    homomorphism.
+
 2.16 (2020-07-25)
   - Fix a bug in `NormalIntersection` which could lead to wrong results;
     this also affected other operations, such `Core`, `Intersection`
