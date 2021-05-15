@@ -101,18 +101,17 @@ function( rs, G )
     pcp := Pcp(G);
     if Length( pcp ) = 0 then
         return One( G );
-    else
-	    rel := RelativeOrdersOfPcp( pcp );
-        g   := [];
-        for i in [1..Length(rel)] do
-            if rel[i] = 0 then
-                g[i] := Random( rs, Integers );
-            else
-                g[i] := Random( rs, 0, rel[i]-1 );
-            fi;
-        od;
-        return MappedVector( g, pcp );
     fi;
+    rel := RelativeOrdersOfPcp( pcp );
+    g   := [];
+    for i in [1..Length(rel)] do
+        if rel[i] = 0 then
+            g[i] := Random( rs, Integers );
+        else
+            g[i] := Random( rs, 0, rel[i]-1 );
+        fi;
+    od;
+    return MappedVector( g, pcp );
 end );
 
 #############################################################################
