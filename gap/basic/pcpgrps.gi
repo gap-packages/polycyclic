@@ -160,22 +160,6 @@ end );
 
 #############################################################################
 ##
-#M IsNormal( H, U ) . . . . . . . . . . . . . . .test if U is normalized by H
-##
-InstallMethod( IsNormalOp, "for pcp groups",
-               IsIdenticalObj, [ IsPcpGroup, IsPcpGroup ],
-function( H, U )
-    local u, h;
-    for h in GeneratorsOfPcp( Pcp(H, U)) do
-        for u in Igs(U) do
-            if not u^h in U then return false; fi;
-        od;
-    od;
-    return true;
-end );
-
-#############################################################################
-##
 #M Size( <pcpgrp> )
 ##
 InstallMethod( Size, [ IsPcpGroup ],
