@@ -498,4 +498,19 @@ gap> Random( TrivialGroup( IsPcpGroup ) );
 id
 
 #
+# Fix a bug in IsNormal
+# <https://github.com/gap-packages/polycyclic/issues/46>
+#
+gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
+Pcp-group with orders [ 2, 2, 2, 2, 3 ]
+gap> S := SylowSubgroup( g, 2 );
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> T := S^g.5;
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> IsNormal( S, T );
+false
+gap> IsNormal( T, S );
+false
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);

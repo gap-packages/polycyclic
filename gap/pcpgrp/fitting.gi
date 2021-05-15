@@ -56,6 +56,7 @@ end );
 ##
 InstallMethod( FittingSubgroup,
                "for pcp groups", [IsPcpGroup],
+			   SUM_FLAGS, # Prevent generic GAP library method for finite groups being ranked higher
 function( G )
     local efas, pcps, l, F, i;
 
@@ -253,4 +254,3 @@ InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )
     if IndexNC( G, A ) = infinity then Error("wrong subgroup"); fi;
     return [G, A, F, U];
 end );
-
