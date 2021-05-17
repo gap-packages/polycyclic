@@ -165,7 +165,7 @@ CentralizerPcpGroup := function( G, g )
 
     # check
     if ForAny( g, x -> not x in G ) then
-        Error("elements must be contained in group");
+        TryNextMethod();
     fi;
 
     # compute
