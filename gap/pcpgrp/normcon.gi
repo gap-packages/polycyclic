@@ -236,12 +236,12 @@ NormalizerOfComplement := function( C, H, N, I )
         # determine 1-cohomology
         cc := OneCohomologyEX( CR );
         if IsBool( cc ) then Error("no complement \n"); fi;
+        c := VectorByComplement( CR, H );
+        if not IsBool( cc.fld ) then c := c * One( cc.fld ); fi;
 
         # stabilize vector
         if Length( cc.factor.rels ) > 0 then
             Info( InfoPcpGrp, 2, "  H1 is of type ",cc.factor.rels);
-            c := VectorByComplement( CR, H );
-            if not IsBool( cc.fld ) then c := c * One( cc.fld ); fi;
             e := cc.CocToFactor( cc, c );
             C := StabilizerOfCocycle( CR, cc, C, e );
         fi;

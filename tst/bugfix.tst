@@ -513,4 +513,15 @@ gap> IsNormal( T, S );
 false
 
 #
+# Fix a bug in NormalizerOfComplement
+# <https://github.com/gap-packages/polycyclic/issues/45>
+#
+gap> C := AbelianPcpGroup( [ 2, 3 ] );;
+gap> H := Subgroup( C, [ C.1 ] );;
+gap> N := Subgroup( C, [ C.2 ] );;
+gap> I := NormalIntersection( N, H );;
+gap> NormalizerOfComplement( C, H, N, I );
+Pcp-group with orders [ 2, 3 ]
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);
