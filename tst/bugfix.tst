@@ -513,4 +513,12 @@ gap> IsNormal( T, S );
 false
 
 #
+# Fix a bug in AddToIgs
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
+gap> gensG := [ G.1, G.4 ];;
+gap> G = Subgroup( G, gensG );
+true
+
+#
 gap> STOP_TEST( "bugfix.tst", 10000000);
