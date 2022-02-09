@@ -358,7 +358,7 @@ function( g )
     return PcpElementByGenExpListNC( clt, k );
 end );
 
-InstallMethod( INV,
+InstallMethod( InverseMutable,
                "for pcp elements",
                [IsPcpElement],
 function( g )
