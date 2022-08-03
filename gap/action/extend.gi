@@ -28,28 +28,6 @@ end;
 
 #############################################################################
 ##
-#F SubsRecWord( w, list ) . . . . . . . . . . . . substitute a recursive word
-##
-SubsRecWord := function( w, list )
-    local g, v;
-
-    # catch the case of a single exponent
-    if Length(w) = 2 and IsInt( w[1] ) and IsInt( w[2] ) then
-        return list[w[1]]^w[2];
-    elif Length(w) = 2 and IsInt( w[2] ) and IsList( w[1] ) then
-        return SubsRecWord( w[1], list )^w[2];
-    fi;
-
-    # now deal with products
-    g := list[1]^0;
-    for v in w do
-        g := g * SubsRecWord( v, list );
-    od;
-    return g;
-end;
-
-#############################################################################
-##
 #F SubsAndInvertDefn( w, defns ) . . . . . . . . . . . .substitute and invert
 ##
 SubsAndInvertDefn := function( w, defns )
