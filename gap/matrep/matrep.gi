@@ -3,8 +3,6 @@
 #W  matrep.gi                  Polycyclic                       Werner Nickel
 ##
 
-Representation := "defined later";
-
 InstallGlobalFunction( "IsMatrixRepresentation",
 function( G, matrices )
     local   coll,  conjugates,  d,  I,  i,  j,  conj,  rhs,  k;
@@ -34,39 +32,6 @@ function( G, matrices )
         od;
     od;
     return true;
-end );
-
-InstallMethod( UnitriangularMatrixRepresentation,
-        "for torsion free fin. gen. nilpotent pcp-groups",
-        true,
-        [ IsPcpGroup and IsNilpotentGroup ],
-        0,
-function( tgroup )
-    local  coll,  mats,  mgroup,  phi;
-
-    ## Does the group have power relations?
-    if not IsTorsionFree( tgroup ) then
-        Error("there are power relations in the collector of the pcp-group");
-        ## Here we could compute the upper central series and construct an
-        ## isomorphism to a group defined along the upper central series.
-    fi;
-
-    coll := Collector( tgroup );
-    mats := LowerUnitriangularForm( Representation( coll ) );
-
-    mgroup := Group( mats, mats[1]^0 );
-    UseIsomorphismRelation( tgroup, mgroup );
-
-    phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
-                   GeneratorsOfGroup(tgroup),
-                   GeneratorsOfGroup(mgroup) );
-    SetIsBijective( phi, true );
-    SetIsHomomorphismIntoMatrixGroup( phi, true );
-    # FIXME: IsHomomorphismIntoMatrixGroup should perhaps be
-    # a plain filter not a property. Especially since no methods
-    # for it are installed.
-
-    return phi;
 end );
 
 InstallMethod( ViewObj,
@@ -673,3 +638,36 @@ end );
 ##
 ##
 #### End of Willem's code ###################################################
+
+InstallMethod( UnitriangularMatrixRepresentation,
+        "for torsion free fin. gen. nilpotent pcp-groups",
+        true,
+        [ IsPcpGroup and IsNilpotentGroup ],
+        0,
+function( tgroup )
+    local  coll,  mats,  mgroup,  phi;
+
+    ## Does the group have power relations?
+    if not IsTorsionFree( tgroup ) then
+        Error("there are power relations in the collector of the pcp-group");
+        ## Here we could compute the upper central series and construct an
+        ## isomorphism to a group defined along the upper central series.
+    fi;
+
+    coll := Collector( tgroup );
+    mats := LowerUnitriangularForm( Representation( coll ) );
+
+    mgroup := Group( mats, mats[1]^0 );
+    UseIsomorphismRelation( tgroup, mgroup );
+
+    phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
+                   GeneratorsOfGroup(tgroup),
+                   GeneratorsOfGroup(mgroup) );
+    SetIsBijective( phi, true );
+    SetIsHomomorphismIntoMatrixGroup( phi, true );
+    # FIXME: IsHomomorphismIntoMatrixGroup should perhaps be
+    # a plain filter not a property. Especially since no methods
+    # for it are installed.
+
+    return phi;
+end );
