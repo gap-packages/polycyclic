@@ -7,19 +7,6 @@
 
 #############################################################################
 ##
-#F SubsWord( w, list ) . . . . . . . . . . . . . . . . . . .substitute a word
-##
-SubsWord := function( w, list )
-    local g, i;
-    g := list[1]^0;
-    for i in [1..Length(w)] do
-        g := g * list[w[i][1]]^w[i][2];
-    od;
-    return g;
-end;
-
-#############################################################################
-##
 #F SubsWordPlus( w, gens, invs, id ) . . . . . . . .use inverses and identity
 ##
 SubsWordPlus := function( w, gens, invs, id )
