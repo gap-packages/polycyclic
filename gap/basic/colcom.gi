@@ -87,60 +87,60 @@ CombinatorialCollectPolycyclicGap := function( coc, ev, w )
             ReduceExponentVector,
             AddIntoExponentVector;
 
-##   The following is more elegant since it avoids the if-statment but it
-##   uses two divisions.
-#    m := ev[h];
-#    ev[h] := ev[h] mod exp[h];
-#    m := (m - ev[h]) / exp[h];
-ReduceExponentVector := function( ev, g )
+    ##   The following is more elegant since it avoids the if-statment but it
+    ##   uses two divisions.
+    #    m := ev[h];
+    #    ev[h] := ev[h] mod exp[h];
+    #    m := (m - ev[h]) / exp[h];
+    ReduceExponentVector := function( ev, g )
+        ##  We assume that all generators after g commute with g.
+        local   h,  m,  u,  j;
+        Info( InfoCombinatorialFromTheLeftCollector, 5,
+              " Reducing ", ev, " from ", g );
+
+        for h in [g..ngens] do
+            if IsBound( exp[h] ) and (ev[h] < 0  or ev[h] >= exp[h]) then
+                m := QuoInt( ev[h], exp[h] );
+                ev[h] := ev[h] - m * exp[h];
+                if ev[h] < 0 then
+                    m := m - 1;
+                    ev[h] := ev[h] + exp[h];
+                fi;
+
+                if ev[h] < 0  or ev[h] >= exp[h] then
+                    Error( "incorrect reduction of exponent vector" );
+                fi;
+
+                if IsBound( pow[h] ) then
+                    u := pow[h];
+                    for j in [1,3..Length(u)-1] do
+                        ev[ u[j] ] := ev[ u[j] ] + u[j+1] * m;
+                    od;
+                fi;
+            fi;
+        od;
+    end;
+
+    ##  ev := ev * word^exp
     ##  We assume that all generators after g commute with g.
-    local   h,  m,  u,  j;
-    Info( InfoCombinatorialFromTheLeftCollector, 5,
-          " Reducing ", ev, " from ", g );
+    AddIntoExponentVector := function( ev, word, start, e )
+        local   i,  h;
+        Info( InfoCombinatorialFromTheLeftCollector, 5,
+              " Adding ", word, "^", e, " from ", start );
 
-    for h in [g..ngens] do
-        if IsBound( exp[h] ) and (ev[h] < 0  or ev[h] >= exp[h]) then
-            m := QuoInt( ev[h], exp[h] );
-            ev[h] := ev[h] - m * exp[h];
-            if ev[h] < 0 then
-                m := m - 1;
-                ev[h] := ev[h] + exp[h];
-            fi;
-
-            if ev[h] < 0  or ev[h] >= exp[h] then
-                Error( "incorrect reduction of exponent vector" );
-            fi;
-
-            if IsBound( pow[h] ) then
-                u := pow[h];
-                for j in [1,3..Length(u)-1] do
-                    ev[ u[j] ] := ev[ u[j] ] + u[j+1] * m;
-                od;
-            fi;
+        CombCollStats.Count_Length := CombCollStats.Count_Length + Length(word);
+        if start <= Length(word) then
+            CombCollStats.Count_Weight := CombCollStats.Count_Weight + word[start];
         fi;
-    od;
-end;
 
-##  ev := ev * word^exp
-##  We assume that all generators after g commute with g.
-AddIntoExponentVector := function( ev, word, start, e )
-    local   i,  h;
-    Info( InfoCombinatorialFromTheLeftCollector, 5,
-          " Adding ", word, "^", e, " from ", start );
-
-    CombCollStats.Count_Length := CombCollStats.Count_Length + Length(word);
-    if start <= Length(word) then
-        CombCollStats.Count_Weight := CombCollStats.Count_Weight + word[start];
-    fi;
-
-    for i in [start,start+2..Length(word)-1] do
-        h     := word[ i ];
-        ev[h] := ev[h] + word[ i+1 ] * e;
-        if IsBound( exp[h] ) and (ev[h] < 0 or ev[h] >= exp[h]) then
-            ReduceExponentVector( ev, h );
-        fi;
-    od;
-end;
+        for i in [start,start+2..Length(word)-1] do
+            h     := word[ i ];
+            ev[h] := ev[h] + word[ i+1 ] * e;
+            if IsBound( exp[h] ) and (ev[h] < 0 or ev[h] >= exp[h]) then
+                ReduceExponentVector( ev, h );
+            fi;
+        od;
+    end;
 
    if Length(w) = 0 then return true; fi;
 
