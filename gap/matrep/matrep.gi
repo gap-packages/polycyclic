@@ -621,7 +621,7 @@ BindGlobal( "ExtendRep", function( col, new, mats)
 end );
 
 
-BindGlobal( "Representation", function( col )
+BindGlobal( "RepresentationForPcpCollector", function( col )
 
   local n,m,mats,i;
 
@@ -655,7 +655,7 @@ function( tgroup )
     fi;
 
     coll := Collector( tgroup );
-    mats := LowerUnitriangularForm( Representation( coll ) );
+    mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
 
     mgroup := Group( mats, mats[1]^0 );
     UseIsomorphismRelation( tgroup, mgroup );
