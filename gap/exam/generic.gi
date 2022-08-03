@@ -210,7 +210,7 @@ end);
 ##
 #F PDepth(G, e)
 ##
-PDepth := function(G, e)
+BindGlobal( "PDepth", function(G, e)
     local l, i;
     l := PCentralSeries(G);
     for i in Reversed([1..Length(l)]) do
@@ -218,13 +218,13 @@ PDepth := function(G, e)
             return i;
         fi;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F BlowUpPcpPGroup(G)
 ##
-BlowUpPcpPGroup := function(G)
+BindGlobal( "BlowUpPcpPGroup", function(G)
     local p, e, f, c, i, j, k;
 
     # set up
@@ -253,5 +253,5 @@ BlowUpPcpPGroup := function(G)
         od;
     od;
     return PcpGroupByCollector(c);
-end;
+end );
 

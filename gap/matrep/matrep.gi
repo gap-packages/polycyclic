@@ -88,7 +88,7 @@ end );
 
 #### Willem's code ##########################################################
 ##
-ExtendRep:=function( col, new, mats)
+BindGlobal( "ExtendRep", function( col, new, mats)
 
 
     # Here `col' is a from-the-left collector. Let G be the group defined
@@ -653,10 +653,10 @@ ExtendRep:=function( col, new, mats)
 
     od;  # end of big loop `while true ..etc'
 
-end;
+end );
 
 
-Representation:= function( col )
+BindGlobal( "Representation", function( col )
 
   local n,m,mats,i;
 
@@ -668,9 +668,8 @@ Representation:= function( col )
     mats:= ExtendRep( col, n-i+1, mats );
   od;
   return mats;
-end;
+end );
 
 ##
 ##
 #### End of Willem's code ###################################################
-

@@ -104,7 +104,7 @@ end );
 ##
 #F  PcpUserInfo
 ##
-PcpUserInfo := function()
+BindGlobal( "PcpUserInfo", function()
     local   str,  dir,  date,  out;
 
     str := "";
@@ -128,7 +128,7 @@ PcpUserInfo := function()
 
     CloseStream( out );
     return str;
-end;
+end );
 
 #############################################################################
 ##

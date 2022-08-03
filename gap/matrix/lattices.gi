@@ -9,7 +9,7 @@
 ##
 #F  InducedByField( mats, f )
 ##
-InducedByField := function( mats, f )
+BindGlobal( "InducedByField", function( mats, f )
     local i;
     mats := ShallowCopy( mats );
     for i in [1..Length(mats)] do
@@ -17,7 +17,7 @@ InducedByField := function( mats, f )
         ConvertToMatrixRep( mats[i], f );
     od;
     return mats;
-end;
+end );
 
 #############################################################################
 ##
@@ -62,7 +62,7 @@ end );
 ##
 #F  NullspaceMatMod( mat, rels )
 ##
-NullspaceMatMod := function( mat, rels )
+BindGlobal( "NullspaceMatMod", function( mat, rels )
     local l, idm, i, null;
 
     # set up
@@ -85,26 +85,26 @@ NullspaceMatMod := function( mat, rels )
         if null[i] = 0 * null[i] then null[i] := false; fi;
     od;
     return Filtered( null, x -> not IsBool(x) );
-end;
+end );
 
 #############################################################################
 ##
 #F  PcpBaseIntMat( mat )
 ##
-PcpBaseIntMat := function( A )
+BindGlobal( "PcpBaseIntMat", function( A )
     local hnfm, zero, j;
     hnfm := NormalFormIntMat( A, 0 ).normal;
     zero := hnfm[1] * 0;
     j := Position( hnfm, zero );
     if not IsBool( j ) then hnfm := hnfm{[1..j-1]}; fi;
     return hnfm;
-end;
+end );
 
 #############################################################################
 ##
 #F  FreeGensAndKernel( mat )
 ##
-FreeGensAndKernel := function( mat )
+BindGlobal( "FreeGensAndKernel", function( mat )
     local norm, j;
     norm := NormalFormIntMat( mat, 6 );
     j := Position( norm.normal, 0 * mat[1] );
@@ -112,7 +112,7 @@ FreeGensAndKernel := function( mat )
     return rec( free := norm.normal{[1..j-1]},
                 trsf := norm.rowtrans{[1..j-1]},
                 kern := norm.rowtrans{[j..Length(norm.rowtrans)]} );
-end;
+end );
 
 #############################################################################
 ##
@@ -174,7 +174,7 @@ end );
 ##
 #F VectorModLattice( vec, base )
 ##
-VectorModLattice := function( vec, base )
+BindGlobal( "VectorModLattice", function( vec, base )
     local i, q;
     vec := ShallowCopy(vec);
     for i in [1..Length(vec)] do
@@ -188,13 +188,13 @@ VectorModLattice := function( vec, base )
         fi;
     od;
     return vec;
-end;
+end );
 
 #############################################################################
 ##
 #F  PurifyRationalBase( base ) . . . . . . . . . . . . .this is too expensive
 ##
-PurifyRationalBase := function( base )
+BindGlobal( "PurifyRationalBase", function( base )
     local i, dual;
 
     if Length(base) = 0 then return base; fi;
@@ -213,4 +213,4 @@ PurifyRationalBase := function( base )
     for i in [Length(base)+1..Length(base[1])] do Add( base, 0*base[1] ); od;
     base := PcpNullspaceIntMat( TransposedMat( base ) );
     return NormalFormIntMat(base, 2).normal;
-end;
+end );

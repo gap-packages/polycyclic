@@ -13,7 +13,7 @@
 ## returns a polycyclic generating sequence of G G with prime or infinite
 ## relative orders only. NOTE: this might be not induced!
 ##
-RefinedIgs := function( G )
+BindGlobal( "RefinedIgs", function( G )
     local pcs, rel, ref, ord, map, i, f, g, j;
 
     # get old pcp
@@ -40,7 +40,7 @@ RefinedIgs := function( G )
         fi;
     od;
     return rec( pcs := ref, rel := ord, map := map );
-end;
+end );
 
 #############################################################################
 ##
@@ -50,8 +50,7 @@ end;
 ## defining pcp of H is refined. H!.bijection contains the bijection between
 ## H and G.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-RefinedPcpGroup := function( G )
+BindGlobal( "RefinedPcpGroup", function( G )
     local refExponents, pcs, rel, new, ord, map, i, f, g, j, n, c, t, H;
 
     # refined exponents
@@ -106,13 +105,13 @@ RefinedPcpGroup := function( G )
     SetIsBijective( H!.bijection, true );
     UseIsomorphismRelation( G, H );
     return H;
-end;
+end );
 
 #############################################################################
 ##
 #F ExponentsByPcpList( pcps, g, k )
 ##
-ExponentsByPcpList := function( pcps, g, k )
+BindGlobal( "ExponentsByPcpList", function( pcps, g, k )
     local exp, pcp, e, f, h;
     h := g;
     exp := Concatenation( List(pcps{[1..k-1]}, x -> List(x, y -> 0) ) );
@@ -126,7 +125,7 @@ ExponentsByPcpList := function( pcps, g, k )
     od;
     if not h = h^0 then Error("wrong exponents"); fi;
     return exp;
-end;
+end );
 
 #############################################################################
 ##
@@ -136,7 +135,7 @@ end;
 ## the given series. G!.bijection contains a bijection from the old group
 ## to the new one.
 ##
-PcpGroupByPcps := function( pcps )
+BindGlobal( "PcpGroupByPcps", function( pcps )
     local gens, rels, n, coll, i, j, h, e, w, G, H;
 
     if Length( pcps ) = 0 then return fail; fi;
@@ -175,7 +174,7 @@ PcpGroupByPcps := function( pcps )
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
     return G;
-end;
+end );
 
 #############################################################################
 ##
@@ -185,7 +184,7 @@ end;
 ## the given series. G!.bijection contains a bijection from the old group
 ## to the new one.
 ##
-PcpGroupByEfaPcps := function( pcps )
+BindGlobal( "PcpGroupByEfaPcps", function( pcps )
     local gens, rels, indx, n, coll, i, j, h, e, w, G, H, l;
 
     l := Length(pcps);
@@ -227,7 +226,7 @@ PcpGroupByEfaPcps := function( pcps )
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
     return G;
-end;
+end );
 
 #############################################################################
 ##
@@ -236,8 +235,7 @@ end;
 ## Computes a new pcp presentation through series. If two arguments are
 ## given, then the factors will be reduced to SNF.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-PcpGroupBySeries := function( arg )
+BindGlobal( "PcpGroupBySeries", function( arg )
     local   ser,  r,  G,  pcps;
 
     # get arguments
@@ -260,7 +258,7 @@ PcpGroupBySeries := function( arg )
     G := PcpGroupByPcps( pcps );
     UseIsomorphismRelation( ser[1], G );
     return G;
-end;
+end );
 
 #############################################################################
 ##
@@ -281,7 +279,7 @@ end );
 ##
 #F ExponentsByPcpFactors( pcps, g )
 ##
-ExponentsByPcpFactors := function( pcps, g )
+BindGlobal( "ExponentsByPcpFactors", function( pcps, g )
     local red, exp, pcp, e;
     red := g;
     exp := [];
@@ -293,13 +291,13 @@ ExponentsByPcpFactors := function( pcps, g )
         Append( exp, e );
     od;
     return exp;
-end;
+end );
 
 #############################################################################
 ##
 #F PcpFactorByPcps( H, pcps )
 ##
-PcpFactorByPcps := function(H, pcps)
+BindGlobal( "PcpFactorByPcps", function(H, pcps)
     local  gens, rels, n, coll, i, j, h, e, w, G;
 
     # catch args
@@ -333,5 +331,5 @@ PcpFactorByPcps := function(H, pcps)
 
     # create new group
     return PcpGroupByCollector( coll );
-end;
+end );
 

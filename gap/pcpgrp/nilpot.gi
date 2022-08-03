@@ -12,15 +12,15 @@
 ##
 #F MinimalGeneratingSet( G )
 ##
-MinimalGeneratingSetNilpotentPcpGroup := function( G )
+BindGlobal( "MinimalGeneratingSetNilpotentPcpGroup", function( G )
     return GeneratorsOfPcp( Pcp( G, DerivedSubgroup(G), "snf" ) );
-end;
+end );
 
 #############################################################################
 ##
 #F PcpNextStepCentralizer( gens, cent, pcp )
 ##
-PcpNextStepCentralizer := function( gens, cent, pcp )
+BindGlobal( "PcpNextStepCentralizer", function( gens, cent, pcp )
     local   pcpros,  rels,  i,  g,  newgens,  matrix,  notcentral,  h,
             pcpgens,  comm,  null,  j,  elm,  r,  l;
 
@@ -76,13 +76,13 @@ PcpNextStepCentralizer := function( gens, cent, pcp )
         cent := newgens;
     od;
     return cent;
-end;
+end );
 
 #############################################################################
 ##
 #F CentralizeByCentralSeries( G, gens, ser )
 ##
-CentralizeByCentralSeries := function( G, gens, ser )
+BindGlobal( "CentralizeByCentralSeries", function( G, gens, ser )
     local  cent, i, pcp;
 
     cent := ShallowCopy( GeneratorsOfPcp( Pcp( ser[1], ser[2] ) ) );
@@ -93,26 +93,26 @@ CentralizeByCentralSeries := function( G, gens, ser )
     od;
     Append( cent, GeneratorsOfGroup( ser[Length(ser)] ) );
     return cent;
-end;
+end );
 
 #############################################################################
 ##
 #F Centre( G )
 ##
-CentreNilpotentPcpGroup := function(G)
+BindGlobal( "CentreNilpotentPcpGroup", function(G)
     local  ser, gens, cent;
     if Length(Igs(G)) = 0 then return G; fi;
     ser  := LowerCentralSeriesOfGroup(G);
     gens := Reversed(GeneratorsOfPcp( Pcp( ser[1], ser[2] ) ));
     cent := CentralizeByCentralSeries( G, gens, ser );
     return Subgroup( G, cent );
-end;
+end );
 
 #############################################################################
 ##
 #F Centralizer
 ##
-CentralizerNilpotentPcpGroup := function( G, g )
+BindGlobal( "CentralizerNilpotentPcpGroup", function( G, g )
     local sers, cent, U;
     if Length(Igs(G)) = 0 then return G; fi;
     if IsPcpElement(g) then
@@ -126,13 +126,13 @@ CentralizerNilpotentPcpGroup := function( G, g )
         cent := CentralizeByCentralSeries( G, MinimalGeneratingSet(g), sers );
     fi;
     return Subgroup( G, cent );
-end;
+end );
 
 #############################################################################
 ##
 #F UpperCentralSeriesNilpotentPcpGroup( G )
 ##
-UpperCentralSeriesNilpotentPcpGroup := function( G )
+BindGlobal( "UpperCentralSeriesNilpotentPcpGroup", function( G )
     local ser, gens, C, upp;
 
     ser  := LowerCentralSeriesOfGroup(G);
@@ -147,5 +147,5 @@ UpperCentralSeriesNilpotentPcpGroup := function( G )
     od;
     upp[ Length(upp) ] := G;
     return Reversed( upp );
-end;
+end );
 

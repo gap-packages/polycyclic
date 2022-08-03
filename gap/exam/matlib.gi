@@ -9,7 +9,7 @@
 ##
 #F MatExamples(n)
 ##
-MatExamples := function( n )
+BindGlobal( "MatExamples", function( n )
     local MG;
 
 ##
@@ -307,5 +307,5 @@ fi;
 
 return fail;
 
-end;
+end );
 
