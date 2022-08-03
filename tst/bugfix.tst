@@ -181,7 +181,7 @@ true
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=Representation(Collector(G));;
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
 gap> e:=[8,-4,5,2,13,-17,9];;
 gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
 [ 8, -4, 19, 34, 51, -17, 5 ]
