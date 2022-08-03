@@ -29,7 +29,7 @@
 
 # Collect various statistics about the combinatorial collection process
 # for debugging purposes.
-CombCollStats := rec(
+BindGlobal( "CombCollStats", rec(
     Counter         := 0,
     CompleteCommGen := 0,
     WholeCommWord   := 0,
@@ -44,10 +44,10 @@ CombCollStats := rec(
 
     Count_Length := 0,
     Count_Weight := 0,
-);
+));
 
 
-DisplayCombCollStats := function()
+BindGlobal( "DisplayCombCollStats", function()
 
     Print( "Calls to combinatorial collector: ", CombCollStats.Counter,         "\n" );
     Print( "Completely collected generators:  ", CombCollStats.CompleteCommGen, "\n" );
@@ -60,9 +60,9 @@ DisplayCombCollStats := function()
     Print( "Combinatorial collection:         ", CombCollStats.CombColl,        "\n" );
     Print( "    of those had to be stacked:   ", CombCollStats.CombCollStack,   "\n" );
     Print( "Ordinary collection:              ", CombCollStats.OrdColl,         "\n" );
-end;
+end );
 
-ClearCombCollStats := function()
+BindGlobal( "ClearCombCollStats", function()
 
     CombCollStats.Counter         := 0;
     CombCollStats.CompleteCommGen := 0;
@@ -75,11 +75,10 @@ ClearCombCollStats := function()
     CombCollStats.StepByStep      := 0;
     CombCollStats.ThreeWtGen      := 0;
     CombCollStats.ThreeWtGenStack := 0;
-end;
+end );
 
 
-
-CombinatorialCollectPolycyclicGap := function( coc, ev, w )
+BindGlobal( "CombinatorialCollectPolycyclicGap", function( coc, ev, w )
     local   com,  com2,  wt,  class,  wst,  west,
             sst,  est,  bottom,  stp,  g,  cnj,  icnj,  h,  m,  i,  j,
             astart,  IsNormed,  InfoCombi,
@@ -484,9 +483,7 @@ CombinatorialCollectPolycyclicGap := function( coc, ev, w )
         fi;
     od;
     return true;
-end;
-
-
+end );
 
 
 #############################################################################

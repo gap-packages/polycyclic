@@ -2,11 +2,11 @@
 ##
 #F AddSystem( sys, t1, t2)
 ##
-AddSystem := function( sys, t1, t2 )
+BindGlobal( "AddSystem", function( sys, t1, t2 )
     if t1 = t2 then return; fi;
     t1 := t1 - t2;
     if not t1 in sys.base then Add(sys.base, t1); fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -195,7 +195,7 @@ end );
 ##
 #F EvalMueRelations( coll, sys, n )
 ##
-EvalMueRelations := function( coll, sys, n )
+BindGlobal( "EvalMueRelations", function( coll, sys, n )
     local y, x, z, g, h, cm, cj1, cj2, ci1, ci2, i, j, k, w, v;
 
     # set up
@@ -288,14 +288,14 @@ EvalMueRelations := function( coll, sys, n )
             od;
         od;
     od;
-end;
+end );
 
 
 #############################################################################
 ##
 #F CollectorCentralCover(S)
 ##
-CollectorCentralCover:= function(S)
+BindGlobal( "CollectorCentralCover", function(S)
     local s, x, r, y, coll, k, i, j, e, n;
 
     # get info on G
@@ -342,7 +342,7 @@ CollectorCentralCover:= function(S)
     # update and return
     UpdatePolycyclicCollector(coll);
     return coll;
-end;
+end );
 
 #############################################################################
 ##
@@ -436,7 +436,7 @@ end );
 ## epimorphisms of nu(G) onto tau(G).
 ##
 # FIXME: This function is documented and should be turned into an attribute
-NonAbelianTensorSquarePlusEpimorphism := function(G)
+BindGlobal( "NonAbelianTensorSquarePlusEpimorphism", function(G)
     local   n,  embed,  S,  coll,  y,  sys,  T,  lift;
 
     if Size(G) = 1 then return IdentityMapping( G ); fi;
@@ -474,12 +474,12 @@ NonAbelianTensorSquarePlusEpimorphism := function(G)
     SetIsSurjective( lift, true );
 
     return lift;
-end;
+end );
 
 # FIXME: This function is documented and should be turned into an attribute
-NonAbelianTensorSquarePlus := function( G )
+BindGlobal( "NonAbelianTensorSquarePlus", function( G )
     return Source( NonAbelianTensorSquarePlusEpimorphism( G ) );
-end;
+end );
 
 
 #############################################################################
@@ -487,7 +487,7 @@ end;
 #F NonAbelianTensorSquare(G). . . . . . . . . . . . . . . . . . .(G otimes G)
 ##
 # FIXME: This function is documented and should be turned into an attribute
-NonAbelianTensorSquareEpimorphism := function( G )
+BindGlobal( "NonAbelianTensorSquareEpimorphism", function( G )
     local   n,  epi,  T,  U,  t,  r,  c,  i,  j,  GoG,  gens,  embed,
             imgs,  alpha;
 
@@ -528,7 +528,7 @@ NonAbelianTensorSquareEpimorphism := function( G )
     SetIsSurjective( alpha, true );
 
     return alpha;
-end;
+end );
 
 InstallMethod( NonAbelianTensorSquare, [IsPcpGroup], function(G)
     return Source( NonAbelianTensorSquareEpimorphism( G ) );
@@ -539,7 +539,7 @@ end );
 #F WhiteheadQuadraticFunctor(G) . . . . . . . . . . . . . . . . .  (Gamma(G))
 ##
 # FIXME: This function is documented and should be turned into an attribute
-WhiteheadQuadraticFunctor := function(G)
+BindGlobal( "WhiteheadQuadraticFunctor", function(G)
     local invs, news, i;
     invs := AbelianInvariants(G);
     news := [];
@@ -552,4 +552,4 @@ WhiteheadQuadraticFunctor := function(G)
         Append(news, List([1..i-1], x -> Gcd(invs[i], invs[x])));
     od;
     return AbelianPcpGroup(Length(news), news);
-end;
+end );

@@ -9,7 +9,7 @@
 #  A = nk x mk integer matrix
 #  b = integer vector of lenth mk
 
-SeriesSteps := function(e)
+BindGlobal( "SeriesSteps", function(e)
     local l, f, p, k, s, i;
 
     l := Length(e);
@@ -23,22 +23,22 @@ SeriesSteps := function(e)
     od;
 
     return s;
-end;
+end );
 
-StripIt := function( mat, l )
+BindGlobal( "StripIt", function( mat, l )
     local n, d, k;
     n := Length( mat );
     d := List( mat, PositionNonZero );
     k := First( [1..n], x -> d[x] >= l );
     if IsBool(k) then return Length(mat)+1; fi;
     return k;
-end;
+end );
 
-Strip := function( mat, l )
+BindGlobal( "Strip", function( mat, l )
     return mat{[StripIt(mat,l)..Length(mat)]};
-end;
+end );
 
-DivideVec := function(t,p)
+BindGlobal( "DivideVec", function(t,p)
     local i;
     for i in [1..Length(t)] do
         if t[i] <> 0 then
@@ -46,17 +46,17 @@ DivideVec := function(t,p)
         fi;
     od;
     return t;
-end;
+end );
 
-TransversalMat := function( M, n )
+BindGlobal( "TransversalMat", function( M, n )
     local d;
     if Length(M) = 0 then return IdentityMat(n); fi;
     d := List(M, PositionNonZero);
     d := Difference([1..Length(M[1])], d);
     return IdentityMat(n){d};
-end;
+end );
 
-KernelSystemGauss := function( A, e, p )
+BindGlobal( "KernelSystemGauss", function( A, e, p )
     local k, n, m, q, F, s, AA, SS, KK, II, TT, K, I, i, dW, dV, rT,
           B, J, W, S, U;
 
@@ -109,18 +109,18 @@ KernelSystemGauss := function( A, e, p )
     od;
 
     return K;
-end;
+end );
 
-ReduceVecMod := function( vec, e )
+BindGlobal( "ReduceVecMod", function( vec, e )
     local i, m;
     m := Length(vec)/Length(e);
     for i in [1..Length(vec)] do
         vec[i] := vec[i] mod e[Int((i-1)/m)+1];
     od;
     return vec;
-end;
+end );
 
-CheckKernelSpecial := function( A, e )
+BindGlobal( "CheckKernelSpecial", function( A, e )
     local W, I, w, v;
     W := ExponentsByRels( e );
     I := [];
@@ -129,9 +129,9 @@ CheckKernelSpecial := function( A, e )
         if v = 0*v then Add(I, w); fi;
     od;
     return I;
-end;
+end );
 
-TransversalSystemGauss := function( A, K, e, p )
+BindGlobal( "TransversalSystemGauss", function( A, K, e, p )
     local k, n, m, s, d, l, I, T, i, q, t, J, u, r;
 
     # catch arguments
@@ -159,9 +159,9 @@ TransversalSystemGauss := function( A, K, e, p )
         Append(T, q*I{r});
     od;
     return T;
-end;
+end );
 
-ImageSystemGauss := function( A, K, e, p )
+BindGlobal( "ImageSystemGauss", function( A, K, e, p )
     local k, n, m, s, d, l, I, T, i, q, t, J, u, r;
 
     # catch arguments
@@ -192,9 +192,9 @@ ImageSystemGauss := function( A, K, e, p )
         Append(T, List( q*J, x -> ReduceVecMod( x, e )));
     od;
     return T;
-end;
+end );
 
-FindSpecialSolution := function( S, vec )
+BindGlobal( "FindSpecialSolution", function( S, vec )
     local m, n, z, sol, i, vno, x;
     m := Length(vec);
     n := Length(S.coeffs[1]);
@@ -215,9 +215,9 @@ FindSpecialSolution := function( S, vec )
     else
         return fail;
     fi;
-end;
+end );
 
-SolveSystemGauss := function( A, e, p, b )
+BindGlobal( "SolveSystemGauss", function( A, e, p, b )
     local k, n, m, q, F, s, AA, SE, SS, KK, II, TT, sl, ss, h, K, I, i,
           dW, dV, rT, B, J, W, S, U, v, u, f, M;
 
@@ -287,5 +287,4 @@ SolveSystemGauss := function( A, e, p, b )
     else
         return K;
     fi;
-end;
-
+end );

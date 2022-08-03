@@ -9,7 +9,7 @@
 ##
 #F CollectedOneCR( A, w ) . . . . . . . . . . . . . . . . . . . . . comb word
 ##
-CollectedOneCR := function( A, w )
+BindGlobal( "CollectedOneCR", function( A, w )
     local tail, t, i, j, mat;
 
     tail := [];
@@ -50,7 +50,7 @@ CollectedOneCR := function( A, w )
     od;
 
     return tail;
-end;
+end );
 
 
 #############################################################################
@@ -58,7 +58,7 @@ end;
 #F BinaryPowering( A, m, e ) . . . . . . . . . .compute 1 + m + ... + m^(e-1)
 ##                                              and     m^e
 ##
-BinaryPowering := function( A, m, e )
+BindGlobal( "BinaryPowering", function( A, m, e )
     local l, p, i, r, c;
 
     if IsBound(A.central) and A.central then return [e * A.one, A.one]; fi;
@@ -81,13 +81,13 @@ BinaryPowering := function( A, m, e )
     c := MappedVector( c, p );
 
     return [r, c];
-end;
+end );
 
 #############################################################################
 ##
 #F CollectedOneCR( A, w ) . . . . . . . . . . . . . . . . . . . . . comb word
 ##
-CollectedOneCRNew := function( A, w )
+BindGlobal( "CollectedOneCRNew", function( A, w )
     local tail, t, i, j, r;
 
     tail := [];
@@ -129,13 +129,13 @@ CollectedOneCRNew := function( A, w )
     if tail <> CollectedOneCR( A, w ) then Error("tails"); fi;
 
     return tail;
-end;
+end );
 
 #############################################################################
 ##
 #F CollectedRelatorCR( A, i, j )
 ##
-CollectedRelatorCR := function( A, i, j )
+BindGlobal( "CollectedRelatorCR", function( A, i, j )
     local a, b, e, taila, tailb;
 
     # get the word
@@ -156,13 +156,13 @@ CollectedRelatorCR := function( A, i, j )
     tailb := CollectedOneCR( A, b );
 
     return [taila, tailb];
-end;
+end );
 
 #############################################################################
 ##
 #F AddTailVectorsCR( t1, t2 )
 ##
-AddTailVectorsCR := function( t1, t2 )
+BindGlobal( "AddTailVectorsCR", function( t1, t2 )
     local i;
     for i  in [ 1 .. Length(t2) ]  do
         if IsBound(t2[i])  then
@@ -173,13 +173,13 @@ AddTailVectorsCR := function( t1, t2 )
             fi;
         fi;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F CutVector( vec, l ) . . . . . . . . . . . . . . . . cut vector in l pieces
 ##
-CutVector := function( vec, l )
+BindGlobal( "CutVector", function( vec, l )
     local d, new, i;
     if Length( vec ) = 0 then return []; fi;
     d := Length(vec)/l;
@@ -188,13 +188,13 @@ CutVector := function( vec, l )
         Add( new, vec{[d*(i-1)+1..d*i]} );
     od;
     return new;
-end;
+end );
 
 #############################################################################
 ##
 #F IntVector( vec )
 ##
-IntVector := function( vec )
+BindGlobal( "IntVector", function( vec )
     local i;
     if Length( vec ) = 0 then return []; fi;
     vec := ShallowCopy( vec );
@@ -202,5 +202,5 @@ IntVector := function( vec )
         if IsFFE( vec[i] ) then vec[i] := IntFFE( vec[i] ); fi;
     od;
     return vec;
-end;
+end );
 
