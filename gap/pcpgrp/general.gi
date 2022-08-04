@@ -21,8 +21,11 @@ end );
 #F MappedVector( <exp>, <list> ). . . . . . . . . . . . . . . . . . . . local
 ##
 ## Redefine this library function such that it works for FFE vectors.
+## FIXME: the redefinition will be in the GAP 4.12 library; so at some
+## point in the future, we should get rid of our code variant and just
+## rely on the library version.
 ##
-BindGlobal( "MappedVector", function( exp, list )
+MappedVector := function( exp, list )
     local elm, i;
 
     if Length( list ) = 0 then Error("cannot compute this\n"); fi;
@@ -32,7 +35,7 @@ BindGlobal( "MappedVector", function( exp, list )
         elm := elm * list[i]^exp[i];
     od;
     return elm;
-end );
+end;
 
 #############################################################################
 ##
