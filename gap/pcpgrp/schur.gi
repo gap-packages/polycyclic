@@ -2,7 +2,7 @@
 ##
 #A ReduceTail
 ##
-ReduceTail := function( w, n, Q, d, f )
+BindGlobal( "ReduceTail", function( w, n, Q, d, f )
     local   i,  a,  v;
 
     i := 1;
@@ -25,7 +25,7 @@ ReduceTail := function( w, n, Q, d, f )
     od;
 
     return a;
-end;
+end );
 
 #############################################################################
 ##
@@ -178,7 +178,7 @@ end );
 #A NonAbelianExteriorSquareEpimorphism(G) . . . . . . . . .  G wegde G --> G'
 ##
 # FIXME: This function is documented and should be turned into a attribute
-NonAbelianExteriorSquareEpimorphism := function( G )
+BindGlobal( "NonAbelianExteriorSquareEpimorphism", function( G )
     local   lift,  D,  gens,  imgs,  epi,  lambda;
 
     if Size(G) = 1 then return IdentityMapping( G ); fi;
@@ -201,7 +201,7 @@ NonAbelianExteriorSquareEpimorphism := function( G )
     D!.crossedPairing := lambda;
 
     return epi;
-end;
+end );
 
 #############################################################################
 ##
@@ -221,7 +221,7 @@ end );
 ## square of G into tau(G).
 ##
 # FIXME: This function is documented and should be turned into an attribute
-NonAbelianExteriorSquarePlusEmbedding := function(G)
+BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
     local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,
             e,  j,  gens,  imgs,  k,  alpha,  S,  embed;
 
@@ -385,11 +385,11 @@ NonAbelianExteriorSquarePlusEmbedding := function(G)
     embed := GroupHomomorphismByImagesNC( D, S, GeneratorsOfPcp(d), gens );
 
     return embed;
-end;
+end );
 
-NonAbelianExteriorSquarePlus := function( G )
+BindGlobal( "NonAbelianExteriorSquarePlus", function( G )
     return Range( NonAbelianExteriorSquarePlusEmbedding( G ) );
-end;
+end );
 
 #############################################################################
 ##

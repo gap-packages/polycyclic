@@ -2,7 +2,7 @@
 ##
 #F ExponentRelationMatrix( pcp )
 ##
-ExponentRelationMatrix := function( pcp )
+BindGlobal( "ExponentRelationMatrix", function( pcp )
     local rels, relo, i, r;
     rels := [];
     relo := RelativeOrdersOfPcp( pcp );
@@ -14,13 +14,16 @@ ExponentRelationMatrix := function( pcp )
         fi;
     od;
     return rels;
-end;
+end );
 
 #############################################################################
 ##
 #F MappedVector( <exp>, <list> ). . . . . . . . . . . . . . . . . . . . local
 ##
 ## Redefine this library function such that it works for FFE vectors.
+## FIXME: the redefinition will be in the GAP 4.12 library; so at some
+## point in the future, we should get rid of our code variant and just
+## rely on the library version.
 ##
 MappedVector := function( exp, list )
     local elm, i;
@@ -40,7 +43,7 @@ end;
 ##
 ## N and U are subgroups of a free abelian group given by exponents.
 ##
-AbelianIntersection := function( baseN, baseU )
+BindGlobal( "AbelianIntersection", function( baseN, baseU )
     local n, s, id, ls, rs, is, g, I, al, ar, d, l1, l2, e, tm;
 
     # if N or U is trivial
@@ -122,7 +125,7 @@ AbelianIntersection := function( baseN, baseU )
         fi;
     od;
     return Filtered( is, x -> x <> id );
-end;
+end );
 
 #############################################################################
 ##

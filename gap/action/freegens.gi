@@ -10,7 +10,7 @@
 ##
 #F FreeGensByRelationMat( gens, mat ) . . . . . . . . . use smith normal form
 ##
-FreeGensByRelationMat := function( gens, mat )
+BindGlobal( "FreeGensByRelationMat", function( gens, mat )
     local S, H, Q, I, pos, i;
 
     # first try to simplify mat
@@ -34,13 +34,13 @@ FreeGensByRelationMat := function( gens, mat )
                 rels := List( pos, x -> H[x][x] ),
                 imgs := I{pos},
                 prei := Q{[1..Length(gens)]}{pos} );
-end;
+end );
 
 #############################################################################
 ##
 #F FreeGensByRelsAndOrders( gens, mat, ords ) . . . . . additional rel orders
 ##
-FreeGensByRelsAndOrders := function( gens, mat, ords )
+BindGlobal( "FreeGensByRelsAndOrders", function( gens, mat, ords )
     local idm, i;
 
     # append orders to relation mat
@@ -52,13 +52,13 @@ FreeGensByRelsAndOrders := function( gens, mat, ords )
 
     # return
     return FreeGensByRelationMat( gens, mat );
-end;
+end );
 
 #############################################################################
 ##
 #F FreeGensByBasePcgs( pcgs )
 ##
-FreeGensByBasePcgs := function( pcgs )
+BindGlobal( "FreeGensByBasePcgs", function( pcgs )
     local pcss, rels, n, mat, i, e;
 
     # set up
@@ -78,4 +78,4 @@ FreeGensByBasePcgs := function( pcgs )
 
     # return
     return FreeGensByRelationMat( pcss, mat );
-end;
+end );

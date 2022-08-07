@@ -7,20 +7,20 @@
 ##
 #F CRSystem( d, l, c )
 ##
-CRSystem := function( d, l, c )
+BindGlobal( "CRSystem", function( d, l, c )
     local null, zero;
     null := List( [1..d*l], x -> 0 );
     if c <> 0 then null := null * One(GF(c)); fi;
     zero := List( [1..d], x -> 0 );
     if c <> 0 then zero := zero * One(GF(c)); fi;
     return rec( null := null, zero := zero, dim := d, len := l, base := [] );
-end;
+end );
 
 #############################################################################
 ##
 #F AddToCRSystem( sys, mat )
 ##
-AddToCRSystem := function( sys, mat )
+BindGlobal( "AddToCRSystem", function( sys, mat )
     local v;
     for v in mat do
         if IsBound( sys.full ) and sys.full then
@@ -29,13 +29,13 @@ AddToCRSystem := function( sys, mat )
             Add( sys.base, v );
         fi;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F SubtractTailVectors( t1, t2 )
 ##
-SubtractTailVectors := function( t1, t2 )
+BindGlobal( "SubtractTailVectors", function( t1, t2 )
     local i;
     for i  in [ 1 .. Length(t2) ]  do
         if IsBound(t2[i])  then
@@ -46,13 +46,13 @@ SubtractTailVectors := function( t1, t2 )
             fi;
         fi;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F IsZeroTail( t )
 ##
-IsZeroTail := function( t )
+BindGlobal( "IsZeroTail", function( t )
     local i;
     for i  in [ 1 .. Length(t) ]  do
         if IsBound(t[i]) and t[i] <> 0 * t[i] then
@@ -60,13 +60,13 @@ IsZeroTail := function( t )
         fi;
     od;
     return true;
-end;
+end );
 
 #############################################################################
 ##
 #F AddEquationsCR( sys, t1, t2, flag )
 ##
-AddEquationsCRNorm := function( sys, t, flag  )
+BindGlobal( "AddEquationsCRNorm", function( sys, t, flag  )
     local i, j, v, mat;
 
     # create a matrix
@@ -89,17 +89,17 @@ AddEquationsCRNorm := function( sys, t, flag  )
     else
         Append( sys.base, mat );
     fi;
-end;
+end );
 
-AddEquationsCREndo := function( sys, t )
+BindGlobal( "AddEquationsCREndo", function( sys, t )
     local i, l;
     for i in [1..Length(sys)] do
         l := List(t, x -> x[i]);
         AddEquationsCRNorm( sys[i], l, true );
     od;
-end;
+end );
 
-AddEquationsCR := function( sys, t1, t2, flag  )
+BindGlobal( "AddEquationsCR", function( sys, t1, t2, flag  )
     local t;
 
     # the trivial case
@@ -115,13 +115,13 @@ AddEquationsCR := function( sys, t1, t2, flag  )
     else
         AddEquationsCRNorm( sys, t, flag );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 ## Some small helpers
 ##
-MatPerm := function( d, e )
+BindGlobal( "MatPerm", function( d, e )
     local k, t, l, i, f, n, r;
     if d = 1 then return (); fi;
     k := Length(e);
@@ -134,9 +134,9 @@ MatPerm := function( d, e )
         Append(l, Concatenation(r));
     od;
     return PermListList([1..d*k], l)^-1;
-end;
+end );
 
-PermuteMat := function( M, rho, sig )
+BindGlobal( "PermuteMat", function( M, rho, sig )
     local N, i, j;
     N := MutableCopyMat(M);
     for i in [1..Length(M)] do
@@ -145,11 +145,11 @@ PermuteMat := function( M, rho, sig )
         od;
     od;
     return N;
-end;
+end );
 
-PermuteVec := function( v, rho )
+BindGlobal( "PermuteVec", function( v, rho )
     return List([1..Length(v)], i -> v[i^rho]);
-end;
+end );
 
 #############################################################################
 ##
@@ -159,7 +159,7 @@ end;
 ## transformation from the given generating set and the nullspace of the
 ## given generating set.
 ##
-ImageCRNorm := function( A, sys )
+BindGlobal( "ImageCRNorm", function( A, sys )
     local mat, new, tmp;
 
     mat := sys.base;
@@ -187,9 +187,9 @@ ImageCRNorm := function( A, sys )
     return rec( basis := tmp.basis,
                 transf := tmp.transformation,
                 fixpts := tmp.relations );
-end;
+end );
 
-ImageCREndo := function( A, sys )
+BindGlobal( "ImageCREndo", function( A, sys )
     local i, mat, K, e, p, n, m, rho, sig;
     K := [];
     for i in [1..Length(sys)] do
@@ -206,15 +206,15 @@ ImageCREndo := function( A, sys )
         K[i] := List(K[i], x -> PermuteVec( x, rho^-1));
     od;
     return K;
-end;
+end );
 
-ImageCR := function( A, sys )
+BindGlobal( "ImageCR", function( A, sys )
     if IsList(sys) then
         return ImageCREndo( A, sys );
     else
         return ImageCRNorm( A, sys );
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -222,7 +222,7 @@ end;
 ##
 ## returns the kernel of the system
 ##
-KernelCRNorm := function( A, sys )
+BindGlobal( "KernelCRNorm", function( A, sys )
     local mat, null;
 
     if sys.len = 0 then return []; fi;
@@ -242,10 +242,10 @@ KernelCRNorm := function( A, sys )
     fi;
 
     return null;
-end;
+end );
 
 
-KernelCREndo := function( A, sys )
+BindGlobal( "KernelCREndo", function( A, sys )
     local i, mat, K, e, p, n, m, rho, sig;
     K := [];
     for i in [1..Length(sys)] do
@@ -261,15 +261,15 @@ KernelCREndo := function( A, sys )
         K[i] := List(K[i], x -> PermuteVec( x, rho^-1));
     od;
     return K;
-end;
+end );
 
-KernelCR := function( A, sys )
+BindGlobal( "KernelCR", function( A, sys )
     if IsList(sys) then
         return KernelCREndo( A, sys );
     else
         return KernelCRNorm( A, sys );
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -277,7 +277,7 @@ end;
 ##
 ## returns a special solution of the system corresponding to A.extension
 ##
-SpecialSolutionCR := function( A, sys )
+BindGlobal( "SpecialSolutionCR", function( A, sys )
     local mat, sol, vec;
 
     if sys.len = 0 then return []; fi;
@@ -297,6 +297,4 @@ SpecialSolutionCR := function( A, sys )
 
     # return with special solution
     return sol;
-end;
-
-
+end );

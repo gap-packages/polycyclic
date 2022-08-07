@@ -9,7 +9,7 @@
 ##
 #F CheckStabilizer( G, S, mats, v )
 ##
-CheckStabilizer := function( G, S, mats, v )
+BindGlobal( "CheckStabilizer", function( G, S, mats, v )
     local actS, m, R;
 
     # first check that S is stabilizing
@@ -21,21 +21,21 @@ CheckStabilizer := function( G, S, mats, v )
     if ForAny( R.stab, x -> not x in S ) then return false; fi;
 
     return true;
-end;
+end );
 
 #############################################################################
 ##
 #F CheckOrbit( G, g, mats, e, f )
 ##
-CheckOrbit := function( G, g, mats, e, f )
+BindGlobal( "CheckOrbit", function( G, g, mats, e, f )
     return e * InducedByPcp( Pcp(G), g, mats ) = f;
-end;
+end );
 
 #############################################################################
 ##
 #F OrbitStabilizerTranslationAction( K, derK ) . . . . . for transl. subgroup
 ##
-OrbitStabilizerTranslationAction := function( K, derK )
+BindGlobal( "OrbitStabilizerTranslationAction", function( K, derK )
     local base, gens, orbit, trans, stabl;
 
     # the first case is that image is trivial
@@ -56,13 +56,13 @@ OrbitStabilizerTranslationAction := function( K, derK )
     stabl := List( base.kern, x -> MappedVector( x, gens ) );
 
     return rec( stabl := stabl, trans := trans, orbit := orbit );
-end;
+end );
 
 #############################################################################
 ##
 #F InducedDerivation( g, G, linG, derG ) . . . . . . . . . value of derG on g
 ##
-InducedDerivation := function( g, G, linG, derG )
+BindGlobal( "InducedDerivation", function( g, G, linG, derG )
     local pcp, exp, der, i, e, j, inv;
     pcp := Pcp( G );
     exp := ExponentsByPcp( pcp, g );
@@ -83,13 +83,13 @@ InducedDerivation := function( g, G, linG, derG )
         fi;
     od;
     return der;
-end;
+end );
 
 #############################################################################
 ##
 #F StabilizerIrreducibleAction( G, K, linG, derG ) . . . . . . kernel of derG
 ##
-StabilizerIrreducibleAction := function( G, K, linG, derG )
+BindGlobal( "StabilizerIrreducibleAction", function( G, K, linG, derG )
     local derK, stabK, OnAffMod, affG, e, h, H, gens, i, f, k;
 
     # catch the trivial case first
@@ -130,7 +130,7 @@ StabilizerIrreducibleAction := function( G, K, linG, derG )
     Info( InfoIntStab, 3, "  determined complement ");
     gens := AddIgsToIgs( gens, stabK.stabl );
     return SubgroupByIgs( G, gens );
-end;
+end );
 
 #############################################################################
 ##
@@ -139,7 +139,7 @@ end;
 ## returns an element g in G with v^g in derG and ker(derG) if g exists.
 ## returns false otherwise.
 ##
-OrbitIrreducibleActionTrivialKernel := function( G, K, linG, derG, v )
+BindGlobal( "OrbitIrreducibleActionTrivialKernel", function( G, K, linG, derG, v )
     local I, d, lin, der, g, t, a, m;
 
     # set up
@@ -171,7 +171,7 @@ OrbitIrreducibleActionTrivialKernel := function( G, K, linG, derG, v )
     # now return
     if IsBool( g ) then return false; fi;
     return rec( stab := K, prei := g );
-end;
+end );
 
 #############################################################################
 ##
@@ -180,7 +180,7 @@ end;
 ## returns an element g in G with v^g in derG and ker(derG) if g exists.
 ## returns false otherwise.
 ##
-OrbitIrreducibleAction := function( G, K, linG, derG, v )
+BindGlobal( "OrbitIrreducibleAction", function( G, K, linG, derG, v )
     local derK, stabK, I, a, m, g, OnAffMod, affG, e, h, i, c, k, H, f, gens,
           found, w;
 
@@ -242,13 +242,13 @@ OrbitIrreducibleAction := function( G, K, linG, derG, v )
     od;
     gens := AddToIgs( stabK.stabl, gens );
     return rec( stab := SubgroupByIgs( G, gens ), prei := g);
-end;
+end );
 
 #############################################################################
 ##
 #F StabilizerCongruenceAction( G, mats, e, ser )
 ##
-StabilizerCongruenceAction := function( G, mats, e, ser )
+BindGlobal( "StabilizerCongruenceAction", function( G, mats, e, ser )
     local S, d, actS, derS, nath, K, T, actT, derT, full, subs, bas, tak,
           act, der, U, f, comp, i, inv;
 
@@ -317,7 +317,7 @@ StabilizerCongruenceAction := function( G, mats, e, ser )
 
     od;
     return S;
-end;
+end );
 
 #############################################################################
 ##
@@ -326,7 +326,7 @@ end;
 ## returns Stab_G(e) and g in G with e^g = f if g exists.
 ## returns false otherwise.
 ##
-OrbitCongruenceAction := function( G, mats, e, f, ser )
+BindGlobal( "OrbitCongruenceAction", function( G, mats, e, f, ser )
     local S, d, actS, derS, nath, K, T, actT, derT, full, subs, bas, tak,
           act, der, U, j, comp, g, t, o, u, inv, i;
 
@@ -414,20 +414,20 @@ OrbitCongruenceAction := function( G, mats, e, f, ser )
         S := T;
     od;
     return rec( stab := S, prei := g );
-end;
+end );
 
 #############################################################################
 ##
 #F FindPosition( orbit, pt, K, actK, orbfun )
 ##
-FindPosition := function( orbit, pt, K, actK, orbfun )
+BindGlobal( "FindPosition", function( orbit, pt, K, actK, orbfun )
     local j, k;
     for j in [1..Length(orbit)] do
         k := orbfun( K, actK, pt, orbit[j] );
         if not IsBool( k ) then return j; fi;
     od;
     return false;
-end;
+end );
 
 #############################################################################
 ##
@@ -435,7 +435,7 @@ end;
 ##
 ## K has finite index in S and and orbfun solves the orbit problem for K.
 ##
-ExtendOrbitStabilizer := function( e, K, actK, S, actS, orbfun, op )
+BindGlobal( "ExtendOrbitStabilizer", function( e, K, actK, S, actS, orbfun, op )
     local gens, rels, mats, orbit, trans, trels, stab, i, f, j, n, t, s, g;
 
     # get action
@@ -490,26 +490,25 @@ ExtendOrbitStabilizer := function( e, K, actK, S, actS, orbfun, op )
     od;
     return rec( stab := Reversed( stab ), orbit := orbit,
                 trels := trels, trans := trans );
-end;
+end );
 
 #############################################################################
 ##
 #F StabilizerModPrime( G, mats, e, p )
 ##
-StabilizerModPrime := function( G, mats, e, p )
+BindGlobal( "StabilizerModPrime", function( G, mats, e, p )
     local F, t, S;
     F := GF(p);
     t := InducedByField( mats, F );
     S := PcpOrbitStabilizer( e*One(F), Pcp(G), t, OnRight );
     return SubgroupByIgs( G, S.stab );
-end;
+end );
 
 #############################################################################
 ##
 #F StabilizerIntegralAction( G, mats, e ) . . . . . . . . . . . . . Stab_G(e)
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-StabilizerIntegralAction := function( G, mats, e )
+BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     local p, S, actS, K, actK, T, stab, ser, orbf;
 
     # reduce e
@@ -569,7 +568,7 @@ StabilizerIntegralAction := function( G, mats, e )
 
     # now return
     return stab;
-end;
+end );
 
 #############################################################################
 ##
@@ -578,8 +577,7 @@ end;
 ## returns Stab_G(e) and g in G with e^g = f if g exists.
 ## returns false otherwise.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-OrbitIntegralAction := function( G, mats, e, f )
+BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     local c, F, t, os, j, g, S, actS, K, actK, ser, orbf, h, T, l;
 
     # reduce e and f
@@ -656,5 +654,5 @@ OrbitIntegralAction := function( G, mats, e, f )
 
     # now return
     return rec( stab := T, prei := g );
-end;
+end );
 

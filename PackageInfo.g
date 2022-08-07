@@ -9,7 +9,7 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.16",
+Version     := "2.17dev",
 Date        := "25/07/2020", # dd/mm/yyyy format
 License     := "GPL-2.0-or-later",
 
@@ -83,7 +83,7 @@ AbstractHTML   := Concatenation(
 PackageDoc     := rec(
   BookName  := "polycyclic",
   ArchiveURLSubset := [ "doc" ],
-  HTMLStart := "doc/chap0.html",
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Computation with polycyclic groups",

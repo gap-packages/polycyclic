@@ -7,22 +7,9 @@
 
 #############################################################################
 ##
-#F SubsWord( w, list ) . . . . . . . . . . . . . . . . . . .substitute a word
-##
-SubsWord := function( w, list )
-    local g, i;
-    g := list[1]^0;
-    for i in [1..Length(w)] do
-        g := g * list[w[i][1]]^w[i][2];
-    od;
-    return g;
-end;
-
-#############################################################################
-##
 #F SubsWordPlus( w, gens, invs, id ) . . . . . . . .use inverses and identity
 ##
-SubsWordPlus := function( w, gens, invs, id )
+BindGlobal( "SubsWordPlus", function( w, gens, invs, id )
     local g, v;
     g := id;
     for v in w do
@@ -37,48 +24,26 @@ SubsWordPlus := function( w, gens, invs, id )
         fi;
     od;
     return g;
-end;
-
-#############################################################################
-##
-#F SubsRecWord( w, list ) . . . . . . . . . . . . substitute a recursive word
-##
-SubsRecWord := function( w, list )
-    local g, v;
-
-    # catch the case of a single exponent
-    if Length(w) = 2 and IsInt( w[1] ) and IsInt( w[2] ) then
-        return list[w[1]]^w[2];
-    elif Length(w) = 2 and IsInt( w[2] ) and IsList( w[1] ) then
-        return SubsRecWord( w[1], list )^w[2];
-    fi;
-
-    # now deal with products
-    g := list[1]^0;
-    for v in w do
-        g := g * SubsRecWord( v, list );
-    od;
-    return g;
-end;
+end );
 
 #############################################################################
 ##
 #F SubsAndInvertDefn( w, defns ) . . . . . . . . . . . .substitute and invert
 ##
-SubsAndInvertDefn := function( w, defns )
+BindGlobal( "SubsAndInvertDefn", function( w, defns )
     local v, l;
     v := [];
     for l in w do
         Add( v, [defns[l[1]], -l[2]] );
     od;
     return Reversed( v );
-end;
+end );
 
 #############################################################################
 ##
 #F TransWord( j, trels ) . . . . . . . . . . . . . determine transversal word
 ##
-TransWord := function( j, trels )
+BindGlobal( "TransWord", function( j, trels )
     local l, g, s, p, t, w;
     l := Product( trels );
     j := j - 1;
@@ -91,13 +56,13 @@ TransWord := function( j, trels )
         if t > 0 then Add( w, [s, t] ); fi;
     od;
     return Reversed( w );
-end;
+end );
 
 #############################################################################
 ##
 #F  EnlargeOrbit( orbit, g, p, op ) . . . . enlarge orbit by p images under g
 ##
-EnlargeOrbit := function( orbit, g, p, op )
+BindGlobal( "EnlargeOrbit", function( orbit, g, p, op )
     local l, s, k, t, h;
     l := Length( orbit );
     orbit[p*l] := true;
@@ -109,19 +74,19 @@ EnlargeOrbit := function( orbit, g, p, op )
         od;
         s := t;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F  SmallOrbitPoint( pcgs, g )
 ##
-SmallOrbitPoint := function( pcgs, g )
+BindGlobal( "SmallOrbitPoint", function( pcgs, g )
     local b;
     repeat
         b := Random(pcgs.acton);
     until pcgs.oper( b, g ) <> b;
     return b;
-end;
+end );
 
 #############################################################################
 ##
@@ -129,7 +94,7 @@ end;
 ##
 ##  g normalizes <pcgs> and we compute a new pcgs for <pcgs, g>.
 ##
-ExtendedBasePcgs := function( pcgs, g, d )
+BindGlobal( "ExtendedBasePcgs", function( pcgs, g, d )
     local h, e, i, o, b, m, c, l, w, j, k;
 
     # change in place - but unbind not updated information
@@ -185,5 +150,5 @@ ExtendedBasePcgs := function( pcgs, g, d )
             e := [e,m];
         fi;
     od;
-end;
+end );
 

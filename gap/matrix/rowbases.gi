@@ -9,31 +9,31 @@
 ##
 #F  VectorspaceBasis( gens )
 ##
-VectorspaceBasis := function( gens )
+BindGlobal( "VectorspaceBasis", function( gens )
     local j;
     TriangulizeMat( gens );
     if Length(gens) = 0 then return gens; fi;
     j := Position( gens, 0*gens[1] );
     if not IsBool( j ) then gens := gens{[1..j-1]}; fi;
     return gens;
-end;
+end );
 
 #############################################################################
 ##
 #F  SemiEchelonFactorBase( V, U )
 ##
-SemiEchelonFactorBase := function( V, U )
+BindGlobal( "SemiEchelonFactorBase", function( V, U )
     local L1, L2;
     L1 := List( V, PositionNonZero );
     L2 := List( U, PositionNonZero );
     return V{Filtered( [1..Length(V)], i -> not L1[i] in L2 )};
-end;
+end );
 
 #############################################################################
 ##
 #F  MemberBySemiEchelonBase( v, U )
 ##
-MemberBySemiEchelonBase := function( v, U )
+BindGlobal( "MemberBySemiEchelonBase", function( v, U )
     local d, c, z, l, j;
     v := ShallowCopy(v);
     d := List( U, PositionNonZero );
@@ -48,7 +48,7 @@ MemberBySemiEchelonBase := function( v, U )
         AddRowVector( v, U[j], -c[j] );
     od;
     return c;
-end;
+end );
 
 #############################################################################
 ##
@@ -65,7 +65,7 @@ end );
 ##
 #F  CoefficientsByNHSEB( v, hom )
 ##
-CoefficientsByNHSEB := function( v, hom )
+BindGlobal( "CoefficientsByNHSEB", function( v, hom )
     local df, dk, cf, ck, z, l, j;
     v  := ShallowCopy(v);
     df := List( hom.factor, PositionNonZero );
@@ -88,31 +88,31 @@ CoefficientsByNHSEB := function( v, hom )
         fi;
     od;
     return rec( coeff1 := cf, coeff2 := ck );
-end;
+end );
 
 #############################################################################
 ##
 #F  ProjectionByNHSEB( vec, hom )
 ##
-ProjectionByNHSEB := function( vec, hom )
+BindGlobal( "ProjectionByNHSEB", function( vec, hom )
     return CoefficientsByNHSEB( vec, hom ).coeff2;
-end;
+end );
 
 #############################################################################
 ##
 #F  ImageByNHSEB( vec, hom )
 ##
-ImageByNHSEB := function( vec, hom )
+BindGlobal( "ImageByNHSEB", function( vec, hom )
     return CoefficientsByNHSEB( vec, hom ).coeff1;
-end;
+end );
 
 #############################################################################
 ##
 #F  PreimagesRepresentativeByNHSEB( vec, hom )
 ##
-PreimagesRepresentativeByNHSEB := function( vec, hom )
+BindGlobal( "PreimagesRepresentativeByNHSEB", function( vec, hom )
     return vec * hom.factor;
-end;
+end );
 
 #############################################################################
 ##
@@ -129,12 +129,12 @@ end );
 ##
 #F  InducedActionByNHSEB( mat, hom )
 ##
-InducedActionByNHSEB := function( mat, hom )
+BindGlobal( "InducedActionByNHSEB", function( mat, hom )
     local fac, sub;
     fac := List( hom.factor, x -> CoefficientsByNHSEB( x*mat, hom ).coeff1 );
     sub := List( hom.kernel, x -> CoefficientsByNHSEB( x*mat, hom ).coeff2 );
     return rec( factor := fac, subsp := sub );
-end;
+end );
 
 #############################################################################
 ##
@@ -156,7 +156,7 @@ end );
 ##
 #F  AddVectorEchelonBase( base, vec )
 ##
-AddVectorEchelonBase := function( base, vec )
+BindGlobal( "AddVectorEchelonBase", function( base, vec )
     local d, l, j, i;
 
     # reduce vec
@@ -177,7 +177,7 @@ AddVectorEchelonBase := function( base, vec )
 
     # finally add vector to base
     base[Length(base)+1] := vec;
-end;
+end );
 
 #############################################################################
 ##
@@ -225,15 +225,15 @@ end );
 ##
 #F  IsSemiEchelonBase( base )
 ##
-IsSemiEchelonBase := function( base )
+BindGlobal( "IsSemiEchelonBase", function( base )
     return IsSSortedList( List( base, PositionNonZero ) );
-end;
+end );
 
 #############################################################################
 ##
 #F  IsEchelonBase( base )
 ##
-IsEchelonBase := function( base )
+BindGlobal( "IsEchelonBase", function( base )
     local d, i;
     d := List( base, PositionNonZero );
     if not IsSSortedList( List( base, PositionNonZero ) ) then return false; fi;
@@ -241,4 +241,4 @@ IsEchelonBase := function( base )
         if base[i][d[i]] <> 1 then return false; fi;
     od;
     return true;
-end;
+end );

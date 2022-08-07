@@ -181,7 +181,7 @@ true
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=Representation(Collector(G));;
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
 gap> e:=[8,-4,5,2,13,-17,9];;
 gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
 [ 8, -4, 19, 34, 51, -17, 5 ]
@@ -489,6 +489,38 @@ gap> h := g^(G.2*G.3);;
 gap> k := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( G ) );;
 gap> g^k = h;
 true
+
+#
+# Fix a bug causing Random to fail for the trivial group
+# <https://github.com/gap-packages/polycyclic/issues/59>
+#
+gap> Random( TrivialGroup( IsPcpGroup ) );
+id
+
+#
+# Fix a bug in IsNormal
+# <https://github.com/gap-packages/polycyclic/issues/46>
+#
+gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
+Pcp-group with orders [ 2, 2, 2, 2, 3 ]
+gap> S := SylowSubgroup( g, 2 );
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> T := S^g.5;
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> IsNormal( S, T );
+false
+gap> IsNormal( T, S );
+false
+
+#
+# Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
+# for certain trivial maps, which used to raise an error in the example
+# below, because MappedVector was called with an empty list of generators.
+#
+gap> G:=TrivialGroup(IsPcpGroup);;
+gap> H:=AbelianGroup(IsPcpGroup,[0]);;
+gap> GroupHomomorphismByImages(G, H, [One(G)], [One(H)]);
+[ id ] -> [ id ]
 
 #
 gap> STOP_TEST( "bugfix.tst", 10000000);
