@@ -181,7 +181,7 @@ true
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=Representation(Collector(G));;
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
 gap> e:=[8,-4,5,2,13,-17,9];;
 gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
 [ 8, -4, 19, 34, 51, -17, 5 ]
@@ -519,6 +519,16 @@ gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
 gap> gensG := [ G.1, G.4 ];;
 gap> G = Subgroup( G, gensG );
 true
+
+#
+# Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
+# for certain trivial maps, which used to raise an error in the example
+# below, because MappedVector was called with an empty list of generators.
+#
+gap> G:=TrivialGroup(IsPcpGroup);;
+gap> H:=AbelianGroup(IsPcpGroup,[0]);;
+gap> GroupHomomorphismByImages(G, H, [One(G)], [One(H)]);
+[ id ] -> [ id ]
 
 #
 gap> STOP_TEST( "bugfix.tst", 10000000);

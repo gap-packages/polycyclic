@@ -18,15 +18,15 @@
 ## rather unefficient, thus we use the method only, if the group is known to
 ## be nilpotent.
 ##
-TorsionSubgroupAbelianPcpGroup := function( G )
+BindGlobal( "TorsionSubgroupAbelianPcpGroup", function( G )
     local pcp, rels, subs;
     pcp := Pcp( G, "snf" );
     rels := RelativeOrdersOfPcp( pcp );
     subs := Filtered( [1..Length(pcp)], x -> rels[x] > 0 );
     return Subgroup( G, pcp{subs} );
-end;
+end );
 
-TorsionSubgroupNilpotentPcpGroup := function( G )
+BindGlobal( "TorsionSubgroupNilpotentPcpGroup", function( G )
     local U, D, pcp, rels, subs;
     U := ShallowCopy( G );
     while not IsFinite( U ) do
@@ -39,9 +39,9 @@ TorsionSubgroupNilpotentPcpGroup := function( G )
         U :=  SubgroupByIgs( G, Igs(D), pcp{subs} );
     od;
     return U;
-end;
+end );
 
-TorsionSubgroupPcpGroup := function( G )
+BindGlobal( "TorsionSubgroupPcpGroup", function( G )
     local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g;
 
     # set up
@@ -92,7 +92,7 @@ TorsionSubgroupPcpGroup := function( G )
         fi;
     od;
     return T;
-end;
+end );
 
 InstallMethod( TorsionSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
@@ -120,7 +120,7 @@ InstallMethod( TorsionSubgroup, "for torsion free groups", [IsGroup and IsTorsio
 ##
 ## This algorithm returns the (unique) largest finite normal subgroup of G.
 ##
-NormalTorsionSubgroupPcpGroup := function( G )
+BindGlobal( "NormalTorsionSubgroupPcpGroup", function( G )
     local efa, m, T, sub, i, pcp, gens, rels, H, N, new, com, g;
 
     # set up
@@ -169,7 +169,7 @@ NormalTorsionSubgroupPcpGroup := function( G )
         fi;
     od;
     return T;
-end;
+end );
 
 InstallMethod( NormalTorsionSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
@@ -233,16 +233,16 @@ InstallMethod( IsFreeAbelian, [IsFinitelyGeneratedGroup],
 ##
 #F IsSubbasis( big, small )
 ##
-IsSubbasis := function( big, small )
+BindGlobal( "IsSubbasis", function( big, small )
     if Length( small ) >= Length( big ) then return false; fi;
     return ForAll( small, x -> not IsBool( SolutionMat( big, x ) ) );
-end;
+end );
 
 #############################################################################
 ##
 #F OperationAndSpaces( pcpG, pcp )
 ##
-OperationAndSpaces := function( pcpG, pcp )
+BindGlobal( "OperationAndSpaces", function( pcpG, pcp )
     local act;
 
     # construct matrices
@@ -260,37 +260,37 @@ OperationAndSpaces := function( pcpG, pcp )
         fi;
     fi;
     return act;
-end;
+end );
 
 #############################################################################
 ##
 #F TranslateAction( C, pcp, mats )
 ##
-TranslateAction := function( C, pcp, mats )
+BindGlobal( "TranslateAction", function( C, pcp, mats )
     C.mats := List(C.factor, x -> MappedVector(ExponentsByPcp(pcp, x),mats));
     C.smats := List(C.super, x -> MappedVector(ExponentsByPcp(pcp, x),mats));
     if C.char > 0 then
         C.mats := C.mats * One( C.field );
         C.smats := C.smats * One( C.field );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F SubgroupBySubspace( pcp, exp )
 ##
-SubgroupBySubspace := function( pcp, exp )
+BindGlobal( "SubgroupBySubspace", function( pcp, exp )
     local gens;
     gens := List( exp, x -> MappedVector( IntVector( x ), pcp ) );
     gens := AddIgsToIgs( gens, DenominatorOfPcp( pcp ) );
     return SubgroupByIgs( GroupOfPcp( pcp ), gens );
-end;
+end );
 
 #############################################################################
 ##
 #F InduceMatricesAndExtension( C, sub )
 ##
-InduceMatricesAndExtension := function( C, sub )
+BindGlobal( "InduceMatricesAndExtension", function( C, sub )
     local e, l, all, new, A, ext, i, r, j, tmp;
 
     if Length( sub ) = 0 then return; fi;
@@ -316,7 +316,7 @@ InduceMatricesAndExtension := function( C, sub )
         C.extension[i] := ext;
      od;
      return;
-end;
+end );
 
 #############################################################################
 ##
@@ -324,7 +324,7 @@ end;
 ##
 ## C.normal is el ab and sub is an invariant subspace
 ##
-InduceToFactor := function( C, sub )
+BindGlobal( "InduceToFactor", function( C, sub )
     local D, L;
 
     # make a copy and adjust this
@@ -352,13 +352,13 @@ InduceToFactor := function( C, sub )
         InduceMatricesAndExtension( D, sub.repr );
     fi;
     return D;
-end;
+end );
 
 #############################################################################
 ##
 #F SupplementClassesCR( C ) . . .  supplements to an elementary abelian layer
 ##
-SupplementClassesCR := function( C )
+BindGlobal( "SupplementClassesCR", function( C )
     local orbs, com, orb, D, t;
 
     # catch a trivial case
@@ -383,14 +383,13 @@ SupplementClassesCR := function( C )
         fi;
     od;
     return com;
-end;
+end );
 
 #############################################################################
 ##
 #F FiniteSubgroupClassesBySeries( N, G, pcps, avoid )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-FiniteSubgroupClassesBySeries := function( arg )
+BindGlobal( "FiniteSubgroupClassesBySeries", function( arg )
     local N, G, pcps, avoid, pcpG, grps, pcp, act, new, grp, C, tmp, i,
           rels, U;
 
@@ -466,7 +465,7 @@ FiniteSubgroupClassesBySeries := function( arg )
         grps[i] := tmp;
     od;
     return grps;
-end;
+end );
 
 #############################################################################
 ##

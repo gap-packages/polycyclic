@@ -116,7 +116,7 @@ end );
 ##
 #F Centre( G )
 ##
-CentrePcpGroup := function( G )
+BindGlobal( "CentrePcpGroup", function( G )
     local F, C, pcp, mat, rel, fix, i, gens, g;
 
     # compute Z(Fit(G))
@@ -145,7 +145,7 @@ CentrePcpGroup := function( G )
         C := Subgroup( G, fix );
     od;
     return C;
-end;
+end );
 
 InstallMethod( Centre,
                "for pcp groups", [IsPcpGroup],
@@ -163,7 +163,7 @@ end );
 ##
 #F UpperCentralSeriesOfGroup( G )
 ##
-UpperCentralSeriesPcpGroup := function( G )
+BindGlobal( "UpperCentralSeriesPcpGroup", function( G )
     local C, upp, nat, N, H;
     C := TrivialSubgroup(G);
     upp := [C];
@@ -176,7 +176,7 @@ UpperCentralSeriesPcpGroup := function( G )
         N := PreImage( nat, Centre(H) );
     od;
     return Reversed( upp );
-end;
+end );
 
 InstallMethod( UpperCentralSeriesOfGroup, [IsPcpGroup],
 function( G )
@@ -191,7 +191,7 @@ end );
 ##
 #F FCCentre( G )
 ##
-FCCentrePcpGroup := function( G )
+BindGlobal( "FCCentrePcpGroup", function( G )
     local N, hom, H, F, C, K, gens, g, pcp, mat, fix;
 
     # mod out torsion
@@ -222,7 +222,7 @@ FCCentrePcpGroup := function( G )
         C := Subgroup( C, List( fix, x -> MappedVector( x, pcp ) ) );
     od;
     return PreImage( hom, C );
-end;
+end );
 
 InstallMethod( FCCentre,
                "FCCentre for pcp groups", [IsPcpGroup],

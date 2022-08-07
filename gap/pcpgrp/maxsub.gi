@@ -12,7 +12,7 @@
 ## A/B is an efa layer of G. We compute the maximal subgroups of p-index
 ## of G which do not contain A/B.
 ##
-MaximalSubgroupsByLayer := function( G, pcp, p )
+BindGlobal( "MaximalSubgroupsByLayer", function( G, pcp, p )
     local q, C, invs, max, inv, t, D, new;
 
     # get characteristic
@@ -63,7 +63,7 @@ MaximalSubgroupsByLayer := function( G, pcp, p )
         Append( max, t );
     od;
     return max;
-end;
+end );
 
 #############################################################################
 ##
