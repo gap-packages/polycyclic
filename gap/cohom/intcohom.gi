@@ -7,7 +7,7 @@
 ##
 ## IntKernelCR( A, sys, lat, bat )
 ##
-IntKernelCR := function( A, sys, lat, bat )
+BindGlobal( "IntKernelCR", function( A, sys, lat, bat )
     local l, n, d, mat, null;
 
     # get sizes
@@ -33,13 +33,13 @@ IntKernelCR := function( A, sys, lat, bat )
     # find basis
     # Print("  reduce system ",Length(null)," by ",Length(null[1]),"\n");
     return BaseIntMat( null );
-end;
+end );
 
 #############################################################################
 ##
 #F IntTwoCocycleSystemCR( A )
 ##
-IntTwoCocycleSystemCR := function( A )
+BindGlobal( "IntTwoCocycleSystemCR", function( A )
     local C, n, e, id, l, gn, gp, gi, eq, pairs, i, j, k, w1, w2, d, sys, h;
 
     # set up system of length d
@@ -203,14 +203,13 @@ IntTwoCocycleSystemCR := function( A )
 
     # return system
     return sys;
-end;
+end );
 
 #############################################################################
 ##
 #F TwoCohomologyModCR( A, lat )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-TwoCohomologyModCR := function( A, lat )
+BindGlobal( "TwoCohomologyModCR", function( A, lat )
     local cb, cc, bat;
 
     if A.char <> 0 then return fail; fi;
@@ -230,5 +229,5 @@ TwoCohomologyModCR := function( A, lat )
 
     return rec( gcc := cc, gcb := cb,
                 factor := AdditiveFactorPcp( cc, cb, 0 ) );
-end;
+end );
 

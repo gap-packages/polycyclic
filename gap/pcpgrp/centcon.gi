@@ -10,7 +10,7 @@
 ##
 #F AffineActionByElement( gens, pcp, g )
 ##
-AffineActionByElement := function( gens, pcp, g )
+BindGlobal( "AffineActionByElement", function( gens, pcp, g )
     local lin, i, j, c;
     lin := LinearActionOnPcp( gens, pcp );
     for i in [1..Length(gens)] do
@@ -26,13 +26,13 @@ AffineActionByElement := function( gens, pcp, g )
         Add( lin[i], c );
     od;
     return lin;
-end;
+end );
 
 #############################################################################
 ##
 #F IsCentralLayer( G, pcp )
 ##
-IsCentralLayer := function( G, pcp )
+BindGlobal( "IsCentralLayer", function( G, pcp )
     local g, h, e, f;
     for g in Igs(G) do
         for h in AsList(pcp) do
@@ -41,13 +41,13 @@ IsCentralLayer := function( G, pcp )
         od;
     od;
     return true;
-end;
+end );
 
 #############################################################################
 ##
 #F CentralizerByCentralLayer( gens, cent, pcp )
 ##
-CentralizerByCentralLayer := function( gens, cent, pcp )
+BindGlobal( "CentralizerByCentralLayer", function( gens, cent, pcp )
     local rels, g, matrix, null;
     rels := ExponentRelationMatrix( pcp );
     for g in gens do
@@ -66,7 +66,7 @@ CentralizerByCentralLayer := function( gens, cent, pcp )
         cent := Filtered( cent, x -> x <> x^0 );
     od;
     return cent;
-end;
+end );
 
 #############################################################################
 ##
@@ -75,7 +75,7 @@ end;
 ##  possible improvements: - refine layers of given series by fixedpoints
 ##                         - use translation subgroup induced by layers
 ##
-CentralizerBySeries := function( G, elms, pcps )
+BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
     local i, C, R, pcp, rel, p, d, e, N, M, gen, lin, stb, F, fac, act,
           nat, CM, NM, gM, g;
 
@@ -148,13 +148,13 @@ CentralizerBySeries := function( G, elms, pcps )
 
     # now return the result
     return C;
-end;
+end );
 
 #############################################################################
 ##
 #F Centralizer
 ##
-CentralizerPcpGroup := function( G, g )
+BindGlobal( "CentralizerPcpGroup", function( G, g )
 
     # get arguments
     if IsPcpGroup(g) then
@@ -170,7 +170,7 @@ CentralizerPcpGroup := function( G, g )
 
     # compute
     return CentralizerBySeries( G, g, PcpsOfEfaSeries(G) );
-end;
+end );
 
 InstallMethod( CentralizerOp, "for a pcp group", IsCollsElms,
         [IsPcpGroup and IsNilpotentGroup, IsPcpElement],
@@ -192,7 +192,7 @@ InstallMethod( CentralizerOp, "for a pcp group", IsIdenticalObj,
 ##
 #F ConjugacyByCentralLayer( g, h, cent, pcp )
 ##
-ConjugacyByCentralLayer := function( g, h, cent, pcp )
+BindGlobal( "ConjugacyByCentralLayer", function( g, h, cent, pcp )
     local matrix, c, solv, null;
 
     # first check
@@ -223,13 +223,13 @@ ConjugacyByCentralLayer := function( g, h, cent, pcp )
     cent := List( null, x -> MappedVector( x, cent ) );
     cent := Filtered( cent, x -> x <> x^0 );
     return rec( stab := cent, prei := solv );
-end;
+end );
 
 #############################################################################
 ##
 #F ConjugacyElementsBySeries( G, g, h, pcps )
 ##
-ConjugacyElementsBySeries := function( G, g, h, pcps )
+BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
     local C, k, eg, eh, i, pcp, rel, p, d,
           e, f, c, j, N, M, fac, stb, F, act, nat;
 
@@ -316,7 +316,7 @@ ConjugacyElementsBySeries := function( G, g, h, pcps )
 
     # now return the result
     return k;
-end;
+end );
 
 #############################################################################
 ##

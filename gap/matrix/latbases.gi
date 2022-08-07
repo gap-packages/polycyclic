@@ -9,7 +9,7 @@
 ##
 #F  LatticeBasis( gens )
 ##
-LatticeBasis := function( gens )
+BindGlobal( "LatticeBasis", function( gens )
     local b, j;
     if Length(gens) = 0 or ForAll(gens, x -> Length(x)=0 ) then return []; fi;
     b := NormalFormIntMat( gens, 2 ).normal;
@@ -17,13 +17,13 @@ LatticeBasis := function( gens )
     j := Position( b, 0*b[1] );
     if not IsBool( j ) then b := b{[1..j-1]}; fi;
     return b;
-end;
+end );
 
 #############################################################################
 ##
 #F  FactorLattice( V, U )
 ##
-FactorLattice := function( V, U )
+BindGlobal( "FactorLattice", function( V, U )
     local d, g, r, i, j, e;
     d := List( U, PositionNonZero );
     g := [];
@@ -42,13 +42,13 @@ FactorLattice := function( V, U )
         fi;
     od;
     return rec( gens := g, rels := r, kern := U );
-end;
+end );
 
 #############################################################################
 ##
 #F  CoefficientsByFactorLattice( F, v )
 ##
-CoefficientsByFactorLattice := function( F, v )
+BindGlobal( "CoefficientsByFactorLattice", function( F, v )
     local df, dk, cf, ck, z, l, j, e;
     v  := ShallowCopy(v);
     df := List( F.gens, PositionNonZero );
@@ -79,13 +79,13 @@ CoefficientsByFactorLattice := function( F, v )
         fi;
     od;
     return rec( fcoeff := cf, kcoeff := ck );
-end;
+end );
 
 #############################################################################
 ##
 #F  NaturalHomomorphismByLattices( V, U ). . . . . . . includes normalisation
 ##
-NaturalHomomorphismByLattices := function( V, U )
+BindGlobal( "NaturalHomomorphismByLattices", function( V, U )
     local F, n, mat, i, row, new, cyc, ord, chg, inv, imgs, prei;
 
     # get the factor
@@ -134,48 +134,48 @@ NaturalHomomorphismByLattices := function( V, U )
                 inv  := TransposedMat( inv ) );
 
     return rec( fac := F, cyc := cyc );
-end;
+end );
 
 #############################################################################
 ##
 #F TranslateExp( cyc, exp ) . . . . . . . . .  translate to decomposed factor
 ##
-TranslateExp := function( cyc, exp )
+BindGlobal( "TranslateExp", function( cyc, exp )
     local new, i;
     new := exp * cyc.inv;
     for i in [1..Length(new)] do
         if cyc.rels[i] > 0 then new[i] := new[i] mod cyc.rels[i]; fi;
     od;
     return new;
-end;
+end );
 
 
 #############################################################################
 ##
 #F  CoefficientsByNHLB( v, hom )
 ##
-CoefficientsByNHLB := function( v, hom )
+BindGlobal( "CoefficientsByNHLB", function( v, hom )
     local cf;
     cf := CoefficientsByFactorLattice( hom.fac, v );
     cf.fcoeff := TranslateExp( hom.cyc, cf.fcoeff );
     return cf;
-end;
+end );
 
 #############################################################################
 ##
 #F  ProjectionByNHLB( vec, hom )
 ##
-ProjectionByNHLB := function( vec, hom )
+BindGlobal( "ProjectionByNHLB", function( vec, hom )
     return CoefficientsByNHLB( vec, hom ).kcoeff;
-end;
+end );
 
 #############################################################################
 ##
 #F  ImageByNHLB( vec, hom )
 ##
-ImageByNHLB := function( vec, hom )
+BindGlobal( "ImageByNHLB", function( vec, hom )
     return CoefficientsByNHLB( vec, hom ).fcoeff;
-end;
+end );
 
 #############################################################################
 ##
@@ -199,45 +199,45 @@ PreimagesBasisOfNHLB := function( hom ) return hom.cyc.gens; end;
 ##
 #F  PreimagesRepresentativeByNHLB( vec, hom )
 ##
-PreimagesRepresentativeByNHLB := function( vec, hom )
+BindGlobal( "PreimagesRepresentativeByNHLB", function( vec, hom )
     return vec * hom.cyc.gens;
-end;
+end );
 
 #############################################################################
 ##
 #F  PreimageByNHLB( base, hom )
 ##
-PreimageByNHLB := function( base, hom )
+BindGlobal( "PreimageByNHLB", function( base, hom )
     local new;
     new := List( base, x -> x * hom.cyc.gens );
     Append( new, hom.fac.kern );
     return LatticeBasis( new );
-end;
+end );
 
 #############################################################################
 ##
 #F  InducedActionByNHLB( mat, hom )
 ##
-InducedActionByNHLB := function( mat, hom )
+BindGlobal( "InducedActionByNHLB", function( mat, hom )
     local fac, sub;
     fac := List( hom.cyc.gens, x -> CoefficientsByNHLB(x*mat, hom).fcoeff );
     sub := List( hom.fac.kern, x -> CoefficientsByNHLB(x*mat, hom).kcoeff );
     return rec( factor := fac, subsp := sub );
-end;
+end );
 
 #############################################################################
 ##
 #F  InducedActionFactorByNHLB( mat, hom )
 ##
-InducedActionFactorByNHLB := function( mat, hom )
+BindGlobal( "InducedActionFactorByNHLB", function( mat, hom )
     return List( hom.cyc.gens, x -> CoefficientsByNHLB(x*mat, hom).fcoeff );
-end;
+end );
 
 #############################################################################
 ##
 #F  InducedActionSubspaceByNHLB( mat, hom )
 ##
-InducedActionSubspaceByNHLB := function( mat, hom )
+BindGlobal( "InducedActionSubspaceByNHLB", function( mat, hom )
     return List( hom.fac.kern, x -> CoefficientsByNHLB(x*mat, hom).kcoeff );
-end;
+end );
 

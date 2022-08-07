@@ -8,7 +8,7 @@
 ##
 #F TransversalInverse( j, trels )
 ##
-TransversalInverse := function( j, trels )
+BindGlobal( "TransversalInverse", function( j, trels )
     local l, w, s, p, t;
     l := Product( trels );
     j := j - 1;
@@ -21,39 +21,39 @@ TransversalInverse := function( j, trels )
         if t > 0 then Add( w, [s,t] ); fi;
     od;
     return w;
-end;
+end );
 
 #############################################################################
 ##
 #F SubsWord( word, list )
 ##
-SubsWord := function( word, list )
+BindGlobal( "SubsWord", function( word, list )
     local g, w;
     g := list[1]^0;
     for w in word do
         g := g * list[w[1]]^w[2];
     od;
     return g;
-end;
+end );
 
 #############################################################################
 ##
 #F TransversalElement( j, stab, id )
 ##
-TransversalElement := function( j, stab, id )
+BindGlobal( "TransversalElement", function( j, stab, id )
     local t;
     if Length( stab.trels ) = 0 then return id; fi;
     t := TransversalInverse(j, stab.trels);
     return SubsWord( t, stab.trans )^-1;
-end;
+end );
 
 #############################################################################
 ##
 #F Translate( word, t )
 ##
-Translate := function( word, t )
+BindGlobal( "Translate", function( word, t )
     return List( word, x -> [t[x[1]], -x[2]] );
-end;
+end );
 
 #############################################################################
 ##
@@ -61,8 +61,7 @@ end;
 ##
 ## Warning: this function runs forever, if the orbit is infinite!
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-PcpOrbitStabilizer := function( e, pcp, act, op )
+BindGlobal( "PcpOrbitStabilizer", function( e, pcp, act, op )
     local  rels, orbit, dict, trans, trels, tword, stab, word, w, i, f, j, n, t, s, k;
 
     # check relative orders
@@ -132,7 +131,7 @@ PcpOrbitStabilizer := function( e, pcp, act, op )
                 trans := trans,
                 stab  := Reversed(stab),
                 word  := Reversed(word) );
-end;
+end );
 
 #############################################################################
 ##
@@ -148,8 +147,7 @@ end;
 ##
 ##  Warning: this function runs forever, if one of the orbits is infinite!
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-PcpOrbitsStabilizers := function( dom, pcp, act, op )
+BindGlobal( "PcpOrbitsStabilizers", function( dom, pcp, act, op )
     local todo, orbs, e, o;
     todo := [1..Length(dom)];
     orbs := [];
@@ -163,13 +161,13 @@ PcpOrbitsStabilizers := function( dom, pcp, act, op )
         todo := Difference( todo, List( o.orbit, x -> Position(dom,x)));
     od;
     return orbs;
-end;
+end );
 
 #############################################################################
 ##
 #F RandomPcpOrbitStabilizer( e, pcp, act, op )
 ##
-RandomPcpOrbitStabilizer := function( e, pcp, act, op )
+BindGlobal( "RandomPcpOrbitStabilizer", function( e, pcp, act, op )
     local  one, acts, gens, O, dict, T, S, count, i, j, t, g, im, index, l, s;
 
     # a trivial check
@@ -230,14 +228,13 @@ RandomPcpOrbitStabilizer := function( e, pcp, act, op )
     od;
     Print( "#I  Orbit calculation complete.\n" );
     return rec( orbit := O, stab := S );
-end;
+end );
 
 #############################################################################
 ##
 #F RandomCentralizerPcpGroup( G, g )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-RandomCentralizerPcpGroup := function( G, g )
+BindGlobal( "RandomCentralizerPcpGroup", function( G, g )
     local gens, stab, h;
     gens := Igs( G );
     if IsPcpElement( g ) then
@@ -251,16 +248,15 @@ RandomCentralizerPcpGroup := function( G, g )
         Print("g must be a subgroup or an element of G \n");
     fi;
     return Subgroup( G, stab );
-end;
+end );
 
 #############################################################################
 ##
 #F RandomNormalizerPcpGroup( G, N )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-RandomNormalizerPcpGroup := function( G, N )
+BindGlobal( "RandomNormalizerPcpGroup", function( G, N )
     local gens, stab;
     gens := Igs(G);
     stab := RandomPcpOrbitStabilizer( N, gens, gens, OnPoints);
     return Subgroup( G, stab.stab );
-end;
+end );
