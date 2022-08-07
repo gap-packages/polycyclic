@@ -10,7 +10,7 @@
 ##
 #F AffineActionOnH1( CR, cc )
 ##
-AffineActionOnH1 := function( CR, cc )
+BindGlobal( "AffineActionOnH1", function( CR, cc )
     local aff, l, i, lin, trl, j;
     aff := OperationOnH1( CR, cc );
     l   := Length( cc.factor.rels );
@@ -27,7 +27,7 @@ AffineActionOnH1 := function( CR, cc )
     od;
     if not IsBool(cc.fld) then aff := aff * One(cc.fld); fi;
     return aff;
-end;
+end );
 
 #############################################################################
 ##
@@ -35,20 +35,20 @@ end;
 ##
 ##  bad hack ... igs and fac have to fit together.
 ##
-VectorByComplement := function( CR, U )
+BindGlobal( "VectorByComplement", function( CR, U )
     local fac, vec, igs;
     fac := CR.factor;
     igs := Cgs(U);
     vec := List( [1..Length(fac)], i ->
            ExponentsByPcp( CR.normal, fac[i]^-1 * igs[i] ) );
     return Flat(vec);
-end;
+end );
 
 #############################################################################
 ##
 #F LiftBlockToPointNormalizer( CR, cc, C, H, HN, c )
 ##
-LiftBlockToPointNormalizer := function( CR, cc, C, H, HN, c )
+BindGlobal( "LiftBlockToPointNormalizer", function( CR, cc, C, H, HN, c )
     local b, r, t, i, d, igs;
 
     # set up b and t
@@ -68,13 +68,13 @@ LiftBlockToPointNormalizer := function( CR, cc, C, H, HN, c )
         t[i] := t[i] * MappedVector( d, CR.normal );
     od;
     return SubgroupByIgsAndIgs( C, t, b );
-end;
+end );
 
 #############################################################################
 ##
 #F NormalizerOfIntersection( C, N, I )
 ##
-NormalizerOfIntersection := function( C, N, I )
+BindGlobal( "NormalizerOfIntersection", function( C, N, I )
     local pcp, int, fac, act, p, d, F, stb, ind;
 
     # catch trivial cases
@@ -106,13 +106,13 @@ NormalizerOfIntersection := function( C, N, I )
         C := NormalizerIntegralAction( C, act, int );
         return PreImage( ind, C );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F StabilizerOfCocycle( CR, cc, C, elm )
 ##
-StabilizerOfCocycle := function( CR, cc, C, elm )
+BindGlobal( "StabilizerOfCocycle", function( CR, cc, C, elm )
     local aff, s, l, D, nat, act, e, oper, stb;
 
     # determine operation and catch trivial case
@@ -164,13 +164,13 @@ StabilizerOfCocycle := function( CR, cc, C, elm )
     # compute stabilizer
     stb := PcpOrbitStabilizer( elm, act, aff, oper );
     return SubgroupByIgsAndIgs( C, stb.stab, Igs(CR.group) );
-end;
+end );
 
 #############################################################################
 ##
 #F PcpsOfAbelianFactor( N, I )
 ##
-PcpsOfAbelianFactor := function( N, I )
+BindGlobal( "PcpsOfAbelianFactor", function( N, I )
     local ser, sub, pcp, rel, tor, gen, M, p, T;
 
     # set up
@@ -201,13 +201,13 @@ PcpsOfAbelianFactor := function( N, I )
     od;
 
     return ser;
-end;
+end );
 
 #############################################################################
 ##
 #F NormalizerOfComplement( C, H, N, I )
 ##
-NormalizerOfComplement := function( C, H, N, I )
+BindGlobal( "NormalizerOfComplement", function( C, H, N, I )
     local pcps, pcp, M, L, CR, cc, c, e;
 
     # catch the trivial case
@@ -250,13 +250,13 @@ NormalizerOfComplement := function( C, H, N, I )
         C := LiftBlockToPointNormalizer( CR, cc, C, H, L, c );
     od;
     return C;
-end;
+end );
 
 #############################################################################
 ##
 #F NormalizerBySeries( G, U, efa )
 ##
-NormalizerBySeries := function( G, U, efa )
+BindGlobal( "NormalizerBySeries", function( G, U, efa )
     local C, i, N, M, hom, H, I, nat, k;
 
     # do a simple check
@@ -298,13 +298,13 @@ NormalizerBySeries := function( G, U, efa )
         if Size(M) > 1 then C := PreImage( hom, C ); fi;
     od;
     return C;
-end;
+end );
 
 #############################################################################
 ##
 #F Normalizer
 ##
-NormalizerPcpGroup := function( G, U )
+BindGlobal( "NormalizerPcpGroup", function( G, U )
     local GG, UU, NN;
 
     # translate
@@ -316,7 +316,7 @@ NormalizerPcpGroup := function( G, U )
 
     # translate back
     return Image(GG!.bijection, NN );
-end;
+end );
 
 InstallMethod( NormalizerOp, "for a pcp group", IsIdenticalObj,
         [IsPcpGroup, IsPcpGroup],
@@ -338,9 +338,9 @@ end );
 ##
 #F ConjugacySubgroupsBySeries( G, U, V, pcps )
 ##
-ConjugacySubgroupsBySeries := function( G, U, V, pcps )
+BindGlobal( "ConjugacySubgroupsBySeries", function( G, U, V, pcps )
     Error("not yet installed");
-end;
+end );
 
 #############################################################################
 ##

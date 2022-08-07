@@ -7,7 +7,7 @@
 ##
 #F  InducedByPcp( pcpG, pcpU, actG )
 ##
-InducedByPcp := function( pcpG, pcpU, actG )
+BindGlobal( "InducedByPcp", function( pcpG, pcpU, actG )
     if IsMultiplicativeElement( pcpU ) then
         return MappedVector( ExponentsByPcp( pcpG, pcpU ), actG );
     fi;
@@ -16,13 +16,13 @@ InducedByPcp := function( pcpG, pcpU, actG )
     else
         return List(pcpU, x-> MappedVector(ExponentsByPcp(pcpG,x),actG));
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #W KernelOfFiniteMatrixAction( G, mats, f )
 ##
-KernelOfFiniteMatrixAction := function( G, mats, f )
+BindGlobal( "KernelOfFiniteMatrixAction", function( G, mats, f )
     local d, I, U, i, actU, stab;
 
     if Length( mats ) = 0 then return G; fi;
@@ -39,7 +39,7 @@ KernelOfFiniteMatrixAction := function( G, mats, f )
 
     # that's it
     return U;
-end;
+end );
 
 #############################################################################
 ##
@@ -49,7 +49,7 @@ end;
 ## of the action of G. If pcp is free abelian, then we compute the kernel
 ## of the action mod 3.
 ##
-KernelOfFiniteAction := function( G, pcp )
+BindGlobal( "KernelOfFiniteAction", function( G, pcp )
     local rels, p, f, pcpG, actG;
 
     # get the char and the field
@@ -65,13 +65,13 @@ KernelOfFiniteAction := function( G, pcp )
 
     # centralize
     return KernelOfFiniteMatrixAction( G, actG, f );
-end;
+end );
 
 #############################################################################
 ##
 #F RelationLatticeMod( gens, f )
 ##
-RelationLatticeMod := function( gens, f )
+BindGlobal( "RelationLatticeMod", function( gens, f )
     local mats, l, pcgs, free, r, defn, g, e, null, base, i;
 
     # induce to f
@@ -106,13 +106,13 @@ RelationLatticeMod := function( gens, f )
     #od;
 
     return base;
-end;
+end );
 
 #############################################################################
 ##
 #F IsRelation( mats, rel ) . . . . . . . .check if rel is a relation for mats
 ##
-IsRelation := function( mats, rel )
+BindGlobal( "IsRelation", function( mats, rel )
     local   M1,  M2,  i;
     M1 := mats[1]^0;
     M2 := mats[1]^0;
@@ -124,13 +124,13 @@ IsRelation := function( mats, rel )
         fi;
     od;
     return M1 = M2;
-end;
+end );
 
 #############################################################################
 ##
 #F ApproxRelationLattice( mats, k, p ). .  . . . . . . . k step approximation
 ##
-ApproxRelationLattice := function( mats, k, p )
+BindGlobal( "ApproxRelationLattice", function( mats, k, p )
     local lat, i, new, ind, len;
 
     # set up
@@ -151,13 +151,13 @@ ApproxRelationLattice := function( mats, k, p )
         if not IsRelation( mats, lat[i] ) then lat[i] := false; fi;
     od;
     return rec( rels := Filtered( lat, x -> not IsBool(x) ), prime := p );
-end;
+end );
 
 #############################################################################
 ##
 #F VerifyIndependence( mats )
 ##
-VerifyIndependence := function( mats )
+BindGlobal( "VerifyIndependence", function( mats )
     local base, prim, dixn, done, L, p, i, N, w, d;
 
     if Length( mats ) = 1 and mats[1] <> mats[1]^0 then return true; fi;
@@ -201,7 +201,7 @@ VerifyIndependence := function( mats )
             if IsRelation( mats, L[i] ) then return false; fi;
         od;
     od;
-end;
+end );
 
 #############################################################################
 ##
@@ -209,7 +209,7 @@ end;
 ##
 ## Warning: G must be integral!
 ##
-KernelOfCongruenceMatrixActionGAP := function( G, mats )
+BindGlobal( "KernelOfCongruenceMatrixActionGAP", function( G, mats )
     local p, U, pcp, K, gens, acts, rell, tmps;
 
     # set up
@@ -240,13 +240,13 @@ KernelOfCongruenceMatrixActionGAP := function( G, mats )
 
     # that's it
     return U;
-end;
+end );
 
 #############################################################################
 ##
 #F KernelOfCongruenceMatrixActionALNUTH( G, mats ) . G acts as ss cong subgrp
 ##
-KernelOfCongruenceMatrixActionALNUTH := function( G, mats )
+BindGlobal( "KernelOfCongruenceMatrixActionALNUTH", function( G, mats )
     local H, base, prim, fact, full, f, s, h, imats, F, rels, gens;
 
     # the trivial case
@@ -300,30 +300,30 @@ KernelOfCongruenceMatrixActionALNUTH := function( G, mats )
 
     # that's it
     return H;
-end;
+end );
 
 #############################################################################
 ##
 #F KernelOfCongruenceMatrixAction( G, mats )  . . . . . . . . header function
 ##
-KernelOfCongruenceMatrixAction := function( G, mats )
+BindGlobal( "KernelOfCongruenceMatrixAction", function( G, mats )
     if ForAll( mats, x -> x = x^0 ) then return G; fi;
     if USE_ALNUTH@ then
         return KernelOfCongruenceMatrixActionALNUTH( G, mats );
     else
         return KernelOfCongruenceMatrixActionGAP( G, mats );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F KernelOfCongruenceAction( G, pcp ) . . . . . . . .G acts as ss cong subgrp
 ##
-KernelOfCongruenceAction := function( G, pcp )
+BindGlobal( "KernelOfCongruenceAction", function( G, pcp )
     local mats;
     mats := LinearActionOnPcp( Pcp(G), pcp );
     return KernelOfCongruenceMatrixAction( G, mats );
-end;
+end );
 
 #############################################################################
 ##
@@ -331,7 +331,7 @@ end;
 ##
 ## So far, this works only if G is an integral group.
 ##
-MemberByCongruenceMatrixAction := function( G, mats, m )
+BindGlobal( "MemberByCongruenceMatrixAction", function( G, mats, m )
     local F, r, e;
 
     # get field
@@ -347,6 +347,6 @@ MemberByCongruenceMatrixAction := function( G, mats, m )
     # now translate to G
     e := -r{[2..Length(r)]} * r[1];
     return MappedVector( e, Pcp(G) );
-end;
+end );
 
 

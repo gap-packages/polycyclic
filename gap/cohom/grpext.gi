@@ -66,8 +66,7 @@ end );
 ##
 #F ExtensionsCR( C ) . . . . . . . . . . . . . . . . . . . . . all extensions
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-ExtensionsCR := function( C )
+BindGlobal( "ExtensionsCR", function( C )
     local cc, new, elm, rel;
 
     # compute cocycles
@@ -91,14 +90,13 @@ ExtensionsCR := function( C )
         Append( new, elm );
     fi;
     return new;
-end;
+end );
 
 #############################################################################
 ##
 #F ExtensionClassesCR( C ) . . . . . . . . . . . . . .  all up to equivalence
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-ExtensionClassesCR := function( C )
+BindGlobal( "ExtensionClassesCR", function( C )
     local cc, elms;
 
     # compute H^2( U, A/B ) and return if there is no complement
@@ -123,17 +121,16 @@ ExtensionClassesCR := function( C )
 
     # loop over orbit and extract information
     return List( elms, x -> ExtensionCR( C, IntVector( x * cc.factor.prei )));
-end;
+end );
 
 
 #############################################################################
 ##
 #F SplitExtensionPcpGroup( G, mats ) . . . . . . . . . . . . . . .G split Z^n
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-SplitExtensionPcpGroup := function( G, mats )
+BindGlobal( "SplitExtensionPcpGroup", function( G, mats )
     return ExtensionCR( CRRecordByMats( G, mats ), false );
-end;
+end );
 
 #############################################################################
 ##

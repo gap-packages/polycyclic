@@ -1,4 +1,4 @@
-CollectPolycyclicGap := function( pcp, ev, w )
+BindGlobal( "CollectPolycyclicGap", function( pcp, ev, w )
 
     local   ngens,  pow,  exp,  com,  wst,  west,  sst,  est,  bottom,
             stp,  g,  word,  exponent,  i,  h,  m,  u,  j,  cnj,
@@ -183,16 +183,16 @@ CollectPolycyclicGap := function( pcp, ev, w )
         fi;
     od;
     return true;
-end;
+end );
 
-PrintCollectionStack := function( stp, wst, west, sst, est )
+BindGlobal( "PrintCollectionStack", function( stp, wst, west, sst, est )
 
     while stp > 0 do
         Print( wst[stp], "^", west[stp],
                " at ", sst[stp], " with exponent ", est[stp], "\n" );
         stp := stp - 1;
     od;
-end;
+end );
 
 #############################################################################
 ##

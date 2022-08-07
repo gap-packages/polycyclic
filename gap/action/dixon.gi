@@ -9,32 +9,32 @@
 ##
 #F PadicValue( rat, p )
 ##
-PadicValue := function( rat, p )
+BindGlobal( "PadicValue", function( rat, p )
     local a1, a2;
     a1 := AbsInt( NumeratorRat(rat) );
     a2 := DenominatorRat(rat);
     a1 := Length( Filtered( FactorsInt(a1), x -> x = p ) );
     a2 := Length( Filtered( FactorsInt(a2), x -> x = p ) );
     return a1 - a2;
-end;
+end );
 
 #############################################################################
 ##
 #F LogAbsValueBound( rat )
 ##
-LogAbsValueBound := function( rat )
+BindGlobal( "LogAbsValueBound", function( rat )
     local a1, a2, a;
     a1 := LogInt( AbsInt( NumeratorRat(rat) ), 2 );
     a2 := LogInt( DenominatorRat(rat), 2 );
     a  := Maximum( AbsInt( a1 - a2 + 1 ), AbsInt( a1 - a2 - 1) );
     return QuoInt( a * 3, 4 );
-end;
+end );
 
 #############################################################################
 ##
 #F ConsideredPrimes( rats )
 ##
-ConsideredPrimes := function( rats )
+BindGlobal( "ConsideredPrimes", function( rats )
     local pr, r, a1, a2, tmp;
     pr := [];
     for r in rats do
@@ -50,24 +50,24 @@ ConsideredPrimes := function( rats )
         fi;
     od;
     return pr;
-end;
+end );
 
 #############################################################################
 ##
 #F CoefficientsByBase( base, vec )
 ##
-CoefficientsByBase := function( base, vec )
+BindGlobal( "CoefficientsByBase", function( base, vec )
     local sol;
     sol := MemberBySemiEchelonBase( vec, base.vectors );
     if IsBool( sol ) then return fail; fi;
     return sol * base.coeffs;
-end;
+end );
 
 #############################################################################
 ##
 #F FullDixonBound( gens, prim )
 ##
-FullDixonBound := function( gens, prim )
+BindGlobal( "FullDixonBound", function( gens, prim )
     local c, f, j, n, d, minp, sub, max, cof, deg, base, cofs, dofs,
           g, pr, t1, p, s, i, a, b, t2, t;
 
@@ -129,13 +129,13 @@ FullDixonBound := function( gens, prim )
 
     t := Maximum( t1, t2 );
     return QuoInt( t^n + 1, t );
-end;
+end );
 
 #############################################################################
 ##
 #F LogDixonBound( gens, prim )
 ##
-LogDixonBound := function( gens, prim )
+BindGlobal( "LogDixonBound", function( gens, prim )
     local c, f, d, base, cofs, dofs, g, t, s, i, a, b;
 
     # set up
@@ -175,4 +175,4 @@ LogDixonBound := function( gens, prim )
     # now determine final value
     t := 7 * d^2 * s / QuoInt( 2 * LogInt(d,2), 3 );
     return QuoInt( t^Length(gens) + 1, t );
-end;
+end );
