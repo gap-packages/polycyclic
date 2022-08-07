@@ -3,14 +3,14 @@
 #W abelaut.gi                    Polycyc                         Bettina Eick
 ##
 
-ReduceMatMod := function( mat, exp )
+BindGlobal( "ReduceMatMod", function( mat, exp )
     local i, j;
     for i in [1..Length(mat)] do
         for j in [1..Length(mat)] do
             mat[i][j] := mat[i][j] mod exp[j];
         od;
     od;
-end;
+end );
 
 InstallGlobalFunction( APEndoNC, function( mat, exp, p )
     local elm, type;
@@ -26,13 +26,13 @@ InstallGlobalFunction( APEndo, function( mat, exp, p )
     return APEndoNC( mat, exp, p);
 end );
 
-IdentityAPEndo := function( exp, p )
+BindGlobal( "IdentityAPEndo", function( exp, p )
     return APEndoNC( IdentityMat(Length(exp)), exp, p );
-end;
+end );
 
-ZeroAPEndo := function(exp, p)
+BindGlobal( "ZeroAPEndo", function(exp, p)
     return APEndoNC( NullMat(Length(exp), Length(exp)), exp, p );
-end;
+end );
 
 InstallMethod( PrintObj, "", true, [IsAPEndo], SUM_FLAGS, function(auto)
     local i;

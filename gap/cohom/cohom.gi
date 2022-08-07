@@ -9,31 +9,31 @@
 ##
 #F WordOfVectorCR( v )
 ##
-WordOfVectorCR := function( v )
+BindGlobal( "WordOfVectorCR", function( v )
     local w, i;
     w := [];
     for i in [1..Length(v)] do
         if v[i] <> 0 then Add( w, [i, v[i]] ); fi;
     od;
     return w;
-end;
+end );
 
 #############################################################################
 ##
 #F VectorOfWordCR( w, n )
 ##
-VectorOfWordCR := function( w, n )
+BindGlobal( "VectorOfWordCR", function( w, n )
     local v, t;
     v := List( [1..n], x -> 0 );
     for t in w do v[t[1]] := t[2]; od;
     return v;
-end;
+end );
 
 #############################################################################
 ##
 #F MappedWordCR( w, gens, invs )
 ##
-MappedWordCR := function( w, gens, invs )
+BindGlobal( "MappedWordCR", function( w, gens, invs )
     local e, v;
     e := gens[1]^0;
     for v in w do
@@ -44,7 +44,7 @@ MappedWordCR := function( w, gens, invs )
         fi;
     od;
     return e;
-end;
+end );
 
 #############################################################################
 ##
@@ -52,7 +52,7 @@ end;
 ##
 ## A is a G-module and this function determines the extension of G by A.
 ##
-ExtVectorByRel := function( A, g, rel )
+BindGlobal( "ExtVectorByRel", function( A, g, rel )
     local b;
 
 # the following is buggy
@@ -65,13 +65,13 @@ ExtVectorByRel := function( A, g, rel )
     # otherwise compute
     b := MappedWordCR( rel, A.factor, List(A.factor, x -> x^-1) );
     return ExponentsByPcp( A.normal, b^-1 * g );
-end;
+end );
 
 #############################################################################
 ##
 #F AddRelatorsCR( A )
 ##
-AddRelatorsCR := function( A )
+BindGlobal( "AddRelatorsCR", function( A )
     local pcp, rels, n, r, c, e, i, j, a, b;
 
     # if they are known return
@@ -122,13 +122,13 @@ AddRelatorsCR := function( A )
     elif IsBound( A.normal ) then
         A.extension := e;
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F InvertWord( r )
 ##
-InvertWord := function( r )
+BindGlobal( "InvertWord", function( r )
     local l, i;
     l := Reversed( r );
     for i in [1..Length(l)] do
@@ -136,13 +136,13 @@ InvertWord := function( r )
         l[i][2] := -l[i][2];
     od;
     return l;
-end;
+end );
 
 #############################################################################
 ##
 #F PowerWord( A, r, e )
 ##
-PowerWord := function( A, r, e )
+BindGlobal( "PowerWord", function( A, r, e )
     local l;
     if Length( r ) = 1 then
         return [[ r[1][1], e * r[1][2]] ];
@@ -156,13 +156,13 @@ PowerWord := function( A, r, e )
         l := InvertWord( r );
         return Concatenation( List( [1..-e], x -> l ) );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F PowerTail( A, r, e )
 ##
-PowerTail := function( A, r, e )
+BindGlobal( "PowerTail", function( A, r, e )
     local t, m, i;
 
     # catch special case
@@ -179,13 +179,13 @@ PowerTail := function( A, r, e )
         for i in [1..-e-1] do t := (t - A.one)*m; od;
     fi;
     return t;
-end;
+end );
 
 #############################################################################
 ##
 #F AddOperationCR( A )
 ##
-AddOperationCR := function( A )
+BindGlobal( "AddOperationCR", function( A )
 
     # add operation of factor on normal
     if not IsBound( A.mats ) then
@@ -202,7 +202,7 @@ AddOperationCR := function( A )
             if A.char > 0 then A.smats := A.smats * One( A.field ); fi;
         fi;
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -210,7 +210,7 @@ end;
 ##
 ## Invert A.mats and A.smats. Additionally check centrality.
 ##
-AddInversesCR := function( A )
+BindGlobal( "AddInversesCR", function( A )
     local cent, i;
 
     cent := true;
@@ -231,13 +231,13 @@ AddInversesCR := function( A )
             fi;
         od;
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F AddFieldCR( A )
 ##
-AddFieldCR := function( A )
+BindGlobal( "AddFieldCR", function( A )
     local ro;
     ro := Set( RelativeOrdersOfPcp( A.normal ) );
 
@@ -255,7 +255,7 @@ AddFieldCR := function( A )
         A.field := GF( A.char );
         A.one := A.one * One( A.field );
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -285,8 +285,7 @@ end );
 ##
 #F CRRecordBySubgroup( G, N )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-CRRecordBySubgroup := function( G, N )
+BindGlobal( "CRRecordBySubgroup", function( G, N )
     local A;
 
     # set up record
@@ -299,14 +298,13 @@ CRRecordBySubgroup := function( G, N )
     AddOperationCR( A );
     AddInversesCR( A );
     return A;
-end;
+end );
 
 #############################################################################
 ##
 #F CRRecordByPcp( G, pcp )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-CRRecordByPcp := function( G, pcp )
+BindGlobal( "CRRecordByPcp", function( G, pcp )
     local A;
 
     # set up record
@@ -319,14 +317,14 @@ CRRecordByPcp := function( G, pcp )
     AddOperationCR( A );
     AddInversesCR( A );
     return A;
-end;
+end );
 
 
 #############################################################################
 ##
 #F CRRecordWithAction( G, U, pcp )
 ##
-CRRecordWithAction := function( G, U, pcp )
+BindGlobal( "CRRecordWithAction", function( G, U, pcp )
     local A;
 
     # set up record
@@ -340,5 +338,5 @@ CRRecordWithAction := function( G, U, pcp )
     AddOperationCR( A );
     AddInversesCR( A );
     return A;
-end;
+end );
 

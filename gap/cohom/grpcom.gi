@@ -11,7 +11,7 @@
 ##
 #F PushVector( mats, invs, one, coc, exp )
 ##
-PushVector := function( mats, invs, one, coc, exp )
+BindGlobal( "PushVector", function( mats, invs, one, coc, exp )
     local n, m, i, e, j;
 
     n := 0 * coc[1];
@@ -33,22 +33,22 @@ PushVector := function( mats, invs, one, coc, exp )
         fi;
     od;
     return n;
-end;
+end );
 
 #############################################################################
 ##
 #F EvaluateCocycle( C, coc, exp )
 ##
-EvaluateCocycle := function( C, coc, exp )
+BindGlobal( "EvaluateCocycle", function( C, coc, exp )
     if IsBound( C.central ) and C.central then return exp * coc; fi;
     return PushVector( C.mats, C.invs, C.one, coc, exp );
-end;
+end );
 
 #############################################################################
 ##
 #F CocycleConjugateComplement( C, cc, coc, w, h )
 ##
-CocycleConjugateComplement := function( C, cc, coc, w, h )
+BindGlobal( "CocycleConjugateComplement", function( C, cc, coc, w, h )
     local l, g, m, s, c, a, b, v;
 
     # first catch a special cases
@@ -83,13 +83,13 @@ CocycleConjugateComplement := function( C, cc, coc, w, h )
     b := List( b, x -> ExponentsByPcp( C.normal, x ) );
 
     return Flat(a) + Flat(b) - coc;
-end;
+end );
 
 #############################################################################
 ##
 #F OperationOnH1( C, cc ) . . . .affine action of C.super on cohomology group
 ##
-OperationOnH1 := function( C, cc )
+BindGlobal( "OperationOnH1", function( C, cc )
     local lin, sub, i, j, g, m, l, coc, img, trl, act, s, h, add;
 
     # catch some trivial cases
@@ -137,7 +137,7 @@ OperationOnH1 := function( C, cc )
         fi;
     od;
     return act;
-end;
+end );
 
 #############################################################################
 ##
@@ -236,7 +236,7 @@ end );
 ##
 #F CheckComplement( C, S, K )
 ##
-CheckComplement := function( C, S, K )
+BindGlobal( "CheckComplement", function( C, S, K )
     local G, A, B, L, I, g;
 
     # check that it is a complement
@@ -265,7 +265,7 @@ CheckComplement := function( C, S, K )
 
     # now its o.k.
     return true;
-end;
+end );
 
 #############################################################################
 ##

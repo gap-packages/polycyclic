@@ -12,7 +12,7 @@
 ##
 #F AdditiveIgsParallel
 ##
-AdditiveIgsParallel := function( gens, imgs )
+BindGlobal( "AdditiveIgsParallel", function( gens, imgs )
     local n, zero, ind, indd, todo, tododo, g, gg, d, h, hh, k, eg,
           eh, e, c, is;
 
@@ -72,13 +72,13 @@ AdditiveIgsParallel := function( gens, imgs )
     # return resulting list
     return [Filtered( ind, x -> not IsBool( x ) ),
             Filtered( indd, x -> not IsBool( x ) ) ];
-end;
+end );
 
 #############################################################################
 ##
 #F AbelianExponents( g, gens, rels, pcpN )
 ##
-AbelianExponents := function( g, gens, rels, pcpN )
+BindGlobal( "AbelianExponents", function( g, gens, rels, pcpN )
     local dept, depN, exp, d, j, e, n;
 
     # get depths and set up
@@ -120,7 +120,7 @@ AbelianExponents := function( g, gens, rels, pcpN )
 
     # finally return
     return exp;
-end;
+end );
 
 #############################################################################
 ##
@@ -130,7 +130,7 @@ end;
 ## We assume that base is in upper triangular form, but sub can be an
 ## arbitrary basis.
 ##
-AdditiveFactorPcp := function( base, sub, r )
+BindGlobal( "AdditiveFactorPcp", function( base, sub, r )
     local denom, deps, prei, rels, h, d, j, e, gens, imgs, zero, new, k,
           full, n, fimg, news, exp, chng, mat, i, g, l, rimg, newr, newp,
           oldg, t, invs, tmps;
@@ -256,18 +256,16 @@ AdditiveFactorPcp := function( base, sub, r )
                 imgs := imgs,
                 prei := newp,
                 denom := denom );
-end;
+end );
 
-SizeAddFactor := function( fact )
+BindGlobal( "SizeAddFactor", function( fact )
     if ForAny( fact.rels, x -> x = 0 ) then
         return infinity;
     else
         return Product( fact.rels );
     fi;
-end;
+end );
 
-ElementsAddFactor := function( fact )
+BindGlobal( "ElementsAddFactor", function( fact )
     return ExponentsByRels( fact.rels );
-end;
-
-
+end );

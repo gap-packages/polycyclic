@@ -7,7 +7,7 @@
 ##
 ## Convert finite pcp groups to pc groups.
 ##
-PcpGroupToPcGroup := function( G )
+BindGlobal( "PcpGroupToPcGroup", function( G )
     local pcp, rel, n, F, f, i, rws, h, e, w, j;
 
     pcp := Pcp( G );
@@ -36,7 +36,7 @@ PcpGroupToPcGroup := function( G )
         od;
     od;
     return GroupByRwsNC( rws );
-end;
+end );
 
 InstallMethod( IsomorphismPcGroup, [IsPcpGroup], NICE_FLAGS,
 function( G )
@@ -57,7 +57,7 @@ end );
 ##
 ## Convert pcp groups to fp groups.
 ##
-PcpGroupToFpGroup := function( G )
+BindGlobal( "PcpGroupToFpGroup", function( G )
     local pcp, rel, n, F, f, r, i, j, e, w, v;
 
     pcp := Pcp( G );
@@ -91,7 +91,7 @@ PcpGroupToFpGroup := function( G )
         od;
     od;
     return F/r;
-end;
+end );
 
 InstallMethod( IsomorphismFpGroup, [IsPcpGroup], NICE_FLAGS,
 function( G )
@@ -107,7 +107,7 @@ end );
 ##
 ## Convert pc groups to pcp groups.
 ##
-PcGroupToPcpGroup := function( G )
+BindGlobal( "PcGroupToPcpGroup", function( G )
     local g, r, n, i, coll, h, e, w, j;
 
     g := Pcgs( G );
@@ -139,7 +139,7 @@ PcGroupToPcpGroup := function( G )
     od;
 
     return PcpGroupByCollector( coll );
-end;
+end );
 
 InstallMethod( IsomorphismPcpGroup, [IsPcGroup], NICE_FLAGS,
 function( G )
@@ -193,7 +193,7 @@ fi;
 ##
 ## Convert special fp groups to pcp groups.
 ##
-ClassifyRelationsOfFpGroup := function( fpgroup )
+BindGlobal( "ClassifyRelationsOfFpGroup", function( fpgroup )
     local   gens,  rels,  allpowers,  conflicts,  relations,  rel,  n,
             l,  g1,  e1,  g2,  e2,  g3,  e3,  g4,  e4;
 
@@ -371,9 +371,9 @@ ClassifyRelationsOfFpGroup := function( fpgroup )
 
     relations.conflicts := conflicts;
     return relations;
-end;
+end );
 
-FromTheLeftCollectorByRelations := function( gens, rels )
+BindGlobal( "FromTheLeftCollectorByRelations", function( gens, rels )
     local   ftl,  j,  i;
 
     ftl := FromTheLeftCollector( Length(gens) );
@@ -408,9 +408,9 @@ FromTheLeftCollectorByRelations := function( gens, rels )
         od;
     od;
     return ftl;
-end;
+end );
 
-PcpGroupFpGroupPcPres := function( G )
+BindGlobal( "PcpGroupFpGroupPcPres", function( G )
     local   gens,  rels,  ftl,  ev,  rel;
 
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup( G ) );
@@ -428,9 +428,9 @@ PcpGroupFpGroupPcPres := function( G )
     od;
 
     return PcpGroupByCollector( ftl );
-end;
+end );
 
-IsomorphismPcpGroupFromFpGroupWithPcPres := function(G)
+BindGlobal( "IsomorphismPcpGroupFromFpGroupWithPcPres", function(G)
     local H, hom;
 
     H := PcpGroupFpGroupPcPres( G );
@@ -438,5 +438,5 @@ IsomorphismPcpGroupFromFpGroupWithPcPres := function(G)
                    GeneratorsOfGroup( G ), GeneratorsOfGroup(H) );
     SetIsBijective( hom, true );
     return hom;
-end;
+end );
 

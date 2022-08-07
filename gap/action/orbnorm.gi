@@ -10,17 +10,17 @@
 #F Action function LatticeBases( base, mat )
 ##
 
-OnLatticeBases := function( base, mat )
+BindGlobal( "OnLatticeBases", function( base, mat )
     local imgs;
     imgs := base * mat;
     return NormalFormIntMat( imgs, 2 ).normal;
-end;
+end );
 
 #############################################################################
 ##
 #F CheckNormalizer( G, S, linG, U )
 ##
-CheckNormalizer := function( G, S, linG, U )
+BindGlobal( "CheckNormalizer", function( G, S, linG, U )
     local linS, m, u, R;
 
     # the trivial case
@@ -39,13 +39,13 @@ CheckNormalizer := function( G, S, linG, U )
     if ForAny( R.stab, x -> not x in S ) then return false; fi;
 
     return true;
-end;
+end );
 
 #############################################################################
 ##
 #F CheckConjugacy( G, g, linG, U, W )
 ##
-CheckConjugacy := function( G, g, linG, U, W )
+BindGlobal( "CheckConjugacy", function( G, g, linG, U, W )
     local m, u;
     if Length( U ) <> Length( W ) then return IsBool( g ); fi;
     if Length(Pcp(G)) = 0 then return U = W; fi;
@@ -54,13 +54,13 @@ CheckConjugacy := function( G, g, linG, U, W )
         if IsBool( PcpSolutionIntMat( W, u*m ) ) then return false; fi;
     od;
     return true;
-end;
+end );
 
 #############################################################################
 ##
 #F BasisOfNormalizingSubfield( baseK, baseU )
 ##
-BasisOfNormalizingSubfield := function( baseK, baseU )
+BindGlobal( "BasisOfNormalizingSubfield", function( baseK, baseU )
     local d, e, baseL, i, syst, subs;
     d := Length(baseK);
     e := Length(baseU );
@@ -73,7 +73,7 @@ BasisOfNormalizingSubfield := function( baseK, baseU )
         baseL := SumIntersectionMat( baseL, subs )[2];
     od;
     return List( baseL, x -> LinearCombination( baseK, x ) );
-end;
+end );
 
 #############################################################################
 ##
@@ -82,7 +82,7 @@ end;
 ## V is a homogenous G-module via linG (and thus linG spans a field).
 ## U is a subspace of V and baseU is an echelonised basis for U.
 ##
-NormalizerHomogeneousAction := function( G, linG, baseU )
+BindGlobal( "NormalizerHomogeneousAction", function( G, linG, baseU )
     local K, baseK, baseL, L, exp, U, linU;
 
     # check for trivial cases
@@ -103,13 +103,13 @@ NormalizerHomogeneousAction := function( G, linG, baseU )
     # find G cap L = G cap U as subgroup of G
     exp := IntersectionOfUnitSubgroups( K, linG, linU );
     return Subgroup( G, List( exp, x -> MappedVector( x, Pcp(G) ) ) );
-end;
+end );
 
 #############################################################################
 ##
 #F  ConjugatingFieldElement( baseK, baseU, baseW )  . . . . . . . . . U^k = W
 ##
-ConjugatingFieldElement := function( baseK, baseU, baseW )
+BindGlobal( "ConjugatingFieldElement", function( baseK, baseU, baseW )
     local d, e, baseL, i, syst, subs, k;
 
     # compute the full space of conjugating elements
@@ -131,7 +131,7 @@ ConjugatingFieldElement := function( baseK, baseU, baseW )
     k := baseL[Length(baseL)];
     k := k * Lcm( List( k, DenominatorRat ) );
     return LinearCombination( baseK, k );
-end;
+end );
 
 #############################################################################
 ##
@@ -141,7 +141,7 @@ end;
 ## baseU and baseW, respectively. The function computes N_G(U) and U^g = W if
 ## g exists. If no g exists, then false is returned.
 ##
-ConjugacyHomogeneousAction := function( G, linG, baseU, baseW )
+BindGlobal( "ConjugacyHomogeneousAction", function( G, linG, baseU, baseW )
     local K, baseK, baseL, L, U, a, f, b, C, g, N, k, h;
 
     # check for trivial cases
@@ -188,13 +188,13 @@ ConjugacyHomogeneousAction := function( G, linG, baseU, baseW )
 
     # that's it
     return rec( norm := N, conj := g );
-end;
+end );
 
 #############################################################################
 ##
 #F AffineActionAsTensor( linG, nath )
 ##
-AffineActionAsTensor := function( linG, nath )
+BindGlobal( "AffineActionAsTensor", function( linG, nath )
     local actsF, actsS, affG, i, t, j, d, b;
 
     # action on T / S for T = U + S and action on S
@@ -220,7 +220,7 @@ AffineActionAsTensor := function( linG, nath )
         Add( affG, t );
     od;
     return affG;
-end;
+end );
 
 #############################################################################
 ##
@@ -228,7 +228,7 @@ end;
 ##
 ## Determines the vector (s1, ..., se) with nath.factor[i]+si in base.
 ##
-DifferenceVector := function( base, nath )
+BindGlobal( "DifferenceVector", function( base, nath )
     local b, k, f, v;
     b := PreimagesBasisOfNHLB( nath );
     k := KernelOfNHLB( nath );
@@ -237,7 +237,7 @@ DifferenceVector := function( base, nath )
     v := - Flat(v);
     Add( v, 1 );
     return v;
-end;
+end );
 
 #############################################################################
 ##
@@ -246,7 +246,7 @@ end;
 ## U and S are free abelian subgroups of V such that U cap S = 0. The group
 ## acts via linG on the full space V.
 ##
-NormalizerComplement := function( G, linG, baseU, baseS )
+BindGlobal( "NormalizerComplement", function( G, linG, baseU, baseS )
     local baseT, nathT, affG, e;
 
     # catch the trivial cases
@@ -260,13 +260,13 @@ NormalizerComplement := function( G, linG, baseU, baseS )
     affG := AffineActionAsTensor( linG, nathT );
     e := DifferenceVector( baseU, nathT );
     return StabilizerIntegralAction( G, affG, e );
-end;
+end );
 
 #############################################################################
 ##
 #F ConjugacyComplements( G, linG, baseU, baseW, baseS ) . . . . . . .U^g = W?
 ##
-ConjugacyComplements := function( G, linG, baseU, baseW, baseS )
+BindGlobal( "ConjugacyComplements", function( G, linG, baseU, baseW, baseS )
     local baseT, nathT, affG, e, f, os;
 
     # catch the trivial cases
@@ -286,13 +286,13 @@ ConjugacyComplements := function( G, linG, baseU, baseW, baseS )
     os := OrbitIntegralAction( G, affG, e, f );
     if IsBool(os) then return os; fi;
     return rec( norm := os.stab, conj := os.prei );
-end;
+end );
 
 #############################################################################
 ##
 #F NormalizerCongruenceAction( G, linG, baseU, ser ) . . . . . . . . . N_G(U)
 ##
-NormalizerCongruenceAction := function( G, linG, baseU, ser )
+BindGlobal( "NormalizerCongruenceAction", function( G, linG, baseU, ser )
     local V, S, i, d, linS, nath, indG, indS, U, M, I, H, subh, actS, T, F,
           fach, UH, MH, s;
 
@@ -366,13 +366,13 @@ NormalizerCongruenceAction := function( G, linG, baseU, ser )
     od;
     Info( InfoIntNorm, 2, " ");
     return S;
-end;
+end );
 
 #############################################################################
 ##
 #F ConjugacyCongruenceAction( G, linG, baseU, baseW, ser ) . . . . . U^g = W?
 ##
-ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
+BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
     local V, S, g, i, d, linS, moveW, nath, indS, U, W, M, IU, IW, H, F,
           subh, actS, s, UH, WH, MH, j, fach, indG;
 
@@ -470,14 +470,13 @@ ConjugacyCongruenceAction := function( G, linG, baseU, baseW, ser )
     od;
     Info( InfoIntNorm, 2, " ");
     return rec( norm := S, conj := g );
-end;
+end );
 
 #############################################################################
 ##
 #F NormalizerIntegralAction( G, linG, U ) . . . . . . . . . . . . . . .N_G(U)
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-NormalizerIntegralAction := function( G, linG, U )
+BindGlobal( "NormalizerIntegralAction", function( G, linG, U )
     local gensU, d, e, F, t, I, S, linS, K, linK, ser, T, orbf, N;
 
     # catch a trivial case
@@ -539,7 +538,7 @@ NormalizerIntegralAction := function( G, linG, U )
 
     # now return
     return N;
-end;
+end );
 
 #############################################################################
 ##
@@ -548,8 +547,7 @@ end;
 ## returns N_G(U) and g in G with U^g = W if g exists.
 ## returns false otherwise.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-ConjugacyIntegralAction := function( G, linG, U, W )
+BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     local F, t, I, J, os, j, g, L, S, linS, K, linK, ser, orbf, h, T;
 
     # do a check
@@ -627,5 +625,5 @@ ConjugacyIntegralAction := function( G, linG, U, W )
 
     # now return
     return rec( stab := T, prei := g );
-end;
+end );
 

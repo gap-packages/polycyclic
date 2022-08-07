@@ -181,7 +181,7 @@ true
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=Representation(Collector(G));;
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
 gap> e:=[8,-4,5,2,13,-17,9];;
 gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
 [ 8, -4, 19, 34, 51, -17, 5 ]
@@ -522,6 +522,46 @@ gap> N := Subgroup( C, [ C.2 ] );;
 gap> I := NormalIntersection( N, H );;
 gap> NormalizerOfComplement( C, H, N, I );
 Pcp-group with orders [ 2, 3 ]
+
+#
+# Fix a bug in CentralizerBySeries
+# <https://github.com/gap-packages/polycyclic/issues/65>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.2*G.3*G.4;;
+gap> cc := ConjugacyClass( G, g );;
+gap> C := Centralizer( cc );
+Pcp-group with orders [ 2, 2, 2 ]
+gap> Igs( C );
+[ g2, g3, g4 ]
+
+#
+# Allow Centralizer to fall back on generic GAP methods
+# <https://github.com/gap-packages/polycyclic/issues/64>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.1*G.3*G.4;;
+gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
+gap> Centralizer( H, g );
+Pcp-group with orders [ 2, 2 ]
+
+#
+# Fix a bug in AddToIgs
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
+gap> gensG := [ G.1, G.4 ];;
+gap> G = Subgroup( G, gensG );
+true
+
+#
+# Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
+# for certain trivial maps, which used to raise an error in the example
+# below, because MappedVector was called with an empty list of generators.
+#
+gap> G:=TrivialGroup(IsPcpGroup);;
+gap> H:=AbelianGroup(IsPcpGroup,[0]);;
+gap> GroupHomomorphismByImages(G, H, [One(G)], [One(H)]);
+[ id ] -> [ id ]
 
 #
 gap> STOP_TEST( "bugfix.tst", 10000000);

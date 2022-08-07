@@ -9,7 +9,7 @@
 ##
 ##  Find all v such that v * <matrix> in <subspace>.
 ##
-PreImageSubspaceIntMat := function( M, D )
+BindGlobal( "PreImageSubspaceIntMat", function( M, D )
     local   nsp,  d;
 
     ##                        [ M ]
@@ -18,7 +18,7 @@ PreImageSubspaceIntMat := function( M, D )
 
     ##  Cut off the relevant bit.
     return List( nsp, v->v{[1..Length(M)]} );
-end;
+end );
 
 #############################################################################
 ##
@@ -27,7 +27,7 @@ end;
 ##  Find all v such that v * M in <subspace> for all matrices M in
 ##  <matlist>.
 ##
-PreImageSubspaceIntMats := function( mats, D )
+BindGlobal( "PreImageSubspaceIntMats", function( mats, D )
     local   E,  M,  N;
 
     if Length(mats[1]) <> Length(mats[1][1]) then
@@ -43,7 +43,7 @@ PreImageSubspaceIntMats := function( mats, D )
     od;
 
     return E;
-end;
+end );
 
 
 #############################################################################
@@ -54,7 +54,7 @@ end;
 ##  indicates which row of the matrix has its leading entry in a given
 ##  column.
 ##
-RowsWithLeadingIndexHNF := function( hnf )
+BindGlobal( "RowsWithLeadingIndexHNF", function( hnf )
     local   indices,  i,  j;
 
     indices := [1..Length(hnf[1])] * 0;
@@ -69,7 +69,7 @@ RowsWithLeadingIndexHNF := function( hnf )
         indices[i] := j;
     od;
     return indices;
-end;
+end );
 
 #############################################################################
 ##
@@ -79,7 +79,7 @@ end;
 ##  <hnf> given in Hermite Normal Form and return the respective
 ##  coefficients.
 ##
-CoefficientsVectorHNF := function( v, hnf )
+BindGlobal( "CoefficientsVectorHNF", function( v, hnf )
     local   reduce,  coeffs,  i,  k,  c;
 
     reduce := RowsWithLeadingIndexHNF( hnf );
@@ -97,7 +97,7 @@ CoefficientsVectorHNF := function( v, hnf )
     od;
 
     return coeffs;
-end;
+end );
 
 
 #############################################################################
@@ -107,7 +107,7 @@ end;
 ##  Complete the integer matrix <matrix> to a unimodular matrix if possible
 ##  and produces an error message otherwise.
 ##
-CompletionToUnimodularMat := function( M )
+BindGlobal( "CompletionToUnimodularMat", function( M )
     local   nf,  D,  i,  d,  n,  P,  compl;
 
     nf := NormalFormIntMat( M, 13 );
@@ -138,7 +138,7 @@ CompletionToUnimodularMat := function( M )
     fi;
 
     return compl{[d+1..n]};
-end;
+end );
 
 
 #############################################################################
@@ -149,7 +149,7 @@ end;
 ##  block-triangular form.  Each block corresponds to a common eigenvalue
 ##  (possibly in a suitable extension field) of the matrices.
 ##
-TriangularForm := function( mats )
+BindGlobal( "TriangularForm", function( mats )
     local   d,  comms,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,
             C;
 
@@ -185,7 +185,7 @@ TriangularForm := function( mats )
     od;
 
     return T * mats * T^-1;
-end;
+end );
 
 #############################################################################
 ##
@@ -195,7 +195,7 @@ end;
 ##  unitriangular form, i.e. to lower triangular matrices with ones on the
 ##  diagonal.
 ##
-LowerUnitriangularForm := function( mats )
+BindGlobal( "LowerUnitriangularForm", function( mats )
     local   d,  nilpmats,  i,  j,  subs,  dims,  flag,  newflag,  T,  M,
             C,  I;
 
@@ -231,7 +231,7 @@ LowerUnitriangularForm := function( mats )
     od;
 
     return T * mats * T^-1;
-end;
+end );
 
 
 #############################################################################
@@ -240,11 +240,11 @@ end;
 ##
 ##  Test if the matrix <mat> is lower unitriangular.
 ##
-IsLowerUnitriangular := function( M )
+BindGlobal( "IsLowerUnitriangular", function( M )
 
     return
         ForAll( M, v->Length(v) = Length(M) )      ##  Is M quadratic?
     and ForAll( [1..Length(M)], i->M[i][i] = 1 )   ##  Does M have ones
 						   ##  on the diagonal?
     and IsLowerTriangularMat( M );                 ##  Is M lower triangular?
-end;
+end );
