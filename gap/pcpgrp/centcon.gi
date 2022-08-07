@@ -100,7 +100,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
             gen := Pcp(C, N);
             stb := CentralizerByCentralLayer( elms, AsList(gen), pcp );
-            stb := AddIgsToIgs( stb, Igs(N) );
+            stb := AddIgsToIgs( Igs(stb), Igs(N) );
             C := SubgroupByIgs( G, stb );
 
         # if it is a non-central finite layer

@@ -513,6 +513,18 @@ gap> IsNormal( T, S );
 false
 
 #
+# Fix a bug in CentralizerBySeries
+# <https://github.com/gap-packages/polycyclic/issues/65>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.2*G.3*G.4;;
+gap> cc := ConjugacyClass( G, g );;
+gap> C := Centralizer( cc );
+Pcp-group with orders [ 2, 2, 2 ]
+gap> Igs( C );
+[ g2, g3, g4 ]
+
+#
 # Allow Centralizer to fall back on generic GAP methods
 # <https://github.com/gap-packages/polycyclic/issues/64>
 #
