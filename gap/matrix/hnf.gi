@@ -14,7 +14,7 @@
 ##  Does the same as FindNiceRowInfinityNorm() but records the row
 ##  operations.
 ##
-FindNiceRowOneNorm := function( M, i, j )
+BindGlobal( "FindNiceRowOneNorm", function( M, i, j )
     local   m,  n,  k,  a,  r;
 
     m := Length( M ); n := Length( M[1] );
@@ -30,9 +30,9 @@ FindNiceRowOneNorm := function( M, i, j )
         fi;
     od;
     return;
-end;
+end );
 
-FindNiceRowTwoNorm := function( M, i, j )
+BindGlobal( "FindNiceRowTwoNorm", function( M, i, j )
     local   m,  n,  k,  a,  r;
 
     m := Length( M ); n := Length( M[1] );
@@ -48,9 +48,9 @@ FindNiceRowTwoNorm := function( M, i, j )
         fi;
     od;
     return;
-end;
+end );
 
-FindNiceRowInfinityNorm := function( M, i, j )
+BindGlobal( "FindNiceRowInfinityNorm", function( M, i, j )
     local   m,  n,  k,  a,  r;
 
     m := Length( M ); n := Length( M[1] );
@@ -66,9 +66,9 @@ FindNiceRowInfinityNorm := function( M, i, j )
         fi;
     od;
     return;
-end;
+end );
 
-FindNiceRowInfinityNormRowOps := function( M, Q, i, j )
+BindGlobal( "FindNiceRowInfinityNormRowOps", function( M, Q, i, j )
     local   m,  n,  k,  a,  r;
 
     m := Length( M ); n := Length( M[1] );
@@ -85,13 +85,13 @@ FindNiceRowInfinityNormRowOps := function( M, Q, i, j )
         fi;
     od;
     return;
-end;
+end );
 
 #############################################################################
 ##
 #F  HNFIntMat . . . . . . . . . . . . Hermite Normalform of an integer matrix
 ##
-HNFIntMat := function( M )
+BindGlobal( "HNFIntMat", function( M )
 
     local   MM,  m,  n,  i,  j,  k,  r,  Cleared,  a;
 
@@ -151,13 +151,13 @@ HNFIntMat := function( M )
 
     od;
     return M{[1..i-1]};
-end;
+end );
 
 #############################################################################
 ##
 #F  HNFIntMat . . . . . . . . . . . . Hermite Normal Form plus row operations
 ##
-HNFIntMatRowOps := function( M )
+BindGlobal( "HNFIntMatRowOps", function( M )
 
     local   MM,  m,  n,  Q,  i,  j,  k,  r,  Cleared,  a;
 
@@ -225,14 +225,14 @@ HNFIntMatRowOps := function( M )
     od;
 
     return [ M, Q ];
-end;
+end );
 
 #############################################################################
 ##
 #F  DiagonalFormIntMat . . . . diagonal form of an integer matrix plus column
 #F                             operations
 ##
-DiagonalFormIntMat := function( M )
+BindGlobal( "DiagonalFormIntMat", function( M )
     local   Q,  pair;
 
     M := HNFIntMat( M );
@@ -250,7 +250,7 @@ DiagonalFormIntMat := function( M )
     od;
 
     return [ M, Q ];
-end;
+end );
 
 
 ##
@@ -263,7 +263,7 @@ end;
 ##  transforming matrix Q such that
 ##                         M * Q = M'
 ##
-ClearOutWithOnes := function( M )
+BindGlobal( "ClearOutWithOnes", function( M )
     local   Q,  i,  k,  j,  l;
 
     M := List( M, ShallowCopy );
@@ -282,7 +282,7 @@ ClearOutWithOnes := function( M )
     od;
 
     return [M, TransposedMat(Q)];
-end;
+end );
 
 ##
 ##  After we have cleared out those rows of the HNF whose leading entry is 1,
@@ -290,7 +290,7 @@ end;
 ##  routines cuts out the relevant part, computes a diagonal form of it, puts
 ##  that back into the matrix and returns the performed columns operations.
 ##
-CutOutNonOnes := function( M )
+BindGlobal( "CutOutNonOnes", function( M )
     local   rows,  cols,  nf,  Q,  i;
 
     # Find all rows whose leading entry is 1
@@ -321,7 +321,7 @@ CutOutNonOnes := function( M )
     M{rows}{cols} := nf[1];
 
     return Q;
-end;
+end );
 
 
 ##
@@ -347,7 +347,7 @@ end;
 ##    an equivalent NormalFormIntMat call yielded 50 msec vs. 1000 msec,
 ##    i.e. a speedup by factor 20.
 ##
-NormalFormConsistencyRelations := function( M )
+BindGlobal( "NormalFormConsistencyRelations", function( M )
     local   nf,  Q,  rows,  cols,  small,  nfim,  QQ;
 
     M := HNFIntMat( M );
@@ -360,4 +360,4 @@ NormalFormConsistencyRelations := function( M )
     Q := Q * CutOutNonOnes( M );
 
     return rec( normal := M, coltrans := Q );
-end;
+end );

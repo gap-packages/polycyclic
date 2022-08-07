@@ -335,7 +335,7 @@ end );
 ##
 #F PStepCentralSeries(G, p)
 ##
-PStepCentralSeries := function(G, p)
+BindGlobal( "PStepCentralSeries", function(G, p)
     local ser, new, i, N, M, pcp, j, U;
     ser := PCentralSeries(G, p);
     new := [G];
@@ -349,7 +349,7 @@ PStepCentralSeries := function(G, p)
         od;
     od;
     return new;
-end;
+end );
 
 #############################################################################
 ##
@@ -501,7 +501,7 @@ end );
 ##
 #M  PcpsOfPowerSeries( pcp, n )
 ##
-PcpsOfPowerSeries := function( pcp, n )
+BindGlobal( "PcpsOfPowerSeries", function( pcp, n )
     local facs, gens, sers, B, f, A, p, new;
     facs := Factors(n);
     gens := GeneratorsOfPcp( pcp );
@@ -518,7 +518,7 @@ PcpsOfPowerSeries := function( pcp, n )
         Add( sers, new );
     od;
     return sers;
-end;
+end );
 
 #############################################################################
 ##

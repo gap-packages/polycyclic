@@ -121,22 +121,22 @@ end );
 
 ##  Note, that inverses of generators with relative order > 0 are not treated
 ##  as inverses as they should never appear here with a negative exponent.
-IsGeneratorOrInverse := function( elm )
+BindGlobal( "IsGeneratorOrInverse", function( elm )
     return Length(elm!.word) = 2 and
            (elm!.word[2] = 1 or elm!.word[2] = -1);
-end;
+end );
 
 ##
 ## Is elm the power of a generator modulo depth d?
 ## If so, then return the power, otherwise return fail;
 ##
-IsPowerOfGenerator := function( elm, d )
+BindGlobal( "IsPowerOfGenerator", function( elm, d )
     if Length( elm!.word ) = 0 or
        (Length( elm!.word ) > 2 and elm!.word[3] <= d) then
         return fail;
     fi;
     return elm!.word[2];
-end;
+end );
 
 #############################################################################
 ##
@@ -221,8 +221,7 @@ end );
 ##
 ## Note that g is normed, if the LeadingExponent of g is its RelativeIndex.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-NormingExponent := function( g )
+BindGlobal( "NormingExponent", function( g )
     local r, l, e;
     r := FactorOrder( g );
     l := LeadingExponent( g );
@@ -238,19 +237,18 @@ NormingExponent := function( g )
         e := Gcdex( r, l );     # = RelativeIndex
         return e.coeff2 mod r;  # l * c2 = e mod r
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #F NormedPcpElement( g )
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-NormedPcpElement := function( g )
+BindGlobal( "NormedPcpElement", function( g )
     local h;
     h := g^NormingExponent( g );
     h!.normed := true;
     return h;
-end;
+end );
 
 #############################################################################
 ##
@@ -358,7 +356,7 @@ function( g )
     return PcpElementByGenExpListNC( clt, k );
 end );
 
-InstallMethod( INV,
+InstallMethod( InverseMutable,
                "for pcp elements",
                [IsPcpElement],
 function( g )

@@ -17,7 +17,7 @@
 ##
 #F NonAbelianTensorSquareFp(G) . . . . . . . . . . . . . . . . . (G otimes G)
 ##
-NonAbelianTensorSquareFp := function(G)
+BindGlobal( "NonAbelianTensorSquareFp", function(G)
     local e, F, f, r, i, j, k, a, b1, b2, b, c, c1, c2, T, t;
 
     if not IsFinite(G) then return fail; fi;
@@ -60,14 +60,14 @@ NonAbelianTensorSquareFp := function(G)
     T!.elements := e;
     T!.group := G;
     return T;
-end;
+end );
 
 
 #############################################################################
 ##
 #F NonAbelianTensorSquarePlusFp(G)  . . . . . .(G otimes G) split (G times G)
 ##
-NonAbelianTensorSquarePlusFp := function(G)
+BindGlobal( "NonAbelianTensorSquarePlusFp", function(G)
     local IComm, IActs, g, e, n, F, f, r, i, j, k, w, v, M, m, u;
 
     IComm := function(g,h) return g*h*g^-1*h^-1; end;
@@ -127,9 +127,9 @@ NonAbelianTensorSquarePlusFp := function(G)
 
     # that's it
     return M;
-end;
+end );
 
-NonAbelianTensorSquareViaNq := function( G )
+BindGlobal( "NonAbelianTensorSquareViaNq", function( G )
     local   tsfp,  phi;
 
     if LoadPackage("nq") = fail then
@@ -145,14 +145,14 @@ NonAbelianTensorSquareViaNq := function( G )
     phi  := NqEpimorphismNilpotentQuotient( tsfp );
 
     return Image( phi, tsfp!.tensor );
-end;
+end );
 
 
 #############################################################################
 ##
 #F CheckGroupsByOrder(n, full)
 ##
-CheckGroupsByOrder := function(n,full)
+BindGlobal( "CheckGroupsByOrder", function(n,full)
     local m, i, G, A, B, t;
     m := NumberSmallGroups(n);
     for i in [1..m] do
@@ -171,5 +171,5 @@ CheckGroupsByOrder := function(n,full)
             Print(" got group of order ",Size(A),"\n\n");
         fi;
     od;
-end;
+end );
 

@@ -18,7 +18,7 @@
 ##  operation of pcs on dom. (If trv is boolean, then a standard trv function
 ##  is used.)
 ##
-BasePcgsByPcSequence := function( pcs, dom, trv, oper )
+BindGlobal( "BasePcgsByPcSequence", function( pcs, dom, trv, oper )
     local pcgs, i;
     if IsBool( trv ) then trv := function( x ) return x = x^0; end; fi;
     pcgs := rec( orbit := [], trans := [], trels := [], defns := [],
@@ -28,13 +28,13 @@ BasePcgsByPcSequence := function( pcs, dom, trv, oper )
         ExtendedBasePcgs( pcgs, pcs[i], [i,1] );
     od;
     return pcgs;
-end;
+end );
 
 #############################################################################
 ##
 #F BasePcgsByPcFFEMatrices( gens )
 ##
-BasePcgsByPcFFEMatrices := function( gens )
+BindGlobal( "BasePcgsByPcFFEMatrices", function( gens )
     local f, d, pcgs;
 
     # triviality check
@@ -50,13 +50,13 @@ BasePcgsByPcFFEMatrices := function( gens )
     pcgs := BasePcgsByPcSequence( gens, f^d, false, OnRight );
     pcgs.gens := gens;
     return pcgs;
-end;
+end );
 
 #############################################################################
 ##
 #F BasePcgsByPcIntMatrices( gens, f )
 ##
-BasePcgsByPcIntMatrices := function( gens, f )
+BindGlobal( "BasePcgsByPcIntMatrices", function( gens, f )
     local d, news, pcgs;
 
     # triviality check
@@ -71,13 +71,13 @@ BasePcgsByPcIntMatrices := function( gens, f )
     pcgs.gens := gens;
     pcgs.field := f;
     return pcgs;
-end;
+end );
 
 #############################################################################
 ##
 #F  RelativeOrdersBasePcgs( pcgs )
 ##
-RelativeOrdersBasePcgs := function( pcgs )
+BindGlobal( "RelativeOrdersBasePcgs", function( pcgs )
     local t;
     if IsBound( pcgs.rels ) then return pcgs.rels; fi;
     pcgs.rels := [];
@@ -85,13 +85,13 @@ RelativeOrdersBasePcgs := function( pcgs )
         Add( pcgs.rels, pcgs.trels[t[1]][t[2]] );
     od;
     return pcgs.rels;
-end;
+end );
 
 #############################################################################
 ##
 #F  PcSequenceBasePcgs( pcgs )
 ##
-PcSequenceBasePcgs := function( pcgs )
+BindGlobal( "PcSequenceBasePcgs", function( pcgs )
     local t;
     if IsBound( pcgs.pcgs ) then return pcgs.pcgs; fi;
     pcgs.pcgs := [];
@@ -99,34 +99,34 @@ PcSequenceBasePcgs := function( pcgs )
         Add( pcgs.pcgs, pcgs.trans[t[1]][t[2]] );
     od;
     return pcgs.pcgs;
-end;
+end );
 
 #############################################################################
 ##
 #F  DefinitionsBasePcgs( pcgs )
 ##
-DefinitionsBasePcgs := function( pcgs )
+BindGlobal( "DefinitionsBasePcgs", function( pcgs )
     local defn, t;
     defn := [];
     for t in Reversed( pcgs.pcref ) do
         Add( defn, pcgs.defns[t[1]][t[2]] );
     od;
     return defn;
-end;
+end );
 
 #############################################################################
 ##
 #F  GeneratorsBasePcgs( pcgs )
 ##
-GeneratorsBasePcgs := function( pcgs )
+BindGlobal( "GeneratorsBasePcgs", function( pcgs )
     return pcgs.gens;
-end;
+end );
 
 #############################################################################
 ##
 #F  SiftByBasePcgs( pcgs, g )
 ##
-SiftByBasePcgs := function( pcgs, g )
+BindGlobal( "SiftByBasePcgs", function( pcgs, g )
     local h, w, i, j;
     h := g;
     for i in [1..Length(pcgs.orbit)] do
@@ -138,13 +138,13 @@ SiftByBasePcgs := function( pcgs, g )
         fi;
     od;
     return h;
-end;
+end );
 
 #############################################################################
 ##
 #F  SiftExponentsByBasePcgs( pcgs, g )
 ##
-SiftExponentsByBasePcgs := function( pcgs, g )
+BindGlobal( "SiftExponentsByBasePcgs", function( pcgs, g )
     local h, w, e, i, j;
     h := g;
     e := List( pcgs.orbit, x -> 0 );
@@ -160,13 +160,13 @@ SiftExponentsByBasePcgs := function( pcgs, g )
     od;
     if pcgs.trivl( h ) then return e; fi;
     return false;
-end;
+end );
 
 #############################################################################
 ##
 #F  BasePcgsElementBySiftExponents( pcgs, exp )
 ##
-BasePcgsElementBySiftExponents := function( pcgs, exp )
+BindGlobal( "BasePcgsElementBySiftExponents", function( pcgs, exp )
     local g, w, i;
     g := pcgs.trans[1][1]^0;
     for i in Reversed( [1..Length(exp)] ) do
@@ -176,21 +176,21 @@ BasePcgsElementBySiftExponents := function( pcgs, exp )
         fi;
     od;
     return g;
-end;
+end );
 
 #############################################################################
 ##
 #F  MemberTestByBasePcgs( pcgs, g )
 ##
-MemberTestByBasePcgs := function( pcgs, g )
+BindGlobal( "MemberTestByBasePcgs", function( pcgs, g )
    return pcgs.trivl( SiftByBasePcgs( pcgs,g ) );
-end;
+end );
 
 #############################################################################
 ##
 #F  WordByBasePcgs( pcgs, g )
 ##
-WordByBasePcgs := function( pcgs, g )
+BindGlobal( "WordByBasePcgs", function( pcgs, g )
     local w, h, i, j, t;
     w := List( pcgs.orbit, x -> [] );
     h := g;
@@ -204,7 +204,7 @@ WordByBasePcgs := function( pcgs, g )
         fi;
     od;
     return Concatenation( Reversed( w ) );
-end;
+end );
 
 #############################################################################
 ##
@@ -212,7 +212,7 @@ end;
 ##
 ##  This function gives useful results for abelian groups only.
 ##
-ExponentsByBasePcgs := function( pcgs, g )
+BindGlobal( "ExponentsByBasePcgs", function( pcgs, g )
     local n, w, e, s;
     n := Length( PcSequenceBasePcgs( pcgs ) );
     w := WordByBasePcgs( pcgs, g );
@@ -221,7 +221,7 @@ ExponentsByBasePcgs := function( pcgs, g )
         e[s[1]] := e[s[1]] + s[2];
     od;
     return e;
-end;
+end );
 
 
 

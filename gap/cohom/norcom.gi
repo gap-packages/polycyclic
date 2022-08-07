@@ -11,8 +11,7 @@
 ##
 #F ComplementsCR( C ) . . . . . . . . . . . . . . . . . . . . all complements
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-ComplementsCR := function( C )
+BindGlobal( "ComplementsCR", function( C )
     local B, cc, elm, rel, new;
 
     if Length( C.factor ) = 0 then
@@ -41,13 +40,13 @@ ComplementsCR := function( C )
         Append( new, elm );
     fi;
     return new;
-end;
+end );
 
 #############################################################################
 ##
 #F Complements( U, N ) . . . . . . . . . . . . . . . .compute all complements
 ##
-Complements := function( U, N )
+BindGlobal( "Complements", function( U, N )
     local pcps, com, pcp, new, L, C;
 
     # catch the trivial case
@@ -75,13 +74,13 @@ Complements := function( U, N )
         com := ShallowCopy( new );
     od;
     return com;
-end;
+end );
 
 #############################################################################
 ##
 #F OperationOnZ1( C, cc )   . . . . . . . . . . . . . . . C.super on cocycles
 ##
-OperationOnZ1 := function( C, cc )
+BindGlobal( "OperationOnZ1", function( C, cc )
     local l, m, s, lin, trl, i, j, g, h, ms, coc, img, add, act;
 
     # catch some trivial cases
@@ -130,21 +129,21 @@ OperationOnZ1 := function( C, cc )
         fi;
     od;
     return act;
-end;
+end );
 
 #############################################################################
 ##
 #F FixedPoints( pts, gens, oper )
 ##
-FixedPoints := function( pts, gens, oper )
+BindGlobal( "FixedPoints", function( pts, gens, oper )
     return Filtered( pts, x -> ForAll( gens, y -> oper( x, y ) = x ) );
-end;
+end );
 
 #############################################################################
 ##
 #F InvariantComplementsCR( C ) . . . . . . . . . . .invariant under operation
 ##
-InvariantComplementsCR := function( C )
+BindGlobal( "InvariantComplementsCR", function( C )
    local cc, f, rels, elms, act, sub;
 
     # compute H^1( U, A/B ) and return if there is no complement
@@ -183,7 +182,7 @@ InvariantComplementsCR := function( C )
     if Length(sub) = 0 then return sub; fi;
     sub := sub * cc.basis;
     return List(sub, x -> ComplementCR( C, IntVector(x+cc.transl)));
-end;
+end );
 
 
 #############################################################################
@@ -193,7 +192,7 @@ end;
 ##        be an efa-series and each subgroup in series must be normal
 ##        under G.
 ##
-InvariantComplementsEfaPcps := function( G, U, pcps )
+BindGlobal( "InvariantComplementsEfaPcps", function( G, U, pcps )
     local cls, pcp, new, L, C;
 
     cls := [ U ];
@@ -218,14 +217,14 @@ InvariantComplementsEfaPcps := function( G, U, pcps )
         fi;
     od;
     return cls;
-end;
+end );
 
 
 #############################################################################
 ##
 #F InvariantComplements( [G,] U, N ). . . . . invariant complements to N in U
 ##
-InvariantComplements := function( arg )
+BindGlobal( "InvariantComplements", function( arg )
     local G, U, N, pcps;
 
     # the arguments
@@ -244,4 +243,4 @@ InvariantComplements := function( arg )
     # otherwise compute series and all next function
     pcps := PcpsOfEfaSeries( N );
     return InvariantComplementsEfaPcps( G, U, pcps );
-end;
+end );
