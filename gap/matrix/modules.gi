@@ -7,7 +7,7 @@
 ##
 #F RadicalSeriesOfFiniteModule( mats, d, f )
 ##
-RadicalSeriesOfFiniteModule := function( mats, d, f )
+BindGlobal( "RadicalSeriesOfFiniteModule", function( mats, d, f )
     local base, sers, modu, radb;
     if d = 0 then return []; fi;
     base := IdentityMat( d, f );
@@ -26,13 +26,13 @@ RadicalSeriesOfFiniteModule := function( mats, d, f )
         fi;
     until Length( base ) = 0;
     return sers;
-end;
+end );
 
 #############################################################################
 ##
 #F RadicalOfCongruenceModule( mats, d ) . . . . . . .for congruence subgroups
 ##
-RadicalOfCongruenceModule := function( mats, d )
+BindGlobal( "RadicalOfCongruenceModule", function( mats, d )
     local coms, i, j, new, base, full, nath, indm, l, algb, newv, tmpb, subb,
           f, g, h, mat;
 
@@ -86,13 +86,13 @@ RadicalOfCongruenceModule := function( mats, d )
         fi;
     od;
     return rec( radical := base, nathom := nath, algebra := algb );
-end;
+end );
 
 #############################################################################
 ##
 #F TraceMatProd( m1, m2, d )
 ##
-TraceMatProd := function( m1, m2, d )
+BindGlobal( "TraceMatProd", function( m1, m2, d )
     local t, i, j;
     t := 0;
     for i in [1..d] do
@@ -101,7 +101,7 @@ TraceMatProd := function( m1, m2, d )
         od;
     od;
     return t;
-end;
+end );
 
 #############################################################################
 ##
@@ -119,7 +119,7 @@ end );
 ##
 #F RadicalOfRationalModule( mats, d ) . . . . . . . . . . . .general approach
 ##
-RadicalOfRationalModule := function( mats, d )
+BindGlobal( "RadicalOfRationalModule", function( mats, d )
     local base, trac, null, j;
 
     # get base
@@ -139,13 +139,13 @@ RadicalOfRationalModule := function( mats, d )
     TriangulizeMat( null );
     j := Position( null, 0 * null[1] );
     return rec( radical := null{[1..j-1]} );
-end;
+end );
 
 #############################################################################
 ##
 #F RadicalSeriesOfRationalModule( mats, d ) . . . . . .compute radical series
 ##
-RadicalSeriesOfRationalModule := function( mats, d )
+BindGlobal( "RadicalSeriesOfRationalModule", function( mats, d )
     local acts, full, base, sers, radb, nath;
     if d = 0 then return []; fi;
     full := IdentityMat( d );
@@ -165,7 +165,7 @@ RadicalSeriesOfRationalModule := function( mats, d )
         Add( sers, base );
     until d = 0;
     return sers;
-end;
+end );
 
 #############################################################################
 ##
@@ -197,7 +197,7 @@ end );
 ##
 #F SplitSemisimple( base )
 ##
-SplitSemisimple := function( base )
+BindGlobal( "SplitSemisimple", function( base )
     local d, b, f, s, i;
 
     d := Length( base );
@@ -213,7 +213,7 @@ SplitSemisimple := function( base )
     s := List( f, x -> NullspaceRatMat( Value( x, b.elem ) ) );
     s := List( [1..Length(f)], x -> rec( basis := s[x], poly := f[x] ) );
     return s;
-end;
+end );
 
 #############################################################################
 ##
@@ -254,6 +254,7 @@ HomogeneousSeriesOfCongruenceModule := function( mats, d )
     Append( sers, rads{[2..Length(rads)]} );
     return sers;
 end;
+MakeReadOnlyGlobal( "HomogeneousSeriesOfCongruenceModule" );
 
 #############################################################################
 ##
@@ -298,12 +299,13 @@ HomogeneousSeriesOfRationalModule := function( mats, cong, d )
     Append( sers, rads{[2..Length(rads)]} );
     return sers;
 end;
+MakeReadOnlyGlobal( "HomogeneousSeriesOfRationalModule" );
 
 #############################################################################
 ##
 #F RefineSplitting( mats, subs ) . . . . . . . . . . for congruence subgroups
 ##
-RefineSplitting := function( mats, subs )
+BindGlobal( "RefineSplitting", function( mats, subs )
     local i, full, news, dims, j, d, e, tmp;
 
     # refine each of the subspaces subs in turn by spinning
@@ -325,5 +327,5 @@ RefineSplitting := function( mats, subs )
         subs[i] := news;
     od;
     return Concatenation( subs );
-end;
+end );
 

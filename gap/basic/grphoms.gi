@@ -158,6 +158,10 @@ function( hom )
     gens := hom!.igs_gens_to_imgs[1];
     imgs := hom!.igs_gens_to_imgs[2];
 
+    if Length(gens) = 0 then
+        return true;
+    fi;
+
     # check relators
     for i in [1..Length( gens )] do
         if RelativeOrderPcp( gens[i] ) > 0 then
@@ -215,6 +219,10 @@ function( hom )
     imgs := hom!.igs_gens_to_imgs[2];
 
     C := TrivialSubgroup(Range(hom)); # the cokernel
+
+    if Length(gens) = 0 then
+        return C;
+    fi;
 
     # check relators
     for i in [1..Length( gens )] do

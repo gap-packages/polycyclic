@@ -1,10 +1,10 @@
 
-AdjustPresentation := function( G )
+BindGlobal( "AdjustPresentation", function( G )
     G := G / TorsionSubgroup(G);
     return PcpGroupBySeries( UpperCentralSeriesOfGroup(G), "snf" );
-end;
+end );
 
-ExtendAffine := function( mats, coc )
+BindGlobal( "ExtendAffine", function( mats, coc )
     local d, l, r, c;
     d := Length( mats[1] );
     l := Length( mats );
@@ -15,7 +15,7 @@ ExtendAffine := function( mats, coc )
         Add( coc[r], 1 ); Add( mats[r], coc[r] );
     od;
     return mats;
-end;
+end );
 
 NextStepRepresentation := function( G, i, mats )
     local pcp, N, hom, F, C, cc, rc, co, j, coc, news, d, z;
@@ -54,8 +54,9 @@ NextStepRepresentation := function( G, i, mats )
    od;
    return false;
 end;
+MakeReadOnlyGlobal( "NextStepRepresentation" );
 
-AffineRepresentation := function( G )
+BindGlobal( "AffineRepresentation", function( G )
     local mats, news;
     mats := [[[1,0],[1,1]]];
     news := NextStepRepresentation( G, 2, mats );
@@ -64,4 +65,4 @@ AffineRepresentation := function( G )
         Error("no representation ");
     fi;
     return news;
-end;
+end );

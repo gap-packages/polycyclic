@@ -9,7 +9,7 @@ DeclareCategory( "IsAPEndo", IsScalar );
 #            IsMultiplicativeElement and IsAdditiveElementWithInverse );
 DeclareCategoryFamily( "IsAPEndo" );
 DeclareCategoryCollections( "IsAPEndo" );
-APEndoFamily := NewFamily( "APEndoFam", IsAPEndo, IsAPEndo );
+BindGlobal("APEndoFamily", NewFamily( "APEndoFam", IsAPEndo, IsAPEndo ));
 DeclareRepresentation( "IsAPEndoRep", IsComponentObjectRep,
             ["mat", "dim", "exp", "prime"] );
 
