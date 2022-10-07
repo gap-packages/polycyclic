@@ -797,7 +797,7 @@ gap> Collected( AbelianInvariants( last ) );
 <ManSection>
 <Attr Name="NonAbelianExteriorSquare" Arg="G"/>
 <Description>
-	computes the  non-abelian exterior  square of a  polycylic group  <A>G</A>.
+	computes the  non-abelian exterior  square of a  polycyclic group  <A>G</A>.
 	See  the explanation  for  <C>NonAbelianExteriorSquareEpimorphism</C>.  The
 	natural projection of the non-abelian exterior square onto the derived
 	group of <A>G</A> is stored in the component <C>!.epimorphism</C>.
