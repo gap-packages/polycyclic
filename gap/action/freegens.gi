@@ -15,7 +15,7 @@ BindGlobal( "FreeGensByRelationMat", function( gens, mat )
 
     # first try to simplify mat
     mat := ShallowCopy( mat );
-    Sort( mat, function( a, b ) return PositionNonZero(a)<PositionNonZero(b); end);
+    SortBy( mat, PositionNonZero );
 
     # fill up mat
     if Length(mat) < Length(mat[1]) then

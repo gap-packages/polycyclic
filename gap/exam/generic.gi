@@ -230,8 +230,7 @@ BindGlobal( "BlowUpPcpPGroup", function(G)
     # set up
     p := PrimePGroup(G);
     e := ShallowCopy(AsList(G));
-    f := function(a,b) return PDepth(G,a)<PDepth(G,b); end;
-    Sort(e, f);
+    SortBy(e, a -> PDepth(G, a));
 
     # fill up collector
     c := FromTheLeftCollector(Length(e)-1);
