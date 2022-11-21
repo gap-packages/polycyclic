@@ -593,6 +593,9 @@ InstallGlobalFunction( Pcp, function( arg )
 
     # catch arguments U and N
     U := arg[1];
+    if not IsPcpGroup(U) then
+        Error("<U> must be a pcp group");
+    fi;
     if Length( arg ) = 1 or IsString( arg[2] ) then
         denom := [];
     elif Length( arg ) > 1 and IsGroup( arg[2] ) then
