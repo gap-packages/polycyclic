@@ -2,7 +2,7 @@
 ##
 ## List iterated Schur covers of order p^n and rank d and print to file.
 ##
-SchurCoversByOrder := function(grpsfile, p,n,d)
+BindGlobal( "SchurCoversByOrder", function(grpsfile, p,n,d)
     local file, i, j, G, new, q, H;
 
     if not d in [2..n] then return fail; fi;
@@ -56,5 +56,4 @@ SchurCoversByOrder := function(grpsfile, p,n,d)
     AppendTo(file,"];\n");
     AddSet(availb[p],[n,d]);
     ReadDBFile(p,n,d);
-end;
-
+end );

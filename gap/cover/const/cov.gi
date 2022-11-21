@@ -1,7 +1,7 @@
 ##
 ## Covers
 ##
-SchurCovers := function(G)
+BindGlobal( "SchurCovers", function(G)
     local p, GG, K, R, M, D, Z, k, H, C, T, P, e, O, bij, f, t, m, A, c,
           l, n, i;
 
@@ -84,5 +84,5 @@ SchurCovers := function(G)
     fi;
 
     return c;
-end;
+end );
 

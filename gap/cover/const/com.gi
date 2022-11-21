@@ -1,4 +1,4 @@
-NrToElm := function(rels, nr, n)
+BindGlobal( "NrToElm", function(rels, nr, n)
     local q, elm, i;
     elm := []; elm[n] := 0;
     for i in Reversed([1..n]) do
@@ -7,25 +7,25 @@ NrToElm := function(rels, nr, n)
         elm[i] := q[2];
     od;
     return elm;
-end;
+end );
 
-ElmToNr := function(rels, elm, n)
+BindGlobal( "ElmToNr", function(rels, elm, n)
     local nr, i;
     nr := elm[1];
     for i in [2..n] do
         nr := nr*rels[i] + elm[i];
     od;
     return nr;
-end;
+end );
 
-ComplementCover := function(H, n, f, t, coc)
+BindGlobal( "ComplementCover", function(H, n, f, t, coc)
     local d, e;
     d := CutVector(coc, n);
     e := List([1..n], x -> f[x] * MappedVector( d[x], t));
     return Subgroup(H, e);
-end;
+end );
 
-ConstructPerm := function(n, r, s)
+BindGlobal( "ConstructPerm", function(n, r, s)
     local l, m, g, i;
 
     # catch a trivial case
@@ -43,13 +43,13 @@ ConstructPerm := function(n, r, s)
     od;
 
     return PermList(g);
-end;
+end );
 
-GetExponents := function(pcp, x)
+BindGlobal( "GetExponents", function(pcp, x)
     return ExponentsByPcp(pcp, MappedVector(x,pcp));
-end;
+end );
 
-FactorsComplementClasses := function(A, H, f, t, m)
+BindGlobal( "FactorsComplementClasses", function(A, H, f, t, m)
     local n, nn, r, s, rr, oper, elms, os, i, p, q;
 
     # set up
@@ -92,9 +92,9 @@ FactorsComplementClasses := function(A, H, f, t, m)
     od;
 
     return os;
-end;
+end );
 
-AllComplementsCover := function(K, f, m)
+BindGlobal( "AllComplementsCover", function(K, f, m)
     local n, r, s, elms;
 
     # set up
@@ -107,5 +107,5 @@ AllComplementsCover := function(K, f, m)
 
     # translate
     return List(elms, x -> ComplementCover(K, n, f, m, x));
-end;
+end );
 

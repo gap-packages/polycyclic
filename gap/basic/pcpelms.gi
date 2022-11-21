@@ -176,7 +176,9 @@ end );
 # TODO: Replace this by something like DeclareSynonymAttr.
 # However, we cannot use DeclareSynonymAttr directly, because for
 # collectors there is already an operation SetRelativeOrder.
-RelativeOrder := function( g ) return RelativeOrderPcp(g); end;
+BindGlobal( "RelativeOrder", function( g )
+    return RelativeOrderPcp(g);
+end );
 
 #############################################################################
 ##
