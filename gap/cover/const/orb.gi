@@ -1,4 +1,4 @@
-AgOrbitCover := function( A, pt, act )
+BindGlobal( "AgOrbitCover", function( A, pt, act )
     local pcgs, rels, orbit, dict, i, y, j, p, l, s, k, t, h;
 
     pcgs := A.agAutos;
@@ -32,9 +32,9 @@ AgOrbitCover := function( A, pt, act )
     od;
 
     return orbit;
-end;
+end );
 
-HybridOrbitCover := function( A, pt, act )
+BindGlobal( "HybridOrbitCover", function( A, pt, act )
     local block, l, orbit, dict, new, k, i, j, y;
 
     # get block
@@ -67,9 +67,9 @@ HybridOrbitCover := function( A, pt, act )
     od;
 
     return Concatenation( orbit );
-end;
+end );
 
-MyOrbits := function( A, len, act )
+BindGlobal( "MyOrbits", function( A, len, act )
     local todo, reps, i, c, a, o, j;
 
     Print("  OS: compute orbits \n");
@@ -108,5 +108,5 @@ MyOrbits := function( A, len, act )
     od;
 
     return reps;
-end;
+end );
 
