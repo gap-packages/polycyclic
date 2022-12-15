@@ -12,7 +12,7 @@
 #R  IsFromTheLeftCollectorRep( <obj> )
 ##
 DeclareRepresentation( "IsFromTheLeftCollectorRep",
-                        IsPowerConjugateCollector, [] );
+                        IsPowerConjugateCollector and IsPositionalObjectRep, [] );
 
 BindGlobal( "FromTheLeftCollectorFamily",
     NewFamily( "FromTheLeftCollector", IsFromTheLeftCollectorRep ) );
