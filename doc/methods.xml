@@ -803,7 +803,7 @@ gap> Collected( AbelianInvariants( last ) );
 	group of <A>G</A> is stored in the component <C>!.epimorphism</C>.
 	<P/>
 
-	There  is  a crossed  pairing  from <A>G</A>  into  <M>G\wedge  G</M>.  See  the
+	There  is  a crossed  pairing  from <M>G\times  G</M> into  <M>G\wedge  G</M>.  See  the
 	function <C>SchurExtensionEpimorphism</C> for details.  The crossed pairing
 	is stored  in the component  <C>!.crossedPairing</C>.  This is  the crossed
 	pairing <M>\lambda</M> in <Cite Key="EickNickel07"/>.
