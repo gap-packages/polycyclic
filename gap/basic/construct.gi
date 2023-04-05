@@ -24,7 +24,7 @@ InstallMethod( AbelianGroupCons,
     "pcp group",
     [ IsPcpGroup, IsList ],
 function( filter, ints )
-    local coll, i, n, r, grp;
+    local coll, i, n, r, grp, gens, pos;
 
     if not ForAll( ints, x -> IsInt(x) or IsInfinity(x) )  then
         Error( "<ints> must be a list of integers" );
@@ -34,8 +34,8 @@ function( filter, ints )
         TryNextMethod();
     fi;
 
-    n := Length(ints);
-    r := ints;
+    r := Filtered( ints, x -> x <> 1 );
+    n := Length(r);
 
     # construct group
     coll := FromTheLeftCollector( n );
@@ -46,6 +46,19 @@ function( filter, ints )
     od;
     UpdatePolycyclicCollector(coll);
     grp := PcpGroupByCollectorNC( coll );
+    if 1 in ints then
+        gens:= [];
+        pos:= 1;
+        for i in [ 1 .. Length( ints ) ] do
+            if ints[i] = 1 then
+                gens[i]:= One( grp );
+            else
+                gens[i]:= GeneratorsOfGroup( grp )[ pos ];
+                pos:= pos + 1;
+            fi;
+        od;
+        grp:= GroupWithGenerators( gens );
+    fi;
     SetIsAbelian( grp, true );
     return grp;
 end );
