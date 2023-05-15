@@ -206,6 +206,7 @@ gap> IsConjugate(H,H.1, H.2);
 false
 gap> IsConjugate(H,H.1, H.1^Random(H));
 true
+gap> DihedralPcpGroup( 2 );;  # used to run into an error
 
 #
 # bug in AddToIgs: in infinite pcp groups, we must also take inverses of
@@ -534,6 +535,16 @@ gap> g:= AbelianGroup( IsPcpGroup, [ 1, 2 ] );
 Pcp-group with orders [ 2 ]
 gap> List( GeneratorsOfGroup( g ), Order );
 [ 1, 2 ]
+gap> AbelianPcpGroup( 2 );
+Pcp-group with orders [ 0, 0 ]
+gap> AbelianPcpGroup( [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3, 4 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2 ] );
+Pcp-group with orders [ 2, 0 ]
 
 #
 gap> STOP_TEST( "bugfix.tst" );
