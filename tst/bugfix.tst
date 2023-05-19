@@ -535,6 +535,12 @@ gap> g:= AbelianGroup( IsPcpGroup, [ 1, 2 ] );
 Pcp-group with orders [ 2 ]
 gap> List( GeneratorsOfGroup( g ), Order );
 [ 1, 2 ]
+gap> AbelianPcpGroup( 1 );
+Pcp-group with orders [ 0 ]
+gap> AbelianPcpGroup( [ 1 ] );
+Pcp-group with orders [  ]
+gap> AbelianPcpGroup( 1, [ 1 ] );
+Pcp-group with orders [  ]
 gap> AbelianPcpGroup( 2 );
 Pcp-group with orders [ 0, 0 ]
 gap> AbelianPcpGroup( [ 2, 3 ] );
