@@ -8,31 +8,25 @@
 #M AbelianPcpGroup
 ##
 InstallGlobalFunction( AbelianPcpGroup, function( arg )
-    local coll, i, n, r, grp;
+    local r, n;
 
     # catch arguments
     if Length(arg) = 1 and IsInt(arg[1]) then
-        n := arg[1];
-        r := List([1..n], x -> 0);
+      r:= ListWithIdenticalEntries(arg[1], 0);
     elif Length(arg) = 1 and IsList(arg[1]) then
-        n := Length(arg[1]);
-        r := arg[1];
+      r:= arg[1];
     elif Length(arg) = 2 then
-        n := arg[1];
-        r := arg[2];
+      n:= arg[1];
+      r:= arg[2];
+      if n < Length(r) then
+        r:= r{[1..n]};
+      elif Length(r) < n then
+        r:= Concatenation(r, ListWithIdenticalEntries(n-Length(r), 0));
+      fi;
     fi;
 
     # construct group
-    coll := FromTheLeftCollector( n );
-    for i in [1..n] do
-        if IsBound( r[i] ) and r[i] > 0 and r[i] <> infinity then
-            SetRelativeOrder( coll, i, r[i] );
-        fi;
-    od;
-    UpdatePolycyclicCollector(coll);
-    grp := PcpGroupByCollectorNC( coll );
-    SetIsAbelian( grp, true );
-    return grp;
+    return AbelianGroupCons(IsPcpGroup, r);
 end );
 
 #############################################################################
@@ -40,20 +34,10 @@ end );
 #M DihedralPcpGroup
 ##
 InstallGlobalFunction( DihedralPcpGroup, function( n )
-    local coll, m;
-    coll := FromTheLeftCollector( 2 );
-    SetRelativeOrder( coll, 1, 2 );
-    if IsInt( n ) then
-        m := n/2;
-        if not IsInt( m ) then return fail; fi;
-        SetRelativeOrder( coll, 2, m );
-        SetConjugate( coll, 2,  1, [2,m-1] );
-    else
-        SetConjugate( coll, 2,  1, [2,-1] );
-        SetConjugate( coll, 2, -1, [2,-1] );
+    if n = 0 then
+      n:= infinity;
     fi;
-    UpdatePolycyclicCollector(coll);
-    return PcpGroupByCollectorNC( coll );
+    return DihedralGroupCons( IsPcpGroup, n );
 end );
 
 #############################################################################
