@@ -144,7 +144,7 @@ function( G )
     F := FrattiniSubgroup(K);
     f := List( GeneratorsOfGroup(F), x ->
          MappedVector( ExponentsOfPcElement(Pcgs(K), x), Igs(H) ) );
-    h := List( f, x -> PreImagesRepresentative(H!.bijection,x));
+    h := List( f, x -> PreImagesRepresentativeNC(H!.bijection,x));
     return Subgroup( G, h );
 end );
 

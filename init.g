@@ -5,6 +5,17 @@
 #W                                                                   Max Horn
 ##
 
+#############################################################################
+##I introduce the NC versions of PreImages...
+if not IsBound( PreImagesNC ) then
+    BindGlobal( "PreImagesNC", PreImages );
+fi;
+if not IsBound( PreImagesSetNC ) then
+    BindGlobal( "PreImagesSetNC", PreImagesSet );
+fi;
+if not IsBound( PreImagesRepresentativeNC ) then
+    BindGlobal( "PreImagesRepresentativeNC", PreImagesRepresentative );
+fi;
 
 #############################################################################
 ##
