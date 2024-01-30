@@ -28,10 +28,9 @@ jobs:
           - stable-4.12
           - stable-4.11
           - stable-4.10
-          - stable-4.9
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Install PARI/GP'
         run: |
           sudo apt-get update
@@ -51,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: gap-actions/setup-gap@v2
       - uses: gap-actions/build-pkg-docs@v1
         with:
