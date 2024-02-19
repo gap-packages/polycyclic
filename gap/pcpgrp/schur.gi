@@ -192,8 +192,8 @@ BindGlobal( "NonAbelianExteriorSquareEpimorphism", function( G )
     SetIsSurjective( epi, true );
 
     lambda := function( g, h )
-        return Comm( PreImagesRepresentative( lift, g ),
-                     PreImagesRepresentative( lift, h ) );
+        return Comm( PreImagesRepresentativeNC( lift, g ),
+                     PreImagesRepresentativeNC( lift, h ) );
     end;
 
     D!.epimorphism := epi;

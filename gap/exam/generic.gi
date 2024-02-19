@@ -183,7 +183,7 @@ InstallGlobalFunction( MaximalOrderByUnitsPcpGroup, function(f)
     G := Image(i);
 
     # get action of U on O
-    u := List( Pcp(G), x -> PreImagesRepresentative(i,x) );
+    u := List( Pcp(G), x -> PreImagesRepresentativeNC(i,x) );
     a := List( u, x -> List( O, y -> Coefficients(O, y*x)));
 
     # return split extension

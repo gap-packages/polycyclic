@@ -307,12 +307,12 @@ true
 #
 gap> G:=AbelianGroup(IsPcpGroup,[2,3,2]);;
 gap> map:=GroupGeneralMappingByImages(G,G,[G.1],[G.3]);;
-gap> Size(PreImagesSet(map,G));
+gap> Size(PreImagesSetNC(map,G));
 2
 gap> List([IsTotal,IsSingleValued,IsSurjective,IsInjective], f->f(map));
 [ false, true, false, true ]
 gap> map2:=map*map;;
-gap> Size(PreImagesSet(map2,G));
+gap> Size(PreImagesSetNC(map2,G));
 1
 gap> Size(ImagesSet(map2,G));
 1

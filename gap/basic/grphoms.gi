@@ -287,7 +287,7 @@ end );
 ##
 #M  PreImages
 ##
-InstallMethod( PreImagesRepresentative,
+InstallMethod( PreImagesRepresentativeNC,
                "for ToPcpGHBI",
                FamRangeEqFamElm,
                [ IsToPcpGHBI, IsPcpElement ],
@@ -299,19 +299,16 @@ function( hom, elm )
     return MappedVector(e, hom!.igs_imgs_to_gens[2]);
 end );
 
-InstallMethod( PreImagesSet,
+InstallMethod( PreImagesSetNC,
                "for PcpGHBI",
                CollFamRangeEqFamElms,
                [ IsFromPcpGHBI and IsToPcpGHBI, IsPcpGroup ],
 function( hom, U )
-    local prei, kern;
-    prei := List( Igs(U), x -> PreImagesRepresentative(hom,x) );
+    local prei, gens, kern;
+    prei := List( Igs(U), x -> PreImagesRepresentativeNC(hom,x) );
     if fail in prei then
-    	TryNextMethod();
-		# Potential solution: Intersect U with ImagesSource(hom)
-		# and then compute the preimage of that.
-		#gens := GeneratorsOfGroup( Intersection( ImagesSource(hom), U ) );
-        #prei := List( gens, x -> PreImagesRepresentative(hom,x) );
+        gens := GeneratorsOfGroup( Intersection( ImagesSource(hom), U ) );
+        prei := List( gens, x -> PreImagesRepresentativeNC(hom,x) );
     fi;
     kern := Igs( KernelOfMultiplicativeGeneralMapping( hom ) );
     return SubgroupByIgs( Source(hom), kern, prei );

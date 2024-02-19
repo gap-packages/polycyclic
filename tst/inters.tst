@@ -95,9 +95,9 @@ gap> H2 := Subgroup(H,[h[1]*h[7], h[4]*h[5]]);
 Pcp-group with orders [ 3, 3, 3, 3 ]
 gap> J := Intersection(H1,H2);
 Error, sorry: intersection for non-normal groups not yet installed
-gap> G1 := PreImages(iso,H1);
+gap> G1 := PreImagesNC(iso,H1);
 Group([ f2, f3*f4, f6 ])
-gap> G2 := PreImages(iso,H2);
+gap> G2 := PreImagesNC(iso,H2);
 Group([ f1*f7, f4*f5 ])
 gap> I:= Intersection(G1,G2);
 Group([ f3^2*f4*f5^2, f4^2*f5, f5^2 ])
@@ -115,9 +115,9 @@ gap> H2 := Subgroup(H,[h[1]*h[7], h[4]*h[5]^2]);
 Pcp-group with orders [ 2, 3, 3, 3 ]
 gap> Intersection(H1,H2);
 Error, sorry: intersection for non-normal groups not yet installed
-gap> G1 := PreImages(iso,H1);
+gap> G1 := PreImagesNC(iso,H1);
 Group([ f2, f3*f4, f6^2 ])
-gap> G2 := PreImages(iso,H2);
+gap> G2 := PreImagesNC(iso,H2);
 Group([ f1*f7, f4*f5^2 ])
 gap> I:= Intersection(G1,G2);
 Group([ f6^2, f7^2 ])
