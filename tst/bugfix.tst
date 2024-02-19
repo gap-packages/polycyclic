@@ -59,7 +59,11 @@ Pcp-group with orders [ 2, 2, 3, 2, 2, 2, 2 ]
 
 #
 gap> # The problem with the previous example is/was that Igs(G)
-gap> # is set to a non-standard value:
+gap> # is set to a non-standard value. Experiment with that some more
+gap> G := Parent(G);; # does nothing in GAP >= 4.13 -- possibly due to https://github.com/gap-system/gap/pull/5631
+gap> igs := [ G.1, G.2*G.5, G.3*G.4*G.5^2, G.4*G.5, G.5 ];;
+gap> G := Subgroup(G, igs);;
+gap> SetIgs(G, igs);
 gap> Igs(G);
 [ g1, g2*g5, g3*g4*g5^2, g4*g5, g5 ]
 gap> # Unfortunately, it seems that a lot of code that
