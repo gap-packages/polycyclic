@@ -553,4 +553,13 @@ gap> AbelianPcpGroup( 2, [ 2 ] );
 Pcp-group with orders [ 2, 0 ]
 
 #
+# Fix bug in FrattiniSubgroup
+# Reported by Heiko Dietrich (2024-02-19)
+#
+gap> G:=PcGroupToPcpGroup(SmallGroup(11025,6));;
+gap> F:=FrattiniSubgroup(G);;
+gap> Size(F);  # used to produce a group of order 49
+21
+
+#
 gap> STOP_TEST( "bugfix.tst" );
