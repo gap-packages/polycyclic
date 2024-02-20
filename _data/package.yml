@@ -1,5 +1,6 @@
 name: Polycyclic
-version: 2.16
+version: "2.16"
+license: "GPL-2.0-or-later"
 date: 2020-07-25
 description: |
     Computation with polycyclic groups
@@ -42,3 +43,36 @@ abstract: |
 status: accepted
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
+keywords: |
+    finitely generated nilpotent groups, metacyclic groups, collection, consistency check, solvable word problem, normalizers, centralizers, intersection, conjugacy problem, subgroups of finite index, torsion subgroup, finite subgroups, extensions, complements, cohomology groups, orbit-stabilizer algorithms, fitting subgroup, center, infinite groups, polycyclic generating sequence, polycyclic presentation, polycyclic group, polycyclically presented group, polycyclic presentation, maximal subgroups, Schur cover, Schur multiplicator.
+citeas: |
+    <p class='BibEntry'>
+    [<span class='BibKey'>ENH20</span>]   <b class='BibAuthor'>Eick, B., Nickel, W. and Horn, M.</b>,
+     <i class='BibTitle'>Polycyclic, Computation with polycyclic groups,
+             Version 2.16</i>
+     (<span class='BibYear'>2020</span>)<br />
+    (<span class='BibNote'>GAP package</span>),
+    <span class='BibHowpublished'><a href="https://gap-packages.github.io/polycyclic/">https://gap-packages.github.io/polycyclic/</a></span>.
+    </p>
+    
+
+bibtex: |
+    @misc{ Polycyclic2.16,
+      author =           {Eick, B. and Nickel, W. and Horn, M.},
+      title =            {{Polycyclic}, Computation with polycyclic groups, {V}ersion 2.16},
+      month =            {Jul},
+      year =             {2020},
+      note =             {GAP package},
+      howpublished =     {\href                                          {https://gap-packages.github.io/polycyclic/}
+                          {\texttt{https://gap\texttt{\symbol{45}}packages.github.io/}\discretionary
+                          {}{}{}\texttt{polycyclic/}}},
+      keywords =         {finitely  generated  nilpotent  groups;  metacyclic  groups; collection; consistency check;
+                          solvable   word   problem;  normalizers;  centralizers;  intersection;  conjugacy  problem;
+                          subgroups  of  finite  index;  torsion subgroup; finite subgroups; extensions; complements;
+                          cohomology   groups;   orbit\texttt{\symbol{45}}stabilizer  algorithms;  fitting  subgroup;
+                          center;   infinite   groups;   polycyclic  generating  sequence;  polycyclic  presentation;
+                          polycyclic   group;   polycyclically  presented  group;  polycyclic  presentation;  maximal
+                          subgroups; Schur cover; Schur multiplicator},
+      printedkey =       {ENH20}
+    }
+
