@@ -566,4 +566,12 @@ gap> Size(F);  # used to produce a group of order 49
 21
 
 #
+# Fix bug in complement computations for abelian groups,
+# see https://github.com/gap-packages/polycyclic/issues/88.
+#
+gap> G:= AbelianPcpGroup( 2, [ 2, 3 ] );;
+gap> Length( ConjugacyClassesSubgroups( G ) ) = 4;
+true
+
+#
 gap> STOP_TEST( "bugfix.tst" );
