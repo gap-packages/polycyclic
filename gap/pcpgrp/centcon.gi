@@ -100,7 +100,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
             gen := Pcp(C, N);
             stb := CentralizerByCentralLayer( elms, AsList(gen), pcp );
-            stb := AddIgsToIgs( stb, Igs(N) );
+            stb := AddIgsToIgs( Igs(stb), Igs(N) );
             C := SubgroupByIgs( G, stb );
 
         # if it is a non-central finite layer
@@ -165,7 +165,7 @@ BindGlobal( "CentralizerPcpGroup", function( G, g )
 
     # check
     if ForAny( g, x -> not x in G ) then
-        Error("elements must be contained in group");
+        TryNextMethod();
     fi;
 
     # compute
