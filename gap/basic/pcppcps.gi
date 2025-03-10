@@ -193,7 +193,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 k := g ^ RelativeOrderPcp(g);
                 if Depth(k) < c then Add(todo, k); fi;
             fi;
-            for j in [1..c-1] do
+            for j in [1..n] do
                 if not IsBool(ind[j]) then
                     k := Comm(g, ind[j]);
                     if Depth(k) < c then Add(todo, k); fi;
