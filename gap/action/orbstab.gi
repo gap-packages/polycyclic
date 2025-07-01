@@ -104,7 +104,7 @@ BindGlobal( "StabilizerIrreducibleAction", function( G, K, linG, derG )
 
     # if derK = 0, then K is the kernel
     if Length( stabK.orbit ) = 0 then return K; fi;
-
+    
     # define affine action
     OnAffMod := function( pt, aff )
         local im;
@@ -202,7 +202,7 @@ BindGlobal( "OrbitIrreducibleAction", function( G, K, linG, derG, v )
     if Length( stabK.orbit ) = 0 then
         return OrbitIrreducibleActionTrivialKernel( G, K, linG, derG, v );
     fi;
-
+    
     # define affine action
     OnAffMod := function( pt, aff )
         local im;
@@ -282,7 +282,7 @@ BindGlobal( "StabilizerCongruenceAction", function( G, mats, e, ser )
         subs := RefineSplitting( actT, [full]  );
         subs := List( subs, PurifyRationalBase );
         comp := [];
-
+        
         # now loop over irreducible submodules and compute stab T
         while Length(subs)>0 do
             Info( InfoIntStab, 2, "  layer: ", List(subs,Length));
@@ -294,7 +294,7 @@ BindGlobal( "StabilizerCongruenceAction", function( G, mats, e, ser )
             act := List(act, x -> x{[1..f]}{[1..f]});
             der := List(derT, x -> x*inv);
             der := List(der, x -> x{[1..f]});
-
+            
             # stabilize
             U := StabilizerIrreducibleAction( T, K, act, der );
 
@@ -510,7 +510,7 @@ end );
 ##
 BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     local p, S, actS, K, actK, T, stab, ser, orbf;
-
+    
     # reduce e
     e := e / Gcd( e );
 
@@ -538,7 +538,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     Info( InfoIntStab, 1, "computing module series");
     ser := HomogeneousSeriesOfRationalModule( mats, actK, Length(e) );
     ser := List( ser, x -> PurifyRationalBase(x) );
-
+    Print( ser, "\n");
     # get Stab_K(e)
     Info( InfoIntStab, 1, "adding stabilizer for congruence subgroup");
     T := StabilizerCongruenceAction( K, actK, e, ser );
@@ -589,9 +589,9 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
         return rec( stab := StabilizerIntegralAction(G, mats, e),
                     prei := One( G ) );
     fi;
-    if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
-        return false;
-    fi;
+    # if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
+    #     return false;
+    # fi;
 
     # compute modulo 3 first
     Info( InfoIntStab, 1, "reducing by orbit-stabilizer mod 3");
