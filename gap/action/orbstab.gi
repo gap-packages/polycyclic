@@ -538,7 +538,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     Info( InfoIntStab, 1, "computing module series");
     ser := HomogeneousSeriesOfRationalModule( mats, actK, Length(e) );
     ser := List( ser, x -> PurifyRationalBase(x) );
-    Print( ser, "\n");
+
     # get Stab_K(e)
     Info( InfoIntStab, 1, "adding stabilizer for congruence subgroup");
     T := StabilizerCongruenceAction( K, actK, e, ser );

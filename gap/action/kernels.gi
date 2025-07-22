@@ -251,7 +251,7 @@ BindGlobal( "KernelOfCongruenceMatrixActionALNUTH", function( G, mats )
 
     # the trivial case
     if ForAll( mats, x -> x^0 = x ) then return G; fi;
-
+    Print( " I'm using alnuth ");
     # split into irreducibles
     base := AlgebraBase( mats );
     prim := PrimitiveAlgebraElement( base, List( base, Flat ) );
