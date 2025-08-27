@@ -24,7 +24,7 @@ BindGlobal( "SchurCovers", function(G)
     M := GG!.mult;
 
     #  info
-    Print("  Schur Mult has type ",AbelianInvariants(M),"\n");
+    Info(InfoPcpGrp, 2, "  Schur Mult has type ",AbelianInvariants(M));
 
     # catch a trival case
     if GG!.mord = 1 then return [ G ]; fi;
@@ -64,7 +64,7 @@ BindGlobal( "SchurCovers", function(G)
     f := Pcp(C,T); t := Pcp(T); m := Pcp(M);
 
     # info
-    Print("  Schur Mult new type ",AbelianInvariants(T),"\n");
+    Info(InfoPcpGrp, 2, "  Schur Mult new type ",AbelianInvariants(T));
 
     # the acting automorphisms
     A := AutomorphismActionCover( H, C );

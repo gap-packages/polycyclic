@@ -16,6 +16,7 @@ This file describes changes in the GAP package 'polycyclic'.
       for certain trivial maps
     - `Random` for trivial groups (reported and fixed by Sam Tertooy)
   - Fix `SchurCovers` to always return list, even if only one cover is found
+    (fix by Sam Tertooy)
   - Made most global functions and variables read-only to catch code accidentally
     overriding them
   - Removed some unused code
