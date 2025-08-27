@@ -78,7 +78,7 @@ BindGlobal( "InvariantSubspaces", function( C, d )
     if IsBound( C.spaces ) then
         invs := Filtered( C.spaces, x -> l - Length(x) <= d );
         if not IsBound( C.central ) or not C.central then
-            invs := FixedPoints( invs, C.mats, OnBasesCase );
+            invs := FixedPointsOfAction( invs, C.mats, OnBasesCase );
         fi;
     else
         modu := GModuleByMats( C.mats, C.dim, C.field );
