@@ -149,14 +149,68 @@ InstallGlobalFunction( PcpExamples, function( n )
         return PcpGroupByCollector( FTL );
     fi;
 
+    ##
+    ## A nilpotent group from Eick/Fernandez paper on canonical conjugates
+    ##
+
     if n = 13 then
-        FTL := FromTheLeftCollector( 4 );
-        SetConjugate( FTL, 2, 1, [2,-1] );
-        SetConjugate( FTL, 4, 1, [4,-1] );
-        SetConjugate( FTL, 3, 2, [3,2,4,1]);
-        SetConjugate( FTL, 4, 2, [3,3,4,2]);
-        return PcpGroupByCollector( FTL );
+        FTL := FromTheLeftCollector( 21 );
+        SetRelativeOrder( FTL, 1, 255 );
+        SetPower( FTL, 1, [  ] );
+        SetRelativeOrder( FTL, 2, 585 );
+        SetPower( FTL, 2, [ 3, -3 ] );
+        SetRelativeOrder( FTL, 7, 15 );
+        SetPower( FTL, 7, [ 8, 30 ] );
+        SetRelativeOrder( FTL, 8, 51 );
+        SetPower( FTL, 8, [  ] );
+        SetRelativeOrder( FTL, 9, 3 );
+        SetPower( FTL, 9, [  ] );
+        SetRelativeOrder( FTL, 10, 255 );
+        SetPower( FTL, 10, [  ] );
+        SetRelativeOrder( FTL, 11, 585 );
+        SetPower( FTL, 11, [ 12, -3 ] );
+        SetRelativeOrder( FTL, 13, 255 );
+        SetPower( FTL, 13, [  ] );
+        SetRelativeOrder( FTL, 14, 585 );
+        SetPower( FTL, 14, [ 15, -3 ] );
+        SetRelativeOrder( FTL, 17, 255 );
+        SetPower( FTL, 17, [  ] );
+        SetRelativeOrder( FTL, 18, 585 );
+        SetPower( FTL, 18, [ 19, -3 ] );
+        SetConjugate( FTL, 2, 1, [ 2, 1, 7, 1 ] );
+        SetConjugate( FTL, 2, -1, [ 2, 1, 7, 14, 8, 21 ] );
+        SetConjugate( FTL, 3, 1, [ 3, 1, 8, 1 ] );
+        SetConjugate( FTL, 3, -1, [ 3, 1, 8, 50 ] );
+        SetConjugate( FTL, 3, 2, [ 3, 1, 9, 1 ] );
+        SetConjugate( FTL, 3, -2, [ 3, 1, 9, 2 ] );
+        SetConjugate( FTL, 4, 1, [ 4, 1, 10, 1 ] );
+        SetConjugate( FTL, 4, -1, [ 4, 1, 10, 254 ] );
+        SetConjugate( FTL, 4, 2, [ 4, 1, 11, 1 ] );
+        SetConjugate( FTL, 4, -2, [ 4, 1, 11, 584, 12, 3 ] );
+        SetConjugate( FTL, 4, 3, [ 4, 1, 12, 1 ] );
+        SetConjugate( FTL, 4, -3, [ 4, 1, 12, -1 ] );
+        SetConjugate( FTL, 5, 1, [ 5, 1, 13, 1 ] );
+        SetConjugate( FTL, 5, -1, [ 5, 1, 13, 254 ] );
+        SetConjugate( FTL, 5, 2, [ 5, 1, 14, 1 ] );
+        SetConjugate( FTL, 5, -2, [ 5, 1, 14, 584, 15, 3 ] );
+        SetConjugate( FTL, 5, 3, [ 5, 1, 15, 1 ] );
+        SetConjugate( FTL, 5, -3, [ 5, 1, 15, -1 ] );
+        SetConjugate( FTL, 5, 4, [ 5, 1, 16, 1 ] );
+        SetConjugate( FTL, 5, -4, [ 5, 1, 16, -1 ] );
+        SetConjugate( FTL, 6, 1, [ 6, 1, 17, 1 ] );
+        SetConjugate( FTL, 6, -1, [ 6, 1, 17, 254 ] );
+        SetConjugate( FTL, 6, 2, [ 6, 1, 18, 1 ] );
+        SetConjugate( FTL, 6, -2, [ 6, 1, 18, 584, 19, 3 ] );
+        SetConjugate( FTL, 6, 3, [ 6, 1, 19, 1 ] );
+        SetConjugate( FTL, 6, -3, [ 6, 1, 19, -1 ] );
+        SetConjugate( FTL, 6, 4, [ 6, 1, 20, 1 ] );
+        SetConjugate( FTL, 6, -4, [ 6, 1, 20, -1 ] );
+        SetConjugate( FTL, 6, 5, [ 6, 1, 21, 1 ] );
+        SetConjugate( FTL, 6, -5, [ 6, 1, 21, -1 ] );
+        return PcpGroupByCollector( FTL ); 
     fi;
+
+
     return fail;
 
 end );

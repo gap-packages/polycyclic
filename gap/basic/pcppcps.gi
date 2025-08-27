@@ -156,7 +156,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             h := ind[d];
             r := FactorOrder(g);
             a := LeadingExponent(g);
-
+            
             # shift in
             if IsBool(h) then 
                 ind[d] := NormedPcpElement(g);
@@ -204,7 +204,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 fi;
             od;
         od;
-
+        
         # reduce
         todo := Filtered(todo, x -> Depth(x)<c);
         val := List(todo, x -> IGSValFun(x));
@@ -593,6 +593,9 @@ InstallGlobalFunction( Pcp, function( arg )
 
     # catch arguments U and N
     U := arg[1];
+    if not IsPcpGroup(U) then
+        Error("<U> must be a pcp group");
+    fi;
     if Length( arg ) = 1 or IsString( arg[2] ) then
         denom := [];
     elif Length( arg ) > 1 and IsGroup( arg[2] ) then

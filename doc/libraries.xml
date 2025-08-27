@@ -8,7 +8,7 @@
 There are the following generic pcp-groups available.
 <ManSection>
 <Func Name="AbelianPcpGroup" Arg="n[, rels]"/>
-<Func Name="AbelianPcpGroup" Arg="rels"/>
+<Func Name="AbelianPcpGroup" Arg="rels" Label="rels only"/>
 <Description>
       constructs the   abelian  group  on  <A>n</A>  generators  such  that
       generator <M>i</M> has  order <M>rels[i]</M>. If  this  order is infinite,
