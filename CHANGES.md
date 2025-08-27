@@ -1,21 +1,25 @@
 This file describes changes in the GAP package 'polycyclic'.
 
 2.17dev (2024-MM-DD)
-  - Fixed a bug in `FrattiniSubgroup` which could lead to wrong results
+  - Enhanced `AbelianPcpGroup` and `AbelianGroupCons` to support `infinity` in
+    the list of orders (implemented by Sam Tertooy)
+  - Fix correctness bugs, where wrong results could be returned, in the following functions:
+    - `FrattiniSubgroup` (reported by Heiko Dietrich)
+    - `IsConjugate` (reported and fixed by Sam Tertooy)
+    - `IsNormal` sometimes returned `true` even if the inputs did not normalise each other
   - Fixed a bug in `AbelianGroup` resp. `AbelianGroupCons` method for `IsPcpGroup`
     and also in `AbelianPcpGroup`, `DihedralPcpGroup`, which resulted in either
     an unexpected break loop or in a corrupted group when used to create a group
     with some but not all generators of order 1
-  - Fixed a bug in `IsSingleValued` (and possibly `CoKernelOfMultiplicativeGeneralMapping`)
-    for certain trivial maps, that could lead to an unexpected break loop
-  - Fixed a bug in `IsNormal` which could incorrectly return `true` for two groups
-    that do not normalise each other
-  - Fixed a bug in `Random` that caused it to fail for trivial groups (reported and fixed by Sam Tertooy)
-  - Fixed a bug in `IsConjugate` that could cause it to return wrong result (reported and fixed by Sam Tertooy)
-  - Enhanced `AbelianPcpGroup` and `AbelianGroupCons` to support `infinity` in the list of orders (implemented by Sam Tertooy)
-  - Removed some unused code
+  - Fix further bugs where an error was raised unexpectedly:
+    - `IsSingleValued` (and possibly `CoKernelOfMultiplicativeGeneralMapping`)
+      for certain trivial maps
+    - `Random` for trivial groups (reported and fixed by Sam Tertooy)
+  - Fix `SchurCovers` to always return list, even if only one cover is found
+    (fix by Sam Tertooy)
   - Made most global functions and variables read-only to catch code accidentally
-    overriding this
+    overriding them
+  - Removed some unused code
   - Various janitorial changes
 
 2.16 (2020-07-25)

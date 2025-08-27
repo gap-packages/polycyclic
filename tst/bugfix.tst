@@ -566,4 +566,12 @@ gap> Size(F);  # used to produce a group of order 49
 21
 
 #
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+  Schur Mult has type [  ]
+[ <pc group of size 4 with 2 generators> ]
+
+#
 gap> STOP_TEST( "bugfix.tst" );
