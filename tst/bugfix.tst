@@ -162,7 +162,35 @@ gap> LowerCentralSeriesOfGroup(G);
 [ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
 
 #
-# bug in StabilizerIntegralAction, see https://github.com/gap-packages/polycyclic/issues/15
+# Fix a bug computing NormalizerPcpGroup, see
+# <https://github.com/gap-packages/polycyclic/issues/2>
+#
+gap> P2:=SylowSubgroup(GL(IsPermGroup,7,2),2);
+<permutation group of size 2097152 with 21 generators>
+gap> iso := IsomorphismPcpGroup(P2);;
+gap> G:=Image(iso);;
+gap> U := Subgroup(G,[G.3*G.5*G.8*G.9*G.10*G.13*G.15*G.17*G.18*G.19,G.15*G.17]);;
+gap> N := NormalizerPcpGroup( G, U );;
+gap> Images(iso, Normalizer( P2, PreImagesNC(iso, U) )) = N;
+true
+
+#
+# Fix a bug computing ComplementClassesCR, see
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));
+Pcp-group with orders [ 2, 2, 2, 2, 3, 3 ]
+gap> classes := FiniteSubgroupClasses(G);;
+gap> Length(classes);
+86
+gap> Collected(List(classes, c -> Size(Representative(c))));
+[ [ 1, 1 ], [ 2, 7 ], [ 3, 2 ], [ 4, 11 ], [ 6, 14 ], [ 8, 7 ], [ 9, 1 ], 
+  [ 12, 14 ], [ 16, 1 ], [ 18, 7 ], [ 24, 2 ], [ 36, 11 ], [ 72, 7 ], 
+  [ 144, 1 ] ]
+
+#
+# bug in StabilizerIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/15>
 #
 gap> P:=PolynomialRing(Integers);; x:=P.1;;
 gap> G:=MaximalOrderByUnitsPcpGroup(x^4+x^3+x^2+x+1);
@@ -181,40 +209,9 @@ gap> CheckStabilizer(G, stab, mats, e);
 true
 
 #
-# bug in OrbitIntegralAction, see https://github.com/gap-packages/polycyclic/issues/21
-#
-gap> G:=ExamplesOfSomePcpGroups(8);
-Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=RepresentationForPcpCollector(Collector(G));;
-gap> e:=[8,-4,5,2,13,-17,9];;
-gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
-[ 8, -4, 19, 34, 51, -17, 5 ]
-gap> o := OrbitIntegralAction( G, mats, e, f );
-rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16, 
-  stab := Pcp-group with orders [ 0 ] )
-gap> CheckOrbit(G, o.prei, mats, e, f);
-true
-gap> CheckStabilizer(G, o.stab, mats, e);
-#I  Orbit longer than limit: exiting.
-true
-
-#
-# bug in IsConjugate: it should return a boolean, but instead of 'true' it
-# returned a conjugating element. See <https://github.com/gap-packages/polycyclic/issues/18>
-#
-gap> H := DihedralPcpGroup( 0 );
-Pcp-group with orders [ 2, 0 ]
-gap> IsConjugate(H,One(H),One(H));
-true
-gap> IsConjugate(H,H.1, H.2);
-false
-gap> IsConjugate(H,H.1, H.1^Random(H));
-true
-gap> DihedralPcpGroup( 2 );;  # used to run into an error
-
-#
 # bug in AddToIgs: in infinite pcp groups, we must also take inverses of
-# generators into account. See <https://github.com/gap-packages/polycyclic/issues/16>
+# generators into account.
+# <https://github.com/gap-packages/polycyclic/issues/16>
 #
 gap> ftl := FromTheLeftCollector( 26 );;
 gap> SetRelativeOrder( ftl, 1, 5 );
@@ -334,30 +331,37 @@ gap> G = H;
 true
 
 #
-# Fix a bug computing ComplementClassesCR, see
-# <https://github.com/gap-packages/polycyclic/issues/3>
+# bug in IsConjugate: it should return a boolean, but instead of 'true' it
+# returned a conjugating element.
+# <https://github.com/gap-packages/polycyclic/issues/18>
 #
-gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));
-Pcp-group with orders [ 2, 2, 2, 2, 3, 3 ]
-gap> classes := FiniteSubgroupClasses(G);;
-gap> Length(classes);
-86
-gap> Collected(List(classes, c -> Size(Representative(c))));
-[ [ 1, 1 ], [ 2, 7 ], [ 3, 2 ], [ 4, 11 ], [ 6, 14 ], [ 8, 7 ], [ 9, 1 ], 
-  [ 12, 14 ], [ 16, 1 ], [ 18, 7 ], [ 24, 2 ], [ 36, 11 ], [ 72, 7 ], 
-  [ 144, 1 ] ]
+gap> H := DihedralPcpGroup( 0 );
+Pcp-group with orders [ 2, 0 ]
+gap> IsConjugate(H,One(H),One(H));
+true
+gap> IsConjugate(H,H.1, H.2);
+false
+gap> IsConjugate(H,H.1, H.1^Random(H));
+true
+gap> DihedralPcpGroup( 2 );;  # used to run into an error
 
 #
-# Fix a bug computing NormalizerPcpGroup, see
-# <https://github.com/gap-packages/polycyclic/issues/2>
+# bug in OrbitIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/21>
 #
-gap> P2:=SylowSubgroup(GL(IsPermGroup,7,2),2);
-<permutation group of size 2097152 with 21 generators>
-gap> iso := IsomorphismPcpGroup(P2);;
-gap> G:=Image(iso);;
-gap> U := Subgroup(G,[G.3*G.5*G.8*G.9*G.10*G.13*G.15*G.17*G.18*G.19,G.15*G.17]);;
-gap> N := NormalizerPcpGroup( G, U );;
-gap> Images(iso, Normalizer( P2, PreImagesNC(iso, U) )) = N;
+gap> G:=ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
+gap> e:=[8,-4,5,2,13,-17,9];;
+gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
+[ 8, -4, 19, 34, 51, -17, 5 ]
+gap> o := OrbitIntegralAction( G, mats, e, f );
+rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16, 
+  stab := Pcp-group with orders [ 0 ] )
+gap> CheckOrbit(G, o.prei, mats, e, f);
+true
+gap> CheckStabilizer(G, o.stab, mats, e);
+#I  Orbit longer than limit: exiting.
 true
 
 #
@@ -485,24 +489,6 @@ gap> HirschLength( Ker );
 5
 
 #
-# Fix a bug in ConjugacyElementsBySeries
-# <https://github.com/gap-packages/polycyclic/issues/58>
-#
-gap> G := ExamplesOfSomePcpGroups( 10 );;
-gap> g := G.1;;
-gap> h := g^(G.2*G.3);;
-gap> k := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( G ) );;
-gap> g^k = h;
-true
-
-#
-# Fix a bug causing Random to fail for the trivial group
-# <https://github.com/gap-packages/polycyclic/issues/59>
-#
-gap> Random( TrivialGroup( IsPcpGroup ) );
-id
-
-#
 # Fix a bug in NormalizerOfComplement
 # <https://github.com/gap-packages/polycyclic/issues/45>
 # <https://github.com/gap-packages/polycyclic/issues/88>
@@ -547,6 +533,24 @@ gap> H := PreImagesSet(phi, G);
 Pcp-group with orders [ 0 ]
 gap> G = H;
 true
+
+#
+# Fix a bug in ConjugacyElementsBySeries
+# <https://github.com/gap-packages/polycyclic/issues/58>
+#
+gap> G := ExamplesOfSomePcpGroups( 10 );;
+gap> g := G.1;;
+gap> h := g^(G.2*G.3);;
+gap> k := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( G ) );;
+gap> g^k = h;
+true
+
+#
+# Fix a bug causing Random to fail for the trivial group
+# <https://github.com/gap-packages/polycyclic/issues/59>
+#
+gap> Random( TrivialGroup( IsPcpGroup ) );
+id
 
 #
 # Allow Centralizer to fall back on generic GAP methods
