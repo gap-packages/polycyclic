@@ -184,7 +184,7 @@ end );
 ## nilpotent - by - abelian. Every polycyclic group has such a normal
 ## subgroup.
 ##
-## This is usually done more effectively by NilpotenByAbelianByFiniteSeries.
+## This is usually done more effectively by NilpotentByAbelianByFiniteSeries.
 ## We only use this function as alternative for special cases.
 ##
 InstallGlobalFunction( NilpotentByAbelianNormalSubgroup, function( G )

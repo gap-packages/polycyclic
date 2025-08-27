@@ -59,7 +59,11 @@ Pcp-group with orders [ 2, 2, 3, 2, 2, 2, 2 ]
 
 #
 gap> # The problem with the previous example is/was that Igs(G)
-gap> # is set to a non-standard value:
+gap> # is set to a non-standard value. Experiment with that some more
+gap> G := Parent(G);; # does nothing in GAP >= 4.13 -- possibly due to https://github.com/gap-system/gap/pull/5631
+gap> igs := [ G.1, G.2*G.5, G.3*G.4*G.5^2, G.4*G.5, G.5 ];;
+gap> G := Subgroup(G, igs);;
+gap> SetIgs(G, igs);
 gap> Igs(G);
 [ g1, g2*g5, g3*g4*g5^2, g4*g5, g5 ]
 gap> # Unfortunately, it seems that a lot of code that
@@ -514,6 +518,16 @@ gap> IsNormal( T, S );
 false
 
 #
+# Allow Centralizer to fall back on generic GAP methods
+# <https://github.com/gap-packages/polycyclic/issues/64>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.1*G.3*G.4;;
+gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
+gap> Centralizer( H, g );
+Pcp-group with orders [ 2, 2 ]
+
+#
 # Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
 # for certain trivial maps, which used to raise an error in the example
 # below, because MappedVector was called with an empty list of generators.
@@ -551,6 +565,58 @@ gap> AbelianPcpGroup( 2, [ 2, 3, 4 ] );
 Pcp-group with orders [ 2, 3 ]
 gap> AbelianPcpGroup( 2, [ 2 ] );
 Pcp-group with orders [ 2, 0 ]
+
+#
+# Fix bug in FrattiniSubgroup
+# Reported by Heiko Dietrich (2024-02-19)
+#
+gap> G:=PcGroupToPcpGroup(SmallGroup(11025,6));;
+gap> F:=FrattiniSubgroup(G);;
+gap> Size(F);  # used to produce a group of order 49
+21
+
+#
+# Fixed a bug in IsConjugate for a finite pcp-group
+# <https://github.com/gap-packages/polycyclic/issues/70>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
+gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
+gap> g := G.2*G.4;; h := g^(G.1*G.3);;
+gap> IsConjugate( G, g, h );
+true
+
+#
+# Fixed a bug in stabilizer integral action
+# <https://github.com/gap-packages/polycyclic/issues/71>
+#
+gap> G := ExamplesOfSomePcpGroups( 10 );;
+gap> g := G.1^2*G.3^3*G.4^-3;;
+gap> h := g^(G.1*G.2^2);;
+gap> pcps := PcpsOfEfaSeries( G );;
+gap> k := ConjugacyElementsBySeries( G, g, h, pcps );
+g1*g2^2
+gap> g^k = h;
+true
+
+#
+# Fixed a bug in OrbitIntegralAction
+# This fix bug has a temporary solution by commenting the code in
+# gap/action/orbstab.gi lines 592-594
+#
+gap> ftl := FromTheLeftCollector( 2 );;
+gap> SetRelativeOrder( ftl, 2, 2 );
+gap> G := PcpGroupByCollector( ftl );;
+gap> A := [ [ 1, 1, 0, 0], [ 0, 1, 0 , 0], [ 0, 0, 1, 0], [ 0, 0, 0, 1] ];;
+gap> B := DiagonalMat( [-1, -1, -1, -1] );;
+gap> OrbitIntegralAction( G, [A,B], [1,0,0,0], [-1,0,0,0] );
+rec( prei := g2, stab := Pcp-group with orders [  ] )
+
+#
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+[ <pc group of size 4 with 2 generators> ]
 
 #
 gap> STOP_TEST( "bugfix.tst" );

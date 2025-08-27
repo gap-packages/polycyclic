@@ -25,13 +25,14 @@ jobs:
       matrix:
         gap-branch:
           - master
+          - stable-4.14
+          - stable-4.13
           - stable-4.12
           - stable-4.11
           - stable-4.10
-          - stable-4.9
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: 'Install PARI/GP'
         run: |
           sudo apt-get update
@@ -41,9 +42,14 @@ jobs:
           GAPBRANCH: ${{ matrix.gap-branch }}
           GAP_PKGS_TO_CLONE: "alnuth"
       - uses: gap-actions/build-pkg@v1
-      - uses: gap-actions/run-pkg-tests@v2
+      - uses: gap-actions/run-pkg-tests@v3
+      - uses: gap-actions/run-pkg-tests@v3
+        with:
+          only-needed: true
       - uses: gap-actions/process-coverage@v2
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   # The documentation job
   manual:
@@ -51,13 +57,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - uses: gap-actions/setup-gap@v2
       - uses: gap-actions/build-pkg-docs@v1
         with:
           use-latex: 'true'
       - name: 'Upload documentation'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: manual
           path: ./doc/manual.pdf
