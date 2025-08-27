@@ -167,7 +167,7 @@ function( G )
     iso  := IsomorphismPcGroup( G );
     F    := Image( iso );
     H    := PcGroupToPcpGroup( F );
-    gens := List( Pcgs(F), x -> PreImagesRepresentative( iso, x ) );
+    gens := List( Pcgs(F), x -> PreImagesRepresentativeNC( iso, x ) );
     hom  := GroupHomomorphismByImagesNC( G, H, gens, AsList(Pcp(H)) );
     SetIsBijective( hom, true );
     return hom;

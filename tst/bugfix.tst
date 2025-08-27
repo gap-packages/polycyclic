@@ -357,7 +357,7 @@ gap> iso := IsomorphismPcpGroup(P2);;
 gap> G:=Image(iso);;
 gap> U := Subgroup(G,[G.3*G.5*G.8*G.9*G.10*G.13*G.15*G.17*G.18*G.19,G.15*G.17]);;
 gap> N := NormalizerPcpGroup( G, U );;
-gap> Images(iso, Normalizer( P2, PreImages(iso, U) )) = N;
+gap> Images(iso, Normalizer( P2, PreImagesNC(iso, U) )) = N;
 true
 
 #
@@ -441,9 +441,9 @@ gap> G := AbelianPcpGroup( [ 2 ] );
 Pcp-group with orders [ 2 ]
 gap> phi := GroupHomomorphismByImages( G, G, [ G.1 ], [ Identity( G ) ] );
 [ g1 ] -> [ id ]
-gap> PreImagesRepresentative( phi, One(G) );
+gap> PreImagesRepresentativeNC( phi, One(G) );
 id
-gap> PreImagesRepresentative( phi, G.1 );
+gap> PreImagesRepresentativeNC( phi, G.1 );
 fail
 
 #
@@ -451,11 +451,11 @@ gap> G := AbelianPcpGroup( [ 2, 2 ] );
 Pcp-group with orders [ 2, 2 ]
 gap> phi := GroupHomomorphismByImages( G, G, [ G.1, G.2 ], [ Identity( G ), G.2 ] );
 [ g1, g2 ] -> [ id, g2 ]
-gap> PreImagesRepresentative( phi, One(G) );
+gap> PreImagesRepresentativeNC( phi, One(G) );
 id
-gap> PreImagesRepresentative( phi, G.2 );
+gap> PreImagesRepresentativeNC( phi, G.2 );
 g2
-gap> PreImagesRepresentative( phi, G.1 );
+gap> PreImagesRepresentativeNC( phi, G.1 );
 fail
 
 #

@@ -306,7 +306,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             # extract results
             if IsBool(stb) then return false; fi;
             C := PreImage( nat, stb.stab );
-            k := k * PreImagesRepresentative( nat, stb.prei );
+            k := k * PreImagesRepresentativeNC( nat, stb.prei );
         fi;
     od;
 

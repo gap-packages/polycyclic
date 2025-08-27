@@ -143,7 +143,7 @@ function( G )
     iso := IsomorphismPcGroup(G);
     K := Image(iso);
     F := FrattiniSubgroup(K);
-    return PreImagesSet(iso, F);
+    return PreImagesSetNC(iso, F);
 end );
 
 #############################################################################

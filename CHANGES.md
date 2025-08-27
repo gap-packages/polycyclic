@@ -29,6 +29,8 @@ This file describes changes in the GAP package 'polycyclic'.
     - `PreImagesSet` if the input set is not contained in the image of the homomorphism
   - Fix `SchurCovers` to always return list, even if only one cover is found
     (fix by Sam Tertooy)
+  - Support and use NC versions of `PreImages`, `PreImagesElm`, `PreImagesSet`
+    and `PreImagesRepresetnative` (contributed by Chris Wensley)
   - Made most global functions and variables read-only to catch code accidentally
     overriding them
   - Removed some unused code

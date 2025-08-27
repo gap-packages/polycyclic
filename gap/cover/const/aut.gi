@@ -24,7 +24,7 @@ end );
 BindGlobal( "ReduceAuto", function( auto, C, isom, gens, imgs )
     local news;
     news := List(imgs, x -> Image(auto, x));
-    news := List(news, x -> PreImagesRepresentative(isom, x));
+    news := List(news, x -> PreImagesRepresentativeNC(isom, x));
     news := GroupHomomorphismByImagesNC( C, C, gens, news );
     SetIsBijective( news, true );
     return news;

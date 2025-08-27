@@ -56,6 +56,6 @@ function( G, p )
     fi;
     # HACK: Until we write a proper native method, use that for pc groups
     iso := IsomorphismPcGroup(G);
-    return PreImagesSet(iso, SylowSubgroup(Image(iso),p));
+    return PreImagesSetNC(iso, SylowSubgroup(Image(iso),p));
 end );
 
