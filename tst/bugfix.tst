@@ -610,7 +610,6 @@ true
 # This fix bug has a temporary soltion by commenting the code in
 # gap/action/orbstab.gi lines 592-594
 #
-
 gap> ftl := FromTheLeftCollector( 2 );;
 gap> SetRelativeOrder( ftl, 2, 2 );
 gap> G := PcpGroupByCollector( ftl );;
@@ -624,9 +623,7 @@ rec( prei := g2, stab := Pcp-group with orders [  ] )
 # <https://github.com/gap-packages/polycyclic/issues/93>
 #
 gap> SchurCovers( CyclicGroup( 4 ) );
-  Schur Mult has type [  ]
 [ <pc group of size 4 with 2 generators> ]
-
 
 #
 gap> STOP_TEST( "bugfix.tst" );
