@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gap-packages/polycyclic.svg?branch=master)](https://travis-ci.org/gap-packages/polycyclic)
+[![Build Status](https://github.com/gap-packages/polycyclic/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/polycyclic/actions?query=workflow%3ACI+branch%3Amaster)
 [![Code Coverage](https://codecov.io/github/gap-packages/polycyclic/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/polycyclic)
 
 The GAP 4 package `Polycyclic'
@@ -49,7 +49,7 @@ or if there is a bug, we would appreciate it very much  if you could
 report this via <https://github.com/gap-packages/polycyclic/issues>,
 or by sending us an email.
  - Bettina Eick  <beick@tu-bs.de>
- - Max Horn      <horn@mathematik.uni-kl.de>
+ - Max Horn      <mhorn@rptu.de>
 
 
 Contents

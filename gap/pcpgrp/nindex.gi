@@ -13,7 +13,7 @@
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by p^d.
 ##
-LowIndexNormalsEaLayer := function( G, U, pcp, d, act )
+BindGlobal( "LowIndexNormalsEaLayer", function( G, U, pcp, d, act )
     local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu,
           L, fac, new, i, tmp, mats, t;
 
@@ -70,7 +70,7 @@ LowIndexNormalsEaLayer := function( G, U, pcp, d, act )
         fi;
     od;
     return com;
-end;
+end );
 
 #############################################################################
 ##
@@ -80,7 +80,7 @@ end;
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by l.
 ##
-LowIndexNormalsFaLayer := function( G, U, adj, l, act )
+BindGlobal( "LowIndexNormalsFaLayer", function( G, U, adj, l, act )
     local m, L, fac, grp, pr, todo, done, news, i, use, cl, d, tmp;
 
     fac := Collected( Factors( l ) );
@@ -105,13 +105,13 @@ LowIndexNormalsFaLayer := function( G, U, adj, l, act )
 
     # return computed groups without the original group
     return grp{[2..Length(grp)]};
-end;
+end );
 
 #############################################################################
 ##
 #F LowIndexNormalsBySeries( G, n, pcps )
 ##
-LowIndexNormalsBySeries := function( G, n, pcps )
+BindGlobal( "LowIndexNormalsBySeries", function( G, n, pcps )
     local U, grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
     # set up
@@ -161,7 +161,7 @@ LowIndexNormalsBySeries := function( G, n, pcps )
         Append( grps, new );
     od;
     return Filtered( grps, x -> x!.open = 1 );
-end;
+end );
 
 #############################################################################
 ##
@@ -184,7 +184,7 @@ end );
 ## nilpotent - by - abelian. Every polycyclic group has such a normal
 ## subgroup.
 ##
-## This is usually done more effectively by NilpotenByAbelianByFiniteSeries.
+## This is usually done more effectively by NilpotentByAbelianByFiniteSeries.
 ## We only use this function as alternative for special cases.
 ##
 InstallGlobalFunction( NilpotentByAbelianNormalSubgroup, function( G )

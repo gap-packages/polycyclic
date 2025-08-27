@@ -14,7 +14,7 @@
 ##
 #F AllSubspaces( dim, p ) . . . . . . . . . . . . list all subspaces of p^dim
 ##
-AllSubspaces := function( dim, p )
+BindGlobal( "AllSubspaces", function( dim, p )
     local idm, exp, i, t, e, j, f, c, k;
 
     # create all normed bases in p^dim
@@ -45,13 +45,13 @@ AllSubspaces := function( dim, p )
     od;
     Unbind( exp[Length(exp)] );
     return exp * One(GF(p));
-end;
+end );
 
 #############################################################################
 ##
 #F OnBasesCase( base, mat )
 ##
-OnBasesCase := function( base, mat )
+BindGlobal( "OnBasesCase", function( base, mat )
     local new;
     if Length(base) = 0 then return base; fi;
     new := base * mat;
@@ -61,13 +61,13 @@ OnBasesCase := function( base, mat )
         new := TriangulizedIntegerMat( new );
     fi;
     return new;
-end;
+end );
 
 #############################################################################
 ##
 #F InvariantSubspaces( C, d )
 ##
-InvariantSubspaces := function( C, d )
+BindGlobal( "InvariantSubspaces", function( C, d )
     local p, l, invs, modu;
 
     # set up
@@ -87,13 +87,13 @@ InvariantSubspaces := function( C, d )
         invs := Filtered( invs, x -> l - Length( x ) <= d );
     fi;
     return invs;
-end;
+end );
 
 #############################################################################
 ##
 #F OrbitsInvariantSubspaces( C, d )
 ##
-OrbitsInvariantSubspaces := function( C, d )
+BindGlobal( "OrbitsInvariantSubspaces", function( C, d )
     local invs, o, i, n, j;
     invs := InvariantSubspaces( C, d );
     if ForAny( C.smats, x -> x <> C.one ) then
@@ -112,7 +112,7 @@ OrbitsInvariantSubspaces := function( C, d )
     else
         return List( invs, x -> rec( repr := x, stab := C.super ) );
     fi;
-end;
+end );
 
 ##
 ## Now we deal with the free abelian case
@@ -122,20 +122,20 @@ end;
 ##
 #F InsertZeros( d, exp, n )
 ##
-InsertZeros := function( d, exp, n )
+BindGlobal( "InsertZeros", function( d, exp, n )
     local new, b;
     new := n * IdentityMat( d );
     for b in exp do
         new[PositionNonZero(b)] := b;
     od;
     return new;
-end;
+end );
 
 #############################################################################
 ##
 #F PcpsBySpaces( A, B, dim, p, bases )
 ##
-PcpsBySpaces := function( A, B, dim, p, bases )
+BindGlobal( "PcpsBySpaces", function( A, B, dim, p, bases )
     local tmp, base, new, b, i, C, gen, pcp;
     tmp := [];
     gen := Igs( B );
@@ -151,7 +151,7 @@ PcpsBySpaces := function( A, B, dim, p, bases )
         Add( tmp, pcp );
     od;
     return tmp;
-end;
+end );
 
 #############################################################################
 ##
@@ -160,7 +160,7 @@ end;
 ## The subgroups of the free abelian group of rank dim up to index l given
 ## as exponent vectors.
 ##
-AllSubgroupsAbelian := function( dim, l )
+BindGlobal( "AllSubgroupsAbelian", function( dim, l )
     local A, gens, fac, sub, i, p, r, sp, j, q, B, pcps, tmp, L, pcpL,
           pcpsS, C, grps, U, V, pcpS, new;
 
@@ -221,9 +221,9 @@ AllSubgroupsAbelian := function( dim, l )
     od;
     grps := List( grps, x -> InsertZeros( dim, x, l ) );
     return grps{[2..Length(grps)]};
-end;
+end );
 
-AllSubgroupsAbelian2 := function( dim, n )
+BindGlobal( "AllSubgroupsAbelian2", function( dim, n )
     local A, cl;
     A := AbelianPcpGroup( dim, List( [1..dim], x -> n ) );
     cl := FiniteSubgroupClasses( A );
@@ -232,5 +232,4 @@ AllSubgroupsAbelian2 := function( dim, n )
     cl := List( cl, x -> List( Cgs(x), Exponents ) );
     cl := List( cl, x -> InsertZeros( dim, x, n ) );
     return cl{[2..Length(cl)]};
-end;
-
+end );

@@ -75,7 +75,7 @@ end );
 ##
 #F InverseCohMapping( coh, base )
 ##
-InverseCohMapping := function( coh, base )
+BindGlobal( "InverseCohMapping", function( coh, base )
     local l, mat, new, dep, i;
 
     # for the empty space we do not need to do this
@@ -95,7 +95,7 @@ InverseCohMapping := function( coh, base )
 
     # return inverse
     return new^-1;
-end;
+end );
 
 #############################################################################
 ##
@@ -177,8 +177,7 @@ end );
 ##
 #F ComplementCR( C, c ) . . . . . . . . . . . . . . . .for c an affine vector
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-ComplementCR := function( A, c )
+BindGlobal( "ComplementCR", function( A, c )
     local pcpK, l, vec, K, all;
 
     # if A has no group, then we want the split extension
@@ -198,15 +197,15 @@ ComplementCR := function( A, c )
     K!.compgens := pcpK;
     K!.cocycle := vec;
     return K;
-end;
+end );
 
 #############################################################################
 ##
 #F ComplementByH1Element( A, coh, elm )
 ##
-ComplementByH1Element := function( A, coh, elm )
+BindGlobal( "ComplementByH1Element", function( A, coh, elm )
     local coc;
     coc := coh.FactorToCoc( coh, elm ) + coh.sol;
     return ComplementCR( A, coc );
-end;
+end );
 

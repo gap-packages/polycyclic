@@ -11,7 +11,7 @@
 ##
 ## All subgroup of index dividing n.
 ##
-SubgroupsFirstLayerByIndex := function( G, pcp, n )
+BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
     local m, p, l, d, idm, exp, i, t, j, f, c, denom, dep, ind, base, k, e;
 
     # set up
@@ -90,15 +90,15 @@ SubgroupsFirstLayerByIndex := function( G, pcp, n )
         fi;
     od;
     return Filtered( exp, x -> not IsBool(x) );
-end;
+end );
 
 #############################################################################
 ##
 #F MappedAction( gens, rec )
 ##
-MappedAction := function( gens, act )
+BindGlobal( "MappedAction", function( gens, act )
     return List(gens, x->MappedVector(ExponentsByPcp(act.pcp, x), act.mats));
-end;
+end );
 
 #############################################################################
 ##
@@ -108,7 +108,7 @@ end;
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by p^d.
 ##
-LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
+BindGlobal( "LowIndexSubgroupsEaLayer", function( cl, pcp, d, act )
     local p, l, fld, C, modu, invs, orbs, com, o, sub, inv, e, stab, indu,
           L, fac, new, i, tmp, t;
 
@@ -158,7 +158,7 @@ LowIndexSubgroupsEaLayer := function( cl, pcp, d, act )
         fi;
     od;
     return com;
-end;
+end );
 
 #############################################################################
 ##
@@ -168,7 +168,7 @@ end;
 ## subfactor corresponding to <pcp>. The index of the computed subgroups
 ## is limited by l.
 ##
-LowIndexSubgroupsFaLayer := function( clG, adj, l, act )
+BindGlobal( "LowIndexSubgroupsFaLayer", function( clG, adj, l, act )
     local fac, grp, pr, todo, done, news, i, use, cl, d, tmp;
 
     fac := Collected( Factors( l ) );
@@ -193,13 +193,13 @@ LowIndexSubgroupsFaLayer := function( clG, adj, l, act )
 
     # return computed groups without the original group
     return grp{[2..Length(grp)]};
-end;
+end );
 
 #############################################################################
 ##
 #F PowerPcpsByIndex( pcp, l )
 ##
-PowerPcpsByIndex := function( pcp, l )
+BindGlobal( "PowerPcpsByIndex", function( pcp, l )
     local fac, ser, s, B, pr, i, A;
 
     # loop over series trough A/B
@@ -221,13 +221,13 @@ PowerPcpsByIndex := function( pcp, l )
         od;
     od;
     return ser;
-end;
+end );
 
 #############################################################################
 ##
 #F LowIndexSubgroupsBySeries( G, n, pcps )
 ##
-LowIndexSubgroupsBySeries := function( G, n, pcps )
+BindGlobal( "LowIndexSubgroupsBySeries", function( G, n, pcps )
     local grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
     # set up
@@ -274,13 +274,13 @@ LowIndexSubgroupsBySeries := function( G, n, pcps )
         Append( grps, new );
     od;
     return Filtered( grps, x -> x.open = 1 );
-end;
+end );
 
 #############################################################################
 ##
 #F LowIndexSubgroupClasses( G, n )
 ##
-LowIndexSubgroupClassesPcpGroup := function( G, n )
+BindGlobal( "LowIndexSubgroupClassesPcpGroup", function( G, n )
     local efa, grps, i, tmp;
 
     # loop over series
@@ -294,7 +294,7 @@ LowIndexSubgroupClassesPcpGroup := function( G, n )
         grps[i] := tmp;
     od;
     return grps;
-end;
+end );
 
 InstallMethod( LowIndexSubgroupClassesOp, "for pcp groups",
                true, [IsPcpGroup, IsPosInt], 0,

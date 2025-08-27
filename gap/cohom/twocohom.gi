@@ -373,7 +373,7 @@ end );
 ##
 #F TwoCohomologyTrivialModule( G, d[, p] )
 ##
-TwoCohomologyTrivialModule := function(arg)
+BindGlobal( "TwoCohomologyTrivialModule", function(arg)
     local G, d, m, C, c;
 
     # catch arguments
@@ -390,13 +390,13 @@ TwoCohomologyTrivialModule := function(arg)
     c := TwoCohomologyCR(C);
 
     return c.factor.rels;
-end;
+end );
 
 #############################################################################
 ##
 #F CheckTrivialCohom( G )
 ##
-CheckTrivialCohom := function(G)
+BindGlobal( "CheckTrivialCohom", function(G)
     local mats, C, cb, cc, c, E;
 
     # compute cohom
@@ -421,5 +421,5 @@ CheckTrivialCohom := function(G)
     for c in cc do
         E := ExtensionCR( C, c );
     od;
-end;
+end );
 

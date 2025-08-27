@@ -59,7 +59,11 @@ Pcp-group with orders [ 2, 2, 3, 2, 2, 2, 2 ]
 
 #
 gap> # The problem with the previous example is/was that Igs(G)
-gap> # is set to a non-standard value:
+gap> # is set to a non-standard value. Experiment with that some more
+gap> G := Parent(G);; # does nothing in GAP >= 4.13 -- possibly due to https://github.com/gap-system/gap/pull/5631
+gap> igs := [ G.1, G.2*G.5, G.3*G.4*G.5^2, G.4*G.5, G.5 ];;
+gap> G := Subgroup(G, igs);;
+gap> SetIgs(G, igs);
 gap> Igs(G);
 [ g1, g2*g5, g3*g4*g5^2, g4*g5, g5 ]
 gap> # Unfortunately, it seems that a lot of code that
@@ -181,7 +185,7 @@ true
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> mats:=Representation(Collector(G));;
+gap> mats:=RepresentationForPcpCollector(Collector(G));;
 gap> e:=[8,-4,5,2,13,-17,9];;
 gap> f := e * MappedVector( [ -2, 2, 0, 5, 5 ], mats );
 [ 8, -4, 19, 34, 51, -17, 5 ]
@@ -206,6 +210,7 @@ gap> IsConjugate(H,H.1, H.2);
 false
 gap> IsConjugate(H,H.1, H.1^Random(H));
 true
+gap> DihedralPcpGroup( 2 );;  # used to run into an error
 
 #
 # bug in AddToIgs: in infinite pcp groups, we must also take inverses of
@@ -480,8 +485,42 @@ gap> HirschLength( Ker );
 5
 
 #
+# Fix a bug in ConjugacyElementsBySeries
+# <https://github.com/gap-packages/polycyclic/issues/58>
+#
+gap> G := ExamplesOfSomePcpGroups( 10 );;
+gap> g := G.1;;
+gap> h := g^(G.2*G.3);;
+gap> k := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( G ) );;
+gap> g^k = h;
+true
+
+#
+# Fix a bug causing Random to fail for the trivial group
+# <https://github.com/gap-packages/polycyclic/issues/59>
+#
+gap> Random( TrivialGroup( IsPcpGroup ) );
+id
+
+#
+# Fix a bug in IsNormal
+# <https://github.com/gap-packages/polycyclic/issues/46>
+#
+gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
+Pcp-group with orders [ 2, 2, 2, 2, 3 ]
+gap> S := SylowSubgroup( g, 2 );
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> T := S^g.5;
+Pcp-group with orders [ 2, 2, 2, 2 ]
+gap> IsNormal( S, T );
+false
+gap> IsNormal( T, S );
+false
+
+#
 # PreImages resp. PreImagesSet used to run into a "method not found"
 # error when the input set is not contained in the image of the map.
+# <https://github.com/gap-packages/polycyclic/issues/47>
 #
 gap> G := AbelianPcpGroup([0]);
 Pcp-group with orders [ 0 ]
@@ -493,4 +532,59 @@ gap> G = H;
 true
 
 #
-gap> STOP_TEST( "bugfix.tst", 10000000);
+# Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
+# for certain trivial maps, which used to raise an error in the example
+# below, because MappedVector was called with an empty list of generators.
+#
+gap> G:=TrivialGroup(IsPcpGroup);;
+gap> H:=AbelianGroup(IsPcpGroup,[0]);;
+gap> GroupHomomorphismByImages(G, H, [One(G)], [One(H)]);
+[ id ] -> [ id ]
+
+#
+# Fix a bug in the AbelianGroupCons method for IsPcpGroup.
+# (Generators of order 1 are in principle supported,
+# but we got an error when all generators had order 1,
+# and the group was corrupted when some but not all generators had order 1.)
+#
+gap> AbelianGroup( IsPcpGroup, [ 1 ] );
+Pcp-group with orders [  ]
+gap> g:= AbelianGroup( IsPcpGroup, [ 1, 2 ] );
+Pcp-group with orders [ 2 ]
+gap> List( GeneratorsOfGroup( g ), Order );
+[ 1, 2 ]
+gap> AbelianPcpGroup( 1 );
+Pcp-group with orders [ 0 ]
+gap> AbelianPcpGroup( [ 1 ] );
+Pcp-group with orders [  ]
+gap> AbelianPcpGroup( 1, [ 1 ] );
+Pcp-group with orders [  ]
+gap> AbelianPcpGroup( 2 );
+Pcp-group with orders [ 0, 0 ]
+gap> AbelianPcpGroup( [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3, 4 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2 ] );
+Pcp-group with orders [ 2, 0 ]
+
+#
+# Fix bug in FrattiniSubgroup
+# Reported by Heiko Dietrich (2024-02-19)
+#
+gap> G:=PcGroupToPcpGroup(SmallGroup(11025,6));;
+gap> F:=FrattiniSubgroup(G);;
+gap> Size(F);  # used to produce a group of order 49
+21
+
+#
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+[ <pc group of size 4 with 2 generators> ]
+
+#
+gap> STOP_TEST( "bugfix.tst" );

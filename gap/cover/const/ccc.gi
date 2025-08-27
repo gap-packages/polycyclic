@@ -2,7 +2,7 @@
 ##
 ## List iterated Schur covers of coclass r and rank d.
 ##
-SchurCoversByCoclass := function(ccpsfile, p,r,d)
+BindGlobal( "SchurCoversByCoclass", function(ccpsfile, p,r,d)
     local file, res, i, j, G, l, new, H, c, q;
 
     if not d in [2..r+1] then return fail; fi;
@@ -71,6 +71,6 @@ SchurCoversByCoclass := function(ccpsfile, p,r,d)
     AppendTo(file,"];\n");
     AddSet(availc[p],[r,d]);
     ReadCcFile(p,r,d);
-end;
+end );
 
 

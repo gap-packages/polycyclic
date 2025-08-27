@@ -7,7 +7,7 @@
 ##
 #F GeneratorsOfCentralizerOfPcp( gens, pcp )
 ##
-GeneratorsOfCentralizerOfPcp := function( gens, pcp )
+BindGlobal( "GeneratorsOfCentralizerOfPcp", function( gens, pcp )
     local idm, v, mats;
     idm := IdentityMat( Length( pcp ), GF( RelativeOrdersOfPcp(pcp)[1] ) );
     for v in idm do
@@ -15,7 +15,7 @@ GeneratorsOfCentralizerOfPcp := function( gens, pcp )
         gens := PcpOrbitStabilizer( v, gens, mats, OnRight ).stab;
     od;
     return gens;
-end;
+end );
 
 ############################################################################
 ##

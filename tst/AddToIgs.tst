@@ -120,4 +120,23 @@ gap> Igs(gen);
   g24^5, g25^5, g26^5 ]
 
 #
+# Fix a bug in AddToIgs
+# See https://github.com/gap-packages/polycyclic/issues/66
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
+gap> gensG := [ G.1, G.4 ];;
+gap> G = Subgroup( G, gensG );
+true
+
+# second example for issue #66
+gap> G := ExamplesOfSomePcpGroups( 10 );;
+gap> S := Subgroup( G, [ G.1, G.2, G.4 ] );;
+gap> Igs(S);
+[ g1, g2, g3^3, g4 ]
+gap> G.3^3 in S;
+true
+gap> G.2^-1*G.4*G.2*G.4^-2;
+g3^3
+
+#
 gap> STOP_TEST( "AddToIgs.tst", 1);

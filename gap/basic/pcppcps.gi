@@ -14,7 +14,7 @@
 ##
 #F UpdateCounter( ind, gens, c )  . . . . . . . . . . . . small help function
 ##
-UpdateCounter := function( ind, gens, c )
+BindGlobal( "UpdateCounter", function( ind, gens, c )
     local i, g;
 
     # first reset c by ind
@@ -39,24 +39,24 @@ UpdateCounter := function( ind, gens, c )
 
     # return value for counter
     return i + 1;
-end;
+end );
 
 #############################################################################
 ##
 #F TailLimit
 ##
-TailLimit := function( ind, c )
+BindGlobal( "TailLimit", function( ind, c )
     local k, i;
     k := List(ind, x -> not IsBool(x) and LeadingExponent(x)=1);
     i := c-1; while i > 0 and k[i]=true do i := i-1; od; i := i+1;
     return i;
-end;
+end );
 
 #############################################################################
 ##
 #F ReduceExpo
 ##
-ReduceExpo := function( ind, gen, rel )
+BindGlobal( "ReduceExpo", function( ind, gen, rel )
     local i, j, a, b, q, f, k;
 
     for i in [1..Length(ind)] do
@@ -80,13 +80,13 @@ ReduceExpo := function( ind, gen, rel )
             od;
         fi;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #F CheckIgs
 ##
-CheckIgs := function( igs, gen )
+BindGlobal( "CheckIgs", function( igs, gen )
     local i, g, e, j;
     for i in [1..Length(igs)] do
         g := igs[i]^RelativeOrderPcp(igs[i]);
@@ -103,7 +103,7 @@ CheckIgs := function( igs, gen )
         if e = fail then return [i]; fi;
     od;
     return true;
-end;
+end );
 
 #############################################################################
 ##
@@ -193,7 +193,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 k := g ^ RelativeOrderPcp(g);
                 if Depth(k) < c then Add(todo, k); fi;
             fi;
-            for j in [1..c-1] do
+            for j in [1..n] do
                 if not IsBool(ind[j]) then
                     k := Comm(g, ind[j]);
                     if Depth(k) < c then Add(todo, k); fi;
@@ -221,7 +221,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     return ind;
 end);
 
-AddToIgs_Old := function(igs, gens)
+BindGlobal( "AddToIgs_Old", function(igs, gens)
     local coll, rels, todo, n, ind, g, d, h, k, a, b, e, f, c, i, l;
 
     if Length(gens) = 0 then return igs; fi;
@@ -298,7 +298,7 @@ AddToIgs_Old := function(igs, gens)
 
     # return resulting list
     return Filtered(ind, x -> not IsBool(x));
-end;
+end );
 
 #############################################################################
 ##
@@ -359,8 +359,7 @@ end );
 ## factor. Typically, <pcs1> is induced wrt to a pcp and <pcs2> is the
 ## denominator of this pcp.
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-AddIgsToIgs := function( pcs1, pcs2 )
+BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     local coll, rels, n, ind, todo, g, c, h, eg, eh, e, d;
 
     if Length( pcs1 ) = 0 then
@@ -421,7 +420,7 @@ AddIgsToIgs := function( pcs1, pcs2 )
         od;
     od;
     return Filtered( ind, x -> not IsBool( x ) );
-end;
+end );
 
 #############################################################################
 ##
@@ -430,7 +429,7 @@ end;
 ## igsH and igsN are igs'ses for H and N. We assume N <= H and N normal
 ## in H. The function computes information for the factor H/N.
 ##
-ModuloInfo := function( igsH, igsN )
+BindGlobal( "ModuloInfo", function( igsH, igsN )
     local depN, gens, rels, h, r, j, l, e;
 
     depN := List( igsN, Depth );
@@ -462,13 +461,13 @@ ModuloInfo := function( igsH, igsN )
     od;
 
     return rec( gens := gens, rels := rels );
-end;
+end );
 
 #############################################################################
 ##
 #F CyclicDecomposition( pcp )
 ##
-CyclicDecomposition := function( pcp )
+BindGlobal( "CyclicDecomposition", function( pcp )
     local  rels, n, mat, i, row, new, cyc, ord, chg, inv, g, tmp, imgs, prei;
 
     # catch a trivial case
@@ -522,7 +521,7 @@ CyclicDecomposition := function( pcp )
                 rels := ord,
                 chg  := chg,
                 inv  := TransposedMat( inv ) );
-end;
+end );
 
 #############################################################################
 ##
@@ -533,7 +532,7 @@ end;
 ##           2.) pcp!.tail is an integer, then the computation of exponents
 ##               stops at pcp!.tail-1;
 ##
-AddTailInfo := function( pcp )
+BindGlobal( "AddTailInfo", function( pcp )
     local gens, sub, n, deps, depg, i, d, mult;
 
     gens := pcp!.gens;
@@ -578,7 +577,7 @@ AddTailInfo := function( pcp )
     # if we arrive here, then we may read off exponents
     pcp!.tail := depg;
     if ForAny( mult, x -> x <> 1 ) then pcp!.mult := mult; fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -594,6 +593,9 @@ InstallGlobalFunction( Pcp, function( arg )
 
     # catch arguments U and N
     U := arg[1];
+    if not IsPcpGroup(U) then
+        Error("<U> must be a pcp group");
+    fi;
     if Length( arg ) = 1 or IsString( arg[2] ) then
         denom := [];
     elif Length( arg ) > 1 and IsGroup( arg[2] ) then
@@ -746,7 +748,7 @@ InstallMethod( ViewObj, [ IsPcp ], SUM_FLAGS, PrintObj );
 ##
 #F  small helper
 ##
-WordByExps := function( exp )
+BindGlobal( "WordByExps@", function( exp )
     local w, i;
     w := [];
     for i in [1..Length(exp)] do
@@ -756,15 +758,15 @@ WordByExps := function( exp )
         fi;
     od;
     return w;
-end;
+end );
 
 #############################################################################
 ##
 #M a small helper
 ##
-PrintWord := function(gen,exp)
+BindGlobal( "PrintWord", function(gen,exp)
     local w, i, g;
-    w := WordByExps(exp);
+    w := WordByExps@(exp);
     if Length(w) = 0 then
         Print("id ");
     else
@@ -781,13 +783,13 @@ PrintWord := function(gen,exp)
         od;
     fi;
     Print("\n");
-end;
+end );
 
 #############################################################################
 ##
 #M Print pcp presentation
 ##
-PrintPresentationByPcp := function( pcp, flag )
+BindGlobal( "PrintPresentationByPcp", function( pcp, flag )
     local gens, rels, i, r, g, j, h, c;
 
     gens := GeneratorsOfPcp( pcp );
@@ -821,14 +823,13 @@ PrintPresentationByPcp := function( pcp, flag )
             fi;
         od;
     od;
-end;
+end );
 
 #############################################################################
 ##
 #M Print pcp presentation
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-PrintPcpPresentation := function( arg )
+BindGlobal( "PrintPcpPresentation", function( arg )
     local G, flag;
     G := arg[1];
     if Length(arg) = 2 then
@@ -841,13 +842,13 @@ PrintPcpPresentation := function( arg )
     else
         PrintPresentationByPcp( G, flag );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #M GapInputPcpGroup( file, pcp )
 ##
-GapInputPcpGroup := function( file, pcp )
+BindGlobal( "GapInputPcpGroup", function( file, pcp )
     local gens, rels, i, j, obj;
 
     gens := GeneratorsOfPcp( pcp );
@@ -855,7 +856,7 @@ GapInputPcpGroup := function( file, pcp )
     PrintTo(file, "coll := FromTheLeftCollector( ", Length(gens)," );\n");
     for i in [1..Length(rels)] do
         if rels[i] > 0 then
-            obj := WordByExps(ExponentsByPcp( pcp, gens[i]^rels[i] ));
+            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^rels[i] ));
             AppendTo(file, "SetRelativeOrder( coll, ",i,", ",rels[i]," );\n");
             AppendTo(file, "SetPower( coll, ",i,", ",obj," );\n");
         fi;
@@ -863,13 +864,13 @@ GapInputPcpGroup := function( file, pcp )
 
     for i in [1..Length(rels)] do
         for j in [1..i-1] do
-            obj := WordByExps(ExponentsByPcp( pcp, gens[i]^gens[j] ));
+            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^gens[j] ));
             if obj <> [ i, 1 ] then
                 AppendTo(file,
                         "SetConjugate( coll, ",i,", ",j,", ",obj," );\n");
             fi;
 
-            obj := WordByExps(ExponentsByPcp( pcp, gens[i]^(gens[j]^-1) ));
+            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^(gens[j]^-1) ));
             if obj <> [ i, 1 ] then
                 AppendTo(file,
                         "SetConjugate( coll, ",i,", ",-j,", ",obj," );\n");
@@ -883,14 +884,13 @@ GapInputPcpGroup := function( file, pcp )
        IsNilpotentGroup( GroupOfPcp(pcp) ) then
         AppendTo(file, "SetIsNilpotentGroup( G, true );\n" );
     fi;
-end;
+end );
 
 #############################################################################
 ##
 #M PcpGroupByPcp( pcp )  . . . . . . . . . . . . . . . . . create a new group
 ##
-# FIXME: This function is documented and should be turned into a GlobalFunction
-PcpGroupByPcp := function( pcp )
+BindGlobal( "PcpGroupByPcp", function( pcp )
     local g, r, n, coll, i, j, h, e, w, G;
 
     # write down a presentation
@@ -923,9 +923,9 @@ PcpGroupByPcp := function( pcp )
     UpdatePolycyclicCollector( coll );
     G := PcpGroupByCollectorNC( coll );
     return G;
-end;
+end );
 
-DisplayPcpGroup :=  function( G )
+BindGlobal( "DisplayPcpGroup", function( G )
     local   collector,  gens,  rods,  n,  g,  h,  conj;
 
     collector := Collector( G );
@@ -957,5 +957,5 @@ DisplayPcpGroup :=  function( G )
     od;
     Print( ">\n" );
 
-end;
+end );
 

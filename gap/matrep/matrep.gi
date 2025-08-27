@@ -3,8 +3,6 @@
 #W  matrep.gi                  Polycyclic                       Werner Nickel
 ##
 
-Representation := "defined later";
-
 InstallGlobalFunction( "IsMatrixRepresentation",
 function( G, matrices )
     local   coll,  conjugates,  d,  I,  i,  j,  conj,  rhs,  k;
@@ -36,39 +34,6 @@ function( G, matrices )
     return true;
 end );
 
-InstallMethod( UnitriangularMatrixRepresentation,
-        "for torsion free fin. gen. nilpotent pcp-groups",
-        true,
-        [ IsPcpGroup and IsNilpotentGroup ],
-        0,
-function( tgroup )
-    local  coll,  mats,  mgroup,  phi;
-
-    ## Does the group have power relations?
-    if not IsTorsionFree( tgroup ) then
-        Error("there are power relations in the collector of the pcp-group");
-        ## Here we could compute the upper central series and construct an
-        ## isomorphism to a group defined along the upper central series.
-    fi;
-
-    coll := Collector( tgroup );
-    mats := LowerUnitriangularForm( Representation( coll ) );
-
-    mgroup := Group( mats, mats[1]^0 );
-    UseIsomorphismRelation( tgroup, mgroup );
-
-    phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
-                   GeneratorsOfGroup(tgroup),
-                   GeneratorsOfGroup(mgroup) );
-    SetIsBijective( phi, true );
-    SetIsHomomorphismIntoMatrixGroup( phi, true );
-    # FIXME: IsHomomorphismIntoMatrixGroup should perhaps be
-    # a plain filter not a property. Especially since no methods
-    # for it are installed.
-
-    return phi;
-end );
-
 InstallMethod( ViewObj,
         "for homomorphisms into matrix groups",
         true,
@@ -88,7 +53,7 @@ end );
 
 #### Willem's code ##########################################################
 ##
-ExtendRep:=function( col, new, mats)
+BindGlobal( "ExtendRep", function( col, new, mats)
 
 
     # Here `col' is a from-the-left collector. Let G be the group defined
@@ -653,10 +618,10 @@ ExtendRep:=function( col, new, mats)
 
     od;  # end of big loop `while true ..etc'
 
-end;
+end );
 
 
-Representation:= function( col )
+BindGlobal( "RepresentationForPcpCollector", function( col )
 
   local n,m,mats,i;
 
@@ -668,9 +633,41 @@ Representation:= function( col )
     mats:= ExtendRep( col, n-i+1, mats );
   od;
   return mats;
-end;
+end );
 
 ##
 ##
 #### End of Willem's code ###################################################
 
+InstallMethod( UnitriangularMatrixRepresentation,
+        "for torsion free fin. gen. nilpotent pcp-groups",
+        true,
+        [ IsPcpGroup and IsNilpotentGroup ],
+        0,
+function( tgroup )
+    local  coll,  mats,  mgroup,  phi;
+
+    ## Does the group have power relations?
+    if not IsTorsionFree( tgroup ) then
+        Error("there are power relations in the collector of the pcp-group");
+        ## Here we could compute the upper central series and construct an
+        ## isomorphism to a group defined along the upper central series.
+    fi;
+
+    coll := Collector( tgroup );
+    mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
+
+    mgroup := Group( mats, mats[1]^0 );
+    UseIsomorphismRelation( tgroup, mgroup );
+
+    phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
+                   GeneratorsOfGroup(tgroup),
+                   GeneratorsOfGroup(mgroup) );
+    SetIsBijective( phi, true );
+    SetIsHomomorphismIntoMatrixGroup( phi, true );
+    # FIXME: IsHomomorphismIntoMatrixGroup should perhaps be
+    # a plain filter not a property. Especially since no methods
+    # for it are installed.
+
+    return phi;
+end );

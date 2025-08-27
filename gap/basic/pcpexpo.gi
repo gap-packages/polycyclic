@@ -8,7 +8,7 @@
 #F ReducingCoefficient( <g>, <h> ) . . . . . . . . .f with g * h^-f = 1 mod r
 #F ReducingCoefficient( <a>, <b>, <r> ) . . . . . . . . . . . . . . a/b mod r
 ##
-ReducingCoefficient := function( arg )
+BindGlobal( "ReducingCoefficient", function( arg )
     local e, f, a, b, r, n;
 
     if Length( arg ) = 2 then
@@ -48,7 +48,7 @@ ReducingCoefficient := function( arg )
         if not IsInt(f) then return fail; fi;
         return f * e.coeff2 mod r;
     fi;
-end;
+end );
 
 #############################################################################
 ##
@@ -71,7 +71,7 @@ end );
 
 #############################################################################
 ##
-#F ExponentsByIgs( igs, g ) . . . . . . . . . .  exponents of g wrt to an igs
+#F ExponentsByIgs( pcs, g ) . . . . . . . . . .  exponents of g wrt to an igs
 ##
 ## Note that this functions returns fail, if g is not in <pcs>.
 ##
@@ -101,13 +101,13 @@ end );
 ##
 #F ReduceByRels( rels, exp )
 ##
-ReduceByRels := function( rels, exp )
+BindGlobal( "ReduceByRels", function( rels, exp )
     local i;
     for i in [1..Length(exp)] do
         if rels[i] > 0 then exp[i] := exp[i] mod rels[i]; fi;
     od;
     return exp;
-end;
+end );
 
 #############################################################################
 ##
