@@ -586,7 +586,6 @@ true
 # Fixed a bug in stabilizer integral action
 # https://github.com/gap-packages/polycyclic/issues/71
 #
-
 gap> G := ExamplesOfSomePcpGroups( 10 );;
 gap> g := G.1^2*G.3^3*G.4^-3;;
 gap> h := g^(G.1*G.2^2);;
@@ -600,12 +599,19 @@ true
 # Fixed a bug in IsConjugate for a finte pcp-group
 # https://github.com/gap-packages/polycyclic/issues/70
 #
-
 gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
 gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
 gap> g := G.2*G.4;; h := g^(G.1*G.3);;
 gap> IsConjugate( G, g, h );
 true
+
+#
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+  Schur Mult has type [  ]
+[ <pc group of size 4 with 2 generators> ]
 
 #
 gap> STOP_TEST( "bugfix.tst" );
