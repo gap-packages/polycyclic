@@ -133,19 +133,17 @@ end );
 ##
 InstallMethod( FrattiniSubgroup, "for pcp groups", [IsPcpGroup],
 function( G )
-    local H, K, F, f, h;
+    local iso, K, F;
 
     if not IsFinite(G) then
         Error("Sorry - no algorithm available");
     fi;
 
-    H := RefinedPcpGroup(G);
-    K := PcpGroupToPcGroup(H);
+    # HACK: Until we write a proper native method, use that for pc groups
+    iso := IsomorphismPcGroup(G);
+    K := Image(iso);
     F := FrattiniSubgroup(K);
-    f := List( GeneratorsOfGroup(F), x ->
-         MappedVector( ExponentsOfPcElement(Pcgs(K), x), Igs(H) ) );
-    h := List( f, x -> PreImagesRepresentative(H!.bijection,x));
-    return Subgroup( G, h );
+    return PreImagesSet(iso, F);
 end );
 
 #############################################################################

@@ -1,22 +1,46 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.17dev (2024-MM-DD)
+  - Add a method `SemidirectProduct( N, alpha, G)` where `N` and `G` are both PcpGroups
+    (contributed by Sam Tertooy)
+  - Enhanced `AbelianPcpGroup` and `AbelianGroupCons` to support `infinity` in
+    the list of orders (implemented by Sam Tertooy)
+  - Fix correctness bugs, where wrong results could be returned, in the following functions:
+    - `FrattiniSubgroup` (reported by Heiko Dietrich)
+    - `IsConjugate` (reported and fixed by Sam Tertooy)
+    - `IsNormal` sometimes returned `true` even if the inputs did not normalise each other
+  - Fixed a bug in `AbelianGroup` resp. `AbelianGroupCons` method for `IsPcpGroup`
+    and also in `AbelianPcpGroup`, `DihedralPcpGroup`, which resulted in either
+    an unexpected break loop or in a corrupted group when used to create a group
+    with some but not all generators of order 1
+  - Fix further bugs where an error was raised unexpectedly:
+    - `IsSingleValued` (and possibly `CoKernelOfMultiplicativeGeneralMapping`)
+      for certain trivial maps
+    - `Random` for trivial groups (reported and fixed by Sam Tertooy)
+  - Fix `SchurCovers` to always return list, even if only one cover is found
+    (fix by Sam Tertooy)
+  - Made most global functions and variables read-only to catch code accidentally
+    overriding them
+  - Removed some unused code
+  - Various janitorial changes
+
 2.16 (2020-07-25)
-  - Fix a bug in `NormalIntersection` which could lead to wrong results;
+  - Fixed a bug in `NormalIntersection` which could lead to wrong results;
     this also affected other operations, such `Core`, `Intersection`
-  - Fix `PreImagesRepresentative` for trivial homomorphisms (it used to return
+  - Fixed `PreImagesRepresentative` for trivial homomorphisms (it used to return
     the identity fo the source as preimage for all elements in the range,
     instead of returning fail for all but the identity of the range)
-  - Fix some bugs in `AddToIgs` and `AddTailInfo`
+  - Fixed some bugs in `AddToIgs` and `AddTailInfo`
   - Some janitorial changes
 
 2.15.1 (2019-10-03)
 
-  - Fix a regression that could lead to an infinite loop in IsomorphismPcGroup
+  - Fixed a regression that could lead to an infinite loop in IsomorphismPcGroup
 
 2.15 (2019-09-27)
 
   - Added license information to package metadata
-  - Add support for random sources to Random method for pcp-groups
+  - Added support for random sources to Random method for pcp-groups
   - Documented IsPcpGroup and IsPcpElementCollection
   - Increased rank for IsomorphismPcGroup and IsomorphismFpGroup methods for
     pcp-groups, to ensure they are still used when all GAP packages are loaded

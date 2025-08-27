@@ -45,16 +45,17 @@ Persons          := [
        FirstNames    := "Max",
        IsAuthor      := true,
        IsMaintainer  := true,
-       Email         := "horn@mathematik.uni-kl.de",
+       Email         := "mhorn@rptu.de",
        WWWHome       := "https://www.quendi.de/math",
+       GitHubUsername := "fingolfin",
        PostalAddress := Concatenation(
                           "Fachbereich Mathematik\n",
-                          "TU Kaiserslautern\n",
+                          "RPTU Kaiserslautern-Landau\n",
                           "Gottlieb-Daimler-Straße 48\n",
                           "67663 Kaiserslautern\n",
                           "Germany" ),
        Place         := "Kaiserslautern, Germany",
-       Institution   := "TU Kaiserslautern"
+       Institution   := "RPTU Kaiserslautern-Landau"
      )
     ],
 
@@ -90,7 +91,7 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.9",
+  GAP                    := ">= 4.10",
   NeededOtherPackages    := [["alnuth", "3.0"],
                              ["autpgrp","1.6"]],
   SuggestedOtherPackages := [ ],
@@ -130,18 +131,18 @@ Keywords := [
 
 AutoDoc := rec(
     TitlePage := rec(
-        Copyright := "<Index>License</Index>\
-&copyright; 2003-2018 by Bettina Eick, Max Horn and Werner Nickel<P/>\
-The &Polycyclic; package is free software;\
-you can redistribute it and/or modify it under the terms of the\
-<URL Text=\"GNU General Public License\">http://www.fsf.org/licenses/gpl.html</URL>\
-as published by the Free Software Foundation; either version 2 of the License,\
-or (at your option) any later version.",
+        Copyright := """<Index>License</Index>
+&copyright; 2003-2018 by Bettina Eick, Max Horn and Werner Nickel<P/>
+The &Polycyclic; package is free software;
+you can redistribute it and/or modify it under the terms of the
+<URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL>
+as published by the Free Software Foundation; either version 2 of the License,
+or (at your option) any later version.""",
 
-        Acknowledgements := "\
-We appreciate very much all past and future comments, suggestions and\
-contributions to this package and its documentation provided by &GAP;\
-users and developers.",
+        Acknowledgements := """
+We appreciate very much all past and future comments, suggestions and
+contributions to this package and its documentation provided by &GAP;
+users and developers.""",
     )
 ),
 

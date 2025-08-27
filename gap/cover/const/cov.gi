@@ -1,7 +1,7 @@
 ##
 ## Covers
 ##
-SchurCovers := function(G)
+BindGlobal( "SchurCovers", function(G)
     local p, GG, K, R, M, D, Z, k, H, C, T, P, e, O, bij, f, t, m, A, c,
           l, n, i;
 
@@ -24,10 +24,10 @@ SchurCovers := function(G)
     M := GG!.mult;
 
     #  info
-    Print("  Schur Mult has type ",AbelianInvariants(M),"\n");
+    Info(InfoPcpGrp, 2, "  Schur Mult has type ",AbelianInvariants(M));
 
     # catch a trival case
-    if GG!.mord = 1 then return G; fi;
+    if GG!.mord = 1 then return [ G ]; fi;
 
     # determine Z = Z(K) cap RK'
     D := ProductPcpGroups(K, R, DerivedSubgroup(K));
@@ -64,7 +64,7 @@ SchurCovers := function(G)
     f := Pcp(C,T); t := Pcp(T); m := Pcp(M);
 
     # info
-    Print("  Schur Mult new type ",AbelianInvariants(T),"\n");
+    Info(InfoPcpGrp, 2, "  Schur Mult new type ",AbelianInvariants(T));
 
     # the acting automorphisms
     A := AutomorphismActionCover( H, C );
@@ -84,5 +84,5 @@ SchurCovers := function(G)
     fi;
 
     return c;
-end;
+end );
 

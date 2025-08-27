@@ -2,7 +2,7 @@ WIDTH := 25;
 DEPTH := 40;
 SSIZE := [1000, 700];
 
-PrintScale := function( Sheet, p, s, r, l )
+BindGlobal( "PrintScale", function( Sheet, p, s, r, l )
     local y, i, t;
 
     # the top line
@@ -17,17 +17,17 @@ PrintScale := function( Sheet, p, s, r, l )
         Text( Sheet, FONTS.normal, 20, y, t );
         #Text( Sheet, FONTS.normal, 60, y, String(i) );
     od;
-end;
+end );
 
-StringIt := function(t)
+BindGlobal( "StringIt", function(t)
     if IsString(t) then return t; fi;
     if IsInt(t) then return String(t); fi;
     if IsList(t) then
        return Concatenation(List(t, x->Concatenation("-",String(x))));
     fi;
-end;
+end );
 
-PrintVertex := function( Sheet, cl, nr, tx, pa, ty )
+BindGlobal( "PrintVertex", function( Sheet, cl, nr, tx, pa, ty )
     local x, y;
 
     # set up x and y values
@@ -55,16 +55,16 @@ PrintVertex := function( Sheet, cl, nr, tx, pa, ty )
 
     # return place
     return [x, y];
-end;
+end );
 
-CoclassPGroup := function(G)
+BindGlobal( "CoclassPGroup", function(G)
     local n,c;
     n := Length(Factors(Size(G)));
     c := Length(LowerCentralSeriesOfGroup(G))-1;
     return n-c;
-end;
+end );
 
-DrawCoverTree := function( G, r )
+BindGlobal( "DrawCoverTree", function( G, r )
     local Title, Sheet, grp, res, nex, des, sub, p, i, j, c, m, d, g, v, H;
 
     # set up graphic sheet
@@ -153,9 +153,9 @@ DrawCoverTree := function( G, r )
         # reset for next level
         grp := nex;
     until Length(grp)=0;
-end;
+end );
 
-DrawSubtree := function( Sheet, root, v, tree )
+BindGlobal( "DrawSubtree", function( Sheet, root, v, tree )
     local  x, y, w, j;
 
     # get x and y
@@ -192,9 +192,9 @@ DrawSubtree := function( Sheet, root, v, tree )
 
     # return maximal x-value
     return w;
-end;
+end );
 
-DrawRootedTree := function( grps )
+BindGlobal( "DrawRootedTree", function( grps )
     local Sheet, v, d, j;
 
     Sheet := GraphicSheet( "Tree", 1000, 700 );
@@ -215,9 +215,9 @@ DrawRootedTree := function( grps )
         fi;
     od;
 
-end;
+end );
 
-CollectedTree := function(tree)
+BindGlobal( "CollectedTree", function(tree)
     local i, j, des;
 
     Print("collect tree ",tree,"\n");
@@ -244,9 +244,9 @@ CollectedTree := function(tree)
     od;
 
     return tree;
-end;
+end );
 
-ConstCoverTree := function( G, r )
+BindGlobal( "ConstCoverTree", function( G, r )
     local p, o, grps, t, H, c, m, d, new, des, i, j;
 
     # set up
@@ -309,6 +309,6 @@ ConstCoverTree := function( G, r )
 
     # draw tree
     DrawRootedTree( grps );
-end;
+end );
 
 

@@ -181,19 +181,25 @@ end );
 ##
 #F  ImageOfNHLB( hom )
 ##
-ImageOfNHLB := function( hom ) return hom.cyc.base; end;
+BindGlobal( "ImageOfNHLB", function( hom )
+    return hom.cyc.base;
+end );
 
 #############################################################################
 ##
 #F  KernelOfNHLB( hom )
 ##
-KernelOfNHLB := function( hom ) return hom.fac.kern; end;
+BindGlobal( "KernelOfNHLB", function( hom )
+    return hom.fac.kern;
+end );
 
 #############################################################################
 ##
 #F  PreimagesBasisOfNHLB( hom )
 ##
-PreimagesBasisOfNHLB := function( hom ) return hom.cyc.gens; end;
+BindGlobal( "PreimagesBasisOfNHLB", function( hom )
+    return hom.cyc.gens;
+end );
 
 #############################################################################
 ##
