@@ -566,25 +566,18 @@ gap> Size(F);  # used to produce a group of order 49
 21
 
 #
-# Fix bug in AddToIgs
-# https://github.com/gap-packages/polycyclic/issues/66
+# Fixed a bug in IsConjugate for a finite pcp-group
+# <https://github.com/gap-packages/polycyclic/issues/70>
 #
-gap> H := SmallGroup( 36, 9 );;
-gap> gensH := [ H.1, H.4 ];;
-gap> H = Subgroup( H, gensH );
-true
-gap> iso := IsomorphismPcpGroup( H );;
-gap> G := Range( iso );;
-gap> gensG := List( gensH, h -> h^iso );;
-gap> S := Subgroup( G, gensG );;
-gap> Igs( S );
-[ g1, g2, g3*g4^2, g4 ]
-gap> G = S;
+gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
+gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
+gap> g := G.2*G.4;; h := g^(G.1*G.3);;
+gap> IsConjugate( G, g, h );
 true
 
 #
 # Fixed a bug in stabilizer integral action
-# https://github.com/gap-packages/polycyclic/issues/71
+# <https://github.com/gap-packages/polycyclic/issues/71>
 #
 gap> G := ExamplesOfSomePcpGroups( 10 );;
 gap> g := G.1^2*G.3^3*G.4^-3;;
@@ -596,18 +589,8 @@ gap> g^k = h;
 true
 
 #
-# Fixed a bug in IsConjugate for a finte pcp-group
-# https://github.com/gap-packages/polycyclic/issues/70
-#
-gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
-gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
-gap> g := G.2*G.4;; h := g^(G.1*G.3);;
-gap> IsConjugate( G, g, h );
-true
-
-#
 # Fixed a bug in OrbitIntegralAction
-# This fix bug has a temporary soltion by commenting the code in
+# This fix bug has a temporary solution by commenting the code in
 # gap/action/orbstab.gi lines 592-594
 #
 gap> ftl := FromTheLeftCollector( 2 );;

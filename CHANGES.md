@@ -7,9 +7,11 @@ This file describes changes in the GAP package 'polycyclic'.
     the list of orders (implemented by Sam Tertooy)
   - Fix correctness bugs, where wrong results could be returned, in the following functions:
     - `AddToIgs`
+    - `ConjugacyElementsBySeries`
     - `FrattiniSubgroup` (reported by Heiko Dietrich)
     - `IsConjugate` (reported and fixed by Sam Tertooy)
     - `IsNormal` sometimes returned `true` even if the inputs did not normalise each other
+    - `OrbitIntegralAction`
     - `Subgroup` -- the resulting group would have an invalid Pcp and e.g. membership tests could fail
   - Fixed a bug in `AbelianGroup` resp. `AbelianGroupCons` method for `IsPcpGroup`
     and also in `AbelianPcpGroup`, `DihedralPcpGroup`, which resulted in either
@@ -21,8 +23,6 @@ This file describes changes in the GAP package 'polycyclic'.
     - `Random` for trivial groups (reported and fixed by Sam Tertooy)
   - Fix `SchurCovers` to always return list, even if only one cover is found
     (fix by Sam Tertooy)
-  - Fix a bug in `AddIgsToIgs`.
-  - Fix several bugs in `ConjugacyElementsBySeries` and in consequence some open issues in `IsConjugate` are solved. 
   - Made most global functions and variables read-only to catch code accidentally
     overriding them
   - Removed some unused code

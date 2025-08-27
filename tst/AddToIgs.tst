@@ -139,4 +139,20 @@ gap> G.2^-1*G.4*G.2*G.4^-2;
 g3^3
 
 #
+# third example for issue #66
+#
+gap> H := SmallGroup( 36, 9 );;
+gap> gensH := [ H.1, H.4 ];;
+gap> H = Subgroup( H, gensH );
+true
+gap> iso := IsomorphismPcpGroup( H );;
+gap> G := Range( iso );;
+gap> gensG := List( gensH, h -> h^iso );;
+gap> S := Subgroup( G, gensG );;
+gap> Igs( S );
+[ g1, g2, g3*g4^2, g4 ]
+gap> G = S;
+true
+
+#
 gap> STOP_TEST( "AddToIgs.tst", 1);
