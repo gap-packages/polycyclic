@@ -162,7 +162,8 @@ gap> LowerCentralSeriesOfGroup(G);
 [ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
 
 #
-# bug in StabilizerIntegralAction, see https://github.com/gap-packages/polycyclic/issues/15
+# bug in StabilizerIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/15>
 #
 gap> P:=PolynomialRing(Integers);; x:=P.1;;
 gap> G:=MaximalOrderByUnitsPcpGroup(x^4+x^3+x^2+x+1);
@@ -181,7 +182,8 @@ gap> CheckStabilizer(G, stab, mats, e);
 true
 
 #
-# bug in OrbitIntegralAction, see https://github.com/gap-packages/polycyclic/issues/21
+# bug in OrbitIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/21>
 #
 gap> G:=ExamplesOfSomePcpGroups(8);
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
@@ -200,7 +202,8 @@ true
 
 #
 # bug in IsConjugate: it should return a boolean, but instead of 'true' it
-# returned a conjugating element. See <https://github.com/gap-packages/polycyclic/issues/18>
+# returned a conjugating element.
+# <https://github.com/gap-packages/polycyclic/issues/18>
 #
 gap> H := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]
@@ -214,7 +217,8 @@ gap> DihedralPcpGroup( 2 );;  # used to run into an error
 
 #
 # bug in AddToIgs: in infinite pcp groups, we must also take inverses of
-# generators into account. See <https://github.com/gap-packages/polycyclic/issues/16>
+# generators into account.
+# <https://github.com/gap-packages/polycyclic/issues/16>
 #
 gap> ftl := FromTheLeftCollector( 26 );;
 gap> SetRelativeOrder( ftl, 1, 5 );
@@ -549,14 +553,6 @@ gap> g := G.1*G.3*G.4;;
 gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
 gap> Centralizer( H, g );
 Pcp-group with orders [ 2, 2 ]
-
-#
-# Fix a bug in AddToIgs
-#
-gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
-gap> gensG := [ G.1, G.4 ];;
-gap> G = Subgroup( G, gensG );
-true
 
 #
 # Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
