@@ -71,7 +71,7 @@ end );
 
 #############################################################################
 ##
-#F ExponentsByIgs( igs, g ) . . . . . . . . . .  exponents of g wrt to an igs
+#F ExponentsByIgs( pcs, g ) . . . . . . . . . .  exponents of g wrt to an igs
 ##
 ## Note that this functions returns fail, if g is not in <pcs>.
 ##

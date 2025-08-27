@@ -341,7 +341,7 @@ BindGlobal( "MemberByCongruenceMatrixAction", function( G, mats, m )
     if not IsUnitOfNumberField( F, m ) then return false; fi;
 
     # check if m is in G
-    r := RelationLatticeOfTFUnits( F, Concatenation( [m], mats ) )[1];
+    r := RelationLatticeOfUnits( F, Concatenation( [m], mats ) )[1];
     if PositionNonZero( r ) > 1 or AbsInt( r[1] ) <> 1 then return false; fi;
 
     # now translate to G
