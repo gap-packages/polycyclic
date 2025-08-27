@@ -11,8 +11,8 @@
 InstallGlobalFunction( ExamplesOfSomePcpGroups, function(n)
     if not IsInt(n) then return fail; fi;
     if n < 1 or n > 16 then return fail; fi;
-    if n <= 13 then return PcpExamples(n); fi;
-    return NqExamples(n-13);
+    if n <= 12 then return PcpExamples(n); fi;
+    return NqExamples(n-11);
 end );
 
 #############################################################################
@@ -149,14 +149,6 @@ InstallGlobalFunction( PcpExamples, function( n )
         return PcpGroupByCollector( FTL );
     fi;
 
-    if n = 13 then
-        FTL := FromTheLeftCollector( 4 );
-        SetConjugate( FTL, 2, 1, [2,-1] );
-        SetConjugate( FTL, 4, 1, [4,-1] );
-        SetConjugate( FTL, 3, 2, [3,2,4,1]);
-        SetConjugate( FTL, 4, 2, [3,3,4,2]);
-        return PcpGroupByCollector( FTL );
-    fi;
     return fail;
 
 end );
