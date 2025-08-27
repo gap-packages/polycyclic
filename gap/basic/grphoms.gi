@@ -304,14 +304,11 @@ InstallMethod( PreImagesSet,
                CollFamRangeEqFamElms,
                [ IsFromPcpGHBI and IsToPcpGHBI, IsPcpGroup ],
 function( hom, U )
-    local prei, kern;
+    local prei, gens, kern;
     prei := List( Igs(U), x -> PreImagesRepresentative(hom,x) );
     if fail in prei then
-    	TryNextMethod();
-		# Potential solution: Intersect U with ImagesSource(hom)
-		# and then compute the preimage of that.
-		#gens := GeneratorsOfGroup( Intersection( ImagesSource(hom), U ) );
-        #prei := List( gens, x -> PreImagesRepresentative(hom,x) );
+		gens := GeneratorsOfGroup( Intersection( ImagesSource(hom), U ) );
+        prei := List( gens, x -> PreImagesRepresentative(hom,x) );
     fi;
     kern := Igs( KernelOfMultiplicativeGeneralMapping( hom ) );
     return SubgroupByIgs( Source(hom), kern, prei );

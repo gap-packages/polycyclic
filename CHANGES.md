@@ -24,6 +24,7 @@ This file describes changes in the GAP package 'polycyclic'.
     - `IsSingleValued` (and possibly `CoKernelOfMultiplicativeGeneralMapping`)
       for certain trivial maps
     - `Random` for trivial groups (reported and fixed by Sam Tertooy)
+    - `PreImagesSet` if the input set is not contained in the image of the homomorphism
   - Fix `SchurCovers` to always return list, even if only one cover is found
     (fix by Sam Tertooy)
   - Made most global functions and variables read-only to catch code accidentally
