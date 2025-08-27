@@ -15,12 +15,14 @@ This file describes changes in the GAP package 'polycyclic'.
     - `IsConjugate` (reported and fixed by Sam Tertooy)
     - `IsNormal` sometimes returned `true` even if the inputs did not normalise each other
     - `OrbitIntegralAction`
-    - `Subgroup` -- the resulting group would have an invalid Pcp and e.g. membership tests could fail
+    - `Subgroup` sometimes produced a group with invalid Pcp and e.g. membership tests could fail
   - Fixed a bug in `AbelianGroup` resp. `AbelianGroupCons` method for `IsPcpGroup`
     and also in `AbelianPcpGroup`, `DihedralPcpGroup`, which resulted in either
     an unexpected break loop or in a corrupted group when used to create a group
     with some but not all generators of order 1
   - Fix further bugs where an error was raised unexpectedly:
+    - `ConjugacyClasses` sand `ConjugacyClassesSubgroups` sometimes did run
+      into errors or took far too long
     - `IsSingleValued` (and possibly `CoKernelOfMultiplicativeGeneralMapping`)
       for certain trivial maps
     - `Random` for trivial groups (reported and fixed by Sam Tertooy)
