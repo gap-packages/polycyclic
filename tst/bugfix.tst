@@ -507,6 +507,17 @@ gap> Random( TrivialGroup( IsPcpGroup ) );
 id
 
 #
+# Fix a bug in NormalizerOfComplement
+# <https://github.com/gap-packages/polycyclic/issues/45>
+#
+gap> C := AbelianPcpGroup( [ 2, 3 ] );;
+gap> H := Subgroup( C, [ C.1 ] );;
+gap> N := Subgroup( C, [ C.2 ] );;
+gap> I := NormalIntersection( N, H );;
+gap> NormalizerOfComplement( C, H, N, I );
+Pcp-group with orders [ 2, 3 ]
+
+#
 # Fix a bug in IsNormal
 # <https://github.com/gap-packages/polycyclic/issues/46>
 #
@@ -522,15 +533,14 @@ gap> IsNormal( T, S );
 false
 
 #
-# Fix a bug in NormalizerOfComplement
-# <https://github.com/gap-packages/polycyclic/issues/45>
+# Allow Centralizer to fall back on generic GAP methods
+# <https://github.com/gap-packages/polycyclic/issues/64>
 #
-gap> C := AbelianPcpGroup( [ 2, 3 ] );;
-gap> H := Subgroup( C, [ C.1 ] );;
-gap> N := Subgroup( C, [ C.2 ] );;
-gap> I := NormalIntersection( N, H );;
-gap> NormalizerOfComplement( C, H, N, I );
-Pcp-group with orders [ 2, 3 ]
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.1*G.3*G.4;;
+gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
+gap> Centralizer( H, g );
+Pcp-group with orders [ 2, 2 ]
 
 #
 # Fix a bug in CentralizerBySeries
@@ -543,16 +553,6 @@ gap> C := Centralizer( cc );
 Pcp-group with orders [ 2, 2, 2 ]
 gap> Igs( C );
 [ g2, g3, g4 ]
-
-#
-# Allow Centralizer to fall back on generic GAP methods
-# <https://github.com/gap-packages/polycyclic/issues/64>
-#
-gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
-gap> g := G.1*G.3*G.4;;
-gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
-gap> Centralizer( H, g );
-Pcp-group with orders [ 2, 2 ]
 
 #
 # Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
