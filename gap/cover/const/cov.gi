@@ -27,7 +27,7 @@ BindGlobal( "SchurCovers", function(G)
     Print("  Schur Mult has type ",AbelianInvariants(M),"\n");
 
     # catch a trival case
-    if GG!.mord = 1 then return G; fi;
+    if GG!.mord = 1 then return [ G ]; fi;
 
     # determine Z = Z(K) cap RK'
     D := ProductPcpGroups(K, R, DerivedSubgroup(K));
