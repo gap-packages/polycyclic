@@ -156,7 +156,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             h := ind[d];
             r := FactorOrder(g);
             a := LeadingExponent(g);
-
+            
             # shift in
             if IsBool(h) then 
                 ind[d] := NormedPcpElement(g);
@@ -204,7 +204,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 fi;
             od;
         od;
-
+        
         # reduce
         todo := Filtered(todo, x -> Depth(x)<c);
         val := List(todo, x -> IGSValFun(x));

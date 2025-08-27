@@ -165,7 +165,7 @@ BindGlobal( "CentralizerPcpGroup", function( G, g )
 
     # check
     if ForAny( g, x -> not x in G ) then
-        Error("elements must be contained in group");
+        TryNextMethod();
     fi;
 
     # compute
@@ -230,7 +230,7 @@ end );
 #F ConjugacyElementsBySeries( G, g, h, pcps )
 ##
 BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
-    local C, k, eg, eh, i, pcp, rel, p, d,
+    local C, k, eg, eh, i, pcp, rel, p, d, t,
           e, f, c, j, N, M, fac, stb, F, act, nat;
 
     # do a simple check
@@ -286,9 +286,11 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             # extract results
             j := Position( stb.orbit, f*One(F) );
             if IsBool(j) then return false; fi;
-            k := k * TransversalElement( j, stb, One(G) );
-            stb := AddIgsToIgs( stb.stab, Igs(M) );
+            t := TransversalElement( j, stb, One(G) );
+            stb := List( stb.stab, x -> x^t );
+            stb := AddIgsToIgs( stb, Igs(M) );
             C := SubgroupByIgs( G, stb );
+            k := k * t;
 
         # if it is infinite and not-central
         else
