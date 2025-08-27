@@ -8,6 +8,8 @@ This file describes changes in the GAP package 'polycyclic'.
   - Enhance `Centralizer` to fall back on generic GAP methods, so it can be computed in more cases
   - Fix correctness bugs, where wrong results could be returned, in the following functions:
     - `AddToIgs`
+    - `Centralizer` could sometimes set an incorrect igs in the computed centralizer,
+       which could lead to incorrect results later on
     - `ConjugacyElementsBySeries`
     - `FrattiniSubgroup` (reported by Heiko Dietrich)
     - `IsConjugate` (reported and fixed by Sam Tertooy)
