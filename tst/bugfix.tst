@@ -59,7 +59,11 @@ Pcp-group with orders [ 2, 2, 3, 2, 2, 2, 2 ]
 
 #
 gap> # The problem with the previous example is/was that Igs(G)
-gap> # is set to a non-standard value:
+gap> # is set to a non-standard value. Experiment with that some more
+gap> G := Parent(G);; # does nothing in GAP >= 4.13 -- possibly due to https://github.com/gap-system/gap/pull/5631
+gap> igs := [ G.1, G.2*G.5, G.3*G.4*G.5^2, G.4*G.5, G.5 ];;
+gap> G := Subgroup(G, igs);;
+gap> SetIgs(G, igs);
 gap> Igs(G);
 [ g1, g2*g5, g3*g4*g5^2, g4*g5, g5 ]
 gap> # Unfortunately, it seems that a lot of code that
@@ -206,6 +210,7 @@ gap> IsConjugate(H,H.1, H.2);
 false
 gap> IsConjugate(H,H.1, H.1^Random(H));
 true
+gap> DihedralPcpGroup( 2 );;  # used to run into an error
 
 #
 # bug in AddToIgs: in infinite pcp groups, we must also take inverses of
@@ -531,4 +536,50 @@ gap> GroupHomomorphismByImages(G, H, [One(G)], [One(H)]);
 [ id ] -> [ id ]
 
 #
-gap> STOP_TEST( "bugfix.tst", 10000000);
+# Fix a bug in the AbelianGroupCons method for IsPcpGroup.
+# (Generators of order 1 are in principle supported,
+# but we got an error when all generators had order 1,
+# and the group was corrupted when some but not all generators had order 1.)
+#
+gap> AbelianGroup( IsPcpGroup, [ 1 ] );
+Pcp-group with orders [  ]
+gap> g:= AbelianGroup( IsPcpGroup, [ 1, 2 ] );
+Pcp-group with orders [ 2 ]
+gap> List( GeneratorsOfGroup( g ), Order );
+[ 1, 2 ]
+gap> AbelianPcpGroup( 1 );
+Pcp-group with orders [ 0 ]
+gap> AbelianPcpGroup( [ 1 ] );
+Pcp-group with orders [  ]
+gap> AbelianPcpGroup( 1, [ 1 ] );
+Pcp-group with orders [  ]
+gap> AbelianPcpGroup( 2 );
+Pcp-group with orders [ 0, 0 ]
+gap> AbelianPcpGroup( [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2, 3, 4 ] );
+Pcp-group with orders [ 2, 3 ]
+gap> AbelianPcpGroup( 2, [ 2 ] );
+Pcp-group with orders [ 2, 0 ]
+
+#
+# Fix bug in FrattiniSubgroup
+# Reported by Heiko Dietrich (2024-02-19)
+#
+gap> G:=PcGroupToPcpGroup(SmallGroup(11025,6));;
+gap> F:=FrattiniSubgroup(G);;
+gap> Size(F);  # used to produce a group of order 49
+21
+
+#
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+  Schur Mult has type [  ]
+[ <pc group of size 4 with 2 generators> ]
+
+#
+gap> STOP_TEST( "bugfix.tst" );

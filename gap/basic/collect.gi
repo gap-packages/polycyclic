@@ -43,21 +43,6 @@ function( nrgens )
 
     pcp[ PC_DEEP_THOUGHT_POLS ]        := [];
 
-    # Initialise the various stacks.
-    # starting with GAP 4.10, these are not needed anymore,
-    # which is signaled by the global constant NO_STACKS_INSIDE_COLLECTORS
-    if not NO_STACKS_INSIDE_COLLECTORS then
-    pcp[ PC_STACK_SIZE ]               := 1024 * nrgens;
-    pcp[ PC_WORD_STACK ]               :=
-      ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_WORD_EXPONENT_STACK ]      :=
-      ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_SYLLABLE_STACK ]           :=
-      ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_EXPONENT_STACK ]           :=
-      ListWithIdenticalEntries( pcp[ PC_STACK_SIZE], 0 );
-    pcp[ PC_STACK_POINTER ]            := 0;
-    fi;
     pcp[ PC_PCP_ELEMENTS_FAMILY ]      :=
           NewFamily( "ElementsFamily<<coll>>",
               IsPcpElement,

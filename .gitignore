@@ -20,6 +20,7 @@
 /doc/manual.pdf
 /doc/polycyclicbib.xml.bib
 /doc/title.xml
+/doc/_*.xml
 
 /gh-pages/
 /tmp/

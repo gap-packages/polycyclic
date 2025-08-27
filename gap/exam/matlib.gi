@@ -2,7 +2,7 @@
 ##
 #W  matexam.gi              Polycyc                                  BE & WN
 ##
-##  Some examples of polycylic matrix groups -- MatExamples
+##  Some examples of polycyclic matrix groups -- MatExamples
 ##
 
 #############################################################################

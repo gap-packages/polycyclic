@@ -1,4 +1,4 @@
-AddPermOper := function(A)
+BindGlobal( "AddPermOper", function(A)
     local G, r, p, base, V, norm, f, M, iso, P;
 
     # set up
@@ -19,18 +19,18 @@ AddPermOper := function(A)
 
     # reset
     A.glOper := GeneratorsOfGroup( P );
-end;
+end );
 
-ReduceAuto := function( auto, C, isom, gens, imgs )
+BindGlobal( "ReduceAuto", function( auto, C, isom, gens, imgs )
     local news;
     news := List(imgs, x -> Image(auto, x));
     news := List(news, x -> PreImagesRepresentative(isom, x));
     news := GroupHomomorphismByImagesNC( C, C, gens, news );
     SetIsBijective( news, true );
     return news;
-end;
+end );
 
-AutomorphismActionCover := function( G, C )
+BindGlobal( "AutomorphismActionCover", function( G, C )
     local pcgs, first, p, n, r, f, i,
           chars, bases, S, H, kern, A,
           F, Q, s, t, P, M, N, U, baseN, baseU,
@@ -133,9 +133,9 @@ AutomorphismActionCover := function( G, C )
     A.group := C;
 
     return A;
-end;
+end );
 
-InducedAutCover := function(aut, f, t, e)
+BindGlobal( "InducedAutCover", function(aut, f, t, e)
     local actT, invF, trs, AsMat, InvertMod;
 
     AsMat := function(aut, m)
@@ -164,5 +164,5 @@ InducedAutCover := function(aut, f, t, e)
 
     # return all
     return [actT, invF, trs];
-end;
+end );
 
