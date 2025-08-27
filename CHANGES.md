@@ -1,6 +1,8 @@
 This file describes changes in the GAP package 'polycyclic'.
 
 2.17dev (2024-MM-DD)
+  - Add a method `SemidirectProduct( N, alpha, G)` where `N` and `G` are both PcpGroups
+    (contributed by Sam Tertooy)
   - Enhanced `AbelianPcpGroup` and `AbelianGroupCons` to support `infinity` in
     the list of orders (implemented by Sam Tertooy)
   - Fix correctness bugs, where wrong results could be returned, in the following functions:

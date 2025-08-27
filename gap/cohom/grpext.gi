@@ -295,3 +295,88 @@ function( D, i )
 end );
 
 
+#############################################################################
+##
+#M  SemiDirectProduct( G, alpha, N ) . . . . . . . . . . . . . for pcp groups
+##
+InstallMethod( SemidirectProduct, "for pcp groups",
+               [ IsPcpGroup, IsGroupHomomorphism, IsPcpGroup ],
+function( G, alpha, N )
+    local  auts, groups, S, f, info;
+
+    auts := List( Igs( G ), g -> ImagesRepresentative( alpha, g ) );
+    groups := [ G, N ];
+
+    S := SplitExtensionByAutomorphisms( N, G, auts );
+
+    f := [ 1, Length( Igs( G ) )+1, Length( Igs( S ) )+1 ];
+    info := rec(groups := groups,
+                first  := f,
+                embeddings := [ ],
+                projections := false);
+    SetSemidirectProductInfo( S, info );
+
+    if ForAny( groups, H -> HasIsFinite( H ) and not IsFinite( H ) ) then
+        SetSize( S ,infinity );
+    elif ForAll( groups, HasSize ) then
+        SetSize( S, Product( List( groups, Size ) ) );
+    fi;
+
+    return S;
+end );
+
+#############################################################################
+##
+#A Embedding
+##
+InstallMethod( Embedding, true,
+               [ IsPcpGroup and HasSemidirectProductInfo, IsPosInt ], 0,
+function( S, i )
+    local info, G, imgs, hom, gens;
+
+    # check
+    info := SemidirectProductInfo( S );
+    if IsBound( info.embeddings[i] ) then return info.embeddings[i]; fi;
+
+    # compute embedding
+    G := info.groups[i];
+    gens := Igs( G );
+    imgs := Igs( S ){[info.first[i] .. info.first[i+1]-1]};
+    hom  := GroupHomomorphismByImagesNC( G, S, gens, imgs );
+    SetIsInjective( hom, true );
+
+    # store information
+    info.embeddings[i] := hom;
+    return hom;
+end );
+
+#############################################################################
+##
+#A Projection
+##
+InstallOtherMethod( Projection, true,
+         [ IsPcpGroup and HasSemidirectProductInfo ], 0,
+function( S )
+    local info, G, imgs, hom, N, gens;
+
+    # check
+    info := SemidirectProductInfo( S );
+    if not IsBool( info.projections ) then return info.projections; fi;
+
+    # compute projection
+    G := info.groups[1];
+    gens := Igs( S );
+    imgs := Concatenation(
+               Igs( G ),
+               List( [info.first[2]..Length(gens)], x -> One(G)));
+    hom := GroupHomomorphismByImagesNC( S, G, gens, imgs );
+    SetIsSurjective( hom, true );
+
+    # add kernel
+    N := SubgroupNC( S, gens{[info.first[2]..Length(gens)]});
+    SetKernelOfMultiplicativeGeneralMapping( hom, N );
+
+    # store information
+    info.projections := hom;
+    return hom;
+end );
