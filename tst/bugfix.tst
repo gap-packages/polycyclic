@@ -617,7 +617,16 @@ gap> G := PcpGroupByCollector( ftl );;
 gap> A := [ [ 1, 1, 0, 0], [ 0, 1, 0 , 0], [ 0, 0, 1, 0], [ 0, 0, 0, 1] ];;
 gap> B := DiagonalMat( [-1, -1, -1, -1] );;
 gap> OrbitIntegralAction( G, [A,B], [1,0,0,0], [-1,0,0,0] );
-rec( prei := g2, stab := Pcp-group with orders [ ] )
+rec( prei := g2, stab := Pcp-group with orders [  ] )
+
+#
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
+#
+gap> SchurCovers( CyclicGroup( 4 ) );
+  Schur Mult has type [  ]
+[ <pc group of size 4 with 2 generators> ]
+
 
 #
 gap> STOP_TEST( "bugfix.tst" );
