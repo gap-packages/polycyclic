@@ -133,9 +133,9 @@ end );
 
 #############################################################################
 ##
-#F FixedPoints( pts, gens, oper )
+#F FixedPointsOfAction( pts, gens, oper )
 ##
-BindGlobal( "FixedPoints", function( pts, gens, oper )
+BindGlobal( "FixedPointsOfAction", function( pts, gens, oper )
     return Filtered( pts, x -> ForAll( gens, y -> oper( x, y ) = x ) );
 end );
 
@@ -176,7 +176,7 @@ BindGlobal( "InvariantComplementsCR", function( C )
 
     # compute action and fixed points
     act := OperationOnZ1( C, cc );
-    sub := FixedPoints( elms, act, f );
+    sub := FixedPointsOfAction( elms, act, f );
 
     # catch trivial case and translate result
     if Length(sub) = 0 then return sub; fi;
