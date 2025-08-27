@@ -557,6 +557,14 @@ gap> AbelianPcpGroup( 2, [ 2 ] );
 Pcp-group with orders [ 2, 0 ]
 
 #
+# Fix bug in complement computations for abelian groups
+# <https://github.com/gap-packages/polycyclic/issues/88>
+#
+gap> G:= AbelianPcpGroup( 2, [ 2, 3 ] );;
+gap> Length( ConjugacyClassesSubgroups( G ) ) = 4;
+true
+
+#
 # Fix bug in FrattiniSubgroup
 # Reported by Heiko Dietrich (2024-02-19)
 #
@@ -566,12 +574,11 @@ gap> Size(F);  # used to produce a group of order 49
 21
 
 #
-# Fix bug in complement computations for abelian groups,
-# see https://github.com/gap-packages/polycyclic/issues/88.
+# Fix a bug in SchurCovers
+# <https://github.com/gap-packages/polycyclic/issues/93>
 #
-gap> G:= AbelianPcpGroup( 2, [ 2, 3 ] );;
-gap> Length( ConjugacyClassesSubgroups( G ) ) = 4;
-true
+gap> SchurCovers( CyclicGroup( 4 ) );
+[ <pc group of size 4 with 2 generators> ]
 
 #
 gap> STOP_TEST( "bugfix.tst" );
