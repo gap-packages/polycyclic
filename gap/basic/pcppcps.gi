@@ -181,6 +181,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             fi;
             d := Depth(g);
         od;
+
         # adjust
         c := TailLimit(ind, c);
         ReduceExpo(ind, todo, rels);
