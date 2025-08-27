@@ -518,6 +518,16 @@ gap> IsNormal( T, S );
 false
 
 #
+# Allow Centralizer to fall back on generic GAP methods
+# <https://github.com/gap-packages/polycyclic/issues/64>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.1*G.3*G.4;;
+gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
+gap> Centralizer( H, g );
+Pcp-group with orders [ 2, 2 ]
+
+#
 # Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
 # for certain trivial maps, which used to raise an error in the example
 # below, because MappedVector was called with an empty list of generators.
