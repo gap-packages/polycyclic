@@ -503,6 +503,23 @@ gap> Random( TrivialGroup( IsPcpGroup ) );
 id
 
 #
+# Fix a bug in NormalizerOfComplement
+# <https://github.com/gap-packages/polycyclic/issues/45>
+# <https://github.com/gap-packages/polycyclic/issues/88>
+#
+gap> C := AbelianPcpGroup( [ 2, 3 ] );;
+gap> H := Subgroup( C, [ C.1 ] );;
+gap> N := Subgroup( C, [ C.2 ] );;
+gap> I := NormalIntersection( N, H );;
+gap> NormalizerOfComplement( C, H, N, I );
+Pcp-group with orders [ 2, 3 ]
+
+# second test case for issue #45 / #88
+gap> G:= AbelianPcpGroup( 2, [ 2, 3 ] );;
+gap> Length( ConjugacyClassesSubgroups( G ) ) = 4;
+true
+
+#
 # Fix a bug in IsNormal
 # <https://github.com/gap-packages/polycyclic/issues/46>
 #
@@ -518,6 +535,20 @@ gap> IsNormal( T, S );
 false
 
 #
+# PreImages resp. PreImagesSet used to run into a "method not found"
+# error when the input set is not contained in the image of the map.
+# <https://github.com/gap-packages/polycyclic/issues/47>
+#
+gap> G := AbelianPcpGroup([0]);
+Pcp-group with orders [ 0 ]
+gap> phi := GroupHomomorphismByImages(G,G,[G.1],[One(G)]);
+[ g1 ] -> [ id ]
+gap> H := PreImagesSet(phi, G);
+Pcp-group with orders [ 0 ]
+gap> G = H;
+true
+
+#
 # Allow Centralizer to fall back on generic GAP methods
 # <https://github.com/gap-packages/polycyclic/issues/64>
 #
@@ -526,6 +557,18 @@ gap> g := G.1*G.3*G.4;;
 gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
 gap> Centralizer( H, g );
 Pcp-group with orders [ 2, 2 ]
+
+#
+# Fix a bug in CentralizerBySeries
+# <https://github.com/gap-packages/polycyclic/issues/65>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> g := G.2*G.3*G.4;;
+gap> cc := ConjugacyClass( G, g );;
+gap> C := Centralizer( cc );
+Pcp-group with orders [ 2, 2, 2 ]
+gap> Igs( C );
+[ g2, g3, g4 ]
 
 #
 # Fix bug with IsSingleValued / CoKernelOfMultiplicativeGeneralMapping
