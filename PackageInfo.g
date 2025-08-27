@@ -20,6 +20,7 @@ Persons          := [
        IsMaintainer  := true,
        Email         := "beick@tu-bs.de",
        WWWHome       := "http://www.iaa.tu-bs.de/beick",
+       GitHubUsername:= "beick",
        PostalAddress := Concatenation(
                "Institut Analysis und Algebra\n",
                "TU Braunschweig\n",
@@ -27,7 +28,7 @@ Persons          := [
                "D-38106 Braunschweig\n",
                "Germany" ),
        Place         := "Braunschweig",
-       Institution   := "TU Braunschweig"
+       Institution   := "TU Braunschweig",
      ),
 
   rec( LastName      := "Nickel",
@@ -47,7 +48,7 @@ Persons          := [
        IsMaintainer  := true,
        Email         := "mhorn@rptu.de",
        WWWHome       := "https://www.quendi.de/math",
-       GitHubUsername := "fingolfin",
+       GitHubUsername:= "fingolfin",
        PostalAddress := Concatenation(
                           "Fachbereich Mathematik\n",
                           "RPTU Kaiserslautern-Landau\n",
@@ -55,9 +56,40 @@ Persons          := [
                           "67663 Kaiserslautern\n",
                           "Germany" ),
        Place         := "Kaiserslautern, Germany",
-       Institution   := "RPTU Kaiserslautern-Landau"
-     )
-    ],
+       Institution   := "RPTU Kaiserslautern-Landau",
+     ),
+
+  rec( LastName := "Fernández Ayala",
+       FirstNames := "Óscar",
+       IsAuthor := false,
+       IsMaintainer := true,
+       Email := "oscar00ayala@gmail.com",
+       WWWHome := "https://Osferay.github.io",
+       GitHubUsername := "osferay",
+       #PostalAddress := TODO,
+       Place := "Braunschweig",
+       Institution := "TU Braunschweig",
+  ),
+
+  rec( LastName := "Tertooy",
+       FirstNames := "Sam",
+       IsAuthor := false,
+       IsMaintainer := true,
+       Email := "sam.tertooy@kuleuven.be",
+       WWWHome := "https://stertooy.github.io/",
+       GitHubUsername := "stertooy",
+       PostalAddress := """
+           Wiskunde
+           KU Leuven, Kulak Kortrijk Campus
+           Etienne Sabbelaan 53
+           8500 Kortrijk
+           Belgium
+       """,
+       Place := "Kortrijk, Belgium",
+       Institution := "KU Leuven, Kulak Kortrijk Campus",
+  ),
+
+],
 
 Status         := "accepted",
 CommunicatedBy := "Charles Wright (Eugene)",
