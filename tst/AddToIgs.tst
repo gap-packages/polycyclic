@@ -154,5 +154,13 @@ gap> Igs( S );
 gap> G = S;
 true
 
+# another example, this time from issue #56
+gap> A:=AbelianPcpGroup([3,2,12]);;
+gap> m:=MinimalGeneratingSet(A);;
+gap> Length(m);
+2
+gap> List(AddToIgs([],m), Depth);
+[ 1, 2, 3 ]
+
 #
 gap> STOP_TEST( "AddToIgs.tst", 1);

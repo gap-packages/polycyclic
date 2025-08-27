@@ -535,6 +535,31 @@ gap> G = H;
 true
 
 #
+# TorsionSubgroup returned a wrong results for abelian groups
+# (was not in a released version)
+# <https://github.com/gap-packages/polycyclic/issues/52>
+#
+gap> TorsionSubgroup(AbelianPcpGroup([3,2,0,0]));
+Pcp-group with orders [ 3, 2 ]
+gap> TorsionSubgroup(AbelianPcpGroup([2,3,0,0]));
+Pcp-group with orders [ 2, 3 ]
+
+#
+# Wrong result for intersection of subgroups of an abelian group
+# (was not in a released version)
+# <https://github.com/gap-packages/polycyclic/issues/53>
+#
+gap> G := AbelianPcpGroup([4,2]);;
+gap> M := Group(G.1);;
+gap> N := Group(G.1*G.2);;
+gap> G.1^2 in N;
+true
+gap> G.1^2 in M;
+true
+gap> G.1^2 in Intersection(N,M);
+true
+
+#
 # Fix a bug in ConjugacyElementsBySeries
 # <https://github.com/gap-packages/polycyclic/issues/58>
 #
