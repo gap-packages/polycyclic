@@ -607,6 +607,42 @@ gap> Size(F);  # used to produce a group of order 49
 21
 
 #
+# Fixed a bug in IsConjugate for a finite pcp-group
+# <https://github.com/gap-packages/polycyclic/issues/70>
+#
+gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
+gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
+gap> g := G.2*G.4;; h := g^(G.1*G.3);;
+gap> IsConjugate( G, g, h );
+true
+
+#
+# Fixed a bug in stabilizer integral action
+# <https://github.com/gap-packages/polycyclic/issues/71>
+#
+gap> G := ExamplesOfSomePcpGroups( 10 );;
+gap> g := G.1^2*G.3^3*G.4^-3;;
+gap> h := g^(G.1*G.2^2);;
+gap> pcps := PcpsOfEfaSeries( G );;
+gap> k := ConjugacyElementsBySeries( G, g, h, pcps );
+g1*g2^2
+gap> g^k = h;
+true
+
+#
+# Fixed a bug in OrbitIntegralAction
+# This fix bug has a temporary solution by commenting the code in
+# gap/action/orbstab.gi lines 592-594
+#
+gap> ftl := FromTheLeftCollector( 2 );;
+gap> SetRelativeOrder( ftl, 2, 2 );
+gap> G := PcpGroupByCollector( ftl );;
+gap> A := [ [ 1, 1, 0, 0], [ 0, 1, 0 , 0], [ 0, 0, 1, 0], [ 0, 0, 0, 1] ];;
+gap> B := DiagonalMat( [-1, -1, -1, -1] );;
+gap> OrbitIntegralAction( G, [A,B], [1,0,0,0], [-1,0,0,0] );
+rec( prei := g2, stab := Pcp-group with orders [  ] )
+
+#
 # Fix a bug in SchurCovers
 # <https://github.com/gap-packages/polycyclic/issues/93>
 #

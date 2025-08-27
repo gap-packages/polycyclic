@@ -289,8 +289,8 @@ gap> Igs(last);
 In this section we list a number of operations for which there are methods
 installed to compute the corresponding features in polycyclic groups.
 <ManSection>
-<Meth Name="Centralizer" Arg="U, g"/>
-<Meth Name="IsConjugate" Arg="U, g, h"/>
+<Meth Name="Centralizer" Arg="U, g" Label="for an element"/>
+<Meth Name="IsConjugate" Arg="U, g, h" Label="for elements"/>
 <Description>
 	These functions solve the conjugacy problem for elements in pcp-groups and
 	they can be used to compute centralizers. The first method returns a
@@ -304,9 +304,9 @@ installed to compute the corresponding features in polycyclic groups.
 </ManSection>
 
 <ManSection>
-<Meth Name="Centralizer" Arg="U, V"/>
+<Meth Name="Centralizer" Arg="U, V" Label="for a subgroup"/>
 <Meth Name="Normalizer" Arg="U, V"/>
-<Meth Name="IsConjugate" Arg="U, V, W"/>
+<Meth Name="IsConjugate" Arg="U, V, W" Label="for subgroups"/>
 <Description>
 	These three functions solve the conjugacy problem for subgroups and compute
 	centralizers and normalizers of subgroups. The first two functions return
@@ -611,8 +611,8 @@ available.
 <!-- % If desired, it could be (re?)added, using the internal -->
 <!-- % function RandomPcpOrbitStabilizer -->
 <ManSection>
-<Func Name="RandomCentralizerPcpGroup" Arg="U, g"/>
-<Func Name="RandomCentralizerPcpGroup" Arg="U, V"/>
+<Func Name="RandomCentralizerPcpGroup" Arg="U, g" Label="for an element"/>
+<Func Name="RandomCentralizerPcpGroup" Arg="U, V" Label="for a subgroup"/>
 <Func Name="RandomNormalizerPcpGroup" Arg="U, V"/>
 <Description>
 <Example><![CDATA[
