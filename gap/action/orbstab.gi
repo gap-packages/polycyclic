@@ -589,9 +589,11 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
         return rec( stab := StabilizerIntegralAction(G, mats, e),
                     prei := One( G ) );
     fi;
-    if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
-        return false;
-    fi;
+
+    # This is a temporary fix, see bugfix.tst
+    # if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
+    #     return false;
+    # fi;
 
     # compute modulo 3 first
     Info( InfoIntStab, 1, "reducing by orbit-stabilizer mod 3");
