@@ -1,150 +1,103 @@
 #############################################################################
-##
-#W  PackageInfo.g       GAP 4 Package `polycyclic'               Bettina Eick
-#W                                                              Werner Nickel
-#W                                                                   Max Horn
+##  
+##  Demo PackageInfo.g for the GitHubPagesForGAP
 ##
 
 SetPackageInfo( rec(
 
-PackageName := "Polycyclic",
-Subtitle    := "Computation with polycyclic groups",
-Version     := "2.16",
-Date        := "25/07/2020", # dd/mm/yyyy format
-License     := "GPL-2.0-or-later",
+PackageName := "GitHubPagesForGAP",
 
-Persons          := [
-  rec( LastName      := "Eick",
-       FirstNames    := "Bettina",
-       IsAuthor      := true,
-       IsMaintainer  := true,
-       Email         := "beick@tu-bs.de",
-       WWWHome       := "http://www.iaa.tu-bs.de/beick",
-       PostalAddress := Concatenation(
-               "Institut Analysis und Algebra\n",
-               "TU Braunschweig\n",
-               "Universitätsplatz 2\n",
-               "D-38106 Braunschweig\n",
-               "Germany" ),
-       Place         := "Braunschweig",
-       Institution   := "TU Braunschweig"
-     ),
+Subtitle := "A GitHub Pages generator for GAP packages",
+Version := "0.4",
+Date := "10/04/2025", # dd/mm/yyyy format
+License := "0BSD",
 
-  rec( LastName      := "Nickel",
-       FirstNames    := "Werner",
-       IsAuthor      := true,
-       IsMaintainer  := false,
-       # MH: Werner rarely (if at all) replies to emails sent to this
-       # old email address. To discourage users from sending bug reports
-       # there, I have disabled it here.
-       #Email         := "nickel@mathematik.tu-darmstadt.de",
-       WWWHome       := "http://www.mathematik.tu-darmstadt.de/~nickel/",
-     ),
-
-  rec( LastName      := "Horn",
-       FirstNames    := "Max",
-       IsAuthor      := true,
-       IsMaintainer  := true,
-       Email         := "horn@mathematik.uni-kl.de",
-       WWWHome       := "https://www.quendi.de/math",
-       PostalAddress := Concatenation(
-                          "Fachbereich Mathematik\n",
-                          "TU Kaiserslautern\n",
-                          "Gottlieb-Daimler-Straße 48\n",
-                          "67663 Kaiserslautern\n",
-                          "Germany" ),
-       Place         := "Kaiserslautern, Germany",
-       Institution   := "TU Kaiserslautern"
-     )
-    ],
-
-Status         := "accepted",
-CommunicatedBy := "Charles Wright (Eugene)",
-AcceptDate     := "01/2004",
-
-PackageWWWHome  := "https://gap-packages.github.io/polycyclic/",
-README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
-PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-SourceRepository := rec(
-    Type := "git",
-    URL := "https://github.com/gap-packages/polycyclic",
-),
-IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-ArchiveURL      := Concatenation( ~.SourceRepository.URL,
-                                 "/releases/download/v", ~.Version,
-                                 "/polycyclic-", ~.Version ),
-ArchiveFormats := ".tar.gz",
-
-AbstractHTML   := Concatenation(
-  "This package provides various algorithms for computations ",
-  "with polycyclic groups defined by polycyclic presentations."
+Persons := [
+  rec(
+    LastName      := "Horn",
+    FirstNames    := "Max",
+    IsAuthor      := true,
+    IsMaintainer  := true,
+    Email         := "mhorn@rptu.de",
+    WWWHome       := "https://www.quendi.de/math",
+    GitHubUsername:= "fingolfin",
+    PostalAddress := Concatenation(
+                       "Fachbereich Mathematik\n",
+                       "RPTU Kaiserslautern-Landau\n",
+                       "Gottlieb-Daimler-Straße 48\n",
+                       "67663 Kaiserslautern\n",
+                       "Germany" ),
+    Place         := "Kaiserslautern, Germany",
+    Institution   := "RPTU Kaiserslautern-Landau"
   ),
 
-PackageDoc     := rec(
-  BookName  := "polycyclic",
-  ArchiveURLSubset := [ "doc" ],
+  rec(
+    LastName      := "Thor",
+    FirstNames    := "A. U.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    #Email         := "author@example.com",
+  ),
+
+  rec(
+    LastName      := "Itor",
+    FirstNames    := "Jan",
+    IsAuthor      := false,
+    IsMaintainer  := true,
+    #Email         := "janitor@example.com",
+  ),
+],
+
+Status := "other",
+
+# The following are not strictly necessary in your own PackageInfo.g
+# (in the sense that update.g only looks at the usual fields
+# like PackageWWWHome, ArchiveURL etc.). But they are convenient
+# if you use exactly the scheme for your package website that we propose.
+GithubUser := "gap-system",
+GithubRepository := ~.PackageName,
+GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
+
+PackageWWWHome := Concatenation("https://", ~.GithubUser, ".github.io/", ~.GithubRepository, "/"),
+README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
+PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+# The following assumes you are using the Github releases system. If not, adjust
+# it accordingly.
+ArchiveURL     := Concatenation(~.GithubWWW,
+                    "/releases/download/v", ~.Version, "/",
+                    ~.GithubRepository, "-", ~.Version),
+
+ArchiveFormats := ".tar.gz .tar.bz2",
+
+AbstractHTML := 
+  "This is a pseudo package that contains no actual\
+  <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
+  GAP packages that allows to quickly setup GitHub Pages.",
+
+PackageDoc := rec(
+  BookName  := "GitHubPagesForGAP",
+  ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Computation with polycyclic groups",
-  Autoload  := true
+  LongTitle := "A GitHub Pages generator for GAP packages",
 ),
 
-Dependencies    := rec(
-  GAP                    := ">= 4.9",
-  NeededOtherPackages    := [["alnuth", "3.0"],
-                             ["autpgrp","1.6"]],
-  SuggestedOtherPackages := [ ],
-  ExternalConditions     := [ ]
+# The following dependencies are fake and for testing / demo purposes
+Dependencies := rec(
+  GAP := ">=4.8.1",
+  NeededOtherPackages := [
+    ["GAPDoc", ">= 1.2"],
+    ["IO", ">= 4.1"],
+  ],
+  SuggestedOtherPackages := [["orb", ">= 4.2"]],
+  ExternalConditions := []
 ),
 
 AvailabilityTest := ReturnTrue,
 
-TestFile := "tst/testall.g",
-
-Keywords := [
-  "finitely generated nilpotent groups",
-  "metacyclic groups",
-  "collection",
-  "consistency check",
-  "solvable word problem",
-  "normalizers","centralizers", "intersection",
-  "conjugacy problem",
-  "subgroups of finite index",
-  "torsion subgroup", "finite subgroups",
-  "extensions",
-  "complements",
-  "cohomology groups",
-  "orbit-stabilizer algorithms",
-  "fitting subgroup",
-  "center",
-  "infinite groups",
-  "polycyclic generating sequence",
-  "polycyclic presentation",
-  "polycyclic group",
-  "polycyclically presented group",
-  "polycyclic presentation",
-  "maximal subgroups",
-  "Schur cover",
-  "Schur multiplicator",
-  ],
-
-AutoDoc := rec(
-    TitlePage := rec(
-        Copyright := "<Index>License</Index>\
-&copyright; 2003-2018 by Bettina Eick, Max Horn and Werner Nickel<P/>\
-The &Polycyclic; package is free software;\
-you can redistribute it and/or modify it under the terms of the\
-<URL Text=\"GNU General Public License\">http://www.fsf.org/licenses/gpl.html</URL>\
-as published by the Free Software Foundation; either version 2 of the License,\
-or (at your option) any later version.",
-
-        Acknowledgements := "\
-We appreciate very much all past and future comments, suggestions and\
-contributions to this package and its documentation provided by &GAP;\
-users and developers.",
-    )
-),
+Keywords := ["GitHub Pages", "GAP"]
 
 ));
+
 

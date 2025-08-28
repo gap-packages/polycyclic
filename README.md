@@ -1,134 +1,267 @@
-[![Build Status](https://travis-ci.org/gap-packages/polycyclic.svg?branch=master)](https://travis-ci.org/gap-packages/polycyclic)
-[![Code Coverage](https://codecov.io/github/gap-packages/polycyclic/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/polycyclic)
+# GitHubPagesForGAP
 
-The GAP 4 package `Polycyclic'
-==============================
+This repository can be used to quickly set up a website hosted by
+[GitHub](https://github.com/) for GAP packages using a GitHub repository.
+Specifically, this uses [GitHub pages](https://pages.github.com/)
+by adding a `gh-pages` branch to your package repository which
+contains data generated from the `PackageInfo.g` file of your package.
 
-Introduction
-------------
+## Initial setup
 
-This is the package `Polycyclic` written for GAP 4.  It provides a
-basis for working with polycyclic groups defined by polycyclic
-presentations.
+The easiest way to do this is to run the `setup-gh-pages` shell script
+provided in the [GitHubPagesForGAP]() from within a git clone of your
+package's GitHub repository.
 
-To have the full functionality of the package available you need at
-least GAP version 4.5 and the GAP 4 package Alnuth and its dependencies
-must be installed.
+In case this does not work, or if you want to really know what's going
+on, you can also follow the manual instructions described after the fold.
 
-The features of this package include
+------
 
-  - creating a polycyclic group from a polycyclic presentation 
+The following instructions assume you do not already have a `gh-pages`
+branch in your repository. If you do have one, you should delete it before
+following these instructions.
 
-  - arithmetic in a polycyclic group
+1. Go into your clone of your package repository.
 
-  - computation with subgroups and factor groups of a polycyclic group
+2. Setup a `gh-pages` branch in a `gh-pages` subdirectory.
 
-  - computation of standard subgroup series such as the derived 
-    series, the lower central series
+   Users with a recent enough git version (recommended is >= 2.7.0)
+   can do this using a "worktree", via the following commands:
 
-  - computation of the first and second cohomology 
+   ```sh
+   # Add a new remote pointing to the GitHubPagesForGAP repository
+   git remote add -f gh-gap https://github.com/gap-system/GitHubPagesForGAP
 
-  - computation of group extensions
+   # Create a fresh gh-pages branch from the new remote
+   git branch gh-pages gh-gap/gh-pages --no-track
 
-  - computation of normalizers and centralizers
+   # Create a new worktree and change into it
+   git worktree add gh-pages gh-pages
+   cd gh-pages
+   ```
 
-  - solutions to the conjugacy problems for elements and subgroups
+   Everybody else should instead do the following, with the URL
+   in the initial clone command suitably adjusted:
 
-  - computation of torsion and various finite subgroups
+   ```sh
+   # Create a fresh clone of your repository, and change into it
+   git clone https://github.com/USERNAME/REPOSITORY gh-pages
+   cd gh-pages
 
-  - computation of various subgroups of finite index
+   # Add a new remote pointing to the GitHubPagesForGAP repository
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
+   git fetch gh-gap
 
-  - computation of the Schur multiplicator, the non-abelian
-    exterior square and the non-abelian tenor square
+   # Create a fresh gh-pages branch from the new remote
+   git checkout -b gh-pages gh-gap/gh-pages --no-track
+   ```
 
-There is a manual in the subdirectory `doc` which describes the
-available functions in detail.
+5. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
 
-If you have used `Polycyclic`, and found important features missing
-or if there is a bug, we would appreciate it very much  if you could
-report this via <https://github.com/gap-packages/polycyclic/issues>,
-or by sending us an email.
- - Bettina Eick  <beick@tu-bs.de>
- - Max Horn      <horn@mathematik.uni-kl.de>
+   ```
+   cp -f ../PackageInfo.g ../README* .
+   cp -f ../doc/*.{css,html,js,txt} doc/
+   ```
 
+6. Now run the `update.g` GAP script. This extracts data from your
+   `PackageInfo.g` file and puts that data into `_data/package.yml`.
+   From this, the website template can populate the web pages with
+   some sensible default values.
 
-Contents
---------
+   ```
+   gap update.g
+   ```
 
-With this version you should have obtained the following files and
-directories:
+7. Commit and push everything.
 
-- `README`:         this file
-- `init.g`:         the file that initializes this package
-- `read.g`:         the file that reads in the package        
-- `PackageInfo.g`:  the file for the new package loading mechanism
-- `doc`:            directory containing the manual
-- `gap`:            directory containing the GAP code, it contains:
-  - `action`:   actions of polycyclic groups and orbit-stabilizer
-  - `basic`:    basic stuff for pcp groups
-  - `cohom`:    cohomology for pcp groups
-  - `exam`:     examples of pcp groups
-  - `matrep`:   matrix representations for pcp groups
-  - `matrix`:   basic stuff for matrices and lattices
-  - `pcpgrp`:   higher level functions for pcp groups
+   ```
+   git add PackageInfo.g README* doc/ _data/package.yml
+   git commit -m "Setup gh-pages based on GitHubPagesForGAP"
+   git push --set-upstream origin gh-pages
+   ```
 
-
-
-Installation
-------------
-
-Make sure that the GAP 4 package Alnuth is installed to  have the full
-range of methods available in polycyclic.
-
-There are two ways of installing the package.  If you have permission
-to add files to the installation directory of GAP 4 on your system,
-you may install polycyclic in the `pkg` subdirectory of the GAP
-installation tree.  If you do not, you can also install polycyclic in
-a directory where you have write permissions.  For general advice, see
-also the GAP 4 manual about the installation of GAP packages.
+That's it. You can now see your new package website under
+https://USERNAME.github.io/REPOSITORY/ (of course after
+adjusting USERNAME and REPOSITORY suitably).
 
 
-### Installation in the GAP 4 pkg subdirectory on a Unix system.
+## Using an existing gh-pages branch
 
-We assume that the archive file polycyclic.tar.gz or
-polycyclic.tar is present in pkg and that the current directory is
-pkg.  All that needs to be done is to unpack the archive.
+If you previously set up [GitHubPagesForGAP]() and thus already have a `gh-pages`
+branch, you may on occasion have need to make a fresh clone of your package
+repository, and then also would like to recreate the `gh-pages` directory.
 
-    tar xzf polycyclic.tar.gz 
+The easiest way to do this is to run the `setup-gh-pages` shell script
+provided in the [GitHubPagesForGAP]() from within a git clone of your
+package's GitHub repository.
 
-The tar-command has unpacked the code into a directory called
-`polycyclic` in the current directory. You can check if GAP
-recognizes the polycyclic package by starting GAP and doing the
-following:
+In case this does not work, or if you want to really know what's going
+on, you can also follow the manual instructions described after the fold.
 
-    $ gap4
-    [... startup messages ...]
-    gap> LoadPackage("polycyclic");
-    true
-    gap>     
+------
+
+Users with a recent enough git version (recommended is >= 2.7)
+can do this using a "worktree", via the following commands:
+
+   ```sh
+   git branch gh-pages origin/gh-pages
+   git worktree add gh-pages gh-pages
+   ```
+
+If you are using an older version of git, you can instead use a second clone
+of your repository instead:
+
+   ```sh
+   git clone -b gh-pages https://github.com/USERNAME/REPOSITORY gh-pages
+   ```
 
 
-### Installation in a private directory
+## Adjusting the content and layout
 
-Let's say you would like to install polycyclic in a directory
-called mygap.  Create a subdirectory `pkg` in mygap and move the
-polycyclic archive into that subdirectory.
+[GitHubPagesForGAP]() tries to automatically provide good defaults for
+most packages. However, you can tweak everything about it:
 
-    cd mygap
-    mkdir pkg
-    mv polycyclic.tar.gz pkg
-    cd pkg
-    tar xzf polycyclic.tar.gz
+* To adjust the page layout, edit the files `stylesheets/styles.css`
+and `_layouts/default.html`.
 
-The tar-command has unpacked the code into a directory called
-`polycyclic` in the current directory. You can check if GAP
-recognizes the polycyclic package by starting GAP and doing the
-following.  GAP needs to be told that it should scan the directory
-mygap/pkg for GAP packages.  This is achieved by calling gap with
-the option -l.  Note the semicolon and the single quotes.
+* To adjust the content of the front page, edit `index.md` (resp.
+  for the content of the sidebar, edit `_layouts/default.html`
 
-    $ gap4 -l ';mygap/'
-    [... startup messages ...]
-    gap> LoadPackage("polycyclic");
-    true
-    gap> 
+* You can also add additional pages, in various formats (HTML,
+Markdown, Textile, ...).
+
+For details, please consult the [Jekyll](http://jekyllrb.com/)
+manual.
+
+
+## Testing the site locally
+
+If you would like to test your site on your own machine, without
+uploading it to GitHub (where it is visible to the public), you can do
+so by installing [Jekyll](http://jekyllrb.com/), the static web site
+generator used by GitHub to power GitHub Pages.
+
+Once you have installed Jekyll as described on its homepage, you can
+test the website locally as follows:
+
+1. Go to the `gh-pages` directory we created above.
+
+2. Run jekyll (this launches a tiny web server on your machine):
+
+   ```
+   jekyll serve -w
+   ```
+
+3. Visit the URL http://localhost:4000 in a web browser.
+
+
+## Updating after you made a release
+
+Whenever you make a release of your package (and perhaps more often than
+that), you will want to update your website. The easiest way is to use
+the `release` script from the [ReleaseTools][], which performs all
+the necessary steps for you, except for the very last of actually
+publishing the package (and it can do even that for you, if you
+pass the `-p` option to it).
+
+However, you can also do it manually. The steps for doing it are quite
+similar to the above:
+
+1. Go to the `gh-pages` directory we created above.
+
+2. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
+
+   ```
+   cp -f ../PackageInfo.g ../README* .
+   cp -f ../doc/*.{css,html,js,txt} doc/
+   ```
+
+3. Now run the `update.g` GAP script.
+
+4. Commit and push the work we have just done.
+
+   ```
+   git add PackageInfo.g README* doc/ _data/package.yml
+   git commit -m "Update web pages"
+   git push
+   ```
+
+A few seconds after you have done this, your changes will be online
+under https://USERNAME.github.io/REPOSITORY/ .
+
+
+## Updating to a newer version of GitHubPagesForGAP
+
+Normally you should not have to ever do this. However, if you really want to,
+you can attempt to update to the most recent version of [GitHubPagesForGAP]() via
+the following instructions. The difficulty of such an update depends on how
+much you tweaked the site after initially cloning [GitHubPagesForGAP]().
+
+1. Go to the `gh-pages` directory we created above.
+   Make sure that there are no uncommitted changes, as they will be lost
+   when following these instructions.
+
+2. Make sure the `gh-gap` remote exists and has the correct URL. If in doubt,
+   just re-add it:
+   ```
+   git remote remove gh-gap
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
+   ```
+
+3. Attempt to merge the latest GitHubPagesForGAP.
+   ```
+   git pull gh-gap gh-pages
+   ```
+
+4. If this produced no errors and just worked, skip to the next step.
+   But it is quite likely that you will have conflicts in the file
+   `_data/package.yml`, or in your `README` or `PackageInfo.g` files.
+   These can usually be resolved by entering this:
+   ```
+   cp ../PackageInfo.g ../README* .
+   gap update.g
+   git add PackageInfo.g README* _data/package.yml
+   ```
+   If you are lucky, these were the only conflicts (check with `git status`).
+   If no merge conflicts remain, finish with this command:
+   ```
+   git commit -m "Merge gh-gap/gh-pages"
+   ```
+   If you still have merge conflicts, and don't know how to resolve them, or
+   get stuck some other way, you can abort the merge process and revert to the
+   original state by issuing this command:
+   ```
+   git merge --abort
+   ```
+
+5. You should be done now. Don't forget to push your changes if you want them
+   to become public.
+
+
+## Packages using GitHubPagesForGAP
+
+The majority of packages listed on <https://gap-packages.github.io> use
+[GitHubPagesForGAP](). If you want some specific examples, here are some:
+
+* <https://gap-packages.github.io/anupq>
+* <https://gap-packages.github.io/cvec>
+* <https://gap-packages.github.io/genss>
+* <https://gap-packages.github.io/io>
+* <https://gap-packages.github.io/NormalizInterface>
+* <https://gap-packages.github.io/nq>
+* <https://gap-packages.github.io/orb>
+* <https://gap-packages.github.io/polenta>
+* <https://gap-packages.github.io/recog>
+
+
+## Contact
+
+Please submit bug reports, suggestions for improvements and patches via
+the [issue tracker](https://github.com/gap-system/GitHubPagesForGAP/issues).
+
+You can also contact me directly via [email](max@quendi.de).
+
+Copyright (c) 2013-2025 Max Horn
+
+[GitHubPagesForGAP]: https://github.com/gap-system/GitHubPagesForGAP
+[ReleaseTools]: https://github.com/gap-system/ReleaseTools
