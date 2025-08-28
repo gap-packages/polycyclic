@@ -11,7 +11,7 @@ This file describes changes in the GAP package 'polycyclic'.
     - `Centralizer` could sometimes set an incorrect igs in the computed centralizer,
        which could lead to incorrect results later on
     - `ConjugacyElementsBySeries`
-    - `FrattiniSubgroup` (reported by Heiko Dietrich)
+    - `FrattiniSubgroup` for finite pcp groups (reported by Heiko Dietrich)
     - `IsConjugate` (reported and fixed by Sam Tertooy)
     - `IsNormal` sometimes returned `true` even if the inputs did not normalise each other
     - `OrbitIntegralAction`
