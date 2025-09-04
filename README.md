@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/gap-packages/polycyclic/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/polycyclic/actions?query=workflow%3ACI+branch%3Amaster)
+[![CI](https://github.com/gap-packages/polycyclic/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/polycyclic/actions/workflows/CI.yml)
 [![Code Coverage](https://codecov.io/github/gap-packages/polycyclic/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/polycyclic)
 
 The GAP 4 package `Polycyclic'
