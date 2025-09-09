@@ -12,7 +12,7 @@ basis for working with polycyclic groups defined by polycyclic
 presentations.
 
 To have the full functionality of the package available you need at
-least GAP version 4.5 and the GAP 4 package Alnuth and its dependencies
+least GAP version 4.12 and the GAP 4 package Alnuth and its dependencies
 must be installed.
 
 The features of this package include
