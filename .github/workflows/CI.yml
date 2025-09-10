@@ -18,18 +18,18 @@ concurrency:
 jobs:
   # The CI test job
   test:
-    name: ${{ matrix.gap-branch }}
+    name: ${{ matrix.gap-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        gap-branch:
-          - master
-          - stable-4.14
-          - stable-4.13
-          - stable-4.12
-          - stable-4.11
-          - stable-4.10
+        gap-version:
+          - 'devel'
+          - '4.14'
+          - '4.13'
+          - '4.12'
+          - '4.11'
+          - '4.10'
 
     steps:
       - uses: actions/checkout@v5
@@ -39,8 +39,14 @@ jobs:
           sudo apt-get install pari-gp
       - uses: gap-actions/setup-gap@v3
         with:
-          GAPBRANCH: ${{ matrix.gap-branch }}
-          GAP_PKGS_TO_CLONE: "alnuth"
+          gap-version: ${{ matrix.gap-version }}
+      - name: 'Clone Alnuth'
+        run: |
+          gap -A <<GAPInput
+            LoadPackage("PackageManager");
+            InstallPackage("https://github.com/gap-packages/alnuth.git");
+            QUIT;
+          GAPInput
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v3
       - uses: gap-actions/run-pkg-tests@v3
