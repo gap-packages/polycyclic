@@ -1,7 +1,7 @@
 gap> START_TEST("Test for the intersection algorithm");
 
 #some trivial tests
-gap> G := SmallGroup(48,3);;
+gap> G := PcGroupCode(276070751805136,48);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso, G);;
 gap> T := TrivialSubgroup(H);;
@@ -56,7 +56,7 @@ gap> List(efa, gp->Pcp(Intersection(F,gp)));
   Pcp [  ] with orders [  ] ]
 
 # a working test with a finite group (pc converted to pcp)
-gap> G := SmallGroup(3^2*5^2*7,7);;
+gap> G := PcGroupCode(508835717541181643,3^2*5^2*7);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> g := GeneratorsOfGroup(G);;
 gap> G1 := Subgroup(G, [g[2]*g[1]^2, g[3]*g[4]]);
@@ -85,7 +85,7 @@ gap> Intersection(H1,H2);
 Error, sorry: intersection for non-normal groups not yet installed
 
 # finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
-gap> G := SmallGroup(2^2*3^4*5,8);;
+gap> G := PcGroupCode(45446527802282484537974096,2^2*3^4*5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
 gap> h := GeneratorsOfGroup(H);;
@@ -105,7 +105,7 @@ gap> Image(iso,I);
 Pcp-group with orders [ 3, 3, 3 ]
 
 # finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
-gap> G := SmallGroup(2^2*3^5,250);;
+gap> G := PcGroupCode(15825634281851454495,2^2*3^5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
 gap> h := GeneratorsOfGroup(H);;

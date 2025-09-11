@@ -32,7 +32,7 @@ true
 
 #
 gap> # Check for a bug reported 2012-01-19 by Robert Morse
-gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
+gap> g := PcGroupToPcpGroup(PcGroupCode(61763227873,48));
 Pcp-group with orders [ 2, 2, 2, 2, 3 ]
 gap> # The next two commands used to trigger errors
 gap> NonAbelianTensorSquare(Centre(g));
@@ -156,7 +156,7 @@ gap> cc.gcc;
 #
 gap> # LowerCentralSeriesOfGroup for non-nilpotent pcp-groups used to trigger
 gap> # an infinite recursion
-gap> G := PcGroupToPcpGroup(SmallGroup(6,1));
+gap> G := PcGroupToPcpGroup(PcGroupCode(25,6));
 Pcp-group with orders [ 2, 3 ]
 gap> LowerCentralSeriesOfGroup(G);
 [ Pcp-group with orders [ 2, 3 ], Pcp-group with orders [ 3 ] ]
@@ -392,7 +392,7 @@ Pcp-group with orders [ 4, 3 ]
 # being in the IsAbelian (and even the IsCyclic) filter.
 # <https://github.com/gap-packages/polycyclic/issues/28>
 #
-gap> G:=PcGroupToPcpGroup(SmallGroup(5^6,500));
+gap> G:=PcGroupToPcpGroup(PcGroupCode(976875100002560016404991074,5^6));
 Pcp-group with orders [ 5, 5, 5, 5, 5, 5 ]
 gap> N:=NormalClosure(Group(G.2), Group(G.3));
 Pcp-group with orders [ 5, 5, 5, 5 ]
@@ -509,7 +509,7 @@ true
 # Fix a bug in IsNormal
 # <https://github.com/gap-packages/polycyclic/issues/46>
 #
-gap> g := PcGroupToPcpGroup(SmallGroup(48,1));
+gap> g := PcGroupToPcpGroup(PcGroupCode(61763227873,48));
 Pcp-group with orders [ 2, 2, 2, 2, 3 ]
 gap> S := SylowSubgroup( g, 2 );
 Pcp-group with orders [ 2, 2, 2, 2 ]
@@ -581,7 +581,7 @@ id
 # Allow Centralizer to fall back on generic GAP methods
 # <https://github.com/gap-packages/polycyclic/issues/64>
 #
-gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> G := PcGroupToPcpGroup( PcGroupCode( 520, 16 ) );;
 gap> g := G.1*G.3*G.4;;
 gap> H := Subgroup( G,[ G.2, G.3, G.4 ] );;
 gap> Centralizer( H, g );
@@ -591,7 +591,7 @@ Pcp-group with orders [ 2, 2 ]
 # Fix a bug in CentralizerBySeries
 # <https://github.com/gap-packages/polycyclic/issues/65>
 #
-gap> G := PcGroupToPcpGroup( SmallGroup( 16, 11 ) );;
+gap> G := PcGroupToPcpGroup( PcGroupCode( 520, 16 ) );;
 gap> g := G.2*G.3*G.4;;
 gap> cc := ConjugacyClass( G, g );;
 gap> C := Centralizer( cc );
@@ -642,7 +642,7 @@ Pcp-group with orders [ 2, 0 ]
 # Fix bug in FrattiniSubgroup
 # Reported by Heiko Dietrich (2024-02-19)
 #
-gap> G:=PcGroupToPcpGroup(SmallGroup(11025,6));;
+gap> G:=PcGroupToPcpGroup(PcGroupCode(65691468891906554870039,11025));;
 gap> F:=FrattiniSubgroup(G);;
 gap> Size(F);  # used to produce a group of order 49
 21
@@ -651,7 +651,7 @@ gap> Size(F);  # used to produce a group of order 49
 # Fixed a bug in IsConjugate for a finite pcp-group
 # <https://github.com/gap-packages/polycyclic/issues/70>
 #
-gap> G := PcGroupToPcpGroup( SmallGroup( 1600, 10260 ) );;
+gap> G := PcGroupToPcpGroup( PcGroupCode( 6972476423700447941356396189131961283384217049529126656, 1600 ) );;
 gap> G := Subgroup( G, [ G.1, G.2, G.3, G.4 ] );;
 gap> g := G.2*G.4;; h := g^(G.1*G.3);;
 gap> IsConjugate( G, g, h );
