@@ -123,7 +123,7 @@ gap> Igs(gen);
 # Fix a bug in AddToIgs
 # See https://github.com/gap-packages/polycyclic/issues/66
 #
-gap> G := PcGroupToPcpGroup( SmallGroup( 36, 9 ) );;
+gap> G := PcGroupToPcpGroup( PcGroupCode( 14981017363, 36 ) );;
 gap> gensG := [ G.1, G.4 ];;
 gap> G = Subgroup( G, gensG );
 true
@@ -141,7 +141,7 @@ g3^3
 #
 # third example for issue #66
 #
-gap> H := SmallGroup( 36, 9 );;
+gap> H := PcGroupCode( 14981017363, 36 );;
 gap> gensH := [ H.1, H.4 ];;
 gap> H = Subgroup( H, gensH );
 true
