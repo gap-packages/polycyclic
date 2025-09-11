@@ -38,17 +38,6 @@ jobs:
       - uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
-      - name: 'Update Alnuth if necessary'
-        run: |
-          # PARI/GAP 2.13 and later require Alnuth 3.2.0 or later
-          # So we install version 3.2.0 if the current version is older
-          gap -A <<GAPInput
-            if TestPackageAvailability("alnuth","3.2.0") = fail then
-              LoadPackage("PackageManager");
-              InstallPackage("https://github.com/gap-packages/alnuth/releases/download/v3.2.0/alnuth-3.2.0.tar.gz",false);
-            fi;
-            QUIT;
-          GAPInput
       - uses: gap-actions/build-pkg@v2
       - uses: gap-actions/run-pkg-tests@v4
       - uses: gap-actions/run-pkg-tests@v4
