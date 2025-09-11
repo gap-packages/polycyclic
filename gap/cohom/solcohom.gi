@@ -138,7 +138,7 @@ end );
 
 BindGlobal( "PermuteMat", function( M, rho, sig )
     local N, i, j;
-    N := MutableCopyMat(M);
+    N := MutableCopyMatrix(M);
     for i in [1..Length(M)] do
         for j in [1..Length(M[1])] do
             N[i][j] := M[i^sig][j^rho];

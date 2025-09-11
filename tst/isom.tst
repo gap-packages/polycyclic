@@ -75,17 +75,18 @@ false
 # Test with dihedral group
 #
 gap> K:=DihedralGroup(IsPcpGroup, 16);;
-gap> IdSmallGroup(K);
-[ 16, 7 ]
 gap> iso:=IsomorphismPermGroup(K);;
-gap> IdSmallGroup(Image(iso));
-[ 16, 7 ]
+gap> img:=Image(iso);;
+gap> Size(img)=16 and IsDihedralGroup(img);
+true
 gap> iso:=IsomorphismPcGroup(K);;
-gap> IdSmallGroup(Image(iso));
-[ 16, 7 ]
+gap> img:=Image(iso);;
+gap> Size(img)=16 and IsDihedralGroup(img);
+true
 gap> iso:=IsomorphismFpGroup(K);;
-gap> IdSmallGroup(Image(iso));
-[ 16, 7 ]
+gap> img:=Image(iso);;
+gap> Size(img)=16 and IsDihedralGroup(img);
+true
 
 #
 gap> STOP_TEST( "homs.tst", 10000000);

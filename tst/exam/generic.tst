@@ -25,17 +25,47 @@ true
 gap> hom:=GroupHomomorphismByImages( G, Group(G!.mats), Igs(G), G!.mats);;
 
 #
-gap> IdGroup(BlowUpPcpPGroup(SmallGroup(2,1)));
-[ 2, 1 ]
-gap> IdGroup(BlowUpPcpPGroup(SmallGroup(4,1)));
-[ 8, 2 ]
-gap> IdGroup(BlowUpPcpPGroup(SmallGroup(4,2)));
-[ 8, 5 ]
-gap> List([1..5], i->IdGroup(BlowUpPcpPGroup(SmallGroup(8,i))));
-[ [ 128, 1601 ], [ 128, 2319 ], [ 128, 2320 ], [ 128, 2321 ], [ 128, 2328 ] ]
-gap> IdGroup(BlowUpPcpPGroup(SmallGroup(3,1)));
-[ 9, 2 ]
-gap> BlowUpPcpPGroup(SmallGroup(9,1));
+gap> G:=BlowUpPcpPGroup(PcGroupCode(0,2));;
+gap> Size(G);
+2
+gap> G:=BlowUpPcpPGroup(PcGroupCode(5,4));;
+gap> IsAbelian(G);
+true
+gap> AbelianInvariants(G);
+[ 2, 4 ]
+gap> G:=BlowUpPcpPGroup(PcGroupCode(0,4));;
+gap> IsAbelian(G);
+true
+gap> AbelianInvariants(G);
+[ 2, 2, 2 ]
+gap> G:=BlowUpPcpPGroup(PcGroupCode(323,8));;
+gap> IsAbelian(G);
+true
+gap> AbelianInvariants(G);
+[ 2, 2, 4, 8 ]
+gap> G:=BlowUpPcpPGroup(PcGroupCode(33,8));;
+gap> IsAbelian(G);
+true
+gap> AbelianInvariants(G);
+[ 2, 2, 2, 2, 2, 4 ]
+gap> G:=BlowUpPcpPGroup(PcGroupCode(36,8));;
+gap> fac:=DirectFactorsOfGroup(G);;
+gap> Number(fac,F->Size(F)=2);
+4
+gap> Number(fac,F->IsDihedralGroup(F) and Size(F)=8);
+1
+gap> G:=BlowUpPcpPGroup(PcGroupCode(2343,8));;
+gap> fac:=DirectFactorsOfGroup(G);;
+gap> Number(fac,F->Size(F)=2);
+4
+gap> Number(fac,F->IsQuaternionGroup(F) and Size(F)=8);
+1
+gap> G:=BlowUpPcpPGroup(PcGroupCode(0,3));;
+gap> IsAbelian(G);
+true
+gap> AbelianInvariants(G);
+[ 3, 3 ]
+gap> BlowUpPcpPGroup(PcGroupCode(5,9));
 Pcp-group with orders [ 3, 3, 3, 3, 3, 3, 3, 3 ]
-gap> BlowUpPcpPGroup(SmallGroup(9,2));
+gap> BlowUpPcpPGroup(PcGroupCode(0,9));
 Pcp-group with orders [ 3, 3, 3, 3, 3, 3, 3, 3 ]

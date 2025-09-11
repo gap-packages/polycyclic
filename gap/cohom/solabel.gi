@@ -234,7 +234,7 @@ BindGlobal( "SolveSystemGauss", function( A, e, p, b )
     # solve mod p
     AA := A*One(F); ConvertToMatrixRepNC(AA, F);
     SE := SemiEchelonMatTransformation(AA);
-    SS := MutableCopyMat(SE.relations); TriangulizeMat(SS);
+    SS := MutableCopyMatrix(SE.relations); TriangulizeMat(SS);
     if f then sl := FindSpecialSolution(SE, b*One(F)); fi;
 
     # extract info
@@ -267,7 +267,7 @@ BindGlobal( "SolveSystemGauss", function( A, e, p, b )
         # apply gauss
         W := J*One(F); ConvertToMatrixRepNC(W, F);
         M := SemiEchelonMatTransformation(W);
-        S := MutableCopyMat(M.relations); TriangulizeMat(S);
+        S := MutableCopyMatrix(M.relations); TriangulizeMat(S);
 
         # consider special solution
         if f then
