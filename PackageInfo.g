@@ -123,7 +123,7 @@ PackageDoc     := rec(
 ),
 
 Dependencies    := rec(
-  GAP                    := ">= 4.10",
+  GAP                    := ">= 4.12",
   NeededOtherPackages    := [["alnuth", "3.0"],
                              ["autpgrp","1.6"]],
   SuggestedOtherPackages := [ ],

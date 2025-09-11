@@ -88,7 +88,7 @@ BindGlobal( "InverseCohMapping", function( coh, base )
 
     # extend base to full lattice
     dep := List( base, PositionNonZero );
-    new := MutableCopyMat( base );
+    new := MutableCopyMatrix( base );
     for i in [1..l] do
         if not i in dep then Add( new, mat[i] ); fi;
     od;
