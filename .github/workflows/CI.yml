@@ -51,9 +51,9 @@ jobs:
             fi;
             QUIT;
           GAPInput
-      - uses: gap-actions/build-pkg@v1
-      - uses: gap-actions/run-pkg-tests@v3
-      - uses: gap-actions/run-pkg-tests@v3
+      - uses: gap-actions/build-pkg@v2
+      - uses: gap-actions/run-pkg-tests@v4
+      - uses: gap-actions/run-pkg-tests@v4
         with:
           only-needed: true
       - uses: gap-actions/process-coverage@v2
