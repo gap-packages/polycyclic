@@ -94,7 +94,7 @@ Pcp-group with orders [ 5, 3, 3, 3, 2 ]
 gap> H2 := Subgroup(H,[h[1]*h[7], h[4]*h[5]]);
 Pcp-group with orders [ 3, 3, 3, 3 ]
 gap> J := Intersection(H1,H2);
-Error, sorry: intersection for non-normal groups not yet installed
+Pcp-group with orders [ 3, 3, 3 ]
 gap> G1 := PreImagesNC(iso,H1);
 Group([ f2, f3*f4, f6 ])
 gap> G2 := PreImagesNC(iso,H2);
@@ -114,7 +114,7 @@ Pcp-group with orders [ 2, 3, 3, 3 ]
 gap> H2 := Subgroup(H,[h[1]*h[7], h[4]*h[5]^2]);
 Pcp-group with orders [ 2, 3, 3, 3 ]
 gap> Intersection(H1,H2);
-Error, sorry: intersection for non-normal groups not yet installed
+Pcp-group with orders [ 3, 3 ]
 gap> G1 := PreImagesNC(iso,H1);
 Group([ f2, f3*f4, f6^2 ])
 gap> G2 := PreImagesNC(iso,H2);
@@ -123,6 +123,16 @@ gap> I:= Intersection(G1,G2);
 Group([ f6^2, f7^2 ])
 gap> Image(iso,I);
 Pcp-group with orders [ 3, 3 ]
+
+# finite - infinite combination example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+gap> G := DirectProduct(ExamplesOfSomePcpGroups(8), PcGroupToPcpGroup(PcGroupCode(2835879971,72)));;
+gap> g := GeneratorsOfGroup(G);;
+gap> H1 := Subgroup(G,[g[6]*g[9]^2]);
+Pcp-group with orders [ 2, 2 ]
+gap> H2 := Subgroup(G,[g[6],g[2]*g[7]]);
+Pcp-group with orders [ 0, 2, 2 ]
+gap> Intersection(H1,H2);
+Pcp-group with orders [ 2 ]
 
 #
 gap> STOP_TEST( "inters.tst", 10000000);
