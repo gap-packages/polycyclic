@@ -314,11 +314,10 @@ BindGlobal( "ExtendRep", function( col, new, mats)
 
         for j in [ last_inds[i]..Length( mats )] do
           m:= asbas[i]*mats[j];
-          if not IsContainedInSpan( sp, m ) then
+          if CloseMutableBasis( sp, m ) then
             ready:= false;
             Add( asbas, m );
             Add( last_inds, j );
-            CloseMutableBasis( sp, m );
           fi;
         od;
 
@@ -342,9 +341,8 @@ BindGlobal( "ExtendRep", function( col, new, mats)
       for j in [1..dim] do
 
         cf:= List( asbas, m -> m[j][i] );
-        if not IsContainedInSpan( sp, cf ) then
+        if CloseMutableBasis( sp, cf ) then
           Add( cc, [i,j] );
-          CloseMutableBasis( sp, cf );
         fi;
       od;
     od;
