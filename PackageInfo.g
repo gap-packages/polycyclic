@@ -9,8 +9,8 @@ SetPackageInfo( rec(
 
 PackageName := "Polycyclic",
 Subtitle    := "Computation with polycyclic groups",
-Version     := "2.17",
-Date        := "28/08/2025", # dd/mm/yyyy format
+Version     := "2.18",
+Date        := "09/04/2026", # dd/mm/yyyy format
 License     := "GPL-2.0-or-later",
 
 Persons          := [
@@ -164,7 +164,7 @@ Keywords := [
 AutoDoc := rec(
     TitlePage := rec(
         Copyright := """<Index>License</Index>
-&copyright; 2003-2025 by Bettina Eick, Max Horn and Werner Nickel<P/>
+&copyright; 2003-2026 by Bettina Eick, Max Horn and Werner Nickel<P/>
 The &Polycyclic; package is free software;
 you can redistribute it and/or modify it under the terms of the
 <URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL>
@@ -179,4 +179,3 @@ users and developers.""",
 ),
 
 ));
-

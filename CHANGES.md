@@ -1,5 +1,11 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+2.18 (2026-04-09)
+  - Let `Centralizer( U, g )` work if `g` is not contained in `U`
+  - Improve `Intersection` to work in more cases (instead of erroring out),
+    specifically if one of the arguments is finite
+  - Various janitorial changes
+
 2.17 (2025-08-28)
   - Add a method `SemidirectProduct( N, alpha, G)` where `N` and `G` are both PcpGroups
     (contributed by Sam Tertooy)
