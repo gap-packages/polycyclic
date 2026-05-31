@@ -377,7 +377,7 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
         Q := D.coltrans;
         D := D.normal;
         d := [1..Length(M[1])] * 0;
-        d{List( D, r->PositionNot( r, 0 ) )} :=
+        d{List( D, r->PositionNonZero( r ) )} :=
           List( D, r->First( r, e->e<>0 ) );
     fi;
 
