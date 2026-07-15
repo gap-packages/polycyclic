@@ -680,7 +680,10 @@ rec( prei := g2, stab := Pcp-group with orders [  ] )
 gap> SchurCovers( CyclicGroup( 4 ) );
 [ <pc group of size 4 with 2 generators> ]
 
+#
 # Fix a bug in AddToIgsParallel
+# <https://github.com/gap-packages/polycyclic/issues/118>
+#
 gap> G := ExamplesOfSomePcpGroups( 1 );;
 gap> H := Subgroup( G, [ G.1 ^ 2, G.1 ^ 3 * G.3 ] );;
 gap> IsOne( GroupHomomorphismByImages( H, H ) );
