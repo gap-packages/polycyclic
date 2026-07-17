@@ -19,6 +19,54 @@ BindGlobal( "UpdateCounterPara", function( ind, c )
     return i + 1;
 end );
 
+#############################################################################
+##
+#F NormedPcpElementPara( g, gg )
+##
+## Parallel version of NormedPcpElement.
+##
+BindGlobal( "NormedPcpElementPara", function( g, gg )
+    local e, h, hh;
+    e := NormingExponent( g );
+    h := g ^ e;
+    h!.normed := true;
+    hh := gg ^ e;
+    return [ h, hh ];
+end );
+
+#############################################################################
+##
+#F ReduceExpoPara( ind, gen, indd, pgen, rel )
+##
+## Parallel version of  ReduceExpo.
+##
+BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
+    local i, j, a, b, q, f, k;
+    for i in [ 1 .. Length( ind ) ] do
+        if not IsBool( ind[i] ) and rel[i] = 0 then
+            b := LeadingExponent( ind[i] );
+            for j in [ 1 .. i - 1 ] do
+                if not IsBool( ind[j] ) then
+                    a := Exponents( ind[j] )[i];
+                    q := QuoInt( a, b );
+                    if q <> 0 then
+                        ind[j] := ind[j] * ind[i] ^ (- q);
+                        indd[j] := indd[j] * indd[i] ^ (- q);
+                    fi;
+                fi;
+            od;
+            for j in [ 1 .. Length( gen ) ] do
+                a := Exponents( gen[j] )[i];
+                q := QuoInt( a, b );
+                if q <> 0 then
+                    gen[j] := gen[j] * ind[i] ^ (- q);
+                    pgen[j] := pgen[j] * indd[i] ^ (- q);
+                fi;
+            od;
+        fi;
+    od;
+    return;
+end );
 
 #############################################################################
 ##
@@ -29,8 +77,8 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, id, todo, tododo, ind, indd, g, gg, d, h, hh, k,
-          eg, eh, e, changed, c, i, r, sub;
+    local coll, rels, n, todo, tododo, ind, indd, g, gg, d, h, hh, k,
+          e, c, i, r, sub, val, j, f, a, b, nrmd;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -38,90 +86,118 @@ function( pcs, gens, ppcs, pgens )
     coll := Collector( gens[1] );
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
-    id   := gens[1]^0;
+    c    := n+1;
 
-    # create new list from pcs/ppcs
-    ind  := List( [1..n], x -> false );
-    indd := List( [1..n], x -> false );
+    # set up
+    ind  := ListWithIdenticalEntries(n, false);
+    indd := ListWithIdenticalEntries(n, false);
     for i in [1..Length(pcs)] do
         d := Depth( pcs[i] );
         ind[d]  := pcs[i];
         indd[d] := ppcs[i];
     od;
 
-    # set counter
-    c := UpdateCounterPara( ind, n+1 );
-
-    # create a to-do list from gens/pgens
-    sub   := Filtered( [1..Length(gens)], x -> Depth(gens[x]) < c );
-    todo  := gens{sub};
-    tododo:= pgens{sub};
+    # do a reduction step
+    c      := TailLimit(ind, c);
+    sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
+    sub    := Filtered(sub, i -> not gens[i] in gens{[1..i-1]});
+    todo   := gens{sub};
+    tododo := pgens{sub};
+    val    := List(todo, x -> IGSValFun(x));
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
-        g  := Remove(todo);
-        gg := Remove(tododo);
+        j := Position(val, Minimum(val));
+        g  := Remove(todo, j);
+        gg := Remove(tododo, j);
         d  := Depth( g );
+        f := [];
 
         # shift g into ind
-        changed := [];
         while d < c do
+
             h  := ind[d];
             hh := indd[d];
-            if not IsBool( h ) then
+            r := FactorOrder(g);
+            a := LeadingExponent(g);
 
-                # reduce g with h
-                eg := LeadingExponent( g );
-                eh := LeadingExponent( h );
-                e  := Gcdex( eg, eh );
-
-                # adjust ind[d] by gcd
-                ind[d]  := (g^e.coeff1) * (h^e.coeff2);
-                indd[d] := (gg^e.coeff1) * (hh^e.coeff2);
-                if e.coeff1 <> 0 then Add( changed, d ); fi;
-
-                # adjust g
-                g  := (g^e.coeff3) * (h^e.coeff4);
-                gg := (gg^e.coeff3) * (hh^e.coeff4);
-            else
-
-                # just add g into ind
-                ind[d]  := g;
-                indd[d] := gg;
-                g  := g^0;
-                gg := gg^0;
-                Add( changed, d );
-            fi;
-            c := UpdateCounterPara( ind, c );
-            d := Depth( g );
-        od;
-
-        for d in changed do
-            g := ind[d];
-            gg := indd[d];
-            if d <= Length( rels ) and rels[d] > 0 then
-                r := RelativeOrderPcp( g );
-                k := g ^ r;
-                if Depth(k) < c then
-                    Add( todo, k );
-                    Add( tododo, gg^r );
+            # shift in
+            if IsBool( h ) then
+                nrmd := NormedPcpElementPara( g, gg );
+                ind[d]  := nrmd[1];
+                indd[d] := nrmd[2];
+                Add(f,d);
+                h  := ind[d];
+                hh := indd[d];
+            elif not IsPrime(r) then
+                b := LeadingExponent(h);
+                e := Gcdex(a, b);
+                if e.coeff1 <> 0 then 
+                    nrmd := NormedPcpElementPara( (g^e.coeff1)*(h^e.coeff2), (gg^e.coeff1)*(hh^e.coeff2) );
+                    ind[d]  := nrmd[1];
+                    indd[d] := nrmd[2];
+                    Add(f,d);
                 fi;
             fi;
-            for i in [1..Length(ind)] do
-                if not IsBool( ind[i] ) then
-                    k := Comm( g, ind[i] );
+
+            # divide off
+            if g = h then 
+                g  := g^0;
+                gg := gg^0;
+            else
+                b  := LeadingExponent(h);
+                e  := Gcdex(a,b);
+                g  := g^e.coeff3 * h^e.coeff4;
+                gg := gg^e.coeff3 * hh^e.coeff4;
+            fi;
+            d := Depth(g);
+        od;
+
+        # adjust
+        c := TailLimit(ind, c);
+        ReduceExpoPara(ind,  todo, indd, tododo,  rels);
+
+        # add powers and commutators
+        for d in f do
+            g :=  ind[d];
+            gg := indd[d];
+            if rels[d] > 0 then
+                r := RelativeOrderPcp(g);
+                k := g ^ r;
+                if Depth(k) < c then
+                    Add(todo,   k);
+                    Add(tododo, gg^r);
+                fi;
+            fi;
+            for j in [1..n] do
+                if not IsBool(ind[j]) then
+                    k := Comm(g, ind[j]);
                     if Depth(k) < c then
-                        Add( todo, k );
-                        Add( tododo, Comm( gg, indd[i] ) );
+                        Add(todo, k);
+                        Add(tododo, Comm(gg, indd[j]));
+                    fi;
+                    if rels[j] = 0 then
+                        k := Comm(g, ind[j]^-1);
+                        if Depth(k) < c then
+                            Add(todo, k);
+                            Add(tododo, Comm(gg, indd[j]^-1));
+                        fi;
                     fi;
                 fi;
             od;
         od;
+
+        # reduce
+        sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
+        todo   := todo{sub};
+        tododo := tododo{sub};
+        val    := List(todo, x -> IGSValFun(x));
+        Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
-    # return resulting list
-    return [Filtered( ind, x -> not IsBool( x ) ),
-            Filtered( indd, x -> not IsBool( x ) ) ];
+    ind  := Filtered(ind,  x -> not IsBool(x));
+    indd := Filtered(indd, x -> not IsBool(x));
+    return [ind, indd];
 end );
 
 #############################################################################
