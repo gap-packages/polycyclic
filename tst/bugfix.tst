@@ -693,7 +693,6 @@ true
 # Fix bugs in NormalizerPcpGroup
 # <https://github.com/gap-packages/polycyclic/issues/122>
 #
-
 gap> tmp := USE_CANONICAL_PCS@Polycyclic;;
 gap> USE_CANONICAL_PCS@Polycyclic := true;;
 gap> H := Group( [ (5,6,8,10)(7,9,11,12)(13,15,14,16),
