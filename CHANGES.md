@@ -1,5 +1,11 @@
 This file describes changes in the GAP package 'polycyclic'.
 
+NEXT (YYYY-MM-DD)
+  - Fix bugs, where wrong results could be returned or errors could be thrown,
+    in the following functions:
+    - `NormalizerPcpGroup`
+  - Various janitorial changes
+
 2.18 (2026-04-09)
   - Let `Centralizer( U, g )` work if `g` is not contained in `U`
   - Improve `Intersection` to work in more cases (instead of erroring out),
