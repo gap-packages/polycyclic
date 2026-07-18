@@ -12,37 +12,6 @@
 
 #############################################################################
 ##
-#F UpdateCounter( ind, gens, c )  . . . . . . . . . . . . small help function
-##
-BindGlobal( "UpdateCounter", function( ind, gens, c )
-    local i, g;
-
-    # first reset c by ind
-    i := c - 1;
-    while i > 0 and not IsBool(ind[i]) and LeadingExponent(ind[i]) = 1 do
-        i := i - 1;
-    od;
-
-    if IsSortedList(gens) and not IsEmpty(gens) and 
-       Depth(gens[Length(gens)]) < i then
-        return i + 1;
-    fi;
-
-    # now try to add elements from gens
-    repeat
-        g := First( gens, x -> Depth(x) = i and LeadingExponent(x) = 1 );
-        if not IsBool( g ) then
-            ind[i] := g;
-            i := i - 1;
-        fi;
-    until IsBool( g );
-
-    # return value for counter
-    return i + 1;
-end );
-
-#############################################################################
-##
 #F TailLimit
 ##
 BindGlobal( "TailLimit", function( ind, c )
@@ -182,7 +151,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
 
     # loop over to-do list until it is empty
     while Length(todo) > 0 and c > 1 do
-        j := Position(val, Minimum(val));
+        j := PositionMinimum(val);
         g := Remove(todo, j);
         d := Depth(g);
         f := [];
@@ -218,11 +187,14 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         # add powers and commutators
         for d in f do
             g := ind[d];
-            if rels[d] > 0 then
+            if d < c-1 and rels[d] > 0 then
                 k := g ^ RelativeOrderPcp(g);
                 if Depth(k) < c then Add(todo, k); fi;
             fi;
             for j in [1..n] do
+                if j = d or Minimum( d, j ) >= c-1 then
+                    continue;
+                fi;
                 if not IsBool(ind[j]) then
                     k := Comm(g, ind[j]);
                     if Depth(k) < c then Add(todo, k); fi;
@@ -344,7 +316,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
-        j := Position(val, Minimum(val));
+        j := PositionMinimum(val);
         g := Remove(todo, j);
         d := Depth( g );
 

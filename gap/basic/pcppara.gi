@@ -8,19 +8,6 @@
 
 #############################################################################
 ##
-#F UpdateCounterPara( ind, c )  . . . . . . . . . . . . small help function
-##
-BindGlobal( "UpdateCounterPara", function( ind, c )
-    local i;
-    i := c - 1;
-    while i > 0 and not IsBool(ind[i]) and LeadingExponent(ind[i]) = 1 do
-        i := i - 1;
-    od;
-    return i + 1;
-end );
-
-#############################################################################
-##
 #F NormedPcpElementPara( g, gg )
 ##
 ## Parallel version of NormedPcpElement.
@@ -153,7 +140,7 @@ function( pcs, gens, ppcs, pgens )
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
-        j := Position(val, Minimum(val));
+        j := PositionMinimum(val);
         g  := Remove(todo, j);
         gg := Remove(tododo, j);
         d  := Depth( g );
@@ -201,7 +188,7 @@ function( pcs, gens, ppcs, pgens )
         for d in f do
             g :=  ind[d];
             gg := indd[d];
-            if rels[d] > 0 then
+            if d < c-1 and rels[d] > 0 then
                 r := RelativeOrderPcp(g);
                 k := g ^ r;
                 if Depth(k) < c then
@@ -210,6 +197,9 @@ function( pcs, gens, ppcs, pgens )
                 fi;
             fi;
             for j in [1..n] do
+                if j = d or Minimum( d, j ) >= c-1 then
+                    continue;
+                fi;
                 if not IsBool(ind[j]) then
                     k := Comm(g, ind[j]);
                     if Depth(k) < c then
