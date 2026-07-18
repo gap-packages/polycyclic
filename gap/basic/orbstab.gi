@@ -203,7 +203,7 @@ BindGlobal( "RandomPcpOrbitStabilizer", function( e, pcp, act, op )
                 Add( T, t * gens[j] );
 
                 if Length(O) > 500 then
-                    Print( "#I  Orbit longer than limit: exiting.\n" );
+                    Info( InfoIntStab, 1, "orbit longer than limit: exiting.");
                     return rec( orbit := O, stab := S );
                 fi;
             else
@@ -217,7 +217,7 @@ BindGlobal( "RandomPcpOrbitStabilizer", function( e, pcp, act, op )
                         count := 0;
                     fi;
                     if count > 100 then
-                        Print( "#I  Stabilizer not increasing: exiting.\n" );
+                        Info( InfoIntStab, 1, "stabilizer not increasing: exiting.");
                         return rec( orbit := O, stab := S );
                     fi;
                 fi;
@@ -226,7 +226,7 @@ BindGlobal( "RandomPcpOrbitStabilizer", function( e, pcp, act, op )
 
         i := i+1;
     od;
-    Print( "#I  Orbit calculation complete.\n" );
+    Info( InfoIntStab, 1, "orbit calculation complete.");
     return rec( orbit := O, stab := S );
 end );
 
@@ -245,7 +245,7 @@ BindGlobal( "RandomCentralizerPcpGroup", function( G, g )
             stab := RandomPcpOrbitStabilizer( h, stab, stab, OnPoints ).stab;
         od;
     else
-        Print("g must be a subgroup or an element of G \n");
+        Error("g must be a subgroup or an element of G \n");
     fi;
     return Subgroup( G, stab );
 end );
