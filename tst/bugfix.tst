@@ -766,4 +766,19 @@ gap> I1 = I2 and I2 = T;
 true
 
 #
+# Another check for AddToIgs
+# Taken from p81 of the PhD thesis "Advanced Algorithms For Induced Sequences  
+# And Residual Nilpotence In Polycyclic Groups" by M. Mayer.
+#
+gap> coll := FromTheLeftCollector( 3 );;
+gap> SetConjugate( coll, 2, 1, [ 2, 1, 3, 3 ] );
+gap> SetConjugate( coll, 3, 1, [ 3, -1 ] );
+gap> SetConjugate( coll, 3, 2, [ 3, -1 ] );
+gap> UpdatePolycyclicCollector( coll );
+gap> G := PcpGroupByCollector( coll );;
+gap> V3 := Subgroup( G, [ G.1^7 * G.2^2 * G.3^-1, G.1^11 * G.2^-2 * G.3^-10 ] );;
+gap> Cgs( V3 );
+[ g1*g2^26*g3^8, g2^36*g3^9, g3^18 ]
+
+#
 gap> STOP_TEST( "bugfix.tst" );
