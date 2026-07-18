@@ -3,6 +3,35 @@
 #W  grpint.gi                  Polycyc                           Bettina Eick
 ##
 
+# Variant of ReduceExpoPara, but with IsOne's instead of IsBool's
+BindGlobal( "ReduceExpoParaInt", function( ind, indd, gen, rel )
+    local i, j, a, b, q, f, k;
+
+    for i in [1..Length(ind)] do
+        if not IsOne(ind[i]) and rel[i]=0 then
+            b := LeadingExponent(ind[i]);
+            for j in [1..i-1] do
+                if not IsOne( ind[j] ) then
+                    a := Exponents(ind[j])[i];
+                    q := QuoInt(a,b);
+                    if q <> 0 then
+                        ind[j] := ind[j]*ind[i]^-q;
+                        indd[j] := indd[j]*indd[i]^-q;
+                    fi;
+                fi;
+            od;
+            for j in [1..Length(gen)] do
+                a := Exponents(gen[j][1])[i];
+                q := QuoInt(a,b);
+                if q <> 0 then
+                    gen[j][1] := gen[j][1]*ind[i]^-q;
+                    gen[j][2] := gen[j][2]*indd[i]^-q;
+                fi;
+            od;
+        fi;
+    od;
+end );
+
 #############################################################################
 ##
 #F NormalIntersection( N, U ) . . . . . . . . . . . . . . . . . . .  U \cap N
@@ -18,12 +47,15 @@
 InstallMethod( NormalIntersection, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( N, U )
-    local G, igs, igsN, igsU, n, s, I, id, ls, rs, is, g, d, al, ar, e, tm;
+    local G, coll, rels, igs, igsN, igsU, n, s, todo, I, id, ls, rs, is, g, d,
+          al, ar, e, tm, pairs;
 
 	# get common overgroup of N and U
-	G := PcpGroupByCollector( Collector( N ) );
+    coll := Collector( N );
+    rels := RelativeOrders( coll );
+	G    := PcpGroupByCollector( coll );
 
-    igs  := Igs(G);
+    igs  := Igs( G );
     igsN := Cgs( N );
     igsU := Cgs( U );
     n    := Length( igs );
@@ -36,7 +68,7 @@ function( N, U )
     fi;
 
     # if N or U are equal to G
-    if Length( igsN ) = n and ForAll(igsN, x -> LeadingExponent(x) = 1) then
+    if Length(igsN) = n and ForAll(igsN, x -> LeadingExponent(x) = 1) then
         return U;
     elif Length(igsU) = n and ForAll(igsU, x -> LeadingExponent(x) = 1) then
         return N;
@@ -62,31 +94,31 @@ function( N, U )
         rs[d] := g;
     od;
 
-    I := [];
+    todo := [];
     for g in igsN do
         d := Depth( g );
         if ls[d] = id then
             ls[d] := g;
         else
-            Add( I, [ g, id ] );
+            Add( todo, [ g, id ] );
         fi;
     od;
 
-    # enter the pairs [ ar, al ] of <I> into [ <ls>, <rs> ]
-    for tm in I do
+    # enter the pairs [ ar, al ] of <todo> into [ <ls>, <rs> ]
+    while not IsEmpty( todo ) do
+        tm := Remove( todo, 1 );
         al := tm[1];
         ar := tm[2];
         d  := Depth( al );
 
         # compute sum and intersection
         while al <> id and ls[d] <> id do
-            e := Gcdex( LeadingExponent(ls[d]), LeadingExponent(al) );
-            tm := ls[d]^e.coeff1 * al^e.coeff2;
-            al := ls[d]^e.coeff3 * al^e.coeff4;
-            ls[d] := tm;
-            tm := rs[d]^e.coeff1 * ar^e.coeff2;
-            ar := rs[d]^e.coeff3 * ar^e.coeff4;
-            rs[d] := tm;
+            pairs := GcdPcpPara( ls[d], al, rs[d], ar );
+            ls[d] := pairs[1];
+            al := pairs[2];
+            rs[d] := pairs[3];
+            ar := pairs[4];
+            ReduceExpoParaInt( ls, rs, todo, rels );
             d := Depth( al );
         od;
 
@@ -100,7 +132,7 @@ function( N, U )
             if tm > 0 then
                 al := al^tm;
                 ar := ar^tm;
-                Add( I, [ al, ar ] );
+                Add( todo, [ al, ar ] );
             fi;
 
         # we have a new intersection generator
@@ -110,9 +142,9 @@ function( N, U )
             # filter it into the polycyclic sequence `is`
             d := Depth( ar );
             while ar <> id and is[d] <> id  do
-                e  := Gcdex(LeadingExponent( is[d] ), LeadingExponent( ar ));
-                tm := is[d]^e.coeff1 * ar^e.coeff2;
-                ar := is[d]^e.coeff3 * ar^e.coeff4;
+                pairs := GcdPcp( is[d], ar );
+                tm := pairs[1];
+                ar := pairs[2];
                 is[d] := tm;
                 d  := Depth( ar );
             od;
@@ -124,6 +156,8 @@ function( N, U )
 
     # sum := Filtered( ls, x -> x <> id );
     I := Filtered( is, x -> x <> id );
+	# Not sure if necessary, but why not (?)
+    ReduceExpo( I, [], rels );
     return Subgroup( G, I );
 end );
 

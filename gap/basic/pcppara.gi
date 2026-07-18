@@ -34,6 +34,52 @@ BindGlobal( "NormedPcpElementPara", function( g, gg )
     return [ h, hh ];
 end );
 
+####################################################################
+##
+#F GcdPcpPara
+##
+BindGlobal( "GcdPcpPara", function(g, h, i, j)
+    local x, y, a, b, q, r, t, z, w, u;
+
+    x := g;
+    y := h;
+
+    a := LeadingExponent(x);
+    b := LeadingExponent(y);
+
+    z := i;
+    w := j;
+    
+    if a < 0 then
+        x := x^-1;
+        z := z^-1;
+        a := LeadingExponent(x);
+    fi;
+    if b < 0 then
+        y := y^-1;
+        w := w^-1;
+        b := LeadingExponent(y);
+    fi;
+
+    while b <> 0 do
+        q := QuoInt(a, b);
+        r := a - q * b;
+
+        t := x * y ^ -q;
+        x := y;
+        y := t;
+
+        u := z * w ^ -q;
+        z := w;
+        w := u;
+
+        a := b;
+        b := r;
+    od;
+
+    return [x, y, z, w];
+end );
+
 #############################################################################
 ##
 #F ReduceExpoPara( ind, gen, indd, pgen, rel )
@@ -78,7 +124,7 @@ end );
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
     local coll, rels, n, todo, tododo, ind, indd, g, gg, d, h, hh, k,
-          e, c, i, r, sub, val, j, f, a, b, nrmd;
+          e, c, i, r, sub, val, j, f, a, b, nrmd, pairs;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -118,44 +164,38 @@ function( pcs, gens, ppcs, pgens )
 
             h  := ind[d];
             hh := indd[d];
-            r := FactorOrder(g);
-            a := LeadingExponent(g);
 
             # shift in
             if IsBool( h ) then
                 nrmd := NormedPcpElementPara( g, gg );
                 ind[d]  := nrmd[1];
                 indd[d] := nrmd[2];
-                Add(f,d);
+                AddSet(f,d);
                 h  := ind[d];
                 hh := indd[d];
-            elif not IsPrime(r) then
-                b := LeadingExponent(h);
-                e := Gcdex(a, b);
-                if e.coeff1 <> 0 then 
-                    nrmd := NormedPcpElementPara( (g^e.coeff1)*(h^e.coeff2), (gg^e.coeff1)*(hh^e.coeff2) );
-                    ind[d]  := nrmd[1];
-                    indd[d] := nrmd[2];
-                    Add(f,d);
-                fi;
             fi;
-
-            # divide off
             if g = h then 
                 g  := g^0;
                 gg := gg^0;
             else
-                b  := LeadingExponent(h);
-                e  := Gcdex(a,b);
-                g  := g^e.coeff3 * h^e.coeff4;
-                gg := gg^e.coeff3 * hh^e.coeff4;
+                pairs := GcdPcpPara(g, h, gg, hh);
+                h := pairs[1];
+                g := pairs[2];
+                hh := pairs[3];
+                gg := pairs[4];
+                if h <> ind[d] then
+                    nrmd := NormedPcpElementPara( h, hh );
+                    ind[d]  := nrmd[1];
+                    indd[d] := nrmd[2];
+                    AddSet(f, d);
+                fi;
             fi;
             d := Depth(g);
         od;
 
         # adjust
         c := TailLimit(ind, c);
-        ReduceExpoPara(ind,  todo, indd, tododo,  rels);
+        ReduceExpoPara(ind, todo, indd, tododo, rels);
 
         # add powers and commutators
         for d in f do

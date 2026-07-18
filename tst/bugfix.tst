@@ -205,7 +205,6 @@ gap> e := [ 0, 0, 0, 0, 1 ];
 gap> stab := StabilizerIntegralAction( G, mats, e );
 Pcp-group with orders [ 10, 0 ]
 gap> CheckStabilizer(G, stab, mats, e);
-#I  Stabilizer not increasing: exiting.
 true
 
 #
@@ -361,7 +360,6 @@ rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16,
 gap> CheckOrbit(G, o.prei, mats, e, f);
 true
 gap> CheckStabilizer(G, o.stab, mats, e);
-#I  Orbit longer than limit: exiting.
 true
 
 #
@@ -701,6 +699,70 @@ gap> r := G.4 * G.6 * G.7;;
 gap> h := g ^ r;;
 gap> k := ConjugacyElementsBySeries( G, g, h, pcps );;
 gap> g^k = h;
+true
+
+#
+# Fix bugs in NormalizerPcpGroup
+# <https://github.com/gap-packages/polycyclic/issues/122>
+#
+gap> tmp := USE_CANONICAL_PCS@Polycyclic;;
+gap> USE_CANONICAL_PCS@Polycyclic := true;;
+gap> H := Group( [ (5,6,8,10)(7,9,11,12)(13,15,14,16),
+> (1,2,3,4)(5,7)(6,9)(8,11)(10,12)(15,16) ] );;
+gap> V := Group( [ (1,4,3,2)(5,12,8,9)(6,7,10,11)(13,16)(14,15),
+> (1,2,3,4)(5,9,8,12)(6,11,10,7)(13,15)(14,16) ] );;
+gap> iso := IsomorphismPcpGroup( H );;
+gap> G := Image( iso );;
+gap> U := Image( iso, V );;
+gap> N := NormalizerPcpGroup( G, U );;
+gap> Images( iso, Normalizer( H, V ) ) = N;
+true
+gap> USE_CANONICAL_PCS@Polycyclic := false;;
+gap> H := Group([ (1,2)(3,4)(5,6,8,11)(7,9,12,10),
+> (1,2,3,4)(5,7,10,6)(8,11,9,12) ] );;
+gap> V := Group( [ (1,4,3,2)(5,6,10,7)(8,12,9,11) ] );;
+gap> iso := IsomorphismPcpGroup( H );;
+gap> G := Image( iso );;
+gap> U := Image( iso, V );;
+gap> N := NormalizerPcpGroup( G, U );;
+gap> Images( iso, Normalizer( H, V ) ) = N;
+true
+gap> USE_CANONICAL_PCS@Polycyclic := tmp;;
+
+#
+# Fix a bug in ComplementClassesCR
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
+gap> FiniteSubgroupClasses(G);;
+
+#
+# Fix a bug in AddToIgs
+# <https://github.com/gap-packages/polycyclic/issues/117>
+#
+gap> G := ExamplesOfSomePcpGroups( 1 );;
+gap> x := G.1 ^ 8;;
+gap> y := G.1 ^ 3 * G.3;;
+gap> H := Subgroup( G, [ x, y ] );;
+gap> x in H;
+true
+gap> y in H;
+true
+
+#
+# Fix a bug in NormalIntersection
+# <https://github.com/gap-packages/polycyclic/issues/76>
+#
+gap> G := ExamplesOfSomePcpGroups( 8 );;
+gap> T := Subgroup( G, [ G.1^3*G.2^6*G.3^2*G.5^44, G.2^12*G.3*G.5^61, G.3^3*G.5^30, G.4^3*G.5^30, G.5^162 ] );;
+gap> K := Subgroup( G, [ G.1^3*G.2^6*G.5^3, G.2^12, G.3*G.5^7, G.4^3*G.5^3, G.5^9 ] );;
+gap> Index( K, T );
+54
+gap> I1 := NormalIntersection( T, K );
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> I2 := NormalIntersection( K, T );
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> I1 = I2 and I2 = T;
 true
 
 #
