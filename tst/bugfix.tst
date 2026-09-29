@@ -781,4 +781,30 @@ gap> Cgs( V3 );
 [ g1*g2^26*g3^8, g2^36*g3^9, g3^18 ]
 
 #
+# Fix a bug related to Igs
+# <https://github.com/gap-packages/polycyclic/issues/133>
+#
+gap> FTL := FromTheLeftCollector(5);;
+gap> SetRelativeOrder(FTL, 1, 4);;
+gap> SetPower(FTL, 1, [4, 1]);;
+gap> SetRelativeOrder(FTL, 2, 2);;
+gap> SetPower(FTL, 2, [5, 1]);;
+gap> SetConjugate(FTL, 2, 1, [2, 1, 3, 1, 4, 1]);;
+gap> SetConjugate(FTL, 3, 1, [3, -1, 4, -1, 5, 6]);;
+gap> SetConjugate(FTL, 4, 1, [4, 1]);;
+gap> SetConjugate(FTL, 5, 1, [5, -1]);;
+gap> SetConjugate(FTL, 3, 2, [3, -1, 5, 2]);;
+gap> SetConjugate(FTL, 4, 2, [4, -1, 5, 4]);;
+gap> SetConjugate(FTL, 5, 2, [5, 1]);;
+gap> SetConjugate(FTL, 4, 3, [4, 1, 5, 8]);;
+gap> SetConjugate(FTL, 5, 3, [5, 1]);;
+gap> SetConjugate(FTL, 5, 4, [5, 1]);;
+gap> UpdatePolycyclicCollector(FTL);;
+gap> S := PcpGroupByCollector(FTL);;
+gap> u := S.1^-1;;
+gap> v := S.2 * S.1^-2 * S.3 * S.2^2;;
+gap> Index(S, Subgroup(S, [u, v]));
+1
+
+#
 gap> STOP_TEST( "bugfix.tst" );
