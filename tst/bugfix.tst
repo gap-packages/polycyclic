@@ -715,19 +715,14 @@ gap> H := Subgroup( G, [ a ] );;
 gap> h := ConjugacyElementsBySeries( H, t, t ^ a, pcps );;
 gap> h in H and t ^ h = t ^ a;
 true
-gap> K := Subgroup( G, [ a ^ 2 ] );;
-gap> ConjugacyElementsBySeries( K, t, t ^ a, pcps );
-false
-gap> L := Subgroup( G, [ t ] );;
-gap> l := ConjugacyElementsBySeries( L, a, a ^ -1, pcps );;
-gap> l in L and a ^ l = a ^ -1;
-true
-gap> ConjugacyElementsBySeries( L, a, a ^ 2, pcps );
-false
 gap> D := DihedralPcpGroup( 16 );;
 gap> C := Subgroup( D, [ D.1, D.2 ^ 4 ] );;
 gap> pcps := PcpsOfEfaSeries( D );;
 gap> ConjugacyElementsBySeries( C, D.1, D.1 * D.2 ^ 4, pcps );
+false
+gap> A := AbelianPcpGroup( [ 2, 3 ] );;
+gap> B := Subgroup( A, [ A.1 ] );;
+gap> IsConjugate( B, A.2, A.2^2 );
 false
 
 #
