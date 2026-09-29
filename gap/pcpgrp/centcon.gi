@@ -340,7 +340,8 @@ end );
 InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
         [IsPcpGroup, IsPcpElement, IsPcpElement],
 function( G, g, h )
-   local c;
-   c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries(G) );
+   local P, c;
+   P := PcpGroupByCollectorNC( Collector( G ) );
+   c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
    return (c <> false);
 end );
