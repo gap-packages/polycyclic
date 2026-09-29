@@ -153,5 +153,19 @@ Pcp-group with orders [ 0, 0, 0, 0, 0 ]
 gap> NI1 = NI2;
 true
 
+# this previously produced a subgroup of the intersection
+# <https://github.com/gap-packages/polycyclic/issues/132>
+gap> G := ExamplesOfSomePcpGroups( 3 );;
+gap> t := G.1;;
+gap> a := G.2;;
+gap> U := Subgroup( G, [ t ^ 3 * a, a ^ 3 ]);;
+gap> N := Subgroup( G, [ t ^ 5, a ^ 2 ]);;
+gap> I := NormalIntersection( N, U );
+Pcp-group with orders [ 0, 0 ]
+gap> J := Subgroup( G, [ t ^ 15 * a ^ -2, a ^ 6 ]);
+Pcp-group with orders [ 0, 0 ]
+gap> I = J;
+true
+
 #
 gap> STOP_TEST( "inters.tst", 10000000);
