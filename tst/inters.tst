@@ -135,6 +135,9 @@ gap> Intersection(H1,H2);
 Pcp-group with orders [ 2 ]
 
 #
+# Fix a bug in NormalIntersection
+# <https://github.com/gap-packages/polycyclic/issues/76>
+#
 gap> G := ExamplesOfSomePcpGroups( 8 );;
 gap> T := Subgroup( G, [ G.1^3*G.2^6*G.3^2*G.5^44, G.2^12*G.3*G.5^61, G.3^3*G.5^30, G.4^3*G.5^30, G.5^162 ] );;
 gap> K := Subgroup( G, [ G.1^3*G.2^6*G.5^3, G.2^12, G.3*G.5^7, G.4^3*G.5^3, G.5^9 ] );;
@@ -150,7 +153,7 @@ gap> NI1 := NormalIntersection( T, K );
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
 gap> NI2 := NormalIntersection( K, T );
 Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> NI1 = NI2;
+gap> NI1 = NI2 and NI2 = T;
 true
 
 # this previously produced a subgroup of the intersection
@@ -164,6 +167,19 @@ gap> I := NormalIntersection( N, U );
 Pcp-group with orders [ 0, 0 ]
 gap> J := Subgroup( G, [ t ^ 15 * a ^ -2, a ^ 6 ]);
 Pcp-group with orders [ 0, 0 ]
+gap> I = J;
+true
+
+# check for intersection with finite powers
+gap> coll := FromTheLeftCollector( 3 );;
+gap> SetRelativeOrder( coll, 2, 2 );
+gap> SetRelativeOrder( coll, 3, 2 );
+gap> UpdatePolycyclicCollector( coll );
+gap> G := PcpGroupByCollector( coll );;
+gap> U := Subgroup( G, [ G.1*G.2 ] );;
+gap> N := Subgroup( G, [ G.1*G.3 ] );;
+gap> I := NormalIntersection( N, U );;
+gap> J := Subgroup( G, [ G.1^2 ] );;
 gap> I = J;
 true
 

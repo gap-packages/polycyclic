@@ -766,20 +766,4 @@ gap> IsConjugate( B, A.2, A.2^2 );
 false
 
 #
-# Fix a bug in NormalIntersection
-# <https://github.com/gap-packages/polycyclic/issues/76>
-#
-gap> G := ExamplesOfSomePcpGroups( 8 );;
-gap> T := Subgroup( G, [ G.1^3*G.2^6*G.3^2*G.5^44, G.2^12*G.3*G.5^61, G.3^3*G.5^30, G.4^3*G.5^30, G.5^162 ] );;
-gap> K := Subgroup( G, [ G.1^3*G.2^6*G.5^3, G.2^12, G.3*G.5^7, G.4^3*G.5^3, G.5^9 ] );;
-gap> Index( K, T );
-54
-gap> I1 := NormalIntersection( T, K );
-Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> I2 := NormalIntersection( K, T );
-Pcp-group with orders [ 0, 0, 0, 0, 0 ]
-gap> I1 = I2 and I2 = T;
-true
-
-#
 gap> STOP_TEST( "bugfix.tst" );

@@ -92,8 +92,9 @@ IGSValFun := IGSValFun4;
 ##
 #F GcdPcp
 ##
-## For two PcpElements g and h, apply the Euclidean algorithm to the leading
-## exponents, and do the same operations on the elements themselves
+## For two non-trivial PcpElements g and h with the same depth, apply the
+## Euclidean algorithm to the leading exponents, and do the same operations
+## on the elements themselves.
 ##
 BindGlobal( "GcdPcp", function(g, h)
     local x, y, a, b, q, r, t;
@@ -287,7 +288,7 @@ end );
 ## denominator of this pcp.
 ##
 BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
-    local coll, rels, n, ind, todo, g, c, h, eg, eh, e, d, pair, t, val, j;
+    local coll, rels, n, ind, todo, g, c, h, d, pair, t, val, j;
 
     if Length( pcs1 ) = 0 then
         return AsList( pcs2 );
