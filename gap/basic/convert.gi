@@ -428,7 +428,7 @@ BindGlobal( "PcpGroupFpGroupPcPres", function( G )
         fi;
     od;
 
-    return PcpGroupByCollectorNC( ftl );
+    return PcpGroupByCollector( ftl );
 end );
 
 BindGlobal( "IsomorphismPcpGroupFromFpGroupWithPcPres", function(G)
