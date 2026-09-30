@@ -713,4 +713,14 @@ gap> o.prei = G.1 and IsTrivial( o.stab );
 true
 
 #
+# Fix a bug in ComplementClassesCR
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> tmp := CHECK_IGS@Polycyclic;;
+gap> CHECK_IGS@Polycyclic := true;;
+gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
+gap> FiniteSubgroupClasses(G);;
+gap> CHECK_IGS@Polycyclic := tmp;;
+
+#
 gap> STOP_TEST( "bugfix.tst" );
