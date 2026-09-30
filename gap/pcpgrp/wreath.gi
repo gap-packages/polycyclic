@@ -141,11 +141,11 @@ function(W,i)
     if not IsBound(info.embeddings[i]) then
         if i<=info.l then
             info.embeddings[i] := GroupHomomorphismByImagesNC(info.G,W,
-                info.genG, List(info.genG, x->PcpElementByExponents(info.coll,
+                info.genG, List(info.genG, x->PcpElementByExponentsNC(info.coll,
                     FilledIn(ExponentsByPcp(info.pcpG,x),info.m+(i-1)*info.n,info.m+info.l*info.n))));
         elif i=info.l+1 then
             info.embeddings[i] := GroupHomomorphismByImagesNC(info.H,W,
-                info.genH, List(info.genH, x->PcpElementByExponents(info.coll,
+                info.genH, List(info.genH, x->PcpElementByExponentsNC(info.coll,
                     FilledIn(ExponentsByPcp(info.pcpH,x),0,info.m+info.l*info.n))));
         else
             return fail;
