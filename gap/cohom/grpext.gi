@@ -26,19 +26,19 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
         o := ObjByExponents( coll, r );
 
         if e[1] = e[2] then
-            SetRelativeOrder( coll, e[1], rels[e[1]] );
-            SetPower( coll, e[1], o );
+            SetRelativeOrderNC( coll, e[1], rels[e[1]] );
+            SetPowerNC( coll, e[1], o );
         elif e[1] > e[2] then
-            SetConjugate( coll, e[1], e[2], o );
+            SetConjugateNC( coll, e[1], e[2], o );
         else
-            SetConjugate( coll, e[1], -e[2]+e[1], o );
+            SetConjugateNC( coll, e[1], -e[2]+e[1], o );
         fi;
     od;
 
     # power relators of A
     if A.char > 0 then
         for i in [n+1..n+m] do
-            SetRelativeOrder( coll, i, A.char );
+            SetRelativeOrderNC( coll, i, A.char );
         od;
     fi;
 
@@ -51,7 +51,7 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
             else
                 Append( x, IntVecFFE( A.mats[i][j-n] ) );
             fi;
-            SetConjugate( coll, j, i, ObjByExponents( coll, x ) );
+            SetConjugateNC( coll, j, i, ObjByExponents( coll, x ) );
         od;
     od;
 
@@ -160,13 +160,13 @@ InstallMethod( SplitExtensionByAutomorphisms,
         if rg[i] > 0 then
             o := ExponentsByIgs( g, g[i]^rg[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
-            SetRelativeOrder( coll, m+i, rg[i] );
-            SetPower( coll, m+i, o );
+            SetRelativeOrderNC( coll, m+i, rg[i] );
+            SetPowerNC( coll, m+i, o );
         fi;
         for j in [i+1..n] do
             o := ExponentsByIgs( g, g[j]^g[i] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
-            SetConjugate( coll, m+j, m+i, o );
+            SetConjugateNC( coll, m+j, m+i, o );
         od;
     od;
 
@@ -175,13 +175,13 @@ InstallMethod( SplitExtensionByAutomorphisms,
         if rh[i] > 0 then
             o := ExponentsByIgs( h, h[i]^rh[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
-            SetRelativeOrder( coll, i, rh[i] );
-            SetPower( coll, i, o );
+            SetRelativeOrderNC( coll, i, rh[i] );
+            SetPowerNC( coll, i, o );
         fi;
         for j in [i+1..m] do
             o := ExponentsByIgs( h, h[j]^h[i] );
             o := ObjByExponents( coll, Concatenation( o, zn ) );
-            SetConjugate( coll, j, i, o );
+            SetConjugateNC( coll, j, i, o );
         od;
     od;
 
@@ -191,7 +191,7 @@ InstallMethod( SplitExtensionByAutomorphisms,
         for j in [1..n] do
             o := ExponentsByIgs( g, k[j] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );
-            SetConjugate( coll, m+j, i, o );
+            SetConjugateNC( coll, m+j, i, o );
         od;
     od;
 

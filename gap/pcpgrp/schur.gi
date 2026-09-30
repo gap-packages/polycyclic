@@ -56,20 +56,20 @@ InstallMethod( SchurExtensionEpimorphism, "for pcp groups", [IsPcpGroup], functi
     # add a tail to each power and each positive conjugate relation
     k := n;
     for i in [1..n] do
-        SetRelativeOrder(coll, i, r[i]);
+        SetRelativeOrderNC(coll, i, r[i]);
 
         if r[i] > 0 then
             e := ObjByExponents(coll, ExponentsByIgs(g, g[i]^r[i]));
             k := k+1;
             Append(e, [k,1]);
-            SetPower(coll,i,e);
+            SetPowerNC(coll,i,e);
         fi;
 
         for j in [1..i-1] do
             e := ObjByExponents(coll, ExponentsByIgs(g, g[i]^g[j]));
             k := k+1;
             Append(e, [k,1]);
-            SetConjugate(coll,i,j,e);
+            SetConjugateNC(coll,i,j,e);
         od;
     od;
 
@@ -256,28 +256,28 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
 
         # relative order and power
         if r[i] > 0 then
-            SetRelativeOrder(c, i, r[i]);
+            SetRelativeOrderNC(c, i, r[i]);
             e := ExponentsByIgs(g, g[i]^r[i]);
-            SetPower(c, i, ObjByExponents(c,e));
+            SetPowerNC(c, i, ObjByExponents(c,e));
 
-            SetRelativeOrder(c, n+i, r[i]);
+            SetRelativeOrderNC(c, n+i, r[i]);
             e := Concatenation(0*e, e);
-            SetPower(c, n+i, ObjByExponents(c,e));
+            SetPowerNC(c, n+i, ObjByExponents(c,e));
         fi;
 
         # conjugates
         for j in [1..i-1] do
             e := ExponentsByIgs(g, g[i]^g[j]);
-            SetConjugate(c, i, j, ObjByExponents(c,e));
+            SetConjugateNC(c, i, j, ObjByExponents(c,e));
 
             e := Concatenation(0*e, e);
-            SetConjugate(c, n+i, n+j, ObjByExponents(c,e));
+            SetConjugateNC(c, n+i, n+j, ObjByExponents(c,e));
 
             if r[j] = 0 then
                 e := ExponentsByIgs(g, g[i]^(g[j]^-1));
-                SetConjugate(c, i, -j, ObjByExponents(c,e));
+                SetConjugateNC(c, i, -j, ObjByExponents(c,e));
                 e := Concatenation(0*e, e);
-                SetConjugate(c, n+i, -(n+j), ObjByExponents(c,e));
+                SetConjugateNC(c, n+i, -(n+j), ObjByExponents(c,e));
             fi;
 
         od;
@@ -288,22 +288,22 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
 
         # relative order and power
         if s[i] > 0 then
-            SetRelativeOrder(c, 2*n+i, s[i]);
+            SetRelativeOrderNC(c, 2*n+i, s[i]);
             e := ExponentsByPcp(d, d[i]^s[i]);
             e := Concatenation(w, e);
-            SetPower(c, 2*n+i, ObjByExponents(c,e));
+            SetPowerNC(c, 2*n+i, ObjByExponents(c,e));
         fi;
 
         # conjugates
         for j in [1..i-1] do
             e := ExponentsByPcp(d, d[i]^d[j]);
             e := Concatenation(w, e);
-            SetConjugate(c, 2*n+i, 2*n+j, ObjByExponents(c,e));
+            SetConjugateNC(c, 2*n+i, 2*n+j, ObjByExponents(c,e));
 
             if s[j] = 0 then
                 e := ExponentsByPcp(d, d[i]^(d[j]^-1));
                 e := Concatenation(w, e);
-                SetConjugate(c, 2*n+i, -(2*n+j), ObjByExponents(c,e));
+                SetConjugateNC(c, 2*n+i, -(2*n+j), ObjByExponents(c,e));
             fi;
         od;
     od;
@@ -317,12 +317,12 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
         for j in [1..n] do
             e := ExponentsByPcp(d, Comm(f[j], f[i]));
             e := Concatenation(w, e); e[n+j] := 1;
-            SetConjugate(c, n+j, i, ObjByExponents(c,e));
+            SetConjugateNC(c, n+j, i, ObjByExponents(c,e));
 
             if r[i] = 0 then
                 e := ExponentsByPcp(d, Comm(f[j], f[i]^-1));
                 e := Concatenation(w, e); e[n+j] := 1;
-                SetConjugate(c, n+j, -i, ObjByExponents(c,e));
+                SetConjugateNC(c, n+j, -i, ObjByExponents(c,e));
             fi;
         od;
     od;
@@ -346,8 +346,8 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
         for j in [1..m] do
             e := ExponentsByPcp(d, Image(alpha, d[j]));
             e := Concatenation(w, e);
-            SetConjugate(c, 2*n+j, i, ObjByExponents(c,e));
-            SetConjugate(c, 2*n+j, n+i, ObjByExponents(c,e));
+            SetConjugateNC(c, 2*n+j, i, ObjByExponents(c,e));
+            SetConjugateNC(c, 2*n+j, n+i, ObjByExponents(c,e));
         od;
 
         if r[i] = 0 then
@@ -365,8 +365,8 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
             for j in [1..m] do
                 e := ExponentsByPcp(d, Image(alpha, d[j]));
                 e := Concatenation(w, e);
-                SetConjugate(c, 2*n+j, -i, ObjByExponents(c,e));
-                SetConjugate(c, 2*n+j, -(n+i), ObjByExponents(c,e));
+                SetConjugateNC(c, 2*n+j, -i, ObjByExponents(c,e));
+                SetConjugateNC(c, 2*n+j, -(n+i), ObjByExponents(c,e));
             od;
 
         fi;

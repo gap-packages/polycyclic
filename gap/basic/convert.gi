@@ -25,14 +25,14 @@ BindGlobal( "PcpGroupToPcGroup", function( G )
         h := pcp[i] ^ rel[i];
         e := ExponentsByPcp( pcp, h );
         w := MappedVector( e, f );
-        SetPower( rws, i, w );
+        SetPowerNC( rws, i, w );
 
         # set conjugates
         for j in [1..i-1] do
             h := pcp[i]^pcp[j];
             e := ExponentsByPcp( pcp, h );
             w := MappedVector( e, f );
-            SetConjugate( rws, i, j, w );
+            SetConjugateNC( rws, i, j, w );
         od;
     od;
     return GroupByRwsNC( rws );
@@ -121,20 +121,20 @@ BindGlobal( "PcGroupToPcpGroup", function( G )
         h := g[i] ^ r[i];
         e := ExponentsOfPcElement( g, h );
         w := ObjByExponents( coll, e );
-        SetRelativeOrder( coll, i, r[i] );
-        SetPower( coll, i, w );
+        SetRelativeOrderNC( coll, i, r[i] );
+        SetPowerNC( coll, i, w );
 
         # set conjugates
         for j in [1..i-1] do
             h := g[i]^g[j];
             e := ExponentsOfPcElement( g, h );
             w := ObjByExponents( coll, e );
-            SetConjugate( coll, i, j, w );
+            SetConjugateNC( coll, i, j, w );
 
             h := g[i]^(g[j]^-1);
             e := ExponentsOfPcElement( g, h );
             w := ObjByExponents( coll, e );
-            SetConjugate( coll, i, -j, w );
+            SetConjugateNC( coll, i, -j, w );
         od;
     od;
     UpdatePolycyclicCollector( coll );

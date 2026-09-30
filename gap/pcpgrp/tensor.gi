@@ -322,12 +322,12 @@ BindGlobal( "CollectorCentralCover", function(S)
     # add relations of S
     k := x;
     for i in [1..x] do
-        SetRelativeOrder(coll, i, r[i]);
+        SetRelativeOrderNC(coll, i, r[i]);
 
         if r[i] > 0 then
             e := ObjByExponents(coll, ExponentsByPcp(s, s[i]^r[i]));
             if i > 2*n then k := k+1; Append(e, [k,1]); fi;
-            SetPower(coll,i,e);
+            SetPowerNC(coll,i,e);
         fi;
 
         for j in [1..i-1] do
@@ -335,7 +335,7 @@ BindGlobal( "CollectorCentralCover", function(S)
             if (i>n) and (i>2*n or not (j in [n+1..2*n])) then
                 k := k+1; Append(e, [k,1]);
             fi;
-            SetConjugate(coll,i,j,e);
+            SetConjugateNC(coll,i,j,e);
         od;
     od;
 
@@ -392,13 +392,13 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
 
     # add relative orders of module
     for i in [1..l] do
-        SetRelativeOrder(c, x+i, d[f[i]]);
+        SetRelativeOrderNC(c, x+i, d[f[i]]);
     od;
 
     # add relations of factor
     k := 0;
     for i in [1..x] do
-        SetRelativeOrder(c, i, e[i]);
+        SetRelativeOrderNC(c, i, e[i]);
 
         if e[i]>0 then
             a := GetPower(coll, i);

@@ -50,8 +50,8 @@ InstallGlobalFunction( InfiniteMetacyclicPcpGroup, function( n, m, r )
     fi;
 
     coll := FromTheLeftCollector( 2 );
-    SetRelativeOrder( coll, 1, n );
-    SetRelativeOrder( coll, 2, m );
+    SetRelativeOrderNC( coll, 1, n );
+    SetRelativeOrderNC( coll, 2, m );
 
     if m <> 0 then
         r := r mod m;

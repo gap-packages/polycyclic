@@ -78,12 +78,12 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
             if pairs[i][1] = pairs[j][2] then
                 k := Position(pairs, [pairs[j][1], pairs[i][2]]);
                 o := [j,1,k,1];
-                SetConjugate( c, j, i, o );
+                SetConjugateNC( c, j, i, o );
             elif pairs[i][2] = pairs[j][1] then
                 k := Position(pairs, [pairs[i][1], pairs[j][2]]);
                 o := [j,1,k,-1];
                 if p > 0 then o[4] := o[4] mod p; fi;
-                SetConjugate( c, j, i, o );
+                SetConjugateNC( c, j, i, o );
             else
                 # commutator is trivial
             fi;
@@ -91,7 +91,7 @@ InstallGlobalFunction( UnitriangularPcpGroup, function( n, p )
 
         # powers
         if p > 0 then
-            SetRelativeOrder( c, i, p );
+            SetRelativeOrderNC( c, i, p );
         fi;
     od;
 
@@ -154,7 +154,7 @@ InstallGlobalFunction( HeisenbergPcpGroup, function( m )
     local FLT, i;
     FLT := FromTheLeftCollector( 2*m+1 );
     for i in [1..m] do
-        SetConjugate( FLT, m+i, i, [m+i, 1, 2*m+1, 1] );
+        SetConjugateNC( FLT, m+i, i, [m+i, 1, 2*m+1, 1] );
     od;
     UpdatePolycyclicCollector( FLT );
     return PcpGroupByCollectorNC( FLT );
@@ -219,12 +219,12 @@ BindGlobal( "BlowUpPcpPGroup", function(G)
     # fill up collector
     c := FromTheLeftCollector(Length(e)-1);
     for i in [1..Length(e)-1] do
-        SetRelativeOrder(c,i,p);
+        SetRelativeOrderNC(c,i,p);
 
         # power
         j := Position(e, e[i]^p);
         if j < Length(e) then
-            SetPower(c,i,[j,1]);
+            SetPowerNC(c,i,[j,1]);
         fi;
 
         # commutators
