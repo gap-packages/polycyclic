@@ -217,7 +217,8 @@ BindGlobal( "RandomPcpOrbitStabilizer", function( e, pcp, act, op )
                         count := 0;
                     fi;
                     if count > 100 then
-                        Info( InfoIntStab, 1, "stabilizer not increasing: exiting.");
+                        Info( InfoIntStab, 1,
+                            "stabilizer not increasing: exiting.");
                         return rec( orbit := O, stab := S );
                     fi;
                 fi;
@@ -247,7 +248,7 @@ BindGlobal( "RandomCentralizerPcpGroup", function( G, g )
     else
         Error("g must be a subgroup or an element of G \n");
     fi;
-    return Subgroup( G, stab );
+    return SubgroupNC( G, stab );
 end );
 
 #############################################################################
@@ -258,5 +259,5 @@ BindGlobal( "RandomNormalizerPcpGroup", function( G, N )
     local gens, stab;
     gens := Igs(G);
     stab := RandomPcpOrbitStabilizer( N, gens, gens, OnPoints);
-    return Subgroup( G, stab.stab );
+    return SubgroupNC( G, stab.stab );
 end );

@@ -193,7 +193,7 @@ BindGlobal( "ComplementCR", function( A, c )
     pcpK := List([1..l], i -> A.factor[i] * MappedVector(vec[i], A.normal));
     all  := AddIgsToIgs( pcpK, DenominatorOfPcp( A.normal ) );
     #K    := SubgroupByIgs( A.group, all );
-    K    := Subgroup( A.group, all );
+    K    := SubgroupNC( A.group, all );
     K!.compgens := pcpK;
     K!.cocycle := vec;
     return K;

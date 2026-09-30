@@ -391,10 +391,10 @@ BindGlobal( "ExtendRep", function( col, new, mats)
 
         vecs1:= ShallowCopy( List( vecs, ShallowCopy ) );
         sp:= VectorSpace( Rationals, vecs );
-        B:= Basis( sp, vecs );
+        B:= BasisNC( sp, vecs );
         k:= 1;
         le:= Length( ff );
-        B1:= Basis( sp, vecs1 );
+        B1:= BasisNC( sp, vecs1 );
 
         while k <= le do
             f:= List( ff[k], ShallowCopy );
@@ -420,7 +420,7 @@ BindGlobal( "ExtendRep", function( col, new, mats)
 
                             Add( vecs1, vec );
                             vecs1:=TriangulizeRows(vecs1)[1];
-                            B1:= Basis( sp, vecs1 );
+                            B1:= BasisNC( sp, vecs1 );
 
                         fi;
                         finished:= true;
@@ -431,7 +431,7 @@ BindGlobal( "ExtendRep", function( col, new, mats)
                         Add( vecs, ShallowCopy( vec ) );
                         Add( vecs1, ShallowCopy( vec ) );
                         sp:= VectorSpace( Rationals, vecs );
-                        B1:= Basis( sp, vecs1 );
+                        B1:= BasisNC( sp, vecs1 );
 
                     fi;
                 else
@@ -462,13 +462,13 @@ BindGlobal( "ExtendRep", function( col, new, mats)
         # we need the rather complicated loop `while not done do..' etc.
 
         sp:= VectorSpace( Rationals, vecs );
-        B:= Basis( sp, vecs );
+        B:= BasisNC( sp, vecs );
         done:= false;
 
         while not done do
 
             changeocc:= false;
-            B1:= Basis( sp, vecs1 );
+            B1:= BasisNC( sp, vecs1 );
             exrep:= [ ];
             M:= [ ];
             for j in [1..Length(vecs1)] do

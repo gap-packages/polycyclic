@@ -31,24 +31,17 @@ end );
 
 #############################################################################
 ##
-#F VectorByComplement( CR, igs )
+#F VectorByComplement( CR, U )
 ##
-##  bad hack ... igs and fac have to fit together.
+##  not such a bad hack any more
 ##
 BindGlobal( "VectorByComplement", function( CR, U )
-    local fac, igs, nrm, nat, res, vec;
-    fac := CR.factor;
-    if USE_CANONICAL_PCS@ then
-        igs := Cgs(U);
-    else
-        nrm := SubgroupByIgs( CR.group, NumeratorOfPcp( CR.normal ) );
-        nat := NaturalHomomorphismByNormalSubgroupNC( CR.group, nrm );
-        res := RestrictedMapping( nat, U );
-        igs := List( fac, g -> PreImagesRepresentativeNC( res, g ^ nat ) );
-    fi;
-    vec := List( [1..Length(fac)], i ->
-           ExponentsByPcp( CR.normal, fac[i]^-1 * igs[i] ) );
-    return Flat(vec);
+    local igs;
+    igs := Igs(U);
+    # CR.factor and igs must match as cosets of the numerator of CR.normal
+    # We enforce this by using ReducedByIgs
+    return Flat( List( CR.factor, g ->
+        ExponentsByPcp( CR.normal, ReducedByIgs( igs, g^-1 ) ) ) );
 end );
 
 #############################################################################
@@ -109,9 +102,9 @@ BindGlobal( "NormalizerOfIntersection", function( C, N, I )
     else
         ind := NaturalHomomorphismByPcp( fac );
         int := LatticeBasis( int );
-        C := Image( ind );
+        C := ImagesSource( ind );
         C := NormalizerIntegralAction( C, act, int );
-        return PreImage( ind, C );
+        return PreImagesSetNC( ind, C );
     fi;
 end );
 
@@ -134,9 +127,9 @@ BindGlobal( "StabilizerOfCocycle", function( CR, cc, C, elm )
         nat := NaturalHomomorphismByPcp( CR.super );
         act := List( aff, x -> x{[s..l+1]}{[s..l+1]} );
         e := elm{[s..l]}; Add( e, 1 );
-        D := Image( nat, D );
+        D := ImagesSource( nat );
         D := StabilizerIntegralAction( D, act, e );
-        D := PreImage( nat, D );
+        D := PreImagesSetNC( nat, D );
     fi;
     if Size(D) = 1 or s = 1 then return D; fi;
 
@@ -279,12 +272,12 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         M := efa[i+1];
 
         # determine factor C/M
-        hom := NaturalHomomorphismByNormalSubgroup( G, M );
+        hom := NaturalHomomorphismByNormalSubgroupNC( G, M );
         if Size(M) > 1 then
-            N := Image( hom, N );
+            N := ImagesSet( hom, N );
             C := Image( hom, C );
         fi;
-        H := Image( hom, U );
+        H := ImagesSet( hom, U );
 
         # first normalize the intersection I = N cap H
         I := NormalIntersection( N, H );
@@ -296,13 +289,13 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         # add checking if required
         if CHECK_NORM@ then
             Info( InfoPcpGrp, 1, "  check result ");
-            H := Image( hom, U );
+            H := ImagesSet( hom, U );
             if ForAny( Igs(C), x -> H^x <> H ) then
                Error("normalizer is not normalizing");
             fi;
         fi;
 
-        if Size(M) > 1 then C := PreImage( hom, C ); fi;
+        if Size(M) > 1 then C := PreImagesSetNC( hom, C ); fi;
     od;
     return C;
 end );
@@ -316,7 +309,7 @@ BindGlobal( "NormalizerPcpGroup", function( G, U )
 
     # translate
     GG  := PcpGroupByEfaSeries(G);
-    UU  := PreImage(GG!.bijection,U);
+    UU  := PreImagesSetNC(GG!.bijection,U);
 
     # compute
     NN := NormalizerBySeries( GG, UU, EfaSeries(GG) );

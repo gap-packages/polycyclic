@@ -41,7 +41,7 @@ function( filter, ints )
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
         if IsBound( r[i] ) and r[i] > 0 and r[i] <> infinity then
-            SetRelativeOrder( coll, i, r[i] );
+            SetRelativeOrderNC( coll, i, r[i] );
         fi;
     od;
     UpdatePolycyclicCollector(coll);
@@ -120,7 +120,7 @@ function( filter, n )
 
     # construct group
     coll := FromTheLeftCollector( 1 );
-    SetRelativeOrder( coll, 1, n );
+    SetRelativeOrderNC( coll, 1, n );
     UpdatePolycyclicCollector(coll);
     grp := PcpGroupByCollectorNC( coll );
 
@@ -168,9 +168,9 @@ function( filter, n )
     fi;
 
     coll := FromTheLeftCollector( 2 );
-    SetRelativeOrder( coll, 1, 2 );
-    SetRelativeOrder( coll, 2, n/2 );
-    SetConjugate( coll, 2,  1, [2,n/2-1] );
+    SetRelativeOrderNC( coll, 1, 2 );
+    SetRelativeOrderNC( coll, 2, n/2 );
+    SetConjugateNC( coll, 2,  1, [2,n/2-1] );
     UpdatePolycyclicCollector(coll);
     grp := PcpGroupByCollectorNC( coll );
     return grp;
@@ -187,9 +187,9 @@ function( filter, n )
     local coll, grp;
 
     coll := FromTheLeftCollector( 2 );
-    SetRelativeOrder( coll, 1, 2 );
-    SetConjugate( coll, 2,  1, [2,-1] );
-    SetConjugate( coll, 2, -1, [2,-1] );
+    SetRelativeOrderNC( coll, 1, 2 );
+    SetConjugateNC( coll, 2,  1, [2,-1] );
+    SetConjugateNC( coll, 2, -1, [2,-1] );
     UpdatePolycyclicCollector(coll);
     grp := PcpGroupByCollectorNC( coll );
     return grp;
@@ -213,10 +213,10 @@ function( filter, n )
     fi;
 
     coll := FromTheLeftCollector( 2 );
-    SetRelativeOrder( coll, 1, 2 );
-    SetRelativeOrder( coll, 2, n/2 );
-    SetPower( coll, 1, [2, n/4] );
-    SetConjugate( coll, 2,  1, [2,n/2-1] );
+    SetRelativeOrderNC( coll, 1, 2 );
+    SetRelativeOrderNC( coll, 2, n/2 );
+    SetPowerNC( coll, 1, [2, n/4] );
+    SetConjugateNC( coll, 2,  1, [2,n/2-1] );
     UpdatePolycyclicCollector(coll);
     grp := PcpGroupByCollectorNC( coll );
     return grp;

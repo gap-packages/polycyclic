@@ -702,11 +702,36 @@ gap> g^k = h;
 true
 
 #
+# Fix a bug in OrbitIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/138>
+#
+gap> G := AbelianPcpGroup( [ 2 ] );;
+gap> o := OrbitIntegralAction( G, [ [ [ -1 ] ] ], [ 1 ], [ -1 ] );;
+gap> o.prei = G.1 and IsTrivial( o.stab );
+true
+
+#
+# Fix a bug in ComplementClassesCR
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
+gap> FiniteSubgroupClasses(G);;
+
+#
+# Fix a bug in PcpGroupFpGroupPcPres
+#
+gap> F := FreeGroup( "a", "b" );;
+gap> a := F.1;;
+gap> b := F.2;;
+gap> G := F / [ a ^ 4, b ^ 4, a ^ 2 * b ^ -2, b ^ a * b^-3 ];;
+gap> Q := PcpGroupFpGroupPcPres( G );;
+gap> Size( Q ) = 8 and IsQuaternionGroup( Q );
+true
+
+#
 # Fix bugs in NormalizerPcpGroup
 # <https://github.com/gap-packages/polycyclic/issues/122>
 #
-gap> tmp := USE_CANONICAL_PCS@Polycyclic;;
-gap> USE_CANONICAL_PCS@Polycyclic := true;;
 gap> H := Group( [ (5,6,8,10)(7,9,11,12)(13,15,14,16),
 > (1,2,3,4)(5,7)(6,9)(8,11)(10,12)(15,16) ] );;
 gap> V := Group( [ (1,4,3,2)(5,12,8,9)(6,7,10,11)(13,16)(14,15),
@@ -717,24 +742,28 @@ gap> U := Image( iso, V );;
 gap> N := NormalizerPcpGroup( G, U );;
 gap> Images( iso, Normalizer( H, V ) ) = N;
 true
-gap> USE_CANONICAL_PCS@Polycyclic := false;;
-gap> H := Group([ (1,2)(3,4)(5,6,8,11)(7,9,12,10),
-> (1,2,3,4)(5,7,10,6)(8,11,9,12) ] );;
-gap> V := Group( [ (1,4,3,2)(5,6,10,7)(8,12,9,11) ] );;
-gap> iso := IsomorphismPcpGroup( H );;
-gap> G := Image( iso );;
-gap> U := Image( iso, V );;
-gap> N := NormalizerPcpGroup( G, U );;
-gap> Images( iso, Normalizer( H, V ) ) = N;
-true
-gap> USE_CANONICAL_PCS@Polycyclic := tmp;;
 
 #
-# Fix a bug in ComplementClassesCR
-# <https://github.com/gap-packages/polycyclic/issues/3>
+# Fix a bug(?) in ConjugacyElementsBySeries
+# <https://github.com/gap-packages/polycyclic/issues/136>
 #
-gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
-gap> FiniteSubgroupClasses(G);;
+gap> G := ExamplesOfSomePcpGroups( 3 );;
+gap> t := G.1;;
+gap> a := G.2;;
+gap> pcps := PcpsOfEfaSeries( G );;
+gap> H := Subgroup( G, [ a ] );;
+gap> h := ConjugacyElementsBySeries( H, t, t ^ a, pcps );;
+gap> h in H and t ^ h = t ^ a;
+true
+gap> D := DihedralPcpGroup( 16 );;
+gap> C := Subgroup( D, [ D.1, D.2 ^ 4 ] );;
+gap> pcps := PcpsOfEfaSeries( D );;
+gap> ConjugacyElementsBySeries( C, D.1, D.1 * D.2 ^ 4, pcps );
+false
+gap> A := AbelianPcpGroup( [ 2, 3 ] );;
+gap> B := Subgroup( A, [ A.1 ] );;
+gap> IsConjugate( B, A.2, A.2^2 );
+false
 
 #
 # Fix a bug in AddToIgs

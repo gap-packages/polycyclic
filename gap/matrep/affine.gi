@@ -23,8 +23,8 @@ NextStepRepresentation := function( G, i, mats )
     Print("starting level ",i,"\n");
     pcp := Pcp(G);
     N := SubgroupByIgs( G, pcp{[i+1..Length(pcp)]} );
-    hom := NaturalHomomorphismByNormalSubgroup( G, N );
-    F := Image( hom, G );
+    hom := NaturalHomomorphismByNormalSubgroupNC( G, N );
+    F := ImagesSource( hom );
     Add( mats, mats[1]^0 );
 
     # determine cohomology

@@ -83,24 +83,25 @@ BindGlobal( "RefinedPcpGroup", function( G )
 
         # power
         if ord[i] > 0 then
-            SetRelativeOrder( c, i, ord[i] );
+            SetRelativeOrderNC( c, i, ord[i] );
             t := refExponents( pcs, new[i]^ord[i], map );
-            SetPower( c, i, ObjByExponents(c, t) );
+            SetPowerNC( c, i, ObjByExponents(c, t) );
         fi;
 
         # conjugates
         for j in [1..i-1] do
             t := refExponents( pcs, new[i]^new[j], map );
-            SetConjugate( c, i, j, ObjByExponents(c, t) );
+            SetConjugateNC( c, i, j, ObjByExponents(c, t) );
             if ord[i] = 0 then
                 t := refExponents( pcs, new[i]^(new[j]^-1), map );
-                SetConjugate( c, i, -j, ObjByExponents(c, t) );
+                SetConjugateNC( c, i, -j, ObjByExponents(c, t) );
             fi;
         od;
     od;
 
     # create group and add a bijection
-    H := PcpGroupByCollector( c );
+    UpdatePolycyclicCollector( c );
+    H := PcpGroupByCollectorNC( c );
     H!.bijection := GroupHomomorphismByImagesNC( G, H, new, Igs(H) );
     SetIsBijective( H!.bijection, true );
     UseIsomorphismRelation( G, H );
@@ -147,29 +148,30 @@ BindGlobal( "PcpGroupByPcps", function( pcps )
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
         if rels[i] > 0 then
-            SetRelativeOrder( coll, i, rels[i] );
+            SetRelativeOrderNC( coll, i, rels[i] );
             h := gens[i] ^ rels[i];
             e := ExponentsByPcpList( pcps, h, 1 );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetPower( coll, i, w ); fi;
+            if Length( w ) > 0 then SetPowerNC( coll, i, w ); fi;
         fi;
         for j in [1..i-1] do
             h := gens[i]^gens[j];
             e := ExponentsByPcpList( pcps, h, 1 );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetConjugate( coll, i, j, w ); fi;
+            if Length( w ) > 0 then SetConjugateNC( coll, i, j, w ); fi;
             if rels[j] = 0 then
                 h := gens[i]^(gens[j]^-1);
                 e := ExponentsByPcpList( pcps, h, 1 );
                 w := ObjByExponents( coll, e );
-                if Length( w ) > 0 then SetConjugate( coll, i, -j, w ); fi;
+                if Length( w ) > 0 then SetConjugateNC( coll, i, -j, w ); fi;
             fi;
         od;
     od;
 
     # return result
     H := GroupOfPcp( pcps[1] );
-    G := PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    G := PcpGroupByCollectorNC( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
@@ -198,30 +200,31 @@ BindGlobal( "PcpGroupByEfaPcps", function( pcps )
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
         if rels[i] > 0 then
-            SetRelativeOrder( coll, i, rels[i] );
+            SetRelativeOrderNC( coll, i, rels[i] );
             h := gens[i] ^ rels[i];
             e := ExponentsByPcpList( pcps, h, indx[i]+1 );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetPower( coll, i, w ); fi;
+            if Length( w ) > 0 then SetPowerNC( coll, i, w ); fi;
         fi;
         for j in [1..i-1] do
             #Print(i," by ",j,"\n");
             h := gens[i]^gens[j];
             e := ExponentsByPcpList( pcps, h, indx[i] );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetConjugate( coll, i, j, w ); fi;
+            if Length( w ) > 0 then SetConjugateNC( coll, i, j, w ); fi;
             if rels[j] = 0 then
                 h := gens[i]^(gens[j]^-1);
                 e := ExponentsByPcpList( pcps, h, indx[i] );
                 w := ObjByExponents( coll, e );
-                if Length( w ) > 0 then SetConjugate( coll, i, -j, w ); fi;
+                if Length( w ) > 0 then SetConjugateNC( coll, i, -j, w ); fi;
             fi;
         od;
     od;
 
     # return result
     H := GroupOfPcp( pcps[1] );
-    G := PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    G := PcpGroupByCollectorNC( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
@@ -270,7 +273,7 @@ function(G)
     efa := EfaSeries(G);
     GG  := PcpGroupBySeries(efa);
     iso := GG!.bijection;
-    new := List( efa, x -> PreImage(iso,x) );
+    new := List( efa, x -> PreImagesSetNC(iso,x) );
     SetEfaSeries(GG, new);
     return GG;
 end );
@@ -309,27 +312,28 @@ BindGlobal( "PcpFactorByPcps", function(H, pcps)
     coll := FromTheLeftCollector( n );
     for i  in [ 1 .. n ]  do
         if rels[i] > 0  then
-            SetRelativeOrder( coll, i, rels[i] );
+            SetRelativeOrderNC( coll, i, rels[i] );
             h := gens[i] ^ rels[i];
             e := ExponentsByPcpFactors( pcps, h );
             w := ObjByExponents( coll, e );
-            if Length(w) > 0  then SetPower( coll, i, w ); fi;
+            if Length(w) > 0  then SetPowerNC( coll, i, w ); fi;
         fi;
         for j  in [ 1 .. i - 1 ]  do
             h := gens[i] ^ gens[j];
             e := ExponentsByPcpFactors( pcps, h );
             w := ObjByExponents( coll, e );
-            if Length(w) > 0  then SetConjugate( coll, i, j, w ); fi;
+            if Length(w) > 0  then SetConjugateNC( coll, i, j, w ); fi;
             if rels[j] = 0  then
                 h := gens[i] ^ (gens[j] ^ -1);
                 e := ExponentsByPcpFactors( pcps, h );
                 w := ObjByExponents( coll, e );
-                if Length(w) > 0  then SetConjugate( coll, i, - j, w ); fi;
+                if Length(w) > 0  then SetConjugateNC( coll, i, - j, w ); fi;
             fi;
         od;
     od;
 
     # create new group
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    return PcpGroupByCollectorNC( coll );
 end );
 

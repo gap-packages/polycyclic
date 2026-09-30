@@ -73,7 +73,7 @@ function( N, U )
 	# get common overgroup of N and U
     coll := Collector( N );
     rels := RelativeOrders( coll );
-	G    := PcpGroupByCollector( coll );
+	G    := PcpGroupByCollectorNC( coll );
 
     igs  := Igs( G );
     igsN := Cgs( N );

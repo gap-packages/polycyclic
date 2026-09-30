@@ -163,9 +163,9 @@ InstallGlobalFunction( EfaSeriesParent, function( G )
         # otherwise we need to refine this factor
         else
             nat := NaturalHomomorphismByPcp( pcp );
-            ref := RefinedDerivedSeries( Image( nat ) );
+            ref := RefinedDerivedSeries( ImagesSource( nat ) );
             ref := ref{[2..Length(ref)]};
-            ref := List( ref, x -> PreImage( nat, x ) );
+            ref := List( ref, x -> PreImagesSetNC( nat, x ) );
             Append( new, ref );
         fi;
     od;
