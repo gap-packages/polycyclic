@@ -59,7 +59,7 @@ InstallGlobalFunction( InfiniteMetacyclicPcpGroup, function( n, m, r )
     fi;
 
     UpdatePolycyclicCollector( coll );
-    return PcpGroupByCollector( coll );
+    return PcpGroupByCollectorNC( coll );
 end );
 
 

@@ -315,7 +315,8 @@ SetConjugate( NqColl, 18, -1, NqF.18*NqF.24^5 );
 SetConjugate( NqColl, 18, 2, NqF.18 );
 SetConjugate( NqColl, 18, -2, NqF.18 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 elif n = 2 then
 
@@ -442,7 +443,8 @@ SetConjugate( NqColl, 10, -2, NqF.10 );
 SetConjugate( NqColl, -10, 2, NqF.10^-1 );
 SetConjugate( NqColl, -10, -2, NqF.10^-1 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 elif n = 3 then
 
@@ -589,7 +591,8 @@ SetConjugate( NqColl, 13, -2, NqF.13*NqF.17^4 );
 SetConjugate( NqColl, -13, 2, NqF.13^-1*NqF.17^4 );
 SetConjugate( NqColl, -13, -2, NqF.13^-1*NqF.17 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 fi;
 

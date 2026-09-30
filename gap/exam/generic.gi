@@ -235,6 +235,7 @@ BindGlobal( "BlowUpPcpPGroup", function(G)
             fi;
         od;
     od;
-    return PcpGroupByCollector(c);
+    UpdatePolycyclicCollector(c);
+    return PcpGroupByCollectorNC(c);
 end );
 

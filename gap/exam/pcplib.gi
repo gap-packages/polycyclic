@@ -51,7 +51,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         FTL := FromTheLeftCollector( 2 );
         SetConjugateNC( FTL, 2,  1, [2,-1] );
         SetConjugateNC( FTL, 2, -1, [2,-1] );
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -62,7 +63,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         FTL := FromTheLeftCollector( 3 );
         SetConjugateNC( FTL, 2, 1, [3, 1] );
         SetConjugateNC( FTL, 3, 1, [2, 1, 3, 7] );
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -76,7 +78,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 2,1, [2,-1] );
         SetConjugateNC( FTL, 3,1, [3,-1] );
         SetConjugateNC( FTL, 3,2, [3,1,4,2] );
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -87,7 +90,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         FTL := FromTheLeftCollector( 3 );
         SetConjugateNC( FTL, 2, 1, [2,2,3,1]);
         SetConjugateNC( FTL, 3, 1, [2,1,3,1]);
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 7 then
@@ -95,7 +99,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 2, 1, [3,1] );
         SetConjugateNC( FTL, 3, 1, [2,-1, 3,3, 4,1] );
         SetConjugateNC( FTL, 3, 2, [3,1,4,-1]);
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 8 then
@@ -104,7 +109,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 3, 2, [5,1]);
         SetConjugateNC( FTL, 4, 2, [3,1,4,-1,5,1]);
         SetConjugateNC( FTL, 5, 2, [4,1]);
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 9 then
@@ -112,7 +118,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 2, 1, [2,1,3,-3] );
         SetConjugateNC( FTL, 3, 1, [3,-1] );
         SetConjugateNC( FTL, 3, 2, [3,-1] );
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -124,7 +131,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 4, 1, [4,-1] );
         SetConjugateNC( FTL, 3, 2, [3,2,4,1]);
         SetConjugateNC( FTL, 4, 2, [3,3,4,2]);
-        return PcpGroupByCollector(FTL);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -135,7 +143,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 2, 1, [2,1,3, 1] );
         SetConjugateNC( FTL, 3, 1, [3,1,4, 1] );
         SetConjugateNC( FTL, 3, 2, [3,1,5, 1] );
-        return PcpGroupByCollector( FTL );
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
     ##
@@ -146,7 +155,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 2, 1, [2,1,4, 1] );
         SetConjugateNC( FTL, 3, 1, [3,1,5, 1] );
         SetConjugateNC( FTL, 3, 2, [3,1,6, 1] );
-        return PcpGroupByCollector( FTL );
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
     ##
@@ -207,7 +217,8 @@ InstallGlobalFunction( PcpExamples, function( n )
         SetConjugateNC( FTL, 6, -4, [ 6, 1, 20, -1 ] );
         SetConjugateNC( FTL, 6, 5, [ 6, 1, 21, 1 ] );
         SetConjugateNC( FTL, 6, -5, [ 6, 1, 21, -1 ] );
-        return PcpGroupByCollector( FTL ); 
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
 
