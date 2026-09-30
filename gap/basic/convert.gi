@@ -25,14 +25,14 @@ BindGlobal( "PcpGroupToPcGroup", function( G )
         h := pcp[i] ^ rel[i];
         e := ExponentsByPcp( pcp, h );
         w := MappedVector( e, f );
-        SetPower( rws, i, w );
+        SetPowerNC( rws, i, w );
 
         # set conjugates
         for j in [1..i-1] do
             h := pcp[i]^pcp[j];
             e := ExponentsByPcp( pcp, h );
             w := MappedVector( e, f );
-            SetConjugate( rws, i, j, w );
+            SetConjugateNC( rws, i, j, w );
         od;
     od;
     return GroupByRwsNC( rws );
@@ -45,7 +45,7 @@ function( G )
     K := RefinedPcpGroup(G);
     H := PcpGroupToPcGroup(K);
     g := Igs(G);
-    k := List(g, x -> Image(K!.bijection,x));
+    k := List(g, x -> ImagesRepresentative(K!.bijection,x));
     h := List(k, x -> MappedVector(Exponents(x), Pcgs(H)));
     hom := GroupHomomorphismByImagesNC( G, H, g, h);
     SetIsBijective( hom, true );
@@ -121,24 +121,24 @@ BindGlobal( "PcGroupToPcpGroup", function( G )
         h := g[i] ^ r[i];
         e := ExponentsOfPcElement( g, h );
         w := ObjByExponents( coll, e );
-        SetRelativeOrder( coll, i, r[i] );
-        SetPower( coll, i, w );
+        SetRelativeOrderNC( coll, i, r[i] );
+        SetPowerNC( coll, i, w );
 
         # set conjugates
         for j in [1..i-1] do
             h := g[i]^g[j];
             e := ExponentsOfPcElement( g, h );
             w := ObjByExponents( coll, e );
-            SetConjugate( coll, i, j, w );
+            SetConjugateNC( coll, i, j, w );
 
             h := g[i]^(g[j]^-1);
             e := ExponentsOfPcElement( g, h );
             w := ObjByExponents( coll, e );
-            SetConjugate( coll, i, -j, w );
+            SetConjugateNC( coll, i, -j, w );
         od;
     od;
-
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    return PcpGroupByCollectorNC( coll );
 end );
 
 InstallMethod( IsomorphismPcpGroup, [IsPcGroup], NICE_FLAGS,
@@ -165,7 +165,7 @@ function( G )
     local iso, F,H, gens, hom;
     if not IsSolvableGroup( G ) then return fail; fi;
     iso  := IsomorphismPcGroup( G );
-    F    := Image( iso );
+    F    := ImagesSource( iso );
     H    := PcGroupToPcpGroup( F );
     gens := List( Pcgs(F), x -> PreImagesRepresentativeNC( iso, x ) );
     hom  := GroupHomomorphismByImagesNC( G, H, gens, AsList(Pcp(H)) );
@@ -416,6 +416,7 @@ BindGlobal( "PcpGroupFpGroupPcPres", function( G )
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup( G ) );
     rels := ClassifyRelationsOfFpGroup( G );
     ftl  := FromTheLeftCollectorByRelations( gens, rels );
+    UpdatePolycyclicCollector( ftl );
 
     ev := List( gens, g->0 );
     for rel in rels.conflicts do

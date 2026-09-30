@@ -102,7 +102,7 @@ BindGlobal( "NormalizerHomogeneousAction", function( G, linG, baseU )
 
     # find G cap L = G cap U as subgroup of G
     exp := IntersectionOfUnitSubgroups( K, linG, linU );
-    return Subgroup( G, List( exp, x -> MappedVector( x, Pcp(G) ) ) );
+    return SubgroupNC( G, List( exp, x -> MappedVector( x, Pcp(G) ) ) );
 end );
 
 #############################################################################
@@ -184,7 +184,7 @@ BindGlobal( "ConjugacyHomogeneousAction", function( G, linG, baseU, baseW )
     h := IntersectionOfTFUnitsByCosets( K, linG, C );
     if IsBool( h ) then return false; fi;
     g := MappedVector( h.repr, Pcp(G) );
-    N := Subgroup( G, List( h.ints, x -> MappedVector( x, Pcp(G) ) ) );
+    N := SubgroupNC( G, List( h.ints, x -> MappedVector( x, Pcp(G) ) ) );
 
     # that's it
     return rec( norm := N, conj := g );
@@ -335,7 +335,7 @@ BindGlobal( "NormalizerCongruenceAction", function( G, linG, baseU, ser )
         if Length(Pcp(T)) = 0 then return T; fi;
 
         # reset action for the next step
-        if Index(S,T) <> 1 then
+        if IndexNC(S,T) <> 1 then
             indS := InducedByPcp( Pcp(G), Pcp(T), indG );
         fi;
         S := T;
@@ -351,7 +351,7 @@ BindGlobal( "NormalizerCongruenceAction", function( G, linG, baseU, ser )
             if Length(Pcp(T)) = 0 then return T; fi;
 
             # again, reset action for the next step
-            if Index(S,T) <> 1 then
+            if IndexNC(S,T) <> 1 then
                 indS := InducedByPcp( Pcp(G), Pcp(T), indG );
             fi;
             S := T;
@@ -432,7 +432,7 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
         # reset action for next step
         g := g * s.conj;
         W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-        if Index(S,s.norm)<>1 then
+        if IndexNC(S,s.norm)<>1 then
             indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
         fi;
         S := s.norm;
@@ -451,7 +451,7 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
             # again, reset action
             g := g * s.conj;
             W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-            if Index(S,s.norm)<>1 then
+            if IndexNC(S,s.norm)<>1 then
                 indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
             fi;
             S := s.norm;

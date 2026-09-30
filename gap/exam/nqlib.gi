@@ -14,17 +14,17 @@ if n = 1 then
 
 NqF := FreeGroup( 24 );
 NqColl := FromTheLeftCollector( NqF );
-SetRelativeOrder( NqColl, 11, 5 );
-SetRelativeOrder( NqColl, 12, 4 );
-SetRelativeOrder( NqColl, 14, 5 );
-SetRelativeOrder( NqColl, 15, 5 );
-SetRelativeOrder( NqColl, 16, 4 );
-SetRelativeOrder( NqColl, 18, 6 );
-SetRelativeOrder( NqColl, 19, 5 );
-SetRelativeOrder( NqColl, 20, 5 );
-SetRelativeOrder( NqColl, 21, 4 );
-SetRelativeOrder( NqColl, 23, 10 );
-SetRelativeOrder( NqColl, 24, 6 );
+SetRelativeOrderNC( NqColl, 11, 5 );
+SetRelativeOrderNC( NqColl, 12, 4 );
+SetRelativeOrderNC( NqColl, 14, 5 );
+SetRelativeOrderNC( NqColl, 15, 5 );
+SetRelativeOrderNC( NqColl, 16, 4 );
+SetRelativeOrderNC( NqColl, 18, 6 );
+SetRelativeOrderNC( NqColl, 19, 5 );
+SetRelativeOrderNC( NqColl, 20, 5 );
+SetRelativeOrderNC( NqColl, 21, 4 );
+SetRelativeOrderNC( NqColl, 23, 10 );
+SetRelativeOrderNC( NqColl, 24, 6 );
 SetPower( NqColl, 11, NqF.19^2*NqF.20^4*NqF.21^2*NqF.22^4*NqF.24^4 );
 SetPower( NqColl, 12, NqF.13^2*NqF.15*NqF.16^3*NqF.17^-6*NqF.18^4*\
   NqF.19^3*NqF.21^3*NqF.22^12*NqF.23^8*NqF.24^4 );
@@ -315,14 +315,15 @@ SetConjugate( NqColl, 18, -1, NqF.18*NqF.24^5 );
 SetConjugate( NqColl, 18, 2, NqF.18 );
 SetConjugate( NqColl, 18, -2, NqF.18 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 elif n = 2 then
 
 NqF := FreeGroup( 13 );
 NqColl := FromTheLeftCollector( NqF );
-SetRelativeOrder( NqColl, 11, 5 );
-SetRelativeOrder( NqColl, 12, 4 );
+SetRelativeOrderNC( NqColl, 11, 5 );
+SetRelativeOrderNC( NqColl, 12, 4 );
 SetPower( NqColl, 12, NqF.13^2 );
 SetConjugate( NqColl, 2, 1, NqF.2*NqF.3 );
 SetConjugate( NqColl, 2, -1, NqF.2*NqF.3^-1*NqF.4*NqF.5^-1*NqF.6*NqF.7*\
@@ -442,18 +443,19 @@ SetConjugate( NqColl, 10, -2, NqF.10 );
 SetConjugate( NqColl, -10, 2, NqF.10^-1 );
 SetConjugate( NqColl, -10, -2, NqF.10^-1 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 elif n = 3 then
 
 NqF := FreeGroup( 17 );
 NqColl := FromTheLeftCollector( NqF );
-SetRelativeOrder( NqColl, 8, 2 );
-SetRelativeOrder( NqColl, 10, 2 );
-SetRelativeOrder( NqColl, 11, 2 );
-SetRelativeOrder( NqColl, 14, 2 );
-SetRelativeOrder( NqColl, 15, 2 );
-SetRelativeOrder( NqColl, 17, 5 );
+SetRelativeOrderNC( NqColl, 8, 2 );
+SetRelativeOrderNC( NqColl, 10, 2 );
+SetRelativeOrderNC( NqColl, 11, 2 );
+SetRelativeOrderNC( NqColl, 14, 2 );
+SetRelativeOrderNC( NqColl, 15, 2 );
+SetRelativeOrderNC( NqColl, 17, 5 );
 SetPower( NqColl, 8, NqF.9*NqF.10*NqF.11*NqF.12^-1*NqF.13^3*NqF.14*\
   NqF.16^-2*NqF.17 );
 SetPower( NqColl, 10, NqF.12*NqF.15*NqF.16^3 );
@@ -589,7 +591,8 @@ SetConjugate( NqColl, 13, -2, NqF.13*NqF.17^4 );
 SetConjugate( NqColl, -13, 2, NqF.13^-1*NqF.17^4 );
 SetConjugate( NqColl, -13, -2, NqF.13^-1*NqF.17 );
 
-return PcpGroupByCollector( NqColl );
+UpdatePolycyclicCollector( NqColl );
+return PcpGroupByCollectorNC( NqColl );
 
 fi;
 

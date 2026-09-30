@@ -14,7 +14,7 @@ BindGlobal( "InducedByField", function( mats, f )
     mats := ShallowCopy( mats );
     for i in [1..Length(mats)] do
         mats[i] := Immutable( mats[i] * One(f) );
-        ConvertToMatrixRep( mats[i], f );
+        ConvertToMatrixRepNC( mats[i], f );
     od;
     return mats;
 end );

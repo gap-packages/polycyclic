@@ -34,10 +34,10 @@ BindGlobal( "SchurCovers", function(G)
     Z := Intersection(Centre(K), D);
 
     # determine phi(G) in K
-    P := Subgroup(K, Concatenation(Igs(D), List(Pcp(K,D), x -> x^p)));
+    P := SubgroupNC(K, Concatenation(Igs(D), List(Pcp(K,D), x -> x^p)));
 
     # get small cover of K/Z
-    H := Subgroup(K, GeneratorsOfPcp(Pcp(K,P)));
+    H := SubgroupNC(K, GeneratorsOfPcp(Pcp(K,P)));
 
     # reduce into H and obtain H > C > T > M > 1
     C := Intersection( Z, H );

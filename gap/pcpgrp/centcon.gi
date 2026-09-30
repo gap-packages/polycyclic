@@ -122,17 +122,17 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             Info( InfoPcpGrp, 1, "got infinite layer of type ",p,"^",d);
             M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
-            nat := NaturalHomomorphismByNormalSubgroup( G, M );
-            NM := Image( nat, N );
+            nat := NaturalHomomorphismByNormalSubgroupNC( G, M );
+            NM := ImagesSet( nat, N );
             CM := Image( nat, C );
             for g in elms do
-                gM := Image( nat, g );
+                gM := ImagesRepresentative( nat, g );
                 if gM <> gM^0 then
                     act := AffineActionByElement( Pcp(CM), Pcp(NM), gM );
                     CM := StabilizerIntegralAction( CM, act, e );
                 fi;
             od;
-            C := PreImage( nat, CM );
+            C := PreImagesSetNC( nat, CM );
         fi;
     od;
 
@@ -311,12 +311,12 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             f := ExponentsByPcp( pcp, c^-1*h ); Add( f, 1 );
             fac := Pcp( C, M );
             act := AffineActionByElement( fac, pcp, c );
-            nat := NaturalHomomorphismByNormalSubgroup( C, M );
-            stb := OrbitIntegralAction( Image(nat), act, e, f );
+            nat := NaturalHomomorphismByNormalSubgroupNC( C, M );
+            stb := OrbitIntegralAction( ImagesSource(nat), act, e, f );
 
             # extract results
             if IsBool(stb) then return false; fi;
-            C := PreImage( nat, stb.stab^stb.prei );
+            C := PreImagesSetNC( nat, stb.stab^stb.prei );
             k := k * PreImagesRepresentativeNC( nat, stb.prei );
         fi;
     od;

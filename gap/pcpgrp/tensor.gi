@@ -322,12 +322,12 @@ BindGlobal( "CollectorCentralCover", function(S)
     # add relations of S
     k := x;
     for i in [1..x] do
-        SetRelativeOrder(coll, i, r[i]);
+        SetRelativeOrderNC(coll, i, r[i]);
 
         if r[i] > 0 then
             e := ObjByExponents(coll, ExponentsByPcp(s, s[i]^r[i]));
             if i > 2*n then k := k+1; Append(e, [k,1]); fi;
-            SetPower(coll,i,e);
+            SetPowerNC(coll,i,e);
         fi;
 
         for j in [1..i-1] do
@@ -335,7 +335,7 @@ BindGlobal( "CollectorCentralCover", function(S)
             if (i>n) and (i>2*n or not (j in [n+1..2*n])) then
                 k := k+1; Append(e, [k,1]);
             fi;
-            SetConjugate(coll,i,j,e);
+            SetConjugateNC(coll,i,j,e);
         od;
     od;
 
@@ -392,13 +392,13 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
 
     # add relative orders of module
     for i in [1..l] do
-        SetRelativeOrder(c, x+i, d[f[i]]);
+        SetRelativeOrderNC(c, x+i, d[f[i]]);
     od;
 
     # add relations of factor
     k := 0;
     for i in [1..x] do
-        SetRelativeOrder(c, i, e[i]);
+        SetRelativeOrderNC(c, i, e[i]);
 
         if e[i]>0 then
             a := GetPower(coll, i);
@@ -407,12 +407,12 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
         fi;
 
         for j in [1..i-1] do
-            a := GetConjugate(coll, i, j);
+            a := GetConjugateNC(coll, i, j);
             a := ReduceTail( a, x, Q, d, f );
             SetConjugate(c, i, j, a );
 
             if e[j] = 0 then
-                a := GetConjugate(coll, i, -j);
+                a := GetConjugateNC(coll, i, -j);
                 a := ReduceTail( a, x, Q, d, f );
                 SetConjugate(c, i, -j, a );
             fi;
@@ -466,7 +466,7 @@ BindGlobal( "NonAbelianTensorSquarePlusEpimorphism", function(G)
     T := QuotientBySystem( coll, sys, n );
 
     # enforce epimorphism
-    T := Subgroup(T, Igs(T){[1..2*n]});
+    T := SubgroupNC(T, Igs(T){[1..2*n]});
 
     # construct homomorphism from nu(G) to tau(G)
     lift := GroupHomomorphismByImagesNC( T,S,
@@ -519,10 +519,11 @@ BindGlobal( "NonAbelianTensorSquareEpimorphism", function( G )
     ## we don't just want G^G as a subgroup of tau(G) but we want to go back
     ## to G^G as constructed by NonAbelianExteriorSquarePlus.  (G^G)+ has the
     ## component .embedding which embeds G^G into (G^G)+
-    GoG := Subgroup(U, c);
+    GoG := SubgroupNC(U, c);
     gens := GeneratorsOfGroup( GoG );
-    embed := Image( epi )!.embedding;
-    imgs := List( gens, g->PreImagesRepresentativeNC( embed, Image( epi, g ) ) );
+    embed := ImagesSource( epi )!.embedding;
+    imgs := List( gens, g->PreImagesRepresentativeNC(
+                embed, ImagesRepresentative( epi, g ) ) );
 
     alpha := GroupHomomorphismByImagesNC( GoG, Source( embed ), gens, imgs );
     SetIsSurjective( alpha, true );

@@ -23,7 +23,7 @@ BindGlobal( "TorsionSubgroupAbelianPcpGroup", function( G )
     pcp := Pcp( G, "snf" );
     rels := RelativeOrdersOfPcp( pcp );
     subs := Filtered( [1..Length(pcp)], x -> rels[x] > 0 );
-    return Subgroup( G, pcp{subs} );
+    return SubgroupNC( G, pcp{subs} );
 end );
 
 BindGlobal( "TorsionSubgroupNilpotentPcpGroup", function( G )
@@ -209,8 +209,8 @@ function( G )
         if rel[i] > 0 then
 
             # compute subgroups
-            N := Subgroup( G, pcs{[i+1..n]} );
-            K := Subgroup( G, pcs{[i..n]} );
+            N := SubgroupNC( G, pcs{[i+1..n]} );
+            K := SubgroupNC( G, pcs{[i..n]} );
 
             # compute complements
             com := ComplementClasses( K, N );
@@ -494,13 +494,13 @@ InstallGlobalFunction( RootSet, function( G, H )
         Print("function is available for normal subgroups only");
         return fail;
     fi;
-    nat := NaturalHomomorphismByNormalSubgroup( G, H );
-    F   := Image( nat );
+    nat := NaturalHomomorphismByNormalSubgroupNC( G, H );
+    F   := ImagesSource( nat );
     T   := TorsionSubgroup( F );
     if T = fail then
         Print( "RootSet is not a subgroup - not yet implemented" );
         return fail;
     fi;
-    return PreImage( nat, T );
+    return PreImagesSetNC( nat, T );
 end );
 

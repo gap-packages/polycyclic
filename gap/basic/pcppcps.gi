@@ -829,22 +829,22 @@ BindGlobal( "PcpGroupByPcp", function( pcp )
     coll := FromTheLeftCollector( n );
     for i in [1..n] do
         if r[i] > 0 then
-            SetRelativeOrder( coll, i, r[i] );
+            SetRelativeOrderNC( coll, i, r[i] );
             h := g[i] ^ r[i];
             e := ExponentsByPcp( pcp, h );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetPower( coll, i, w ); fi;
+            if Length( w ) > 0 then SetPowerNC( coll, i, w ); fi;
         fi;
         for j in [1..i-1] do
             h := g[i]^g[j];
             e := ExponentsByPcp( pcp, h );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetConjugate( coll, i, j, w ); fi;
+            if Length( w ) > 0 then SetConjugateNC( coll, i, j, w ); fi;
 
             h := g[i]^(g[j]^-1);
             e := ExponentsByPcp( pcp, h );
             w := ObjByExponents( coll, e );
-            if Length( w ) > 0 then SetConjugate( coll, i, -j, w ); fi;
+            if Length( w ) > 0 then SetConjugateNC( coll, i, -j, w ); fi;
         od;
     od;
     UpdatePolycyclicCollector( coll );
