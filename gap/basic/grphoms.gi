@@ -331,7 +331,8 @@ function( hom )
     b := MappingGeneratorsImages(hom)[2];
     D := DirectProduct(B,A);
     u := Cgs(SubgroupNC(D, List([1..Length(a)], x ->
-          ImagesRepresentative(Embedding(D,1),b[x])*ImagesRepresentative(Embedding(D,2),a[x]))));
+          ImagesRepresentative(Embedding(D,1),b[x])*
+          ImagesRepresentative(Embedding(D,2),a[x]))));
 
     # filter kernel gens
     kern := [];

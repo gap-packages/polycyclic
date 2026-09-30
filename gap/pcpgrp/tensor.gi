@@ -522,7 +522,8 @@ BindGlobal( "NonAbelianTensorSquareEpimorphism", function( G )
     GoG := SubgroupNC(U, c);
     gens := GeneratorsOfGroup( GoG );
     embed := ImagesSource( epi )!.embedding;
-    imgs := List( gens, g->PreImagesRepresentativeNC( embed, ImagesRepresentative( epi, g ) ) );
+    imgs := List( gens, g->PreImagesRepresentativeNC(
+                embed, ImagesRepresentative( epi, g ) ) );
 
     alpha := GroupHomomorphismByImagesNC( GoG, Source( embed ), gens, imgs );
     SetIsSurjective( alpha, true );

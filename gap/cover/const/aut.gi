@@ -159,7 +159,8 @@ BindGlobal( "InducedAutCover", function(aut, f, t, e)
 
     # construct translation
     trs := List([1..Length(f)], x -> MappedVector(invF[x],f));
-    trs := List([1..Length(f)], x -> f[x]^-1 * ImagesRepresentative(aut,trs[x]));
+    trs := List([1..Length(f)], x ->
+                f[x]^-1 * ImagesRepresentative(aut,trs[x]));
     trs := List(trs, x -> ExponentsByPcp(t,x));
 
     # return all
