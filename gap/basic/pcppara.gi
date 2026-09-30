@@ -38,7 +38,7 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
 
     z := i;
     w := j;
-    
+
     if a < 0 then
         x := x^-1;
         z := z^-1;

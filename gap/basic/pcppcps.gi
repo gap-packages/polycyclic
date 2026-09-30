@@ -103,7 +103,7 @@ BindGlobal( "GcdPcp", function(g, h)
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
-    
+
     if a < 0 then
         x := x^-1;
         a := LeadingExponent(x);
@@ -318,7 +318,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     c := TailLimit(ind, n+1);
     todo := Filtered( todo, x -> Depth( x ) < c );
     val := List(todo, x -> IGSValFun(x));
-    
+
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
         j := PositionMinimum(val);
