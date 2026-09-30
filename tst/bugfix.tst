@@ -720,7 +720,6 @@ gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
 gap> FiniteSubgroupClasses(G);;
 gap> CHECK_IGS@Polycyclic := tmp;;
 
-
 #
 # Fix bugs in NormalizerPcpGroup
 # <https://github.com/gap-packages/polycyclic/issues/122>
