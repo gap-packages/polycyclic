@@ -180,7 +180,7 @@ InstallGlobalFunction( MaximalOrderByUnitsPcpGroup, function(f)
 
     # get pcp groups
     i := IsomorphismPcpGroup(U);
-    G := Image(i);
+    G := ImagesSource(i);
 
     # get action of U on O
     u := List( Pcp(G), x -> PreImagesRepresentativeNC(i,x) );

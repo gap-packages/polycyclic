@@ -102,7 +102,7 @@ BindGlobal( "NormalizerOfIntersection", function( C, N, I )
     else
         ind := NaturalHomomorphismByPcp( fac );
         int := LatticeBasis( int );
-        C := Image( ind );
+        C := ImagesSource( ind );
         C := NormalizerIntegralAction( C, act, int );
         return PreImagesSetNC( ind, C );
     fi;
@@ -127,7 +127,7 @@ BindGlobal( "StabilizerOfCocycle", function( CR, cc, C, elm )
         nat := NaturalHomomorphismByPcp( CR.super );
         act := List( aff, x -> x{[s..l+1]}{[s..l+1]} );
         e := elm{[s..l]}; Add( e, 1 );
-        D := Image( nat, D );
+        D := ImagesSource( nat );
         D := StabilizerIntegralAction( D, act, e );
         D := PreImagesSetNC( nat, D );
     fi;
@@ -274,10 +274,10 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         # determine factor C/M
         hom := NaturalHomomorphismByNormalSubgroupNC( G, M );
         if Size(M) > 1 then
-            N := Image( hom, N );
+            N := ImagesSet( hom, N );
             C := Image( hom, C );
         fi;
-        H := Image( hom, U );
+        H := ImagesSet( hom, U );
 
         # first normalize the intersection I = N cap H
         I := NormalIntersection( N, H );
@@ -289,7 +289,7 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         # add checking if required
         if CHECK_NORM@ then
             Info( InfoPcpGrp, 1, "  check result ");
-            H := Image( hom, U );
+            H := ImagesSet( hom, U );
             if ForAny( Igs(C), x -> H^x <> H ) then
                Error("normalizer is not normalizing");
             fi;

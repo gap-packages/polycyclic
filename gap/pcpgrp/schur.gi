@@ -187,7 +187,7 @@ BindGlobal( "NonAbelianExteriorSquareEpimorphism", function( G )
     D    := DerivedSubgroup( Source(lift) );
 
     gens := GeneratorsOfGroup( D );
-    imgs := List( gens, g->Image( lift, g ) );
+    imgs := List( gens, g->ImagesRepresentative( lift, g ) );
     epi  := GroupHomomorphismByImagesNC( D, DerivedSubgroup(G), gens, imgs );
     SetIsSurjective( epi, true );
 
@@ -344,7 +344,7 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
 
         # compute conjugates
         for j in [1..m] do
-            e := ExponentsByPcp(d, Image(alpha, d[j]));
+            e := ExponentsByPcp(d, ImagesRepresentative(alpha, d[j]));
             e := Concatenation(w, e);
             SetConjugateNC(c, 2*n+j, i, ObjByExponents(c,e));
             SetConjugateNC(c, 2*n+j, n+i, ObjByExponents(c,e));
@@ -363,7 +363,7 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
 
             # compute conjugates
             for j in [1..m] do
-                e := ExponentsByPcp(d, Image(alpha, d[j]));
+                e := ExponentsByPcp(d, ImagesRepresentative(alpha, d[j]));
                 e := Concatenation(w, e);
                 SetConjugateNC(c, 2*n+j, -i, ObjByExponents(c,e));
                 SetConjugateNC(c, 2*n+j, -(n+i), ObjByExponents(c,e));

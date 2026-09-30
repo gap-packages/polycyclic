@@ -24,7 +24,7 @@ NextStepRepresentation := function( G, i, mats )
     pcp := Pcp(G);
     N := SubgroupByIgs( G, pcp{[i+1..Length(pcp)]} );
     hom := NaturalHomomorphismByNormalSubgroupNC( G, N );
-    F := Image( hom, G );
+    F := ImagesSource( hom );
     Add( mats, mats[1]^0 );
 
     # determine cohomology

@@ -141,7 +141,7 @@ function( G )
 
     # HACK: Until we write a proper native method, use that for pc groups
     iso := IsomorphismPcGroup(G);
-    K := Image(iso);
+    K := ImagesSource(iso);
     F := FrattiniSubgroup(K);
     return PreImagesSetNC(iso, F);
 end );
@@ -156,7 +156,7 @@ function(G)
     D := DerivedSubgroup(G);
     if IndexNC(G,D) = infinity then return fail; fi;
     nat := NaturalHomomorphismByNormalSubgroupNC(G,D);
-    H := Image(nat);
+    H := ImagesSource(nat);
     prm := Set(Factors(Size(H)));
     max := [];
     for p in prm do

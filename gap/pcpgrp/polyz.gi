@@ -31,7 +31,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
     N   := TrivialSubgroup( G );
     ser := [N];
     nat := IdentityMapping( G );
-    F   := Image( nat );
+    F   := ImagesSource( nat );
 
     # loop
     while not IsFinite( F ) do
@@ -59,7 +59,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
         N := PreImagesSetNC( nat, U );
         Add( ser, N );
         nat := NaturalHomomorphismByNormalSubgroupNC( G, N );
-        F := Image( nat );
+        F := ImagesSource( nat );
     od;
     SetEfaSeries( N, Reversed( ser ) );
     return N;

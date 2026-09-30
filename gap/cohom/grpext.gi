@@ -187,7 +187,7 @@ InstallMethod( SplitExtensionByAutomorphisms,
 
     # the action of H on G
     for i in [1..m] do
-        k := List( g, x -> Image( auts[i], x ) );
+        k := List( g, x -> ImagesRepresentative( auts[i], x ) );
         for j in [1..n] do
             o := ExponentsByIgs( g, k[j] );
             o := ObjByExponents( coll, Concatenation( zm, o ) );

@@ -144,7 +144,7 @@ BindGlobal( "NonAbelianTensorSquareViaNq", function( G )
     tsfp := NonAbelianTensorSquarePlusFp( G );
     phi  := NqEpimorphismNilpotentQuotient( tsfp );
 
-    return Image( phi, tsfp!.tensor );
+    return ImagesSet( phi, tsfp!.tensor );
 end );
 
 

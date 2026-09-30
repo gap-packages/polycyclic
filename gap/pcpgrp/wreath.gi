@@ -13,7 +13,7 @@ InstallOtherMethod( WreathProduct,
         [IsPcpGroup, IsPcpGroup, IsMapping],
 function( G, H, act )
     return WreathProduct( G, H, act,
-                   Maximum( 1, LargestMovedPoint( Image( act ))));
+                   Maximum( 1, LargestMovedPoint( ImagesSource( act ))));
 end);
 
 InstallOtherMethod( WreathProduct,
@@ -99,7 +99,7 @@ function( G, H, act, l )
 
     # action of H
     for j in [1..m] do
-        a := Image( act, pcpH[j] );
+        a := ImagesRepresentative( act, pcpH[j] );
         for k in [1..l] do
             h := k^a;
             for i in [1..n] do

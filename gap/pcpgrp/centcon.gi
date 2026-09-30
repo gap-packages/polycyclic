@@ -123,10 +123,10 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
             nat := NaturalHomomorphismByNormalSubgroupNC( G, M );
-            NM := Image( nat, N );
+            NM := ImagesSet( nat, N );
             CM := Image( nat, C );
             for g in elms do
-                gM := Image( nat, g );
+                gM := ImagesRepresentative( nat, g );
                 if gM <> gM^0 then
                     act := AffineActionByElement( Pcp(CM), Pcp(NM), gM );
                     CM := StabilizerIntegralAction( CM, act, e );
@@ -312,7 +312,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             fac := Pcp( C, M );
             act := AffineActionByElement( fac, pcp, c );
             nat := NaturalHomomorphismByNormalSubgroupNC( C, M );
-            stb := OrbitIntegralAction( Image(nat), act, e, f );
+            stb := OrbitIntegralAction( ImagesSource(nat), act, e, f );
 
             # extract results
             if IsBool(stb) then return false; fi;

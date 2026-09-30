@@ -172,7 +172,7 @@ BindGlobal( "UpperCentralSeriesPcpGroup", function( G )
         C := N;
         Add( upp, C );
         nat := NaturalHomomorphismByNormalSubgroupNC( G, C );
-        H := Image( nat );
+        H := ImagesSource( nat );
         N := PreImagesSetNC( nat, Centre(H) );
     od;
     return Reversed( upp );
@@ -197,7 +197,7 @@ BindGlobal( "FCCentrePcpGroup", function( G )
     # mod out torsion
     N := NormalTorsionSubgroup( G );
     hom := NaturalHomomorphismByNormalSubgroupNC( G, N );
-    H := Image( hom );
+    H := ImagesSource( hom );
 
     # compute Z(Fit(H))
     F := FittingSubgroup( H );
@@ -249,7 +249,7 @@ InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )
 
     # if this is not sufficient, then use Fitting factor
     nath := NaturalHomomorphismByNormalSubgroupNC( G, F );
-    L := FittingSubgroup( Image( nath ) );
+    L := FittingSubgroup( ImagesSource( nath ) );
     A := PreImagesSetNC( nath, Centre(L) );
     if IndexNC( G, A ) = infinity then Error("wrong subgroup"); fi;
     return [G, A, F, U];

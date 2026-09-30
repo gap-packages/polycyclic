@@ -45,7 +45,7 @@ function( G )
     K := RefinedPcpGroup(G);
     H := PcpGroupToPcGroup(K);
     g := Igs(G);
-    k := List(g, x -> Image(K!.bijection,x));
+    k := List(g, x -> ImagesRepresentative(K!.bijection,x));
     h := List(k, x -> MappedVector(Exponents(x), Pcgs(H)));
     hom := GroupHomomorphismByImagesNC( G, H, g, h);
     SetIsBijective( hom, true );
@@ -165,7 +165,7 @@ function( G )
     local iso, F,H, gens, hom;
     if not IsSolvableGroup( G ) then return fail; fi;
     iso  := IsomorphismPcGroup( G );
-    F    := Image( iso );
+    F    := ImagesSource( iso );
     H    := PcGroupToPcpGroup( F );
     gens := List( Pcgs(F), x -> PreImagesRepresentativeNC( iso, x ) );
     hom  := GroupHomomorphismByImagesNC( G, H, gens, AsList(Pcp(H)) );

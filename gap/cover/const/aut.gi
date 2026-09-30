@@ -15,7 +15,7 @@ BindGlobal( "AddPermOper", function(A)
     f    := function( pt, a ) return NormedRowVector( pt * a ); end;
     M    := Group( A.glOper, base );
     iso  := ActionHomomorphism( M, norm, f );
-    P    := Image( iso );
+    P    := ImagesSource( iso );
 
     # reset
     A.glOper := GeneratorsOfGroup( P );
@@ -23,7 +23,7 @@ end );
 
 BindGlobal( "ReduceAuto", function( auto, C, isom, gens, imgs )
     local news;
-    news := List(imgs, x -> Image(auto, x));
+    news := List(imgs, x -> ImagesRepresentative(auto, x));
     news := List(news, x -> PreImagesRepresentativeNC(isom, x));
     news := GroupHomomorphismByImagesNC( C, C, gens, news );
     SetIsBijective( news, true );
@@ -121,7 +121,7 @@ BindGlobal( "AutomorphismActionCover", function( G, C )
     Cimg := SubgroupNC(A.group, imgs);
 
     # stabilise C
-    OnSubs := function( U, auto, info ) return Image(auto, U); end;
+    OnSubs := function( U, auto, info ) return ImagesSet(auto, U); end;
     PGHybridOrbitStabilizer(A,A.glAutos,A.agAutos,Cimg,OnSubs,true);
     Print("  AG: stab has type ", A.glOrder, " by ",A.agOrder,"\n" );
 
@@ -139,7 +139,7 @@ BindGlobal( "InducedAutCover", function(aut, f, t, e)
     local actT, invF, trs, AsMat, InvertMod;
 
     AsMat := function(aut, m)
-        return List(m, x -> ExponentsByPcp(m,Image(aut,x)));
+        return List(m, x -> ExponentsByPcp(m,ImagesRepresentative(aut,x)));
     end;
 
     InvertMod := function(mat, e)
@@ -159,7 +159,7 @@ BindGlobal( "InducedAutCover", function(aut, f, t, e)
 
     # construct translation
     trs := List([1..Length(f)], x -> MappedVector(invF[x],f));
-    trs := List([1..Length(f)], x -> f[x]^-1 * Image(aut,trs[x]));
+    trs := List([1..Length(f)], x -> f[x]^-1 * ImagesRepresentative(aut,trs[x]));
     trs := List(trs, x -> ExponentsByPcp(t,x));
 
     # return all

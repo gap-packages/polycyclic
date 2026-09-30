@@ -495,7 +495,7 @@ InstallGlobalFunction( RootSet, function( G, H )
         return fail;
     fi;
     nat := NaturalHomomorphismByNormalSubgroupNC( G, H );
-    F   := Image( nat );
+    F   := ImagesSource( nat );
     T   := TorsionSubgroup( F );
     if T = fail then
         Print( "RootSet is not a subgroup - not yet implemented" );
