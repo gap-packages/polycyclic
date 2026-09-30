@@ -766,7 +766,7 @@ gap> IsConjugate( B, A.2, A.2^2 );
 false
 
 #
-# Fix a bug in NormalizerIntegralAction
+# Fix a bug in NormalizerIntegralAction and ConjugacyIntegralAction
 # <https://github.com/gap-packages/polycyclic/issues/148>
 #
 gap> G := ExamplesOfSomePcpGroups( 3 );;
@@ -775,6 +775,12 @@ gap> IsNormal( G, H );
 true
 gap> Normalizer( G, H ) = G;
 true
+gap> G := AbelianPcpGroup( [ 0 ] );;
+gap> A := [ [ 1, 1 ], [ 0, 1 ] ];;
+gap> U := [ [ 3, 0 ], [ 0, 6 ] ];;
+gap> N := Subgroup( G, [ G.1^2 ] );;
+gap> ConjugacyIntegralAction( G, [ A ], [ [ 3, 0 ] ], [ [ 3, 3 ] ] );
+rec( prei := g1, stab := Pcp-group with orders [  ] )
 
 #
 gap> STOP_TEST( "bugfix.tst" );
