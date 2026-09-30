@@ -781,6 +781,8 @@ gap> U := [ [ 3, 0 ], [ 0, 6 ] ];;
 gap> N := Subgroup( G, [ G.1^2 ] );;
 gap> ConjugacyIntegralAction( G, [ A ], [ [ 3, 0 ] ], [ [ 3, 3 ] ] );
 rec( prei := g1, stab := Pcp-group with orders [  ] )
+gap> ConjugacyIntegralAction( G, [ A ], [ [ 3, 0 ] ], [ [ 1, 0 ] ] );
+false
 
 #
 gap> STOP_TEST( "bugfix.tst" );

@@ -574,6 +574,7 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     t := InducedByField( linG, F );
     I := VectorspaceBasis( U * One(F) );
     J := VectorspaceBasis( W * One(F) );
+    if Length( I ) <> Length( J ) then return false; fi;
     if Length( I ) = 0 then
         g := One(G);
         S := G;
