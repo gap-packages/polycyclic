@@ -49,7 +49,7 @@ end );
 #F  CoefficientsByFactorLattice( F, v )
 ##
 BindGlobal( "CoefficientsByFactorLattice", function( F, v )
-    local df, dk, cf, ck, z, l, j, e;
+    local df, dk, cf, ck, z, l, j;
     v  := ShallowCopy(v);
     df := List( F.gens, PositionNonZero );
     dk := List( F.kern, PositionNonZero );
@@ -63,8 +63,7 @@ BindGlobal( "CoefficientsByFactorLattice", function( F, v )
         j := Position( df, l );
         if not IsBool( j ) then
             if F.rels[j] > 0 then
-                e := Gcdex( F.rels[j], F.gens[j][l] );
-                cf[j] := (v[l]/e.gcd * e.coeff2) mod F.rels[j];
+                cf[j] := (v[l]/F.gens[j][l]) mod F.rels[j];
             else
                 cf[j] := v[l]/F.gens[j][l];
             fi;
