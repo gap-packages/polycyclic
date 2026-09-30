@@ -92,6 +92,9 @@ IGSValFun := IGSValFun4;
 ##
 #F GcdPcp
 ##
+## Apply Euclidean algorithm to g and h's leading exponent, and apply it to
+## the elements g and h themselves at the same time
+##
 BindGlobal( "GcdPcp", function(g, h)
     local x, y, a, b, q, r, t;
 
@@ -112,12 +115,12 @@ BindGlobal( "GcdPcp", function(g, h)
 
     while b <> 0 do
         q := QuoInt(a, b);
-        r := a - q * b;
 
         t := x * y ^ -q;
         x := y;
         y := t;
 
+        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -187,11 +190,13 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         # add powers and commutators
         for d in f do
             g := ind[d];
+            # skip infinite factors and powers in the tail
             if d < c-1 and rels[d] > 0 then
                 k := g ^ RelativeOrderPcp(g);
                 if Depth(k) < c then Add(todo, k); fi;
             fi;
             for j in [1..n] do
+                # skip trivial commutators and those in the tail
                 if j = d or Minimum( d, j ) >= c-1 then
                     continue;
                 fi;

@@ -25,6 +25,8 @@ end );
 ##
 #F GcdPcpPara
 ##
+## Apply GcdPcp( g, h ), and apply the same operations on i and j.
+##
 BindGlobal( "GcdPcpPara", function(g, h, i, j)
     local x, y, a, b, q, r, t, z, w, u;
 
@@ -50,7 +52,6 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
 
     while b <> 0 do
         q := QuoInt(a, b);
-        r := a - q * b;
 
         t := x * y ^ -q;
         x := y;
@@ -60,6 +61,7 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
         z := w;
         w := u;
 
+        r := a - q * b;
         a := b;
         b := r;
     od;
