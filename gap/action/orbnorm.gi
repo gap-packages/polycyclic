@@ -496,8 +496,12 @@ BindGlobal( "NormalizerIntegralAction", function( G, linG, U )
     F := GF(3);
     t := InducedByField( linG, F );
     I := VectorspaceBasis( U * One(F) );
-    S := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
-    S := SubgroupByIgs( G, S.stab );
+    if Length( I ) = 0 then
+        S := G;
+    else
+        S := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
+        S := SubgroupByIgs( G, S.stab );
+    fi;
     linS := InducedByPcp( Pcp(G), Pcp(S), linG );
 
     # use congruence kernel
@@ -570,12 +574,17 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     t := InducedByField( linG, F );
     I := VectorspaceBasis( U * One(F) );
     J := VectorspaceBasis( W * One(F) );
-    os := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
-    j := Position( os.orbit, J );
-    if IsBool(j) then return false; fi;
-    g := TransversalElement( j, os, One(G) );
+    if Length( I ) = 0 then
+        g := One(G);
+        S := G;
+    else
+        os := PcpOrbitStabilizer( I, Pcp(G), t, OnSubspacesByCanonicalBasis );
+        j := Position( os.orbit, J );
+        if IsBool(j) then return false; fi;
+        g := TransversalElement( j, os, One(G) );
+        S := SubgroupByIgs( G, os.stab );
+    fi;
     L := LatticeBasis( W * InducedByPcp( Pcp(G), g, linG )^-1 );
-    S := SubgroupByIgs( G, os.stab );
     linS := InducedByPcp( Pcp(G), Pcp(S), linG );
 
     # use congruence kernel
