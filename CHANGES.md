@@ -4,6 +4,11 @@ NEXT (YYYY-MM-DD)
   - Fix bugs, where wrong results could be returned or errors could be thrown,
     in the following functions:
     - `ConjugacyElementsBySeries`
+    - `ComplementClassesCR`
+    - `OrbitIntegralAction`
+    - `NormalizerPcpGroup`
+  - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
+    and `Image` dispatchers to improve speed and memory usage
   - Various janitorial changes
 
 2.18 (2026-04-09)

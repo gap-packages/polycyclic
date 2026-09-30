@@ -330,20 +330,21 @@ function( hom )
     B := Range(hom);
     b := MappingGeneratorsImages(hom)[2];
     D := DirectProduct(B,A);
-    u := Cgs(Subgroup(D, List([1..Length(a)], x ->
-          Image(Embedding(D,1),b[x])*Image(Embedding(D,2),a[x]))));
+    u := Cgs(SubgroupNC(D, List([1..Length(a)], x ->
+          ImagesRepresentative(Embedding(D,1),b[x])*
+          ImagesRepresentative(Embedding(D,2),a[x]))));
 
     # filter kernel gens
     kern := [];
     for i in [1..Length(u)] do
-        g := Image(Projection(D,1),u[i]);
+        g := ImagesRepresentative(Projection(D,1),u[i]);
         if g = One(B) then
-            Add(kern, Image(Projection(D,2),u[i]));
+            Add(kern, ImagesRepresentative(Projection(D,2),u[i]));
         fi;
     od;
 
     # create group
-    return Subgroup( Source(hom), kern);
+    return SubgroupNC( Source(hom), kern);
 end );
 
 # TODO: Add KernelOfMultiplicativeGeneralMapping method for IsToPcpGHBI

@@ -213,9 +213,9 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
                 c := CocycleConjugateComplement( C, cc, e.repr, w, g );
                 c := cc.CocToCBElement(cc, c) * cc.trf;
                 g := g * MappedVector( IntVector( c ), C.normal );
-                gens := AddIgsToIgs( [g], gens );
+                gens := AddToIgs( gens, [g] );
             elif g <> g^0 then
-                gens := AddIgsToIgs( [g], gens );
+                gens := AddToIgs( gens, [g] );
             fi;
         od;
 

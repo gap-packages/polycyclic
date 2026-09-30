@@ -227,10 +227,10 @@ BindGlobal( "KernelOfCongruenceMatrixActionGAP", function( G, mats )
         tmps := AddToIgs( DenominatorOfPcp( gens ), tmps );
         U := SubgroupByIgs( G, tmps );
         p := rell.prime;
-    until Index( G, U ) = 1 or Index( U, K ) = 1;
+    until IndexNC( G, U ) = 1 or IndexNC( U, K ) = 1;
 
     # verify if desired
-    if Index( G, U ) > 1 and VERIFY@ then
+    if IndexNC( G, U ) > 1 and VERIFY@ then
         gens := Pcp( G, U );
         acts := InducedByPcp( pcp, gens, mats );
         if not VerifyIndependence( acts ) then
@@ -263,7 +263,7 @@ BindGlobal( "KernelOfCongruenceMatrixActionALNUTH", function( G, mats )
         SetPrimitiveElement( F, prim.elem );
         SetDefiningPolynomial( F, prim.poly );
         rels := RelationLatticeOfTFUnits( F, mats );
-        return Subgroup( G, List( rels, x -> MappedVector( x, Pcp(G) ) ) );
+        return SubgroupNC( G, List( rels, x -> MappedVector( x, Pcp(G) ) ) );
     fi;
 
     # loop over subspaces
@@ -273,7 +273,7 @@ BindGlobal( "KernelOfCongruenceMatrixActionALNUTH", function( G, mats )
     for f in fact do
 
         # induce matrices if necessary
-        if Index( G, H ) > 1 then
+        if IndexNC( G, H ) > 1 then
             mats := List( rels, x -> MappedVector( x, mats ) );
             G := H;
         fi;
@@ -294,7 +294,7 @@ BindGlobal( "KernelOfCongruenceMatrixActionALNUTH", function( G, mats )
 
             # set up for iteration
             gens := List( rels, x -> MappedVector( x, gens ) );
-            H := Subgroup( G, gens );
+            H := SubgroupNC( G, gens );
         fi;
     od;
 

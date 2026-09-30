@@ -205,7 +205,6 @@ gap> e := [ 0, 0, 0, 0, 1 ];
 gap> stab := StabilizerIntegralAction( G, mats, e );
 Pcp-group with orders [ 10, 0 ]
 gap> CheckStabilizer(G, stab, mats, e);
-#I  Stabilizer not increasing: exiting.
 true
 
 #
@@ -361,7 +360,6 @@ rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16,
 gap> CheckOrbit(G, o.prei, mats, e, f);
 true
 gap> CheckStabilizer(G, o.stab, mats, e);
-#I  Orbit longer than limit: exiting.
 true
 
 #
@@ -701,6 +699,48 @@ gap> r := G.4 * G.6 * G.7;;
 gap> h := g ^ r;;
 gap> k := ConjugacyElementsBySeries( G, g, h, pcps );;
 gap> g^k = h;
+true
+
+#
+# Fix a bug in OrbitIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/138>
+#
+gap> G := AbelianPcpGroup( [ 2 ] );;
+gap> o := OrbitIntegralAction( G, [ [ [ -1 ] ] ], [ 1 ], [ -1 ] );;
+gap> o.prei = G.1 and IsTrivial( o.stab );
+true
+
+#
+# Fix a bug in ComplementClassesCR
+# <https://github.com/gap-packages/polycyclic/issues/3>
+#
+gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
+gap> FiniteSubgroupClasses(G);;
+
+#
+# Fix a bug in PcpGroupFpGroupPcPres
+#
+gap> F := FreeGroup( "a", "b" );;
+gap> a := F.1;;
+gap> b := F.2;;
+gap> G := F / [ a ^ 4, b ^ 4, a ^ 2 * b ^ -2, b ^ a * b^-3 ];;
+gap> Q := PcpGroupFpGroupPcPres( G );;
+gap> Size( Q ) = 8 and IsQuaternionGroup( Q );
+true
+
+#
+# Fix bugs in NormalizerPcpGroup
+# <https://github.com/gap-packages/polycyclic/issues/122>
+#
+gap> H := Group( [ (5,6,8,10)(7,9,11,12)(13,15,14,16),
+> (1,2,3,4)(5,7)(6,9)(8,11)(10,12)(15,16) ] );;
+gap> V := Group( [ (1,4,3,2)(5,12,8,9)(6,7,10,11)(13,16)(14,15),
+> (1,2,3,4)(5,9,8,12)(6,11,10,7)(13,15)(14,16) ] );;
+gap> iso := IsomorphismPcpGroup( H );;
+gap> G := Image( iso );;
+gap> U := Image( iso, V );;
+gap> N := NormalizerPcpGroup( G, U );;
+gap> Images( iso, Normalizer( H, V ) ) = N;
 true
 
 #

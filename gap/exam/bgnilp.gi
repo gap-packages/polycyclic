@@ -159,7 +159,8 @@ InstallGlobalFunction( BurdeGrunewaldPcpGroup, function( s, t )
     k11 := -90;
     SetConjugate( F, 10, 1, [10,1,11,k11] );
 
-    G := PcpGroupByCollector( F );
+    UpdatePolycyclicCollector( F );
+    G := PcpGroupByCollectorNC( F );
     return G;
 end );
 

@@ -105,7 +105,7 @@ BindGlobal( "CentreNilpotentPcpGroup", function(G)
     ser  := LowerCentralSeriesOfGroup(G);
     gens := Reversed(GeneratorsOfPcp( Pcp( ser[1], ser[2] ) ));
     cent := CentralizeByCentralSeries( G, gens, ser );
-    return Subgroup( G, cent );
+    return SubgroupNC( G, cent );
 end );
 
 #############################################################################
@@ -125,7 +125,7 @@ BindGlobal( "CentralizerNilpotentPcpGroup", function( G, g )
         sers := LowerCentralSeriesOfGroup(G);
         cent := CentralizeByCentralSeries( G, MinimalGeneratingSet(g), sers );
     fi;
-    return Subgroup( G, cent );
+    return SubgroupNC( G, cent );
 end );
 
 #############################################################################
@@ -142,7 +142,7 @@ BindGlobal( "UpperCentralSeriesNilpotentPcpGroup", function( G )
     while IndexNC( G, C ) > 1 do
         ser := ModuloSeries( ser, C );
         C   := CentralizeByCentralSeries( G, gens, ser );
-        C   := Subgroup( G, C );
+        C   := SubgroupNC( G, C );
         Add( upp, C );
     od;
     upp[ Length(upp) ] := G;

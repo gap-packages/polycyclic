@@ -64,6 +64,6 @@ InstallGlobalFunction( ExampleOfMetabelianPcpGroup, function( a, k )
     SetConjugate( ftl, 2, 1, [2,1,5,k] );
 
     UpdatePolycyclicCollector( ftl );
-    return PcpGroupByCollector( ftl );
+    return PcpGroupByCollectorNC( ftl );
 end );
 

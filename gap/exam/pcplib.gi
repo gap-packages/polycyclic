@@ -49,9 +49,10 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 3 then
         FTL := FromTheLeftCollector( 2 );
-        SetConjugate( FTL, 2,  1, [2,-1] );
-        SetConjugate( FTL, 2, -1, [2,-1] );
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2,  1, [2,-1] );
+        SetConjugateNC( FTL, 2, -1, [2,-1] );
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -60,9 +61,10 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 4 then
         FTL := FromTheLeftCollector( 3 );
-        SetConjugate( FTL, 2, 1, [3, 1] );
-        SetConjugate( FTL, 3, 1, [2, 1, 3, 7] );
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [3, 1] );
+        SetConjugateNC( FTL, 3, 1, [2, 1, 3, 7] );
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -71,12 +73,13 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 5 then
         FTL := FromTheLeftCollector( 4 );
-        SetRelativeOrder( FTL, 1, 2 );
-        SetPower( FTL, 1, [4,1] );
-        SetConjugate( FTL, 2,1, [2,-1] );
-        SetConjugate( FTL, 3,1, [3,-1] );
-        SetConjugate( FTL, 3,2, [3,1,4,2] );
-        return PcpGroupByCollector(FTL);
+        SetRelativeOrderNC( FTL, 1, 2 );
+        SetPowerNC( FTL, 1, [4,1] );
+        SetConjugateNC( FTL, 2,1, [2,-1] );
+        SetConjugateNC( FTL, 3,1, [3,-1] );
+        SetConjugateNC( FTL, 3,2, [3,1,4,2] );
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -85,34 +88,38 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 6 then
         FTL := FromTheLeftCollector( 3 );
-        SetConjugate( FTL, 2, 1, [2,2,3,1]);
-        SetConjugate( FTL, 3, 1, [2,1,3,1]);
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [2,2,3,1]);
+        SetConjugateNC( FTL, 3, 1, [2,1,3,1]);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 7 then
         FTL := FromTheLeftCollector( 4 );
-        SetConjugate( FTL, 2, 1, [3,1] );
-        SetConjugate( FTL, 3, 1, [2,-1, 3,3, 4,1] );
-        SetConjugate( FTL, 3, 2, [3,1,4,-1]);
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [3,1] );
+        SetConjugateNC( FTL, 3, 1, [2,-1, 3,3, 4,1] );
+        SetConjugateNC( FTL, 3, 2, [3,1,4,-1]);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 8 then
         FTL := FromTheLeftCollector( 5 );
-        SetConjugate( FTL, 2, 1, [2,1,4,-1]);
-        SetConjugate( FTL, 3, 2, [5,1]);
-        SetConjugate( FTL, 4, 2, [3,1,4,-1,5,1]);
-        SetConjugate( FTL, 5, 2, [4,1]);
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [2,1,4,-1]);
+        SetConjugateNC( FTL, 3, 2, [5,1]);
+        SetConjugateNC( FTL, 4, 2, [3,1,4,-1,5,1]);
+        SetConjugateNC( FTL, 5, 2, [4,1]);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     if n = 9 then
         FTL := FromTheLeftCollector( 3 );
-        SetConjugate( FTL, 2, 1, [2,1,3,-3] );
-        SetConjugate( FTL, 3, 1, [3,-1] );
-        SetConjugate( FTL, 3, 2, [3,-1] );
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [2,1,3,-3] );
+        SetConjugateNC( FTL, 3, 1, [3,-1] );
+        SetConjugateNC( FTL, 3, 2, [3,-1] );
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -120,11 +127,12 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 10 then
         FTL := FromTheLeftCollector( 4 );
-        SetConjugate( FTL, 2, 1, [2,-1] );
-        SetConjugate( FTL, 4, 1, [4,-1] );
-        SetConjugate( FTL, 3, 2, [3,2,4,1]);
-        SetConjugate( FTL, 4, 2, [3,3,4,2]);
-        return PcpGroupByCollector(FTL);
+        SetConjugateNC( FTL, 2, 1, [2,-1] );
+        SetConjugateNC( FTL, 4, 1, [4,-1] );
+        SetConjugateNC( FTL, 3, 2, [3,2,4,1]);
+        SetConjugateNC( FTL, 4, 2, [3,3,4,2]);
+        UpdatePolycyclicCollector(FTL);
+        return PcpGroupByCollectorNC(FTL);
     fi;
 
     ##
@@ -132,10 +140,11 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 11 then
         FTL := FromTheLeftCollector( 5 );
-        SetConjugate( FTL, 2, 1, [2,1,3, 1] );
-        SetConjugate( FTL, 3, 1, [3,1,4, 1] );
-        SetConjugate( FTL, 3, 2, [3,1,5, 1] );
-        return PcpGroupByCollector( FTL );
+        SetConjugateNC( FTL, 2, 1, [2,1,3, 1] );
+        SetConjugateNC( FTL, 3, 1, [3,1,4, 1] );
+        SetConjugateNC( FTL, 3, 2, [3,1,5, 1] );
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
     ##
@@ -143,10 +152,11 @@ InstallGlobalFunction( PcpExamples, function( n )
     ##
     if n = 12 then
         FTL := FromTheLeftCollector( 6 );
-        SetConjugate( FTL, 2, 1, [2,1,4, 1] );
-        SetConjugate( FTL, 3, 1, [3,1,5, 1] );
-        SetConjugate( FTL, 3, 2, [3,1,6, 1] );
-        return PcpGroupByCollector( FTL );
+        SetConjugateNC( FTL, 2, 1, [2,1,4, 1] );
+        SetConjugateNC( FTL, 3, 1, [3,1,5, 1] );
+        SetConjugateNC( FTL, 3, 2, [3,1,6, 1] );
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
     ##
@@ -155,59 +165,60 @@ InstallGlobalFunction( PcpExamples, function( n )
 
     if n = 13 then
         FTL := FromTheLeftCollector( 21 );
-        SetRelativeOrder( FTL, 1, 255 );
-        SetPower( FTL, 1, [  ] );
-        SetRelativeOrder( FTL, 2, 585 );
-        SetPower( FTL, 2, [ 3, -3 ] );
-        SetRelativeOrder( FTL, 7, 15 );
-        SetPower( FTL, 7, [ 8, 30 ] );
-        SetRelativeOrder( FTL, 8, 51 );
-        SetPower( FTL, 8, [  ] );
-        SetRelativeOrder( FTL, 9, 3 );
-        SetPower( FTL, 9, [  ] );
-        SetRelativeOrder( FTL, 10, 255 );
-        SetPower( FTL, 10, [  ] );
-        SetRelativeOrder( FTL, 11, 585 );
-        SetPower( FTL, 11, [ 12, -3 ] );
-        SetRelativeOrder( FTL, 13, 255 );
-        SetPower( FTL, 13, [  ] );
-        SetRelativeOrder( FTL, 14, 585 );
-        SetPower( FTL, 14, [ 15, -3 ] );
-        SetRelativeOrder( FTL, 17, 255 );
-        SetPower( FTL, 17, [  ] );
-        SetRelativeOrder( FTL, 18, 585 );
-        SetPower( FTL, 18, [ 19, -3 ] );
-        SetConjugate( FTL, 2, 1, [ 2, 1, 7, 1 ] );
-        SetConjugate( FTL, 2, -1, [ 2, 1, 7, 14, 8, 21 ] );
-        SetConjugate( FTL, 3, 1, [ 3, 1, 8, 1 ] );
-        SetConjugate( FTL, 3, -1, [ 3, 1, 8, 50 ] );
-        SetConjugate( FTL, 3, 2, [ 3, 1, 9, 1 ] );
-        SetConjugate( FTL, 3, -2, [ 3, 1, 9, 2 ] );
-        SetConjugate( FTL, 4, 1, [ 4, 1, 10, 1 ] );
-        SetConjugate( FTL, 4, -1, [ 4, 1, 10, 254 ] );
-        SetConjugate( FTL, 4, 2, [ 4, 1, 11, 1 ] );
-        SetConjugate( FTL, 4, -2, [ 4, 1, 11, 584, 12, 3 ] );
-        SetConjugate( FTL, 4, 3, [ 4, 1, 12, 1 ] );
-        SetConjugate( FTL, 4, -3, [ 4, 1, 12, -1 ] );
-        SetConjugate( FTL, 5, 1, [ 5, 1, 13, 1 ] );
-        SetConjugate( FTL, 5, -1, [ 5, 1, 13, 254 ] );
-        SetConjugate( FTL, 5, 2, [ 5, 1, 14, 1 ] );
-        SetConjugate( FTL, 5, -2, [ 5, 1, 14, 584, 15, 3 ] );
-        SetConjugate( FTL, 5, 3, [ 5, 1, 15, 1 ] );
-        SetConjugate( FTL, 5, -3, [ 5, 1, 15, -1 ] );
-        SetConjugate( FTL, 5, 4, [ 5, 1, 16, 1 ] );
-        SetConjugate( FTL, 5, -4, [ 5, 1, 16, -1 ] );
-        SetConjugate( FTL, 6, 1, [ 6, 1, 17, 1 ] );
-        SetConjugate( FTL, 6, -1, [ 6, 1, 17, 254 ] );
-        SetConjugate( FTL, 6, 2, [ 6, 1, 18, 1 ] );
-        SetConjugate( FTL, 6, -2, [ 6, 1, 18, 584, 19, 3 ] );
-        SetConjugate( FTL, 6, 3, [ 6, 1, 19, 1 ] );
-        SetConjugate( FTL, 6, -3, [ 6, 1, 19, -1 ] );
-        SetConjugate( FTL, 6, 4, [ 6, 1, 20, 1 ] );
-        SetConjugate( FTL, 6, -4, [ 6, 1, 20, -1 ] );
-        SetConjugate( FTL, 6, 5, [ 6, 1, 21, 1 ] );
-        SetConjugate( FTL, 6, -5, [ 6, 1, 21, -1 ] );
-        return PcpGroupByCollector( FTL ); 
+        SetRelativeOrderNC( FTL, 1, 255 );
+        SetPowerNC( FTL, 1, [  ] );
+        SetRelativeOrderNC( FTL, 2, 585 );
+        SetPowerNC( FTL, 2, [ 3, -3 ] );
+        SetRelativeOrderNC( FTL, 7, 15 );
+        SetPowerNC( FTL, 7, [ 8, 30 ] );
+        SetRelativeOrderNC( FTL, 8, 51 );
+        SetPowerNC( FTL, 8, [  ] );
+        SetRelativeOrderNC( FTL, 9, 3 );
+        SetPowerNC( FTL, 9, [  ] );
+        SetRelativeOrderNC( FTL, 10, 255 );
+        SetPowerNC( FTL, 10, [  ] );
+        SetRelativeOrderNC( FTL, 11, 585 );
+        SetPowerNC( FTL, 11, [ 12, -3 ] );
+        SetRelativeOrderNC( FTL, 13, 255 );
+        SetPowerNC( FTL, 13, [  ] );
+        SetRelativeOrderNC( FTL, 14, 585 );
+        SetPowerNC( FTL, 14, [ 15, -3 ] );
+        SetRelativeOrderNC( FTL, 17, 255 );
+        SetPowerNC( FTL, 17, [  ] );
+        SetRelativeOrderNC( FTL, 18, 585 );
+        SetPowerNC( FTL, 18, [ 19, -3 ] );
+        SetConjugateNC( FTL, 2, 1, [ 2, 1, 7, 1 ] );
+        SetConjugateNC( FTL, 2, -1, [ 2, 1, 7, 14, 8, 21 ] );
+        SetConjugateNC( FTL, 3, 1, [ 3, 1, 8, 1 ] );
+        SetConjugateNC( FTL, 3, -1, [ 3, 1, 8, 50 ] );
+        SetConjugateNC( FTL, 3, 2, [ 3, 1, 9, 1 ] );
+        SetConjugateNC( FTL, 3, -2, [ 3, 1, 9, 2 ] );
+        SetConjugateNC( FTL, 4, 1, [ 4, 1, 10, 1 ] );
+        SetConjugateNC( FTL, 4, -1, [ 4, 1, 10, 254 ] );
+        SetConjugateNC( FTL, 4, 2, [ 4, 1, 11, 1 ] );
+        SetConjugateNC( FTL, 4, -2, [ 4, 1, 11, 584, 12, 3 ] );
+        SetConjugateNC( FTL, 4, 3, [ 4, 1, 12, 1 ] );
+        SetConjugateNC( FTL, 4, -3, [ 4, 1, 12, -1 ] );
+        SetConjugateNC( FTL, 5, 1, [ 5, 1, 13, 1 ] );
+        SetConjugateNC( FTL, 5, -1, [ 5, 1, 13, 254 ] );
+        SetConjugateNC( FTL, 5, 2, [ 5, 1, 14, 1 ] );
+        SetConjugateNC( FTL, 5, -2, [ 5, 1, 14, 584, 15, 3 ] );
+        SetConjugateNC( FTL, 5, 3, [ 5, 1, 15, 1 ] );
+        SetConjugateNC( FTL, 5, -3, [ 5, 1, 15, -1 ] );
+        SetConjugateNC( FTL, 5, 4, [ 5, 1, 16, 1 ] );
+        SetConjugateNC( FTL, 5, -4, [ 5, 1, 16, -1 ] );
+        SetConjugateNC( FTL, 6, 1, [ 6, 1, 17, 1 ] );
+        SetConjugateNC( FTL, 6, -1, [ 6, 1, 17, 254 ] );
+        SetConjugateNC( FTL, 6, 2, [ 6, 1, 18, 1 ] );
+        SetConjugateNC( FTL, 6, -2, [ 6, 1, 18, 584, 19, 3 ] );
+        SetConjugateNC( FTL, 6, 3, [ 6, 1, 19, 1 ] );
+        SetConjugateNC( FTL, 6, -3, [ 6, 1, 19, -1 ] );
+        SetConjugateNC( FTL, 6, 4, [ 6, 1, 20, 1 ] );
+        SetConjugateNC( FTL, 6, -4, [ 6, 1, 20, -1 ] );
+        SetConjugateNC( FTL, 6, 5, [ 6, 1, 21, 1 ] );
+        SetConjugateNC( FTL, 6, -5, [ 6, 1, 21, -1 ] );
+        UpdatePolycyclicCollector( FTL );
+        return PcpGroupByCollectorNC( FTL );
     fi;
 
 

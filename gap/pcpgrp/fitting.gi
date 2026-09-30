@@ -142,7 +142,7 @@ BindGlobal( "CentrePcpGroup", function( G )
         for i in [1..Length(fix)] do
             fix[i] := MappedVector( fix[i]{[1..Length(pcp)]}, pcp );
         od;
-        C := Subgroup( G, fix );
+        C := SubgroupNC( G, fix );
     od;
     return C;
 end );
@@ -171,9 +171,9 @@ BindGlobal( "UpperCentralSeriesPcpGroup", function( G )
     while IndexNC( N, C ) > 1 do
         C := N;
         Add( upp, C );
-        nat := NaturalHomomorphismByNormalSubgroup( G, C );
-        H := Image( nat );
-        N := PreImage( nat, Centre(H) );
+        nat := NaturalHomomorphismByNormalSubgroupNC( G, C );
+        H := ImagesSource( nat );
+        N := PreImagesSetNC( nat, Centre(H) );
     od;
     return Reversed( upp );
 end );
@@ -196,8 +196,8 @@ BindGlobal( "FCCentrePcpGroup", function( G )
 
     # mod out torsion
     N := NormalTorsionSubgroup( G );
-    hom := NaturalHomomorphismByNormalSubgroup( G, N );
-    H := Image( hom );
+    hom := NaturalHomomorphismByNormalSubgroupNC( G, N );
+    H := ImagesSource( hom );
 
     # compute Z(Fit(H))
     F := FittingSubgroup( H );
@@ -219,9 +219,9 @@ BindGlobal( "FCCentrePcpGroup", function( G )
 
         # compute fixed point space
         fix := PcpNullspaceIntMat( mat, Length( mat ) );
-        C := Subgroup( C, List( fix, x -> MappedVector( x, pcp ) ) );
+        C := SubgroupNC( C, List( fix, x -> MappedVector( x, pcp ) ) );
     od;
-    return PreImage( hom, C );
+    return PreImagesSetNC( hom, C );
 end );
 
 InstallMethod( FCCentre,
@@ -248,9 +248,9 @@ InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )
     if IndexNC( G, F ) < infinity then return [G, F, F, U]; fi;
 
     # if this is not sufficient, then use Fitting factor
-    nath := NaturalHomomorphismByNormalSubgroup( G, F );
-    L := FittingSubgroup( Image( nath ) );
-    A := PreImage( nath, Centre(L) );
+    nath := NaturalHomomorphismByNormalSubgroupNC( G, F );
+    L := FittingSubgroup( ImagesSource( nath ) );
+    A := PreImagesSetNC( nath, Centre(L) );
     if IndexNC( G, A ) = infinity then Error("wrong subgroup"); fi;
     return [G, A, F, U];
 end );
