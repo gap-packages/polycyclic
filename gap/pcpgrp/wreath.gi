@@ -13,7 +13,7 @@ InstallOtherMethod( WreathProduct,
         [IsPcpGroup, IsPcpGroup, IsMapping],
 function( G, H, act )
     return WreathProduct( G, H, act,
-                   Maximum( 1, LargestMovedPoint( Image( act ))));
+                   Maximum( 1, LargestMovedPoint( ImagesSource( act ))));
 end);
 
 InstallOtherMethod( WreathProduct,
@@ -52,8 +52,8 @@ function( G, H, act, l )
             for k in [1..l] do
                 c := m + (k-1)*n;
                 o := ShiftedObject( e, c );
-                SetRelativeOrder( coll, c+i, relG[i] );
-                SetPower( coll, c+i, o );
+                SetRelativeOrderNC( coll, c+i, relG[i] );
+                SetPowerNC( coll, c+i, o );
             od;
         fi;
 
@@ -62,14 +62,14 @@ function( G, H, act, l )
             for k in [1..l] do
                 c := m + (k-1)*n;
                 o := ShiftedObject( e, c );
-                SetConjugate( coll, c+i, c+j, o );
+                SetConjugateNC( coll, c+i, c+j, o );
             od;
 
             e := ExponentsByPcp( pcpG, pcpG[i]^(pcpG[j]^-1) );
             for k in [1..l] do
                 c := m + (k-1)*n;
                 o := ShiftedObject( e, c );
-                SetConjugate( coll, c+i, -(c+j), o );
+                SetConjugateNC( coll, c+i, -(c+j), o );
             od;
         od;
     od;
@@ -80,36 +80,36 @@ function( G, H, act, l )
         if relH[i] > 0 then
             e := ExponentsByPcp( pcpH, pcpH[i]^relH[i] );
             o := ShiftedObject( e, 0 );
-            SetRelativeOrder( coll, i, relH[i] );
-            SetPower( coll, i, o );
+            SetRelativeOrderNC( coll, i, relH[i] );
+            SetPowerNC( coll, i, o );
         fi;
 
         for j in [1..i-1] do
 
             e := ExponentsByPcp( pcpH, pcpH[i]^pcpH[j] );
             o := ShiftedObject( e, 0 );
-            SetConjugate( coll, i, j, o );
+            SetConjugateNC( coll, i, j, o );
 
             e := ExponentsByPcp( pcpH, pcpH[i]^(pcpH[j]^-1) );
             o := ShiftedObject( e, 0 );
-            SetConjugate( coll, i, -j, o );
+            SetConjugateNC( coll, i, -j, o );
 
         od;
     od;
 
     # action of H
     for j in [1..m] do
-        a := Image( act, pcpH[j] );
+        a := ImagesRepresentative( act, pcpH[j] );
         for k in [1..l] do
             h := k^a;
             for i in [1..n] do
                 o := [m + (h-1)*n + i, 1];
-                SetConjugate( coll, m + (k-1)*n + i, j, o );
+                SetConjugateNC( coll, m + (k-1)*n + i, j, o );
             od;
             h := k^(a^-1);
             for i in [1..n] do
                 o := [m + (h-1)*n + i, 1];
-                SetConjugate( coll, m + (k-1)*n + i, -j, o );
+                SetConjugateNC( coll, m + (k-1)*n + i, -j, o );
             od;
         od;
     od;
@@ -141,11 +141,11 @@ function(W,i)
     if not IsBound(info.embeddings[i]) then
         if i<=info.l then
             info.embeddings[i] := GroupHomomorphismByImagesNC(info.G,W,
-                info.genG, List(info.genG, x->PcpElementByExponents(info.coll,
+                info.genG, List(info.genG, x->PcpElementByExponentsNC(info.coll,
                     FilledIn(ExponentsByPcp(info.pcpG,x),info.m+(i-1)*info.n,info.m+info.l*info.n))));
         elif i=info.l+1 then
             info.embeddings[i] := GroupHomomorphismByImagesNC(info.H,W,
-                info.genH, List(info.genH, x->PcpElementByExponents(info.coll,
+                info.genH, List(info.genH, x->PcpElementByExponentsNC(info.coll,
                     FilledIn(ExponentsByPcp(info.pcpH,x),0,info.m+info.l*info.n))));
         else
             return fail;

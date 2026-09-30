@@ -248,7 +248,7 @@ BindGlobal( "RandomCentralizerPcpGroup", function( G, g )
     else
         Print("g must be a subgroup or an element of G \n");
     fi;
-    return Subgroup( G, stab );
+    return SubgroupNC( G, stab );
 end );
 
 #############################################################################
@@ -259,5 +259,5 @@ BindGlobal( "RandomNormalizerPcpGroup", function( G, N )
     local gens, stab;
     gens := Igs(G);
     stab := RandomPcpOrbitStabilizer( N, gens, gens, OnPoints);
-    return Subgroup( G, stab.stab );
+    return SubgroupNC( G, stab.stab );
 end );

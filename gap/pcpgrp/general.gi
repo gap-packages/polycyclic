@@ -141,7 +141,7 @@ function( G )
 
     # HACK: Until we write a proper native method, use that for pc groups
     iso := IsomorphismPcGroup(G);
-    K := Image(iso);
+    K := ImagesSource(iso);
     F := FrattiniSubgroup(K);
     return PreImagesSetNC(iso, F);
 end );
@@ -154,9 +154,9 @@ InstallMethod( NormalMaximalSubgroups, "for pcp groups", [IsPcpGroup],
 function(G)
     local D, nat, H, prm, max, p, rep;
     D := DerivedSubgroup(G);
-    if Index(G,D) = infinity then return fail; fi;
-    nat := NaturalHomomorphismByNormalSubgroup(G,D);
-    H := Image(nat);
+    if IndexNC(G,D) = infinity then return fail; fi;
+    nat := NaturalHomomorphismByNormalSubgroupNC(G,D);
+    H := ImagesSource(nat);
     prm := Set(Factors(Size(H)));
     max := [];
     for p in prm do
@@ -164,7 +164,7 @@ function(G)
         rep := List(rep, Representative);
         Append(max,rep);
     od;
-    return List(max, x -> PreImage(nat,x));
+    return List(max, x -> PreImagesSetNC(nat,x));
 end);
 
 #############################################################################

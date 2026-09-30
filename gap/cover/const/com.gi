@@ -22,7 +22,7 @@ BindGlobal( "ComplementCover", function(H, n, f, t, coc)
     local d, e;
     d := CutVector(coc, n);
     e := List([1..n], x -> f[x] * MappedVector( d[x], t));
-    return Subgroup(H, e);
+    return SubgroupNC(H, e);
 end );
 
 BindGlobal( "ConstructPerm", function(n, r, s)

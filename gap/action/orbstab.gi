@@ -117,7 +117,7 @@ BindGlobal( "StabilizerIrreducibleAction", function( G, K, linG, derG )
     e := derG[1] * 0;
     h := PcpOrbitStabilizer( e, Pcp(G), affG, OnAffMod ).stab;
     H := SubgroupByIgs( G, h );
-    Info( InfoIntStab, 3, "  finite orbit has length ", Index(G,H));
+    Info( InfoIntStab, 3, "  finite orbit has length ", IndexNC(G,H));
 
     # now we have to compute the complement
     gens := ShallowCopy( AsList( Pcp( H, K ) ) );
@@ -299,7 +299,7 @@ BindGlobal( "StabilizerCongruenceAction", function( G, mats, e, ser )
             U := StabilizerIrreducibleAction( T, K, act, der );
 
             # reset
-            if Index(T,U) > 1 then
+            if IndexNC(T,U) > 1 then
                 T := SubgroupByIgs( G, Cgs(U) );
                 K := NormalIntersection( K, T );
                 actT := InducedByPcp( Pcp(S), Pcp(T), actS );
@@ -400,7 +400,7 @@ BindGlobal( "OrbitCongruenceAction", function( G, mats, e, f, ser )
             U := o.stab;
 
             # reset
-            if Index(T, U) > 1 then
+            if IndexNC(T, U) > 1 then
                 T := SubgroupByIgs(G, Cgs(U));
                 K := NormalIntersection( K, T );
                 actT := InducedByPcp( Pcp(S), Pcp(T), actS );
@@ -523,7 +523,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     for p in USED_PRIMES@ do
         Info( InfoIntStab, 1, "reducing by stabilizer mod ",p);
         T := StabilizerModPrime( S, actS, e, p );
-        Info( InfoIntStab, 1, "  obtained reduction by ",Index(S,T));
+        Info( InfoIntStab, 1, "  obtained reduction by ",IndexNC(S,T));
         S := T;
         actS := InducedByPcp( Pcp(G), Pcp(S), mats );
     od;
@@ -532,7 +532,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     Info( InfoIntStab, 1, "determining 3-congruence subgroup");
     K := KernelOfFiniteMatrixAction( S, actS, GF(3) );
     actK := InducedByPcp( Pcp(G), Pcp(K), mats );
-    Info( InfoIntStab, 1, "  obtained subgroup of index ",Index(S,K));
+    Info( InfoIntStab, 1, "  obtained subgroup of index ",IndexNC(S,K));
 
     # compute homogeneous series
     Info( InfoIntStab, 1, "computing module series");

@@ -718,6 +718,17 @@ gap> G:=PcGroupToPcpGroup(PcGroupCode(37830811398924985638637008775811, 144));;
 gap> FiniteSubgroupClasses(G);;
 
 #
+# Fix a bug in PcpGroupFpGroupPcPres
+#
+gap> F := FreeGroup( "a", "b" );;
+gap> a := F.1;;
+gap> b := F.2;;
+gap> G := F / [ a ^ 4, b ^ 4, a ^ 2 * b ^ -2, b ^ a * b^-3 ];;
+gap> Q := PcpGroupFpGroupPcPres( G );;
+gap> Size( Q ) = 8 and IsQuaternionGroup( Q );
+true
+
+#
 # Fix bugs in NormalizerPcpGroup
 # <https://github.com/gap-packages/polycyclic/issues/122>
 #
