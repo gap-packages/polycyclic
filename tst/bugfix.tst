@@ -205,7 +205,6 @@ gap> e := [ 0, 0, 0, 0, 1 ];
 gap> stab := StabilizerIntegralAction( G, mats, e );
 Pcp-group with orders [ 10, 0 ]
 gap> CheckStabilizer(G, stab, mats, e);
-#I  Stabilizer not increasing: exiting.
 true
 
 #
@@ -361,7 +360,6 @@ rec( prei := g1^-90*g2^2*g3^-44*g4^16*g5^16,
 gap> CheckOrbit(G, o.prei, mats, e, f);
 true
 gap> CheckStabilizer(G, o.stab, mats, e);
-#I  Orbit longer than limit: exiting.
 true
 
 #
