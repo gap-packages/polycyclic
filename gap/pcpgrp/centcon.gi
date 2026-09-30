@@ -242,7 +242,7 @@ end );
 ##
 BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
     local C, k, eg, eh, i, pcp, rel, p, d, t,
-          e, f, c, j, N, M, fac, stb, F, act, nat;
+          e, f, c, j, N, fac, stb, F, act, nat;
 
     # do a simple check
     if Order(g) <> Order(h) then return false; fi;
@@ -268,11 +268,14 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
         c := g^k;
         if c = h then return k; fi;
 
+        # restrict to the conjugating subgroup
+        N := SubgroupByIgs( GroupOfPcp(pcp), DenominatorOfPcp(pcp) );
+        N := NormalIntersection( N, C );
+
         # if the layer is central
         if IsCentralLayer( C, pcp ) then
 
             Info( InfoPcpGrp, 1, "got central layer of type ",p,"^",d);
-            N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
             fac := Pcp(C, N);
             stb := ConjugacyByCentralLayer( c, h, AsList(fac), pcp );
 
@@ -287,9 +290,8 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
 
             Info( InfoPcpGrp, 1, "got finite layer of type ",p,"^",d);
             F := GF(p);
-            M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             f := ExponentsByPcp( pcp, c^-1*h ); Add( f, 1 );
-            fac := Pcp( C, M );
+            fac := Pcp( C, N );
             act := AffineActionByElement( fac, pcp, c );
             act := InducedByField( act, F );
             stb := PcpOrbitStabilizer( e*One(F), fac, act, OnRight );
@@ -299,7 +301,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             if IsBool(j) then return false; fi;
             t := TransversalElement( j, stb, One(G) );
             stb := List( stb.stab, x -> x^t );
-            stb := AddIgsToIgs( stb, Igs(M) );
+            stb := AddIgsToIgs( stb, Igs(N) );
             C := SubgroupByIgs( G, stb );
             k := k * t;
 
@@ -307,11 +309,10 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
         else
 
             Info( InfoPcpGrp, 1, "got infinite layer of type ",p,"^",d);
-            M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             f := ExponentsByPcp( pcp, c^-1*h ); Add( f, 1 );
-            fac := Pcp( C, M );
+            fac := Pcp( C, N );
             act := AffineActionByElement( fac, pcp, c );
-            nat := NaturalHomomorphismByNormalSubgroupNC( C, M );
+            nat := NaturalHomomorphismByNormalSubgroupNC( C, N );
             stb := OrbitIntegralAction( ImagesSource(nat), act, e, f );
 
             # extract results
@@ -339,7 +340,8 @@ end );
 InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
         [IsPcpGroup, IsPcpElement, IsPcpElement],
 function( G, g, h )
-   local c;
-   c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries(G) );
+   local P, c;
+   P := PcpGroupByCollectorNC( Collector( G ) );
+   c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
    return (c <> false);
 end );
