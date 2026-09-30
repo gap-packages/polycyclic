@@ -21,7 +21,7 @@ function( N, U )
     local G, igs, igsN, igsU, n, s, I, id, ls, rs, is, g, d, al, ar, e, tm;
 
 	# get common overgroup of N and U
-	G := PcpGroupByCollector( Collector( N ) );
+	G := PcpGroupByCollectorNC( Collector( N ) );
 
     igs  := Igs(G);
     igsN := Cgs( N );

@@ -100,7 +100,8 @@ BindGlobal( "RefinedPcpGroup", function( G )
     od;
 
     # create group and add a bijection
-    H := PcpGroupByCollector( c );
+    UpdatePolycyclicCollector( c );
+    H := PcpGroupByCollectorNC( c );
     H!.bijection := GroupHomomorphismByImagesNC( G, H, new, Igs(H) );
     SetIsBijective( H!.bijection, true );
     UseIsomorphismRelation( G, H );
@@ -169,7 +170,8 @@ BindGlobal( "PcpGroupByPcps", function( pcps )
 
     # return result
     H := GroupOfPcp( pcps[1] );
-    G := PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    G := PcpGroupByCollectorNC( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
@@ -221,7 +223,8 @@ BindGlobal( "PcpGroupByEfaPcps", function( pcps )
 
     # return result
     H := GroupOfPcp( pcps[1] );
-    G := PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    G := PcpGroupByCollectorNC( coll );
     G!.bijection := GroupHomomorphismByImagesNC( G, H, Igs(G), gens );
     SetIsBijective( G!.bijection, true );
     UseIsomorphismRelation( H, G );
@@ -330,6 +333,7 @@ BindGlobal( "PcpFactorByPcps", function(H, pcps)
     od;
 
     # create new group
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    return PcpGroupByCollectorNC( coll );
 end );
 

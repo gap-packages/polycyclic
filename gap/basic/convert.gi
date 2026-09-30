@@ -137,8 +137,8 @@ BindGlobal( "PcGroupToPcpGroup", function( G )
             SetConjugate( coll, i, -j, w );
         od;
     od;
-
-    return PcpGroupByCollector( coll );
+    UpdatePolycyclicCollector( coll );
+    return PcpGroupByCollectorNC( coll );
 end );
 
 InstallMethod( IsomorphismPcpGroup, [IsPcGroup], NICE_FLAGS,
@@ -416,6 +416,7 @@ BindGlobal( "PcpGroupFpGroupPcPres", function( G )
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup( G ) );
     rels := ClassifyRelationsOfFpGroup( G );
     ftl  := FromTheLeftCollectorByRelations( gens, rels );
+    UpdatePolycyclicCollector( ftl );
 
     ev := List( gens, g->0 );
     for rel in rels.conflicts do
@@ -427,7 +428,7 @@ BindGlobal( "PcpGroupFpGroupPcPres", function( G )
         fi;
     od;
 
-    return PcpGroupByCollector( ftl );
+    return PcpGroupByCollectorNC( ftl );
 end );
 
 BindGlobal( "IsomorphismPcpGroupFromFpGroupWithPcPres", function(G)
