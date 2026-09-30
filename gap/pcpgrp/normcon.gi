@@ -272,7 +272,7 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         M := efa[i+1];
 
         # determine factor C/M
-        hom := NaturalHomomorphismByNormalSubgroup( G, M );
+        hom := NaturalHomomorphismByNormalSubgroupNC( G, M );
         if Size(M) > 1 then
             N := Image( hom, N );
             C := Image( hom, C );

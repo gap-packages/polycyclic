@@ -122,7 +122,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             Info( InfoPcpGrp, 1, "got infinite layer of type ",p,"^",d);
             M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
-            nat := NaturalHomomorphismByNormalSubgroup( G, M );
+            nat := NaturalHomomorphismByNormalSubgroupNC( G, M );
             NM := Image( nat, N );
             CM := Image( nat, C );
             for g in elms do
@@ -311,7 +311,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             f := ExponentsByPcp( pcp, c^-1*h ); Add( f, 1 );
             fac := Pcp( C, M );
             act := AffineActionByElement( fac, pcp, c );
-            nat := NaturalHomomorphismByNormalSubgroup( C, M );
+            nat := NaturalHomomorphismByNormalSubgroupNC( C, M );
             stb := OrbitIntegralAction( Image(nat), act, e, f );
 
             # extract results

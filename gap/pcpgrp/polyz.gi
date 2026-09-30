@@ -58,7 +58,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
         U := Subgroup( F, free );
         N := PreImage( nat, U );
         Add( ser, N );
-        nat := NaturalHomomorphismByNormalSubgroup( G, N );
+        nat := NaturalHomomorphismByNormalSubgroupNC( G, N );
         F := Image( nat );
     od;
     SetEfaSeries( N, Reversed( ser ) );

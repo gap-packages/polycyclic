@@ -494,7 +494,7 @@ InstallGlobalFunction( RootSet, function( G, H )
         Print("function is available for normal subgroups only");
         return fail;
     fi;
-    nat := NaturalHomomorphismByNormalSubgroup( G, H );
+    nat := NaturalHomomorphismByNormalSubgroupNC( G, H );
     F   := Image( nat );
     T   := TorsionSubgroup( F );
     if T = fail then
