@@ -21,7 +21,7 @@ BindGlobal( "ReduceMod", function(vec, rels)
 end );
 
 BindGlobal( "ProductPcpGroups", function(G, U, V)
-    return Subgroup(G, Concatenation(Igs(U), Igs(V)));
+    return SubgroupNC(G, Concatenation(Igs(U), Igs(V)));
 end );
 
 BindGlobal( "ExponentAbelianPcpGroup", function( G )
@@ -29,7 +29,7 @@ BindGlobal( "ExponentAbelianPcpGroup", function( G )
 end );
 
 BindGlobal( "OmegaAbelianPcpGroup", function(G, e)
-    return Subgroup(G, List(Igs(G), x -> x^e));
+    return SubgroupNC(G, List(Igs(G), x -> x^e));
 end );
 
 BindGlobal( "AddSExtension", function(G)

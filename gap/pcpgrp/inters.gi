@@ -124,7 +124,7 @@ function( N, U )
 
     # sum := Filtered( ls, x -> x <> id );
     I := Filtered( is, x -> x <> id );
-    return Subgroup( G, I );
+    return SubgroupNC( G, I );
 end );
 
 #############################################################################

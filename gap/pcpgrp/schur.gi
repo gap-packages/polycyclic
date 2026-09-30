@@ -90,7 +90,7 @@ InstallMethod( SchurExtensionEpimorphism, "for pcp groups", [IsPcpGroup], functi
 
     epi := GroupHomomorphismByImagesNC( ext, G, extgens, images );
     SetIsSurjective( epi, true );
-    ker := Subgroup( ext, extgens{[n+1..Length(extgens)]} );
+    ker := SubgroupNC( ext, extgens{[n+1..Length(extgens)]} );
     SetKernelOfMultiplicativeGeneralMapping( epi, ker );
 
     return epi;
@@ -151,7 +151,7 @@ InstallMethod( EpimorphismSchurCover, "for pcp groups", [IsPcpGroup], function(G
     I := Intersection(M, DerivedSubgroup(H));
 
     # get complement to I in M
-    C := Subgroup(H, GeneratorsOfPcp( Pcp(M,I,"snf")));
+    C := SubgroupNC(H, GeneratorsOfPcp( Pcp(M,I,"snf")));
 
     if not IsFreeAbelian(C) then Error("wrong complement"); fi;
 
@@ -167,7 +167,7 @@ InstallMethod( EpimorphismSchurCover, "for pcp groups", [IsPcpGroup], function(G
 
     epi := GroupHomomorphismByImagesNC( cover, G, extgens, images );
     SetIsSurjective( epi, true );
-    ker := Subgroup( cover, extgens{[n+1..Length(extgens)]} );
+    ker := SubgroupNC( cover, extgens{[n+1..Length(extgens)]} );
     SetKernelOfMultiplicativeGeneralMapping( epi, ker );
 
     return epi;

@@ -57,7 +57,7 @@ InstallGlobalFunction( ExtensionCR, function( A, c )
 
     UpdatePolycyclicCollector( coll );
     G := PcpGroupByCollectorNC( coll );
-    G!.module := Subgroup( G, Igs(G){[n+1..n+m]} );
+    G!.module := SubgroupNC( G, Igs(G){[n+1..n+m]} );
     return G;
 
 end );

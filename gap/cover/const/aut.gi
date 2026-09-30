@@ -118,7 +118,7 @@ BindGlobal( "AutomorphismActionCover", function( G, C )
     isom := CgsParallel( pcgs{[1..r]}, Pcgs(A.group){[1..r]});
     gens := Cgs(C);
     imgs := List(gens, x->MappedVector(ExponentsByIgs(isom[1],x),isom[2]));
-    Cimg := Subgroup(A.group, imgs);
+    Cimg := SubgroupNC(A.group, imgs);
 
     # stabilise C
     OnSubs := function( U, auto, info ) return Image(auto, U); end;

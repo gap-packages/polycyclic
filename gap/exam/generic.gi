@@ -143,7 +143,7 @@ InstallGlobalFunction( SubgroupUnitriangularPcpGroup, function( mats )
         Add( h, MappedVector( e, Pcp(G) ) );
     od;
 
-    return Subgroup( G, h );
+    return SubgroupNC( G, h );
 end );
 
 #############################################################################

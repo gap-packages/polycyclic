@@ -102,7 +102,7 @@ BindGlobal( "NormalizerHomogeneousAction", function( G, linG, baseU )
 
     # find G cap L = G cap U as subgroup of G
     exp := IntersectionOfUnitSubgroups( K, linG, linU );
-    return Subgroup( G, List( exp, x -> MappedVector( x, Pcp(G) ) ) );
+    return SubgroupNC( G, List( exp, x -> MappedVector( x, Pcp(G) ) ) );
 end );
 
 #############################################################################
@@ -184,7 +184,7 @@ BindGlobal( "ConjugacyHomogeneousAction", function( G, linG, baseU, baseW )
     h := IntersectionOfTFUnitsByCosets( K, linG, C );
     if IsBool( h ) then return false; fi;
     g := MappedVector( h.repr, Pcp(G) );
-    N := Subgroup( G, List( h.ints, x -> MappedVector( x, Pcp(G) ) ) );
+    N := SubgroupNC( G, List( h.ints, x -> MappedVector( x, Pcp(G) ) ) );
 
     # that's it
     return rec( norm := N, conj := g );

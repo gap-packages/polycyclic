@@ -142,7 +142,7 @@ BindGlobal( "CentrePcpGroup", function( G )
         for i in [1..Length(fix)] do
             fix[i] := MappedVector( fix[i]{[1..Length(pcp)]}, pcp );
         od;
-        C := Subgroup( G, fix );
+        C := SubgroupNC( G, fix );
     od;
     return C;
 end );
@@ -219,7 +219,7 @@ BindGlobal( "FCCentrePcpGroup", function( G )
 
         # compute fixed point space
         fix := PcpNullspaceIntMat( mat, Length( mat ) );
-        C := Subgroup( C, List( fix, x -> MappedVector( x, pcp ) ) );
+        C := SubgroupNC( C, List( fix, x -> MappedVector( x, pcp ) ) );
     od;
     return PreImage( hom, C );
 end );

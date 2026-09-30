@@ -123,7 +123,7 @@ BindGlobal( "NonAbelianTensorSquarePlusFp", function(G)
     # the tensor square as subgroup
     m := GeneratorsOfGroup(M);
     u := Flat(List([1..n], x -> List([1..n], y -> IComm(m[x], m[n+y]))));
-    M!.tensor := Subgroup(M, u);
+    M!.tensor := SubgroupNC(M, u);
 
     # that's it
     return M;

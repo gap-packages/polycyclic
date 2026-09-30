@@ -466,7 +466,7 @@ BindGlobal( "NonAbelianTensorSquarePlusEpimorphism", function(G)
     T := QuotientBySystem( coll, sys, n );
 
     # enforce epimorphism
-    T := Subgroup(T, Igs(T){[1..2*n]});
+    T := SubgroupNC(T, Igs(T){[1..2*n]});
 
     # construct homomorphism from nu(G) to tau(G)
     lift := GroupHomomorphismByImagesNC( T,S,
@@ -519,7 +519,7 @@ BindGlobal( "NonAbelianTensorSquareEpimorphism", function( G )
     ## we don't just want G^G as a subgroup of tau(G) but we want to go back
     ## to G^G as constructed by NonAbelianExteriorSquarePlus.  (G^G)+ has the
     ## component .embedding which embeds G^G into (G^G)+
-    GoG := Subgroup(U, c);
+    GoG := SubgroupNC(U, c);
     gens := GeneratorsOfGroup( GoG );
     embed := Image( epi )!.embedding;
     imgs := List( gens, g->PreImagesRepresentativeNC( embed, Image( epi, g ) ) );

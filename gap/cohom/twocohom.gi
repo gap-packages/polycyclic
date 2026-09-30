@@ -362,8 +362,8 @@ InstallGlobalFunction( TwoCohomologyCR, function( A )
         l := Length(cc[i][1])/Length(exp);
         B := AbelianPcpGroup( Concatenation(List([1..l], x -> exp)) );
         b := Igs(B);
-        U := Subgroup( B, List(cc[i], x -> MappedVector(x,b)));
-        V := Subgroup( B, List(cb[i], x -> MappedVector(x,b)));
+        U := SubgroupNC( B, List(cc[i], x -> MappedVector(x,b)));
+        V := SubgroupNC( B, List(cb[i], x -> MappedVector(x,b)));
         Add(Q, U/V);
      od;
      return Q;
