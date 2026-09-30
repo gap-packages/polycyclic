@@ -43,6 +43,21 @@ jobs:
       - uses: gap-actions/run-pkg-tests@v4
         with:
           mode: onlyneeded
+      - run: |
+          mkdir -p "$HOME/.gap"
+          cat > "$HOME/.gap/gap.ini" <<'EOF'
+          CHECK_CENT@Polycyclic := true;
+          CHECK_IGS@Polycyclic := true;
+          CHECK_INTNORM@Polycyclic := true;
+          CHECK_INTSTAB@Polycyclic := true;
+          CHECK_NORM@Polycyclic := true;
+          CHECK_SCHUR_PCP@Polycyclic := true;
+          VERIFY@Polycyclic := true;
+          EOF
+      - uses: gap-actions/run-pkg-tests@v4
+      - uses: gap-actions/run-pkg-tests@v4
+        with:
+          mode: onlyneeded
       - uses: gap-actions/process-coverage@v3
       - uses: codecov/codecov-action@v6
         with:
