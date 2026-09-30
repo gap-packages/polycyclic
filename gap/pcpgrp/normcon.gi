@@ -31,17 +31,17 @@ end );
 
 #############################################################################
 ##
-#F VectorByComplement( CR, igs )
+#F VectorByComplement( CR, U )
 ##
-##  bad hack ... igs and fac have to fit together.
+##  not such a bad hack any more
 ##
 BindGlobal( "VectorByComplement", function( CR, U )
-    local fac, vec, igs;
-    fac := CR.factor;
-    igs := Cgs(U);
-    vec := List( [1..Length(fac)], i ->
-           ExponentsByPcp( CR.normal, fac[i]^-1 * igs[i] ) );
-    return Flat(vec);
+    local igs;
+    igs := Igs(U);
+    # CR.factor and igs must match as cosets of the numerator of CR.normal
+    # We enforce this by using ReducedByIgs
+    return Flat( List( CR.factor, g ->
+        ExponentsByPcp( CR.normal, ReducedByIgs( igs, g^-1 ) ) ) );
 end );
 
 #############################################################################
@@ -242,7 +242,7 @@ BindGlobal( "NormalizerOfComplement", function( C, H, N, I )
         # stabilize vector
         if Length( cc.factor.rels ) > 0 then
             Info( InfoPcpGrp, 2, "  H1 is of type ",cc.factor.rels);
-            e := cc.CocToFactor( cc, c );
+            e := cc.CocToFactor( cc, c - cc.sol );
             C := StabilizerOfCocycle( CR, cc, C, e );
         fi;
 
