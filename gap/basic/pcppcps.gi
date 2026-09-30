@@ -92,8 +92,8 @@ IGSValFun := IGSValFun4;
 ##
 #F GcdPcp
 ##
-## Apply Euclidean algorithm to g and h's leading exponent, and apply it to
-## the elements g and h themselves at the same time
+## For two PcpElements g and h, apply the Euclidean algorithm to the leading
+## exponents, and do the same operations on the elements themselves
 ##
 BindGlobal( "GcdPcp", function(g, h)
     local x, y, a, b, q, r, t;
