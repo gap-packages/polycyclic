@@ -31,24 +31,15 @@ end );
 
 #############################################################################
 ##
-#F VectorByComplement( CR, igs )
+#F VectorByComplement( CR, U )
 ##
-##  bad hack ... igs and fac have to fit together.
+##  not such a bad hack any more
 ##
 BindGlobal( "VectorByComplement", function( CR, U )
-    local fac, igs, nrm, nat, res, vec;
-    fac := CR.factor;
-    if USE_CANONICAL_PCS@ then
-        igs := Cgs(U);
-    else
-        nrm := SubgroupByIgs( CR.group, NumeratorOfPcp( CR.normal ) );
-        nat := NaturalHomomorphismByNormalSubgroupNC( CR.group, nrm );
-        res := RestrictedMapping( nat, U );
-        igs := List( fac, g -> PreImagesRepresentativeNC( res, g ^ nat ) );
-    fi;
-    vec := List( [1..Length(fac)], i ->
-           ExponentsByPcp( CR.normal, fac[i]^-1 * igs[i] ) );
-    return Flat(vec);
+    local igs;
+    igs := Igs(U);
+    return Flat( List( CR.factor, g ->
+        ExponentsByPcp( CR.normal, ReducedByIgs( igs, g^-1 ) ) ) );
 end );
 
 #############################################################################
