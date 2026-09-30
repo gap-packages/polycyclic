@@ -766,4 +766,15 @@ gap> IsConjugate( B, A.2, A.2^2 );
 false
 
 #
+# Fix a bug in NormalizerIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/148>
+#
+gap> G := ExamplesOfSomePcpGroups( 3 );;
+gap> H := Subgroup( G, [ G.2^3 ] );;
+gap> IsNormal( G, H );
+true
+gap> Normalizer( G, H ) = G;
+true
+
+#
 gap> STOP_TEST( "bugfix.tst" );
