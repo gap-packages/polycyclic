@@ -335,7 +335,7 @@ BindGlobal( "NormalizerCongruenceAction", function( G, linG, baseU, ser )
         if Length(Pcp(T)) = 0 then return T; fi;
 
         # reset action for the next step
-        if Index(S,T) <> 1 then
+        if IndexNC(S,T) <> 1 then
             indS := InducedByPcp( Pcp(G), Pcp(T), indG );
         fi;
         S := T;
@@ -351,7 +351,7 @@ BindGlobal( "NormalizerCongruenceAction", function( G, linG, baseU, ser )
             if Length(Pcp(T)) = 0 then return T; fi;
 
             # again, reset action for the next step
-            if Index(S,T) <> 1 then
+            if IndexNC(S,T) <> 1 then
                 indS := InducedByPcp( Pcp(G), Pcp(T), indG );
             fi;
             S := T;
@@ -432,7 +432,7 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
         # reset action for next step
         g := g * s.conj;
         W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-        if Index(S,s.norm)<>1 then
+        if IndexNC(S,s.norm)<>1 then
             indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
         fi;
         S := s.norm;
@@ -451,7 +451,7 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
             # again, reset action
             g := g * s.conj;
             W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
-            if Index(S,s.norm)<>1 then
+            if IndexNC(S,s.norm)<>1 then
                 indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
             fi;
             S := s.norm;
