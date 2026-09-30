@@ -407,12 +407,12 @@ InstallGlobalFunction( QuotientBySystem, function(coll, sys, n)
         fi;
 
         for j in [1..i-1] do
-            a := GetConjugate(coll, i, j);
+            a := GetConjugateNC(coll, i, j);
             a := ReduceTail( a, x, Q, d, f );
             SetConjugate(c, i, j, a );
 
             if e[j] = 0 then
-                a := GetConjugate(coll, i, -j);
+                a := GetConjugateNC(coll, i, -j);
                 a := ReduceTail( a, x, Q, d, f );
                 SetConjugate(c, i, -j, a );
             fi;
