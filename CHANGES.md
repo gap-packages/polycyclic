@@ -5,6 +5,8 @@ NEXT (YYYY-MM-DD)
     in the following functions:
     - `ConjugacyElementsBySeries`
     - `ComplementClassesCR`
+  - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
+    and `Image` dispatchers to improve speed and memory usage
   - Various janitorial changes
 
 2.18 (2026-04-09)
