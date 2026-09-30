@@ -142,7 +142,7 @@ BindGlobal( "UpperCentralSeriesNilpotentPcpGroup", function( G )
     while IndexNC( G, C ) > 1 do
         ser := ModuloSeries( ser, C );
         C   := CentralizeByCentralSeries( G, gens, ser );
-        C   := Subgroup( G, C );
+        C   := SubgroupNC( G, C );
         Add( upp, C );
     od;
     upp[ Length(upp) ] := G;

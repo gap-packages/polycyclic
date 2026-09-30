@@ -92,7 +92,7 @@ BindGlobal( "NormalizerHomogeneousAction", function( G, linG, baseU )
 
     # get field
     K := FieldByMatricesNC( linG );
-    baseK := BasisVectors( BasisNC( K ) );
+    baseK := BasisVectors( Basis( K ) );
 
     # determine normalizing subfield and its units
     baseL := BasisOfNormalizingSubfield( baseK, baseU );
