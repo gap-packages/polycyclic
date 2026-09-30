@@ -635,7 +635,9 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     j := FindPosition( os.orbit, l, K, actK, orbf );
     if IsBool(j) then return false; fi;
     h := TransversalElement( j, os, One(G) );
-    l := l * InducedByPcp( Pcp(S), h, actS )^-1;
+    if not IsOne(h) then
+        l := l * InducedByPcp( Pcp(S), h, actS )^-1;
+    fi;
     g := orbf( K, actK, e, l ) * h * g;
 
     # get Stab_K(e) and thus Stab_G(e)
