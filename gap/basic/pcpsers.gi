@@ -165,7 +165,7 @@ InstallGlobalFunction( EfaSeriesParent, function( G )
             nat := NaturalHomomorphismByPcp( pcp );
             ref := RefinedDerivedSeries( Image( nat ) );
             ref := ref{[2..Length(ref)]};
-            ref := List( ref, x -> PreImage( nat, x ) );
+            ref := List( ref, x -> PreImagesSetNC( nat, x ) );
             Append( new, ref );
         fi;
     od;

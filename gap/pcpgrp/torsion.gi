@@ -501,6 +501,6 @@ InstallGlobalFunction( RootSet, function( G, H )
         Print( "RootSet is not a subgroup - not yet implemented" );
         return fail;
     fi;
-    return PreImage( nat, T );
+    return PreImagesSetNC( nat, T );
 end );
 

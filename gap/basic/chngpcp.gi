@@ -270,7 +270,7 @@ function(G)
     efa := EfaSeries(G);
     GG  := PcpGroupBySeries(efa);
     iso := GG!.bijection;
-    new := List( efa, x -> PreImage(iso,x) );
+    new := List( efa, x -> PreImagesSetNC(iso,x) );
     SetEfaSeries(GG, new);
     return GG;
 end );

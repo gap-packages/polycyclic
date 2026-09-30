@@ -56,7 +56,7 @@ InstallGlobalFunction( PolyZNormalSubgroup, function( G )
 
         # reset
         U := SubgroupNC( F, free );
-        N := PreImage( nat, U );
+        N := PreImagesSetNC( nat, U );
         Add( ser, N );
         nat := NaturalHomomorphismByNormalSubgroupNC( G, N );
         F := Image( nat );

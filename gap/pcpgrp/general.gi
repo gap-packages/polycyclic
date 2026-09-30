@@ -164,7 +164,7 @@ function(G)
         rep := List(rep, Representative);
         Append(max,rep);
     od;
-    return List(max, x -> PreImage(nat,x));
+    return List(max, x -> PreImagesSetNC(nat,x));
 end);
 
 #############################################################################

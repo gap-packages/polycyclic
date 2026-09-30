@@ -173,7 +173,7 @@ BindGlobal( "UpperCentralSeriesPcpGroup", function( G )
         Add( upp, C );
         nat := NaturalHomomorphismByNormalSubgroupNC( G, C );
         H := Image( nat );
-        N := PreImage( nat, Centre(H) );
+        N := PreImagesSetNC( nat, Centre(H) );
     od;
     return Reversed( upp );
 end );
@@ -221,7 +221,7 @@ BindGlobal( "FCCentrePcpGroup", function( G )
         fix := PcpNullspaceIntMat( mat, Length( mat ) );
         C := SubgroupNC( C, List( fix, x -> MappedVector( x, pcp ) ) );
     od;
-    return PreImage( hom, C );
+    return PreImagesSetNC( hom, C );
 end );
 
 InstallMethod( FCCentre,
@@ -250,7 +250,7 @@ InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )
     # if this is not sufficient, then use Fitting factor
     nath := NaturalHomomorphismByNormalSubgroupNC( G, F );
     L := FittingSubgroup( Image( nath ) );
-    A := PreImage( nath, Centre(L) );
+    A := PreImagesSetNC( nath, Centre(L) );
     if IndexNC( G, A ) = infinity then Error("wrong subgroup"); fi;
     return [G, A, F, U];
 end );

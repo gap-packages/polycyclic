@@ -132,7 +132,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
                     CM := StabilizerIntegralAction( CM, act, e );
                 fi;
             od;
-            C := PreImage( nat, CM );
+            C := PreImagesSetNC( nat, CM );
         fi;
     od;
 
@@ -316,7 +316,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
 
             # extract results
             if IsBool(stb) then return false; fi;
-            C := PreImage( nat, stb.stab^stb.prei );
+            C := PreImagesSetNC( nat, stb.stab^stb.prei );
             k := k * PreImagesRepresentativeNC( nat, stb.prei );
         fi;
     od;

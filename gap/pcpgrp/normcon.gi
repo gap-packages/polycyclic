@@ -104,7 +104,7 @@ BindGlobal( "NormalizerOfIntersection", function( C, N, I )
         int := LatticeBasis( int );
         C := Image( ind );
         C := NormalizerIntegralAction( C, act, int );
-        return PreImage( ind, C );
+        return PreImagesSetNC( ind, C );
     fi;
 end );
 
@@ -129,7 +129,7 @@ BindGlobal( "StabilizerOfCocycle", function( CR, cc, C, elm )
         e := elm{[s..l]}; Add( e, 1 );
         D := Image( nat, D );
         D := StabilizerIntegralAction( D, act, e );
-        D := PreImage( nat, D );
+        D := PreImagesSetNC( nat, D );
     fi;
     if Size(D) = 1 or s = 1 then return D; fi;
 
@@ -295,7 +295,7 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
             fi;
         fi;
 
-        if Size(M) > 1 then C := PreImage( hom, C ); fi;
+        if Size(M) > 1 then C := PreImagesSetNC( hom, C ); fi;
     od;
     return C;
 end );
@@ -309,7 +309,7 @@ BindGlobal( "NormalizerPcpGroup", function( G, U )
 
     # translate
     GG  := PcpGroupByEfaSeries(G);
-    UU  := PreImage(GG!.bijection,U);
+    UU  := PreImagesSetNC(GG!.bijection,U);
 
     # compute
     NN := NormalizerBySeries( GG, UU, EfaSeries(GG) );
