@@ -334,20 +334,6 @@ end );
 
 #############################################################################
 ##
-#F IsConjugate( G, g, h )
-#F ConjugacyElementsPcpGroup( G, g, h )
-##
-InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
-        [IsPcpGroup, IsPcpElement, IsPcpElement],
-function( G, g, h )
-   local P, c;
-   P := PcpGroupByCollectorNC( Collector( G ) );
-   c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
-   return (c <> false);
-end );
-
-#############################################################################
-##
 #F RepresentativeActionOp( G, g, h, act )
 ##
 InstallOtherMethod( RepresentativeActionOp, "for OnPoints in a pcp group",
