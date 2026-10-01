@@ -4,17 +4,26 @@ gap/pcpgrp:
 higher level functions for pcp groups:
 
 fitting.gi    -- fitting subgroup, centre, FC-centre, etc.
-pcpattr.gi    -- some general functions, not installed attributes
+pcpattr.gi    -- some general functions
 maxsub.gi     -- maximal subgroups
 findex.gi     -- subgroups of finite index  (LowIndex)
 nindex.gi     -- normal subgroups of finite index
 polyz.gi      -- compute a poly-Z normal subgroup
 grpinva.gi    -- invariant subspaces
-torsion.gi    -- finite subgroups (TorsionSubgroup / FiniteSubgroups)
+torsion.gi    -- finite subgroups (TorsionSubgroup / FiniteSubgroupClasses)
+torsion.gd    -- declarations for torsion and free abelian groups
 
 nilpot.gi     -- centralizers in nilpotent groups
 inters.gi     -- intersection with normal subgroup
-centnorm.gi   -- centralizers and normalizers 
+centcon.gi    -- centralizers and element conjugacy
+normcon.gi    -- normalizers
+
+general.gi    -- general functions
+pcpgrp.gd     -- declarations for higher level pcp group functions
+schur.gi      -- Schur covers, multipliers and exterior squares
+tensor.gi     -- non-abelian tensor squares
+tensor_nq.gi  -- tensor square checks using nq
+wreath.gi     -- wreath products
 
 #############################################################################
 Centalizer
@@ -43,7 +52,4 @@ F RootSet
 
 #############################################################################
 
-Todo - Centralizer 
-     - Normalizer
-     - Intersection (check with inters.gi)
-     - clear up general.gi
+Todo - clear up general.gi

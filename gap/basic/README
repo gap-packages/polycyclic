@@ -6,6 +6,9 @@ Incorporates everything related to collecting and elements
 of pcp groups. Further, includes computation with subgroups
 and factor groups of pcp groups as well as homomorphisms.
 
+basic.gd    -- declarations of basic pcp operations
+infos.gd    -- info classes for pcp group algorithms
+
 collect.gd  -- declaration of all collector related things
 collect.gi  -- methods shared by all collector types
 colftl.gi   -- from the left collection
@@ -18,11 +21,11 @@ pcpelms.gd/gi  --   pcp elements
 pcpgrps.gd/gi  --   groups of pcp elements
 pcppcps.gd/gi  --   induced and canonical pcp's of groups
 pcppara.gi     --   parallel pcp's
-pcpexpo.gd/gi  --   exponents wrt induced/mod pc
-pcpsers.gd/gi  --   various series' in pcp groups
+pcpexpo.gi     --   exponents wrt induced/mod pc
+pcpsers.gi     --   various series' in pcp groups
 grphoms.gd/gi  --   group homomorphisms
-pcpfact.gd/gi  --   factor groups and modulo pcp 's
-pcplib.gd/gi   --   some generic pcp groups (AbelianPcpGroup etc)
+pcpfact.gi     --   factor groups and modulo pcp 's
+construct.gi   --   standard group constructors in pcp representation
 convert.gi     --   convert PcpGroup to PcGroup or FpGroup
 chngpcp.gi     --   change defining pcp (RefinedPcp etc)
 orbstab.gi     --   finite orbit-stabilizer method

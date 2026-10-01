@@ -7,6 +7,8 @@ rowbases.gi   -- computing with rational spaces
 lattices.gi   -- computing with lattices
 modules.gi    -- radical and composition series of efa modules
 
-intmat.gi     -- integer matrices inversion
-triangle.gi   -- upper triangular matrices
+triangle.gi   -- lower triangular matrices
 
+matrix.gd     -- declarations for matrix and module functions
+latbases.gi   -- lattice bases and factor lattices
+hnf.gi        -- Hermite and diagonal normal forms

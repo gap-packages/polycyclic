@@ -1,0 +1,5 @@
+
+gap/cover:
+
+const     -- construction of Schur covers
+trees     -- Schur cover trees

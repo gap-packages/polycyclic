@@ -12,4 +12,6 @@ kernels.gi    -- kernel of finite/congruence actions
 
 orbstab.gi    -- orbit stabilizer method for polycyclic groups
                  acting on elements of Z^d
+orbnorm.gi    -- orbit stabilizer method for polycyclic groups
+                 acting on subgroups of Z^d
 

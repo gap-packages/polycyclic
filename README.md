@@ -58,15 +58,20 @@ Contents
 With this version you should have obtained the following files and
 directories:
 
-- `README`:         this file
+- `README.md`:      this file
 - `init.g`:         the file that initializes this package
 - `read.g`:         the file that reads in the package        
 - `PackageInfo.g`:  the file for the new package loading mechanism
+- `CHANGES.md`:     release history
+- `LICENSE`:        package license
+- `makedoc.g`:      builds the manual
+- `tst`:            directory containing the tests
 - `doc`:            directory containing the manual
 - `gap`:            directory containing the GAP code, it contains:
   - `action`:   actions of polycyclic groups and orbit-stabilizer
   - `basic`:    basic stuff for pcp groups
   - `cohom`:    cohomology for pcp groups
+  - `cover`:    Schur covers of finite p-groups
   - `exam`:     examples of pcp groups
   - `matrep`:   matrix representations for pcp groups
   - `matrix`:   basic stuff for matrices and lattices
