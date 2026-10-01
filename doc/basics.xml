@@ -41,10 +41,11 @@ Let <M>U, V</M> and <M>N</M> be subgroups of a pcp-group.
 
 <ManSection>
 <Meth Name="Index" Arg="U, V"/>
+<Meth Name="IndexNC" Arg="U, V"/>
 <Description>
-	returns the index of  <A>V</A> in <A>U</A>  if <A>V</A>  is  a subgroup of  <A>U</A>.  The
-	function does not check if <A>V</A> is a subgroup of <A>U</A> and  if it is not,
-	the result is not meaningful.
+	returns the index of  <A>V</A> in <A>U</A>  if <A>V</A>  is  a subgroup of  <A>U</A>.
+	The first method checks this condition. The NC version does not check if
+	<A>V</A> is a subgroup of <A>U</A> and if it is not, the result is not meaningful.
 </Description>
 </ManSection>
 
@@ -58,8 +59,7 @@ Let <M>U, V</M> and <M>N</M> be subgroups of a pcp-group.
 <ManSection>
 <Meth Name="Elements" Arg="U"/>
 <Description>
-	returns a list  containing all elements of  <A>U</A> if <A>U</A> is finite and it
-	returns the list [fail] otherwise.
+	returns a list  containing all elements of  <A>U</A> if <A>U</A> is finite.
 </Description>
 </ManSection>
 
