@@ -55,4 +55,15 @@ gap> Centralizer( H, K ) = Subgroup( G, [ G.3, G.4 ] );
 true
 
 #
+# Fix a bug in CentralizerBySeries
+# <https://github.com/gap-packages/polycyclic/issues/157>
+#
+gap> G := DihedralPcpGroup( 18 );;
+gap> H := Subgroup( G, [ G.2^3 ] );;
+gap> IsTrivial( Centralizer( H, G ) );
+true
+gap> IsTrivial( Centralizer( G, G ) );
+true
+
+#
 gap> STOP_TEST( "cent.tst", 10000000);

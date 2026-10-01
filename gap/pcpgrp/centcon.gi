@@ -97,7 +97,8 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
         # if the layer is central
         if IsCentralLayer( C, pcp ) then
             Info( InfoPcpGrp, 1, "got central layer of type ",p,"^",d);
-            N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
+            # C centralises the layer, but the elms need not
+            N := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             gen := Pcp(C, N);
             stb := CentralizerByCentralLayer( elms, AsList(gen), pcp );
             stb := AddIgsToIgs( Igs(stb), Igs(N) );

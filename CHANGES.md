@@ -4,6 +4,7 @@ NEXT (YYYY-MM-DD)
   - Fix bugs, where wrong results could be returned or errors could be thrown,
     in the following functions:
     - `AddToIgs` (and variants)
+    - `CentralizerBySeries`
     - `CoefficientsByFactorLattice`
     - `ComplementClassesCR`
     - `ConjugacyElementsBySeries`
