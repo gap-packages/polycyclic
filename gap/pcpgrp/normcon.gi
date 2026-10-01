@@ -344,12 +344,30 @@ end );
 
 #############################################################################
 ##
-#F IsConjugate( G, U, V )
+#F RepresentativeActionOp( G, U, V, act )
 ##
-InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
-        [IsPcpGroup, IsPcpGroup, IsPcpGroup],
-function( G, U, V )
-    # compute
-    return ConjugacySubgroupsBySeries( G, U, V, PcpsOfEfaSeries(G) );
-end );
+InstallOtherMethod( RepresentativeActionOp, "for OnPoints and pcp groups",
+        true, [IsPcpGroup, IsPcpGroup, IsPcpGroup, IsFunction],
+function( G, U, V, act )
+    local P, iso, g, u, v, c;
+    if act <> OnPoints then TryNextMethod(); fi;
 
+    if IsFinite( G ) and IsFinite( U ) and IsFinite( V ) then
+        P := ClosureGroup( U, V );
+        if IsFinite( P ) then
+            P := ClosureGroup( G, P );
+            if IsFinite( P ) then
+                iso := IsomorphismPcGroup( P );
+                g := ImagesSet( iso, G );
+                u := ImagesSet( iso, U );
+                v := ImagesSet( iso, V );
+                c := RepresentativeAction( g, u, v );
+                if c = fail then return fail; fi;
+                return PreImagesRepresentativeNC( iso, c );
+            fi;
+        fi;
+    fi;
+    c := ConjugacySubgroupsBySeries( G, U, V, PcpsOfEfaSeries(G) );
+    if c = false then return fail; fi;
+    return c;
+end );

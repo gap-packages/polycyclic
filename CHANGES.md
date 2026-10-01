@@ -15,6 +15,8 @@ NEXT (YYYY-MM-DD)
   - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
     group
   - Implement a method for `RepresentativeAction`
+  - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
+    subgroups
   - Optimise `NormalIntersection`
   - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
     and `Image` dispatchers to improve speed and memory usage
