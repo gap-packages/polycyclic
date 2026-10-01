@@ -16,5 +16,39 @@ true
 gap> IsConjugate( G, h, g );
 true
 
+# Subgroup conjugacy in a finite overgroup inside an infinite pcp group.
+gap> P := DirectProduct(DihedralPcpGroup(6), AbelianPcpGroup(1));;
+gap> IsFinite(P);
+false
+gap> H := Subgroup(P, [P.1, P.2]);;
+gap> G := Subgroup(P, [P.2]);;
+gap> U := Subgroup(P, [P.1]);;
+gap> V := U^P.2;;
+gap> r := RepresentativeAction(H, U, V);;
+gap> r in H and U^r = V;
+true
+gap> RepresentativeAction(H, U, G);
+fail
+gap> r := RepresentativeAction(G, U, V);;
+gap> r in G and U^r = V;
+true
+gap> IsConjugate(G, U, V);
+true
+gap> RepresentativeAction(U, U, V);
+fail
+gap> IsConjugate(U, U, V);
+false
+
+# Subgroup conjugacy in an infinite overgroup
+gap> P := DihedralPcpGroup(0);;
+gap> U := Subgroup(P, [P.1]);;
+gap> V := U^P.2;;
+gap> Size(ClosureGroup(U, V));
+infinity
+gap> RepresentativeAction(U, U, V);
+Error, not yet installed
+gap> IsConjugate(P, U, V);
+Error, not yet installed
+
 #
-gap> STOP_TEST( "semidirect.tst", 10000000);
+gap> STOP_TEST( "conj.tst", 10000000);
