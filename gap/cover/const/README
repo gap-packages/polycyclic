@@ -1,0 +1,12 @@
+
+gap/cover/const:
+
+Functions to construct Schur covers.
+
+aut.gi    -- automorphism actions
+bas.gi    -- basic functions
+ccc.gi    -- Schur covers by coclass
+com.gi    -- complements
+cov.gi    -- Schur covers
+orb.gi    -- orbits
+ord.gi    -- Schur covers by order
