@@ -111,13 +111,10 @@ gap> gen:=[ g.1, g.1^4*g.2^4*g.3^4*g.4^4*g.6*g.7*g.25^-1*g.26^2 ];;
 gap> U := Subgroup(g,gen);
 Pcp-group with orders [ 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
   0, 0, 0, 0, 0, 0, 0, 0 ]
-gap> Igs(gen);
-[ g1, g2*g3*g4*g5*g6, g3*g4*g5^3*g23^-1*g24^3*g25^2*g26, 
-  g4*g5^2*g24^-1*g25^2*g26^-1, g5*g6^4*g22*g23^-1*g24^2*g26^-2, 
-  g6*g22*g23^2*g24*g25^3*g26^-2, g7*g22^-4, g8*g23^-4, g9*g24, g10*g25, 
-  g11*g26^-4, g12*g22^-3, g13*g23^-3, g14*g24^2, g15*g25^-3, g16*g26^-3, 
-  g17*g22^-2, g18*g23^-2, g19*g24^-2, g20*g25^3, g21*g26^3, g22^5, g23^5, 
-  g24^5, g25^5, g26^5 ]
+gap> Cgs(gen);
+[ g2^3*g3^3*g4^3*g5^4*g7^2*g8^2*g9^2*g10^2*g13*g14*g15*g16^-1*g18^-1*
+  g19^-1*g20^-1*g22*g23*g24, g1*g2^2*g3^2*g4*g6^2*g7*g8*g9*g10*g12^-1*
+  g13^-1*g17^3*g18^3*g19^2*g21^-1*g22^-2*g23^-2*g24^-2*g25^-1*g26^3 ]
 
 #
 # Fix a bug in AddToIgs
@@ -131,7 +128,7 @@ true
 # second example for issue #66
 gap> G := ExamplesOfSomePcpGroups( 10 );;
 gap> S := Subgroup( G, [ G.1, G.2, G.4 ] );;
-gap> Igs(S);
+gap> Cgs(S);
 [ g1, g2, g3^3, g4 ]
 gap> G.3^3 in S;
 true
@@ -149,8 +146,8 @@ gap> iso := IsomorphismPcpGroup( H );;
 gap> G := Range( iso );;
 gap> gensG := List( gensH, h -> h^iso );;
 gap> S := Subgroup( G, gensG );;
-gap> Igs( S );
-[ g1, g2, g3*g4^2, g4 ]
+gap> Cgs( S );
+[ g1, g2, g3, g4 ]
 gap> G = S;
 true
 
