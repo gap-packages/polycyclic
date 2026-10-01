@@ -4,11 +4,13 @@ NEXT (YYYY-MM-DD)
   - Fix bugs, where wrong results could be returned or errors could be thrown,
     in the following functions:
     - `AddToIgs` (and variants)
-    - `ConjugacyElementsBySeries`
     - `ComplementClassesCR`
-    - `OrbitIntegralAction`
-    - `NormalizerPcpGroup`
+    - `ConjugacyElementsBySeries`
+    - `ConjugacyIntegralAction`
     - `NormalIntersection`
+    - `NormalizerPcpGroup`
+    - `NormalizerIntegralAction`
+    - `OrbitIntegralAction`
   - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
     group
   - Optimise `NormalIntersection`
