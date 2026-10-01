@@ -807,5 +807,18 @@ gap> H := Subgroup(G, [G.2^4]);;
 gap> Normalizer(G, H);
 Pcp-group with orders [ 0, 0, 0, 0 ]
 
+# Check inverse conjugacy tails for finite-order generators.
+gap> G := Image( IsomorphismPcpGroup( SymmetricGroup( 3 ) ) );;
+gap> C := CRRecordByMats( G, List( Pcp( G ), x -> IdentityMat( 1, GF( 2 ) ) ) );;
+gap> CR := TwoCohomologyCR( C );;
+gap> H2 := AbelianPcpGroup( CR.factor.rels );
+Pcp-group with orders [ 2 ]
+gap> Length( ExtensionClassesCR( C ) );
+2
+gap> C := CRRecordByMats( G, List( Pcp( G ), x -> [ [ 1 ] ] ) );;
+gap> CR := TwoCohomologyModCR( C, [ [ 2 ] ] );;
+gap> H2 := AbelianPcpGroup( CR.factor.rels );
+Pcp-group with orders [ 2 ]
+
 #
 gap> STOP_TEST( "bugfix.tst" );

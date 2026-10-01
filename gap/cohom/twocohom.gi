@@ -138,22 +138,15 @@ end );
 
 #############################################################################
 ##
-#F TwoCocyclesCR( A )
+#F AddTwoCocycleEquationsCR( A, sys )
 ##
-InstallGlobalFunction( TwoCocyclesCR, function( A )
-    local C, n, e, id, l, gn, gp, gi, eq, pairs, i, j, k, w1, w2, d, sys, h;
+## Add consistency equations to a system or a list of systems.
+##
+BindGlobal( "AddTwoCocycleEquationsCR", function( A, sys )
+    local n, e, id, l, gn, gi, pairs, i, j, k, w1, w2, h;
 
-    # set up system of length d
     n := Length( A.mats );
     e := RelativeOrdersOfPcp( A.factor );
-    l := Length( A.enumrels );
-
-    if IsBound(A.endosys) then
-        sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
-        for i in [1..Length(sys)] do sys[i].full := true; od;
-    else
-        sys := CRSystem( A.dim, l, A.char );
-    fi;
 
     # set up for equations
     id := IdentityMat(n);
@@ -279,20 +272,42 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
         od;
     od;
 
-    # add a check ((j ^ i) ^-i ) = j
+    # consistency 8: (i ^ (j^-1)) j = j i
     for i in [1..n] do
         for j in [1..i-1] do
-            w1 := CollectedTwoCR( A, gi[j], pairs[i][j] );
-            w1 := CollectedTwoCR( A, gn[j], w1 );
-            w1 := CollectedTwoCR( A, w1, gi[j] );
-            if w1.word <> id[i] then
-                Error("in rel check ");
-            elif not IsZeroTail( w2.tail ) then
-               # Error("relations bug");
-                AddEquationsCR( sys, w1.tail, [], true );
+            h := rec( word := VectorOfWordCR( A.relators[i][i+j], n ),
+                      tail := [] );
+            h.tail[Position( A.enumrels, [i,i+j] )] := A.one;
+            w1 := CollectedTwoCR( A, h, gn[j] );
+            w2 := CollectedTwoCR( A, gn[j], gn[i] );
+            if w1.word <> w2.word then
+                Error( "(i ^ (j^-1)) j <> j i" );
+            else
+                AddEquationsCR( sys, w1.tail, w2.tail, true );
             fi;
         od;
     od;
+
+end );
+
+#############################################################################
+##
+#F TwoCocyclesCR( A )
+##
+InstallGlobalFunction( TwoCocyclesCR, function( A )
+    local l, sys, i;
+
+    # set up system
+    l := Length( A.enumrels );
+
+    if IsBound(A.endosys) then
+        sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
+        for i in [1..Length(sys)] do sys[i].full := true; od;
+    else
+        sys := CRSystem( A.dim, l, A.char );
+    fi;
+
+    AddTwoCocycleEquationsCR( A, sys );
 
     # and return solution
     return KernelCR( A, sys );
