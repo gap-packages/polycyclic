@@ -74,7 +74,7 @@ Pcp-group with orders [ 5, 5 ]
 gap> ImagesSet(iso,I) = J;
 true
 
-# infinite group example where the intersection algorithm isn't implemented (non-normalizing case)
+# infinite group example with non-normalizing subgroups
 gap> G := ExamplesOfSomePcpGroups(8);;
 gap> g := GeneratorsOfGroup(G);;
 gap> H1:=Subgroup(G,[g[2], g[3]*g[4]]);
@@ -82,9 +82,13 @@ Pcp-group with orders [ 0, 0, 0, 0 ]
 gap> H2:=Subgroup(G,[g[1], g[4]*g[5]]);
 Pcp-group with orders [ 0, 0 ]
 gap> Intersection(H1,H2);
-Error, sorry: intersection for non-normal groups not yet installed
+Pcp-group with orders [ 0 ]
+gap> Intersection(H1,H2) = Subgroup(G, [(g[4]*g[5])^2]);
+true
+gap> Intersection(H2,H1) = Intersection(H1,H2);
+true
 
-# finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite group example with non-normalizing subgroups
 gap> G := PcGroupCode(45446527802282484537974096,2^2*3^4*5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
@@ -104,7 +108,7 @@ Group([ f3^2*f4*f5^2, f4^2*f5, f5^2 ])
 gap> Image(iso,I);
 Pcp-group with orders [ 3, 3, 3 ]
 
-# finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite group example with non-normalizing subgroups
 gap> G := PcGroupCode(15825634281851454495,2^2*3^5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
@@ -124,7 +128,7 @@ Group([ f6^2, f7^2 ])
 gap> Image(iso,I);
 Pcp-group with orders [ 3, 3 ]
 
-# finite - infinite combination example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite - infinite combination with non-normalizing subgroups
 gap> G := DirectProduct(ExamplesOfSomePcpGroups(8), PcGroupToPcpGroup(PcGroupCode(2835879971,72)));;
 gap> g := GeneratorsOfGroup(G);;
 gap> H1 := Subgroup(G,[g[6]*g[9]^2]);
@@ -133,6 +137,55 @@ gap> H2 := Subgroup(G,[g[6],g[2]*g[7]]);
 Pcp-group with orders [ 0, 2, 2 ]
 gap> Intersection(H1,H2);
 Pcp-group with orders [ 2 ]
+
+#
+# Fix a bug in NormalIntersection
+# <https://github.com/gap-packages/polycyclic/issues/76>
+#
+gap> G := ExamplesOfSomePcpGroups( 8 );;
+gap> T := Subgroup( G, [ G.1^3*G.2^6*G.3^2*G.5^44, G.2^12*G.3*G.5^61, G.3^3*G.5^30, G.4^3*G.5^30, G.5^162 ] );;
+gap> K := Subgroup( G, [ G.1^3*G.2^6*G.5^3, G.2^12, G.3*G.5^7, G.4^3*G.5^3, G.5^9 ] );;
+gap> IsNormal( K, T );
+true
+gap> IsNormal( T, K );
+true
+gap> IsSubgroup( K, T );
+true
+gap> Index( K, T );
+54
+gap> NI1 := NormalIntersection( T, K );
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> NI2 := NormalIntersection( K, T );
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> NI1 = NI2 and NI2 = T;
+true
+
+# this previously produced a subgroup of the intersection
+# <https://github.com/gap-packages/polycyclic/issues/132>
+gap> G := ExamplesOfSomePcpGroups( 3 );;
+gap> t := G.1;;
+gap> a := G.2;;
+gap> U := Subgroup( G, [ t ^ 3 * a, a ^ 3 ]);;
+gap> N := Subgroup( G, [ t ^ 5, a ^ 2 ]);;
+gap> I := NormalIntersection( N, U );
+Pcp-group with orders [ 0, 0 ]
+gap> J := Subgroup( G, [ t ^ 15 * a ^ -2, a ^ 6 ]);
+Pcp-group with orders [ 0, 0 ]
+gap> I = J;
+true
+
+# check for intersection with finite powers
+gap> coll := FromTheLeftCollector( 3 );;
+gap> SetRelativeOrder( coll, 2, 2 );
+gap> SetRelativeOrder( coll, 3, 2 );
+gap> UpdatePolycyclicCollector( coll );
+gap> G := PcpGroupByCollector( coll );;
+gap> U := Subgroup( G, [ G.1*G.2 ] );;
+gap> N := Subgroup( G, [ G.1*G.3 ] );;
+gap> I := NormalIntersection( N, U );;
+gap> J := Subgroup( G, [ G.1^2 ] );;
+gap> I = J;
+true
 
 #
 gap> STOP_TEST( "inters.tst", 10000000);
