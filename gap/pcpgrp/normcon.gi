@@ -336,20 +336,280 @@ end );
 
 #############################################################################
 ##
+#F ConjugacyOfIntersection( C, N, I, J )
+##
+##  Return the stabilizer of I and an element mapping I to J.
+##
+BindGlobal( "ConjugacyOfIntersection", function( C, N, I, J )
+    local pcp, int, target, fac, act, p, d, F, stb, ind, j, t, content;
+
+    # Trivial and full intersections are fixed under every action.
+    if I = J and (Size(I) = 1 or IndexNC(N,I) = 1) then
+        return rec( stab := C, prei := One(C) );
+    fi;
+    if Size(I) = 1 or Size(J) = 1 or
+       IndexNC(N,I) = 1 or IndexNC(N,J) = 1 then
+        return false;
+    fi;
+
+    pcp := Pcp(N, "snf");
+    int := List( Igs(I), x -> ExponentsByPcp( pcp, x ) );
+    target := List( Igs(J), x -> ExponentsByPcp( pcp, x ) );
+    fac := Pcp( C, N );
+    act := LinearActionOnPcp( fac, pcp );
+    p := RelativeOrdersOfPcp( pcp )[1];
+    d := Length( pcp );
+    Info( InfoPcpGrp, 2, "  conjugate intersection in layer of type ", p, "^", d );
+
+    if p > 0 then
+        F := GF(p);
+        act := InducedByField( act, F );
+        int := VectorspaceBasis( int * One(F) );
+        target := VectorspaceBasis( target * One(F) );
+        if Length(int) <> Length(target) then return false; fi;
+        stb := PcpOrbitStabilizer( int, fac, act, OnSubspacesByCanonicalBasis );
+        j := Position( stb.orbit, target );
+        if IsBool(j) then return false; fi;
+        t := TransversalElement( j, stb, One(C) );
+        return rec( stab := SubgroupByIgsAndIgs( C, stb.stab, Igs(N) ),
+                    prei := t );
+    else
+        int := LatticeBasis( int );
+        target := LatticeBasis( target );
+        if Length(int) <> Length(target) then return false; fi;
+        if ForAll( act, x -> LatticeBasis(int * x) = int ) then
+            if int <> target then return false; fi;
+            return rec( stab := C, prei := One(C) );
+        fi;
+
+        # Integer automorphisms preserve the common content of a lattice.
+        # Removing it also keeps reduction modulo 3 from being the zero space.
+        content := Gcd( Flat(int) );
+        if content <> Gcd( Flat(target) ) then return false; fi;
+        int := int / content;
+        target := target / content;
+        ind := NaturalHomomorphismByPcp( fac );
+        if int = target then
+            stb := NormalizerIntegralAction( ImagesSource(ind), act, int );
+            return rec( stab := PreImagesSetNC( ind, stb ),
+                        prei := One(C) );
+        fi;
+        stb := ConjugacyIntegralAction( ImagesSource(ind), act, int, target );
+        if IsBool(stb) then return false; fi;
+        return rec( stab := PreImagesSetNC( ind, stb.stab ),
+                    prei := PreImagesRepresentativeNC( ind, stb.prei ) );
+    fi;
+end );
+
+#############################################################################
+##
+#F ConjugacyOfCocycle( CR, cc, C, elm, target )
+##
+##  Return the stabilizer of elm and an element mapping elm to target in H1.
+##
+BindGlobal( "ConjugacyOfCocycle", function( CR, cc, C, elm, target )
+    local aff, s, l, D, nat, act, e, f, oper, stb, t, j, u, K, d, newCR;
+
+    aff := AffineActionOnH1( CR, cc );
+    if ForAll( aff, x -> x = x^0 ) then
+        if elm <> target then return false; fi;
+        return rec( stab := C, prei := One(C) );
+    fi;
+
+    s := Position( cc.factor.rels, 0 );
+    l := Length( cc.factor.rels );
+    D := C;
+    t := One(C);
+    e := ShallowCopy(elm);
+    f := ShallowCopy(target);
+    Add( e, 1 );
+    Add( f, 1 );
+
+    # First map the free projection. D fixes the source free projection.
+    if not IsBool(s) then
+        nat := NaturalHomomorphismByPcp( CR.super );
+        act := List( aff, x -> x{[s..l+1]}{[s..l+1]} );
+        stb := OrbitIntegralAction( ImagesSource(nat), act,
+                                   e{[s..l+1]}, f{[s..l+1]} );
+        if IsBool(stb) then return false; fi;
+        D := PreImagesSetNC( nat, stb.stab );
+        t := PreImagesRepresentativeNC( nat, stb.prei );
+        if s = 1 then return rec( stab := D, prei := t ); fi;
+
+        # Pull a complement representing the target back by t. This avoids
+        # inverting integer matrices that are invertible only modulo torsion.
+        K := ComplementByH1Element( CR, cc, target );
+        d := VectorByComplement( CR, K^(t^-1) );
+        f := cc.CocToFactor( cc, d - cc.sol );
+        Add( f, 1 );
+    fi;
+
+    if IndexNC(C,D) > 1 then
+        act := Pcp( D, CR.group );
+        newCR := ShallowCopy(CR);
+        newCR.super := act;
+        Unbind(newCR.smats);
+        AddOperationCR(newCR);
+        aff := AffineActionOnH1( newCR, cc );
+    else
+        act := CR.super;
+    fi;
+
+    if IsBool(cc.fld) then
+        oper := function( pt, aff )
+            local im, i;
+            im := pt * aff;
+            for i in [1..l] do
+                if cc.factor.rels[i] > 0 then
+                    im[i] := im[i] mod cc.factor.rels[i];
+                fi;
+            od;
+            return im;
+        end;
+    else
+        e := e * One(cc.fld);
+        f := f * One(cc.fld);
+        oper := OnRight;
+    fi;
+
+    stb := PcpOrbitStabilizer( e, act, aff, oper );
+    j := Position( stb.orbit, f );
+    if IsBool(j) then return false; fi;
+    u := TransversalElement( j, stb, One(C) );
+    return rec( stab := SubgroupByIgsAndIgs( C, stb.stab, Igs(CR.group) ),
+                prei := u * t );
+end );
+
+#############################################################################
+##
+#F ConjugacyOfComplement( C, H, K, N, I )
+##
+## HN = KN and H cap N = K cap N = I. Return a transporter from H to K
+## and the normalizer of K in C, or false if there is no transporter.
+##
+BindGlobal( "ConjugacyOfComplement", function( C, H, K, N, I )
+    local t, pcps, pcp, M, L, CR, cc, c, e, f, os, g, d;
+
+    t := One(C);
+    if IndexNC(H,I) = 1 or IndexNC(N,I) = 1 then
+        return rec( norm := C, prei := t );
+    fi;
+    Info( InfoPcpGrp, 2, "  conjugate complements" );
+
+    # N/I can have torsion even when N is free abelian.
+    pcps := PcpsOfAbelianFactor( N, I );
+    for pcp in pcps do
+        M := SubgroupByIgs( C, NumeratorOfPcp(pcp) );
+        L := SubgroupByIgsAndIgs( C, Igs(H), Igs(M) );
+        CR := rec( group  := L,
+                   super  := Pcp( C, L ),
+                   factor := Pcp( L, M ),
+                   normal := pcp );
+        AddFieldCR( CR );
+        AddRelatorsCR( CR );
+        AddOperationCR( CR );
+        AddInversesCR( CR );
+
+        cc := OneCohomologyEX( CR );
+        if cc = fail then Error("no complement\n"); fi;
+        c := VectorByComplement( CR, K );
+        d := VectorByComplement( CR, H );
+        if not IsBool(cc.fld) then
+            c := c * One(cc.fld);
+            d := d * One(cc.fld);
+        fi;
+
+        # First transport the complement classes modulo coboundaries.
+        if Length(cc.factor.rels) > 0 then
+            Info( InfoPcpGrp, 2, "  H1 is of type ", cc.factor.rels );
+            e := cc.CocToFactor( cc, d - cc.sol );
+            f := cc.CocToFactor( cc, c - cc.sol );
+            os := ConjugacyOfCocycle( CR, cc, C, e, f );
+            if os = false then return false; fi;
+            g := os.prei;
+            H := H^g;
+            t := t * g;
+            C := os.stab^g;
+        fi;
+
+        # Lift the class transporter to a transporter of the complements.
+        if Length(cc.gcb) > 0 then
+            d := VectorByComplement( CR, H );
+            if not IsBool(cc.fld) then d := d * One(cc.fld); fi;
+            d := cc.CocToCBElement( cc, d - c ) * cc.trf;
+            g := MappedVector( d, CR.normal );
+            H := H^g;
+            t := t * g;
+        fi;
+        C := LiftBlockToPointNormalizer( CR, cc, C, K, L, c );
+    od;
+    return rec( norm := C, prei := t );
+end );
+
+#############################################################################
+##
 #F ConjugacySubgroupsBySeries( G, U, V, pcps )
 ##
+## Return an element k of G with U^k = V, or false if none exists.
+## As in Section 8.6 of Eick's Algorithms for polycyclic groups, descend
+## the series by transporting intersections and then complement classes.
+##
 BindGlobal( "ConjugacySubgroupsBySeries", function( G, U, V, pcps )
-    Error("not yet installed");
+    local C, k, pcp, N, M, hom, H, K, I, J, D, os, t;
+
+    if U = V then return One(G); fi;
+    if Size(U) <> Size(V) then return false; fi;
+
+    C := G;
+    k := One(G);
+    for pcp in pcps do
+        Info( InfoPcpGrp, 1, "start subgroup conjugacy layer" );
+        N := SubgroupByIgs( G, NumeratorOfPcp(pcp) );
+        M := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
+        hom := NaturalHomomorphismByNormalSubgroupNC( G, M );
+        N := ImagesSet( hom, N );
+        D := Image( hom, C );
+        H := ImagesSet( hom, U^k );
+        K := ImagesSet( hom, V );
+
+        # C normalizes the common image of U^k and V above this layer.
+        I := NormalIntersection( N, H );
+        J := NormalIntersection( N, K );
+        os := ConjugacyOfIntersection( D, N, I, J );
+        if os = false then return false; fi;
+        t := os.prei;
+        H := H^t;
+        D := os.stab^t;
+        k := k * PreImagesRepresentativeNC( hom, t );
+
+        os := ConjugacyOfComplement( D, H, K, N, J );
+        if os = false then return false; fi;
+        k := k * PreImagesRepresentativeNC( hom, os.prei );
+        C := PreImagesSetNC( hom, os.norm );
+
+        if CHECK_NORM@ then
+            if ImagesSet(hom, U^k) <> K then
+                Error("conjugating element is incorrect");
+            fi;
+            if ForAny( Igs(os.norm), x -> K^x <> K ) then
+                Error("normalizer is not normalizing");
+            fi;
+        fi;
+    od;
+    return k;
 end );
 
 #############################################################################
 ##
 #F IsConjugate( G, U, V )
 ##
-InstallMethod( IsConjugate, "for a pcp group", IsCollsElmsElms,
+InstallMethod( IsConjugate, "for a pcp group", IsFamFamFam,
         [IsPcpGroup, IsPcpGroup, IsPcpGroup],
 function( G, U, V )
+    if not IsSubgroup(G,U) or not IsSubgroup(G,V) then
+        TryNextMethod();
+    fi;
     # compute
-    return ConjugacySubgroupsBySeries( G, U, V, PcpsOfEfaSeries(G) );
+    return ConjugacySubgroupsBySeries( G, U, V, PcpsOfEfaSeries(G) ) <> false;
 end );
 

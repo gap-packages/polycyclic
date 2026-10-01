@@ -598,7 +598,7 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
 
     # determine block orbit and stabilizer
     Info( InfoIntNorm, 1, "constructing block orbit-stabilizer");
-    os := ExtendOrbitStabilizer( U, K, linK, S, linS, orbf, OnRight );
+    os := ExtendOrbitStabilizer( U, K, linK, S, linS, orbf, OnLatticeBases );
 
     # get orbit element and preimage
     j := FindPosition( os.orbit, L, K, linK, orbf );
