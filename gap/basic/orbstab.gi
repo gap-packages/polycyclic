@@ -246,7 +246,7 @@ BindGlobal( "RandomCentralizerPcpGroup", function( G, g )
             stab := RandomPcpOrbitStabilizer( h, stab, stab, OnPoints ).stab;
         od;
     else
-        Error("g must be a subgroup or an element of G \n");
+        Error("g must be a subgroup or an element of G");
     fi;
     return SubgroupNC( G, stab );
 end );
