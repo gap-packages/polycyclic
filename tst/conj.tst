@@ -74,6 +74,34 @@ true
 gap> IsConjugate(H, U, V);
 true
 
+# Trivial group
+gap> T := TrivialSubgroup(DihedralPcpGroup(0));;
+gap> RepresentativeAction(T, T, T);
+id
+
+# Lattices in a free abelian layer swapped by the action; used to fail in
+# ConjugacyIntegralAction because of unnormalised orbit points
+gap> coll := FromTheLeftCollector(3);;
+gap> SetConjugateNC(coll, 2, 1, [3, 1]);;
+gap> SetConjugateNC(coll, 3, 1, [2, 1]);;
+gap> UpdatePolycyclicCollector(coll);;
+gap> G := PcpGroupByCollectorNC(coll);;
+gap> ConjugacyIntegralAction(Subgroup(G, [G.1]), [[[0,1],[1,0]]],
+> [[2,0],[0,1]], [[1,0],[0,2]]).prei;
+g1
+gap> U := Subgroup(G, [G.2^2, G.3]);;
+gap> V := Subgroup(G, [G.2, G.3^2]);;
+gap> RepresentativeAction(G, U, V);
+g1
+gap> RepresentativeAction(Subgroup(G, [G.1]), U, V);
+g1
+gap> RepresentativeAction(Subgroup(G, [G.1^2]), U, V);
+fail
+gap> RepresentativeAction(G, U, Subgroup(G, [G.2*G.3, G.3^2]));
+fail
+gap> RepresentativeAction(G, Subgroup(G, [G.2^6, G.3^3]), Subgroup(G, [G.2^3, G.3^6]));
+g1
+
 # The stabilizer becomes trivial within the module series of a layer
 gap> P := BurdeGrunewaldPcpGroup(1,2);;
 gap> pcp := Pcp(P);;

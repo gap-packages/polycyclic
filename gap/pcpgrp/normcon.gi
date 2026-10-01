@@ -555,7 +555,7 @@ end );
 ##  H^t = K, or false. contained indicates that HN is a subgroup of C.
 ##
 BindGlobal( "ConjugacyOfComplements", function( C, H, K, N, I, contained )
-    local pcps, pcp, k, M, L, CR, cc, c, d, e, f, os;
+    local pcps, pcp, k, M, L, CR, cc, c, d, e, f, os, m;
 
     # catch the trivial cases
     if IndexNC(H,I) = 1 or IndexNC(N,I) = 1 then
@@ -610,13 +610,24 @@ BindGlobal( "ConjugacyOfComplements", function( C, H, K, N, I, contained )
             fi;
         fi;
 
-        # conjugate within the class
-        os := ConjugacyInCohomologyClass( CR, cc, C, H, K, c, d );
-        if IsBool(os) then return false; fi;
-        C := os.stab;
-        if not IsOne( os.prei ) then
-            H := H^os.prei;
-            k := k * os.prei;
+        # conjugate within the class; if C contains the layer, the
+        # coboundary gives the conjugating element directly
+        if contained then
+            if Length( cc.gcb ) > 0 then
+                m := cc.CocToCBElement( cc, c - d ) * cc.trf;
+                m := MappedVector( m, CR.normal );
+                H := H^m;
+                k := k * m;
+            fi;
+            C := LiftBlockToPointNormalizer( CR, cc, C, K, L, d );
+        else
+            os := ConjugacyInCohomologyClass( CR, cc, C, H, K, c, d );
+            if IsBool(os) then return false; fi;
+            C := os.stab;
+            if not IsOne( os.prei ) then
+                H := H^os.prei;
+                k := k * os.prei;
+            fi;
         fi;
     od;
     return rec( stab := C, prei := k );
@@ -631,6 +642,12 @@ end );
 ##
 BindGlobal( "ConjugacySubgroupsBySeries", function( G, U, V, efa )
     local P, contained, k, C, i, N, M, hom, homC, H, K, I, J, os, t;
+
+    # cheap checks
+    if U = V then return One(G); fi;
+    if Size(U) <> Size(V) or HirschLength(U) <> HirschLength(V) then
+        return false;
+    fi;
 
     # the top layer is abelian, so conjugacy means equality there
     P := efa[1];
