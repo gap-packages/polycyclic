@@ -3,12 +3,15 @@ This file describes changes in the GAP package 'polycyclic'.
 NEXT (YYYY-MM-DD)
   - Fix bugs, where wrong results could be returned or errors could be thrown,
     in the following functions:
+    - `AddToIgs` (and variants)
     - `ConjugacyElementsBySeries`
     - `ComplementClassesCR`
     - `OrbitIntegralAction`
     - `NormalizerPcpGroup`
+    - `NormalIntersection`
   - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
     group
+  - Optimise `NormalIntersection`
   - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
     and `Image` dispatchers to improve speed and memory usage
   - Various janitorial changes
