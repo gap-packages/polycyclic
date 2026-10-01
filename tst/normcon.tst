@@ -49,10 +49,38 @@ false
 gap> IsConjugate(N, U, V);
 false
 
-# The general GAP method handles subgroups outside the conjugating group.
-gap> IsConjugate(Subgroup(G, [G.1]), U, V);
+# Conjugators are restricted to C even when C contains neither input.
+gap> C := Subgroup(G, [G.1]);;
+gap> not IsSubgroup(C, U) and not IsSubgroup(C, V);
+true
+gap> k := ConjugacySubgroupsBySeries(C, U, V, pcps);;
+gap> k <> false and k in C and U^k = V;
+true
+gap> k := ConjugacySubgroupsBySeries(C, U, V, PcpsOfEfaSeries(C));;
+gap> k <> false and k in C and U^k = V;
+true
+gap> k := RepresentativeAction(C, U, V);;
+gap> k <> fail and k in C and U^k = V;
+true
+gap> IsConjugate(C, U, V);
 true
 gap> IsConjugate(TrivialSubgroup(G), U, V);
+false
+gap> ConjugacySubgroupsBySeries(TrivialSubgroup(G), U, V, pcps);
+false
+gap> RepresentativeAction(TrivialSubgroup(G), U, V);
+fail
+gap> ConjugacySubgroupsBySeries(C, U, U, pcps) = One(C);
+true
+
+# C containing just U cannot contain a transporter to a subgroup outside C.
+gap> ConjugacySubgroupsBySeries(U, U, V, pcps);
+false
+gap> RepresentativeAction(U, U, V);
+fail
+gap> IsConjugate(U, U, V);
+false
+gap> ConjugacySubgroupsBySeries(U, V, U, pcps);
 false
 
 # Complement conjugacy requires lifting a coboundary to an element of the layer.
@@ -218,6 +246,92 @@ gap> k <> false and k in G and U^k = V;
 true
 gap> IsConjugate(G, U, V);
 true
+
+# Infinite conjugating groups can contain neither of two finite subgroups.
+gap> P := DihedralPcpGroup(0);;
+gap> C := Subgroup(P, [P.2^2]);;
+gap> U := Subgroup(P, [P.1]);;
+gap> V := U^(P.2^2);;
+gap> W := U^P.2;;
+gap> not IsSubgroup(C, U) and not IsSubgroup(C, V);
+true
+gap> pcps := PcpsOfEfaSeries(P);;
+gap> k := ConjugacySubgroupsBySeries(C, U, V, pcps);;
+gap> k <> false and k in C and U^k = V;
+true
+gap> k := RepresentativeAction(C, U, V);;
+gap> k <> fail and k in C and U^k = V;
+true
+gap> IsConjugate(C, U, V);
+true
+gap> U^P.2 = W;
+true
+gap> ConjugacySubgroupsBySeries(C, U, W, pcps);
+false
+gap> RepresentativeAction(C, U, W);
+fail
+gap> IsConjugate(C, U, W);
+false
+gap> ConjugacySubgroupsBySeries(U, U, W, pcps);
+false
+gap> RepresentativeAction(U, U, W);
+fail
+gap> IsConjugate(U, U, W);
+false
+
+# Integral intersection transport also permits subgroups outside C.
+gap> coll := FromTheLeftCollector(3);;
+gap> SetConjugateNC(coll, 2, 1, [3, 1]);;
+gap> SetConjugateNC(coll, 3, 1, [2, 1]);;
+gap> UpdatePolycyclicCollector(coll);;
+gap> P := PcpGroupByCollectorNC(coll);;
+gap> C := Subgroup(P, [P.1]);;
+gap> U := Subgroup(P, [P.2^2, P.3]);;
+gap> V := U^P.1;;
+gap> pcps := PcpsOfEfaSeries(P);;
+gap> k := ConjugacySubgroupsBySeries(C, U, V, pcps);;
+gap> k <> false and k in C and U^k = V;
+true
+gap> k := RepresentativeAction(C, U, V);;
+gap> k <> fail and k in C and U^k = V;
+true
+gap> IsConjugate(C, U, V);
+true
+gap> D := Subgroup(P, [P.1^2]);;
+gap> ConjugacySubgroupsBySeries(D, U, V, pcps);
+false
+gap> RepresentativeAction(D, U, V);
+fail
+gap> IsConjugate(D, U, V);
+false
+
+# Quotient lifts must stay in the acting subgroup. In the integral Heisenberg
+# group, P.1^2 transports U to V but does not belong to C.
+gap> coll := FromTheLeftCollector(3);;
+gap> SetConjugateNC(coll, 2, 1, [2, 1, 3, 1]);;
+gap> UpdatePolycyclicCollector(coll);;
+gap> P := PcpGroupByCollectorNC(coll);;
+gap> C := Subgroup(P, [P.1^2*P.3^3]);;
+gap> U := Subgroup(P, [P.2]);;
+gap> V := U^(P.1^2*P.3^3);;
+gap> W := U^P.1;;
+gap> not (P.1^2 in C) and U^(P.1^2) = V;
+true
+gap> pcps := PcpsOfEfaSeries(P);;
+gap> k := ConjugacySubgroupsBySeries(C, U, V, pcps);;
+gap> k <> false and k in C and U^k = V;
+true
+gap> k := RepresentativeAction(C, U, V);;
+gap> k <> fail and k in C and U^k = V;
+true
+gap> IsConjugate(C, U, V);
+true
+gap> ConjugacySubgroupsBySeries(C, U, W, pcps);
+false
+gap> RepresentativeAction(C, U, W);
+fail
+gap> IsConjugate(C, U, W);
+false
 
 #
 gap> STOP_TEST("normcon.tst", 10000000);
