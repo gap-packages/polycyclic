@@ -8,9 +8,10 @@ NEXT (YYYY-MM-DD)
     - `ConjugacyElementsBySeries`
     - `ConjugacyIntegralAction`
     - `NormalIntersection`
-    - `NormalizerPcpGroup`
     - `NormalizerIntegralAction`
+    - `NormalizerPcpGroup`
     - `OrbitIntegralAction`
+  - Implement `Intersection` for arbitrary subgroups of a pcp-group
   - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
     group
   - Optimise `NormalIntersection`

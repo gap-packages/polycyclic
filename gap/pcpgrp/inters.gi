@@ -270,7 +270,105 @@ end );
 
 #############################################################################
 ##
-#M Intersection( N, U )
+#F IntersectionPcpGroups( U, H )
+##
+## Based on Section 8.4 of "Algorithms for Polycyclic Groups" by B. Eick.
+##
+BindGlobal( "IntersectionPcpGroups", function( U, H )
+    local G, ser, A, p, UA_A, HA_A, UA_HA_A, gensU, imgsU, iU, U_HA, homH, K,
+          A_H, q, Q, gensH, imgsH, T, delta, r, F, rq, basis, lifts, pcp, mats,
+          e, act, oper, stab;
+
+    # Create parent group and abelian normal subgroup
+    G := ClosureGroup( U, H );
+    ser := EfaSeries( G );
+    A := ser[ Length( ser ) - 1 ];
+
+    # Calculate UA/A, HA/A, and their intersection (by induction)
+    p := NaturalHomomorphismByNormalSubgroupNC( G, A );
+    UA_A := ImagesSet( p, U );
+    HA_A := ImagesSet( p, H );
+    UA_HA_A := Intersection( UA_A, HA_A );
+
+    # Calculate U ∩ HA as preimage of (UA ∩ HA)/A
+    gensU := Igs( U );
+    imgsU := List( gensU, x -> ImagesRepresentative( p, x ) );
+    iU := GroupHomomorphismByImagesNC( U, UA_A, gensU, imgsU );
+    SetKernelOfMultiplicativeGeneralMapping(
+        iU, NormalIntersection( A, U )
+    );
+    U_HA := PreImagesSetNC( iU, UA_HA_A );
+    # TODO: verify we hit this early exit?
+    if IsTrivial( U_HA ) then
+        return U_HA;
+    fi;
+
+    A_H := NormalIntersection( A, H );
+    # TODO: verify we hit this early exit?
+    if A_H = A then
+        return U_HA;
+    fi;
+    q := NaturalHomomorphismByNormalSubgroupNC( A, A_H );
+    Q := ImagesSource( q );
+
+    # Create derivation
+    gensH := Igs( H );
+    imgsH := List( gensH, x -> ImagesRepresentative( p, x ) );
+    homH := GroupHomomorphismByImagesNC( H, HA_A, gensH, imgsH );
+    delta := function( x )
+        local h;
+        h := PreImagesRepresentativeNC( homH, ImagesRepresentative( p, x ) );
+        return ImagesRepresentative( q, h ^ -1 * x );
+    end;
+
+    # Work inside A/(A ∩ H) (= Q)
+    T := TorsionSubgroup( Q );
+    K := U_HA;
+    if not IsFinite( Q ) then
+        r := NaturalHomomorphismByNormalSubgroupNC( Q, T );
+        F := ImagesSource(r);
+        rq := q * r;
+        basis := IndependentGeneratorsOfAbelianGroup( F );
+        lifts := List( basis, x -> PreImagesRepresentativeNC( rq, x ) );
+        pcp := Pcp( K );
+        # Create matrices corresponding to affine action
+        mats := List( pcp, g -> Concatenation(
+            List( lifts, a -> Concatenation(
+                IndependentGeneratorExponents(
+                    F, ImagesRepresentative( rq, a^g )
+                ),
+                [0]
+            ) ),
+            [ Concatenation( IndependentGeneratorExponents(
+                F, ImagesRepresentative( r, delta( g ) )
+            ), [1] ) ]
+        ) );
+        # Calculate stabiliser of affine action, replace K
+        e := Concatenation(
+            ListWithIdenticalEntries( Length( basis ), 0 ),
+            [1]
+        );
+        K := StabilizerIntegralAction( K, mats, e );
+    fi;
+
+    if IsTrivial( T ) or IsTrivial( K ) then
+        return K;
+    fi;
+
+    pcp := Pcp( K );
+    act := List( pcp, g -> [ g, delta( g ) ] );
+    oper := function( pnt, g )
+        return ImagesRepresentative( q,
+            PreImagesRepresentativeNC( q, pnt ) ^ g[1]
+        ) * g[2];
+    end;
+    stab := PcpOrbitStabilizer( One( Q ), pcp, act, oper );
+    return SubgroupByIgs( K, stab.stab );
+end );
+
+#############################################################################
+##
+#M Intersection( U, V )
 ##
 InstallMethod( Intersection2, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
@@ -292,8 +390,5 @@ function( U, V )
         return NormalIntersection( V, U );
     fi;
 
-    if IsFinite( U ) or IsFinite( V ) then
-        TryNextMethod();
-    fi;
-    Error("sorry: intersection for non-normal groups not yet installed");
+    return IntersectionPcpGroups( U, V );
 end );
