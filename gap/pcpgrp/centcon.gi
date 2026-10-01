@@ -345,3 +345,19 @@ function( G, g, h )
    c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
    return (c <> false);
 end );
+
+#############################################################################
+##
+#F RepresentativeActionOp( G, g, h, act )
+##
+InstallOtherMethod( RepresentativeActionOp, "for OnPoints in a pcp group",
+        true, [IsPcpGroup, IsPcpElement, IsPcpElement, IsFunction],
+function( G, g, h, act )
+    local P, c;
+    if act <> OnPoints then TryNextMethod(); fi;
+
+    P := PcpGroupByCollectorNC( Collector( G ) );
+    c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
+    if c = false then return fail; fi;
+    return c;
+end );
