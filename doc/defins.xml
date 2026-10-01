@@ -7,20 +7,55 @@
 
 A <E>pcp-element</E> is an element of a group defined by a consistent
 pc-presentation given by a collector. Suppose that <M>g_1, \ldots, g_n</M>
-are the defining generators of the collector. Recall that each element
+are the defining generators of the collector with relative orders
+<M>r_1, \ldots, r_n</M>, and let <M>I</M> be the set of indices <M>i</M> with
+<M>r_i \neq 0</M>. Recall that each element
 <M>g</M> in this group can be written uniquely as a collected word <M>g_1^{e_1}
 \cdots g_n^{e_n}</M> with <M>e_i \in &ZZ;</M> and <M>0 \leq e_i &lt; r_i</M> for <M>i \in
 I</M>. The integer vector <M>[e_1, \ldots, e_n]</M> is called the <E>exponent
-vector</E> of <M>g</M>.  The following functions can be used to define
-pcp-elements via their exponent vector or via an arbitrary generator
-exponent word as introduced in Chapter <Ref Chap="Collectors"/>.
+vector</E> of <M>g</M>.
+<P/>
+
+More generally, any integer vector <M>[e_1, \ldots, e_n]</M> describes the
+element <M>g_1^{e_1} \cdots g_n^{e_n}</M>, and any generator exponent list
+<M>[i_1, e_1, \ldots, i_k, e_k]</M> as introduced in Chapter
+<Ref Chap="Collectors"/> describes the element
+<M>g_{i_1}^{e_1} \cdots g_{i_k}^{e_k}</M>. Such a vector or list is in
+<E>normal form</E> if it is the one obtained from a collected word:
+<List>
+<Item>
+  an integer vector <M>[e_1, \ldots, e_n]</M> is in normal form if it has
+  length <M>n</M> and <M>0 \leq e_i &lt; r_i</M> for all <M>i \in I</M>;
+</Item>
+<Item>
+  a generator exponent list <M>[i_1, e_1, \ldots, i_k, e_k]</M> is in normal
+  form if <M>i_1 &lt; \cdots &lt; i_k</M>, all <M>e_j</M> are non-zero, and
+  <M>0 &lt; e_j &lt; r_{i_j}</M> whenever <M>i_j \in I</M>.
+</Item>
+</List>
+Thus the exponent vector of an element, as returned by
+<Ref Oper="Exponents"/>, and its generator exponent list, as returned by
+<Ref Oper="GenExpList"/>, are always in normal form.
+<P/>
+
+The following functions define pcp-elements from integer vectors or
+generator exponent lists. The versions without <C>NC</C> accept arbitrary
+input and collect it. The <C>NC</C> versions do not collect:
+they require input in normal form and return an invalid element
+otherwise.
 
 <ManSection>
 <Func Name="PcpElementByExponentsNC" Arg="coll, exp"/>
 <Func Name="PcpElementByExponents" Arg="coll, exp"/>
 <Description>
-	returns the pcp-element with exponent vector <A>exp</A>. The exponent vector
-	is considered relative to the defining generators of the pc-presentation.
+	returns the pcp-element <M>g_1^{e_1} \cdots g_n^{e_n}</M> where
+	<A>exp</A> is the integer vector <M>[e_1, \ldots, e_n]</M> and
+	<M>g_1, \ldots, g_n</M> are the defining generators of the collector
+	<A>coll</A>.
+	<P/>
+
+	<C>PcpElementByExponents</C> accepts any integer vector of length <M>n</M>.
+	<C>PcpElementByExponentsNC</C> requires <A>exp</A> to be in normal form.
 </Description>
 </ManSection>
 
@@ -28,12 +63,36 @@ exponent word as introduced in Chapter <Ref Chap="Collectors"/>.
 <Func Name="PcpElementByGenExpListNC" Arg="coll, word"/>
 <Func Name="PcpElementByGenExpList" Arg="coll, word"/>
 <Description>
-	returns the pcp-element with generators exponent list <A>word</A>. This list
-	<A>word</A> consists of a sequence of generator numbers and their corresponding
-	exponents and is of the form <M>[i_1, e_{i_1}, i_2, e_{i_2}, \ldots, i_r,
-	e_{i_r}]</M>. The
-	generators exponent list is considered relative to the defining generators
-	of the pc-presentation.
+	returns the pcp-element <M>g_{i_1}^{e_1} \cdots g_{i_k}^{e_k}</M> where
+	<A>word</A> is the generator exponent list
+	<M>[i_1, e_1, \ldots, i_k, e_k]</M> and <M>g_1, \ldots, g_n</M> are the
+	defining generators of the collector <A>coll</A>.
+	<P/>
+
+	<C>PcpElementByGenExpList</C> accepts any generator exponent list.
+	<C>PcpElementByGenExpListNC</C> requires <A>word</A> to be in normal form.
+	<P/>
+
+	In the following example <M>g_1</M> has relative order 2 and <M>g_2</M>
+	has infinite order, so <M>[3, 5]</M> and <M>[2, 1, 1, 1]</M> are not in
+	normal form. The last line shows the invalid result of passing such input
+	to an <C>NC</C> function.
+<Example><![CDATA[
+gap> G := DihedralPcpGroup( 0 );;
+gap> coll := Collector( G );;
+gap> RelativeOrders( coll );
+[ 2, 0 ]
+gap> PcpElementByExponents( coll, [ 3, 5 ] );
+g1*g2^5
+gap> PcpElementByGenExpList( coll, [ 2, 1, 1, 1 ] );
+g1*g2^-1
+gap> PcpElementByExponentsNC( coll, [ 1, 5 ] );
+g1*g2^5
+gap> PcpElementByGenExpListNC( coll, [ 1, 1, 2, -1 ] );
+g1*g2^-1
+gap> PcpElementByGenExpListNC( coll, [ 2, 1, 1, 1 ] );
+g1*g2
+]]></Example>
 	<P/>
 
 	These functions return pcp-elements in the category <C>IsPcpElement</C>.
