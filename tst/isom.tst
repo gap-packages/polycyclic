@@ -89,5 +89,21 @@ gap> Size(img)=16 and IsDihedralGroup(img);
 true
 
 #
+# Negative power relations were previously deleted for some reason
+#
+gap> F := FreeGroup( "x", "y" );;
+gap> G := F / [ F.1 ^ -2 * F.2, Comm( F.2, F.1 ) ];;
+gap> IsCyclic( G );
+true
+gap> AbelianInvariants( G );
+[ 0 ]
+gap> iso := IsomorphismPcpGroupFromFpGroupWithPcPres( G );;
+gap> Q := Image( iso );;
+gap> IsCyclic( Q );
+true
+gap> AbelianInvariants( Q );
+[ 0 ]
+
+#
 gap> STOP_TEST( "homs.tst", 10000000);
 
