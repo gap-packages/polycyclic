@@ -694,7 +694,7 @@ true
 <Example><![CDATA[
 gap> gl23 := Range( IsomorphismPcpGroup( GL(2,3) ) );
 Pcp-group with orders [ 2, 3, 2, 2, 2 ]
-gap> SchurExtensionEpimorphism( gl23 );
+gap> epi := SchurExtensionEpimorphism( gl23 );
 [ g1, g2, g3, g4, g5, g6, g7, g8, g9, g10 ] -> [ g1, g2, g3, g4, g5,
 id, id, id, id, id ]
 gap> Kernel( last );
@@ -702,7 +702,7 @@ Pcp-group with orders [ 0, 0, 0, 0, 0 ]
 gap> AbelianInvariantsMultiplier( gl23 );
 [  ]
 gap> Intersection( Kernel(epi), DerivedSubgroup( Source(epi) ) );
-[  ]
+Pcp-group with orders [  ]
 ]]></Example>
 
 	There  is a  crossed pairing  from <A>G</A>  into <M>(G^{*})'</M>  which  can be
@@ -763,7 +763,7 @@ true
 gap> G := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]
 gap> DirectProduct( G, AbelianPcpGroup( 2 ) );
-Pcp-group with orders [ 0, 0, 2, 0 ]
+Pcp-group with orders [ 2, 0, 0, 0 ]
 gap> AbelianInvariantsMultiplier( last );
 [ 0, 2, 2, 2, 2 ]
 ]]></Example>
@@ -791,10 +791,10 @@ gap> G := ExamplesOfSomePcpGroups( 3 );
 Pcp-group with orders [ 0, 0 ]
 gap> G := DirectProduct( G,G );
 Pcp-group with orders [ 0, 0, 0, 0 ]
-gap> AbelianInvariantsMultiplier( G );
+gap> Collected( AbelianInvariantsMultiplier( G ) );
 [ [ 0, 1 ], [ 2, 3 ] ]
 gap> epi := NonAbelianExteriorSquareEpimorphism( G );
-[ g2^-2*g5, g4^-2*g10, g6, g7, g8, g9 ] -> [ g2^-2, g4^-2, id, id, id, id ]
+[ g2^2*g5^-1, g4^2*g10^-1, g6, g7, g8, g9 ] -> [ g2^2, g4^2, id, id, id, id ]
 gap> Kernel( epi );
 Pcp-group with orders [ 0, 2, 2, 2 ]
 gap> Collected( AbelianInvariants( last ) );
@@ -852,20 +852,15 @@ gap> G := DihedralPcpGroup(0);
 Pcp-group with orders [ 2, 0 ]
 gap> G := DirectProduct(G,G);
 Pcp-group with orders [ 2, 0, 2, 0 ]
-gap> alpha := NonAbelianTensorSquareEpimorphism( G );
-[ g9*g25^-1, g10*g26^-1, g11*g27, g12*g28, g13*g29, g14*g30, g15, g16,
-g17,
-  g18, g19, g20, g21, g22, g23, g24 ] -> [ g2^-2*g6, g4^-2*g12, g8,
-  g9, g10,
-  g11, id, id, id, id, id, id, id, id, id, id ]
+gap> alpha := NonAbelianTensorSquareEpimorphism( G );;
 gap> gamma := Range( alpha )!.epimorphism;
-[ g2^-2*g6, g4^-2*g12, g8, g9, g10, g11 ] -> [ g2^-2, g4^-2, id, id,
+[ g2^2*g6^-1, g4^2*g12^-1, g8, g9, g10, g11 ] -> [ g2^2, g4^2, id, id,
 id, id ]
 gap> JG := Kernel( alpha * gamma );
 Pcp-group with orders [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
 gap> Image( alpha, JG );
 Pcp-group with orders [ 2, 2, 2, 2 ]
-gap> AbelianInvariantsMultiplier( G );
+gap> Collected( AbelianInvariantsMultiplier( G ) );
 [ [ 2, 4 ] ]
 ]]></Example>
 </Description>
@@ -891,8 +886,8 @@ gap> DirectFactorsOfGroup( last );
 [ Group([ f1, f2, f3 ]), Group([ f4 ]) ]
 gap> List( last, Size );
 [ 8, 3 ]
-gap> IdGroup( last2[1] );
-[ 8, 4 ]       # the quaternion group of Order 8
+gap> IdGroup( last2[1] ); # the quaternion group of Order 8
+[ 8, 4 ]
 
 gap> G := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]

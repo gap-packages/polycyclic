@@ -3,7 +3,7 @@
 
 The &GAP; 4 package &Polycyclic; provides methods to compute the
 first and second cohomology group for a pcp-group <M>U</M> and a finite
-dimensional <M>&ZZ; U</M> or <M>FU</M> module <M>A</M> where <M>F</M> is a finite field. The
+dimensional <M>&ZZ; U</M> or <M>FU</M> module <M>A</M> where <M>F</M> is a finite prime field. The
 algorithm for determining the first cohomology group is outlined in
 <Cite Key="Eic00"/>.
 <P/>
@@ -301,13 +301,14 @@ cohomology record.
 </ManSection>
 
 <ManSection>
-<Func Name=" ComplementClassesEfaPcps" Arg="U, N, pcps"/>
+<Func Name=" ComplementClassesEfaPcps" Arg="V, U, pcps"/>
 <Description>
-	Let <M>N</M> be a normal subgroup of <M>U</M>. This function returns the complement
-	classes to <M>N</M> in <M>U</M>. The classes are computed by iteration over the
-	<M>U</M>-invariant efa series of <M>N</M> described by <A>pcps</A>. If at some stage in
+	Let <M>N</M> and <M>U</M> be normal subgroups of <M>V</M> with <M>N \leq U \leq V</M>. This
+	function returns the <M>V</M>-conjugacy classes of complements to <M>N</M> in <M>U</M>.
+	The classes are computed by iteration over the <M>V</M>-invariant efa series
+	of <M>N</M> described by <A>pcps</A>. If at some stage in
 	this iteration infinitely many complements are discovered, then the function
-	returns fail. (Even though there might be only finitely many conjugacy
+	raises an error. (Even though there might be only finitely many conjugacy
 	classes of complements to <M>N</M> in <M>U</M>.)
 </Description>
 </ManSection>

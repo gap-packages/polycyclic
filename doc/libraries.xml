@@ -21,19 +21,19 @@ There are the following generic pcp-groups available.
 <ManSection>
 <Func Name="DihedralPcpGroup" Arg="n"/>
 <Description>
-      constructs the dihedral  group of order <A>n</A>. If <A>n</A>  is an odd
-      integer, then 'fail' is returned.  If  <A>n</A> is zero or not an
-      integer, then the infinite dihedral group is returned.
+      constructs the dihedral group of order <A>n</A> for a positive even
+      integer <A>n</A>. If <A>n</A> is zero or infinity, then the infinite
+      dihedral group is returned.
 </Description>
 </ManSection>
 
 <ManSection>
 <Func Name="UnitriangularPcpGroup" Arg="n, c"/>
 <Description>
-      returns a pcp-group isomorphic  to the group of upper triangular
+      returns a pcp-group isomorphic  to the group of upper unitriangular matrices
       in <M>GL(n, R)</M> where <M>R = &ZZ;</M> if <M>c = 0</M> and <M>R = \mathbb{F}_p</M> if <M>c = p</M>.
       The natural unitriangular matrix representation of the returned
-      pcp-group <M>G</M> can be obtained as <M>G!.isomorphism</M>.
+      pcp-group <M>G</M> is given by the generator matrices in <M>G!.mats</M>.
 </Description>
 </ManSection>
 
