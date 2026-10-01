@@ -383,6 +383,9 @@ BindGlobal( "FromTheLeftCollectorByRelations", function( gens, rels )
         if IsBound( rels.powersp[i] ) then
            SetPower( ftl, i, rels.powersp[i] );
            Unbind( rels.powersp[i] );
+        elif IsBound( rels.powersn[i] ) then
+           SetPower( ftl, i, rels.powersn[i]^-1 );
+           Unbind( rels.powersn[i] );
         fi;
     od;
 
