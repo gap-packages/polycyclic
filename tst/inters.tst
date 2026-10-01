@@ -74,7 +74,7 @@ Pcp-group with orders [ 5, 5 ]
 gap> ImagesSet(iso,I) = J;
 true
 
-# infinite group example where the intersection algorithm isn't implemented (non-normalizing case)
+# infinite group example with non-normalizing subgroups
 gap> G := ExamplesOfSomePcpGroups(8);;
 gap> g := GeneratorsOfGroup(G);;
 gap> H1:=Subgroup(G,[g[2], g[3]*g[4]]);
@@ -82,9 +82,13 @@ Pcp-group with orders [ 0, 0, 0, 0 ]
 gap> H2:=Subgroup(G,[g[1], g[4]*g[5]]);
 Pcp-group with orders [ 0, 0 ]
 gap> Intersection(H1,H2);
-Error, sorry: intersection for non-normal groups not yet installed
+Pcp-group with orders [ 0 ]
+gap> Intersection(H1,H2) = Subgroup(G, [(g[4]*g[5])^2]);
+true
+gap> Intersection(H2,H1) = Intersection(H1,H2);
+true
 
-# finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite group example with non-normalizing subgroups
 gap> G := PcGroupCode(45446527802282484537974096,2^2*3^4*5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
@@ -104,7 +108,7 @@ Group([ f3^2*f4*f5^2, f4^2*f5, f5^2 ])
 gap> Image(iso,I);
 Pcp-group with orders [ 3, 3, 3 ]
 
-# finite group example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite group example with non-normalizing subgroups
 gap> G := PcGroupCode(15825634281851454495,2^2*3^5);;
 gap> iso := IsomorphismPcpGroup(G);;
 gap> H := Image(iso);;
@@ -124,7 +128,7 @@ Group([ f6^2, f7^2 ])
 gap> Image(iso,I);
 Pcp-group with orders [ 3, 3 ]
 
-# finite - infinite combination example where the intersection isn't impl. when represented as a pcp-group (non-normalizing case)
+# finite - infinite combination with non-normalizing subgroups
 gap> G := DirectProduct(ExamplesOfSomePcpGroups(8), PcGroupToPcpGroup(PcGroupCode(2835879971,72)));;
 gap> g := GeneratorsOfGroup(G);;
 gap> H1 := Subgroup(G,[g[6]*g[9]^2]);

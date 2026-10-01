@@ -320,12 +320,12 @@ installed to compute the corresponding features in polycyclic groups.
 </ManSection>
 
 <ManSection>
-<Func Name="Intersection" Arg="U, N"/>
+<Func Name="Intersection" Arg="U, V"/>
 <Description>
-	A general method to compute intersections of subgroups of a pcp-group is
-	described in <Cite Key="Eic01b"/>, but it is not yet implemented here. However,
-	intersections of subgroups <M>U, N \leq G</M> can be computed if <M>N</M> is
-	normalising <M>U</M>. See <Cite Key="Sims94"/> for an outline of the algorithm.
+	Computes the intersection of two subgroups <M>U, V \leq G</M> of a
+	pcp-group, using the algorithm described in <Cite Key="Eic01b"/>. If
+	either subgroup normalises the other, we use a more efficient procedure,
+	see <Cite Key="Sims94"/> for an outline of this algorithm.
 </Description>
 </ManSection>
 
