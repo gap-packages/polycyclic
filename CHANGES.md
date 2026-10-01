@@ -7,6 +7,8 @@ NEXT (YYYY-MM-DD)
     - `ComplementClassesCR`
     - `OrbitIntegralAction`
     - `NormalizerPcpGroup`
+    - `NormalizerIntegralAction`
+    - `ConjugacyIntegralAction`
   - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
     group
   - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
