@@ -214,4 +214,32 @@ gap> Index(S, Subgroup(S, [u, v]));
 1
 
 #
+# Many generators, most of them redundant
+#
+gap> Reset(GlobalMersenneTwister, 1);;
+gap> G := UnitriangularPcpGroup(10, 5);;
+gap> gens := List([1..200], i -> Random(G));;
+gap> igs := AddToIgs([], gens);;
+gap> Cgs(igs) = Cgs(G);
+true
+gap> res := AddToIgsParallel([], gens, [], List(gens, g -> g^G.1));;
+gap> Cgs(res[1]) = Cgs(G);
+true
+gap> res[2] = List(res[1], g -> g^G.1);
+true
+gap> G := UnitriangularPcpGroup(5, 0);;
+gap> gens := List([1..50], i -> Random(G));;
+gap> igs := AddToIgs([], gens);;
+gap> Cgs(igs) = Cgs(G);
+true
+gap> CheckIgs(igs, gens);
+true
+gap> gens := [G.1^2*G.5, G.2^3*G.4^-1, G.3^2*G.1];;
+gap> igs := AddToIgs([], gens);;
+gap> CheckIgs(igs, gens);
+true
+gap> Index(G, SubgroupByIgs(G, igs));
+infinity
+
+#
 gap> STOP_TEST( "AddToIgs.tst", 1);
