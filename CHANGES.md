@@ -10,6 +10,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
+  - `FCCentre`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`

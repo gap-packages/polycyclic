@@ -66,4 +66,12 @@ gap> IsTrivial( Centralizer( G, G ) );
 true
 
 #
+# Fix a bug in FCCentre
+# <https://github.com/gap-packages/polycyclic/issues/171>
+#
+gap> G := DirectProduct( AbelianPcpGroup( [2] ), ExamplesOfSomePcpGroups( 2 ) );;
+gap> FCCentre( G ) = Subgroup( G, [G.1] );
+true
+
+#
 gap> STOP_TEST( "cent.tst", 10000000);
