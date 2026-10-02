@@ -17,6 +17,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `NormalizerPcpGroup`
   - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
+  - `PcpOrbitStabilizer`
   - `StabilizerIntegralAction`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group
 - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
