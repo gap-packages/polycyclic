@@ -15,6 +15,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`
+  - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
   - `StabilizerIntegralAction`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group

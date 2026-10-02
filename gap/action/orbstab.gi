@@ -348,6 +348,14 @@ BindGlobal( "OrbitCongruenceAction", function( G, mats, e, f, ser )
         d := Length( ser[i] ) - Length( ser[i+1] );
         Info( InfoIntStab, 2, "  consider layer ", i, " with dim ",d);
 
+        # S may have become trivial in the previous layer
+        if Length( Pcp(S) ) = 0 then
+            if f * InducedByPcp( Pcp(G), g, mats )^-1 = e then
+                return rec( stab := S, prei := g );
+            fi;
+            return false;
+        fi;
+
         # reset
         actS := InducedByPcp( Pcp(G), Pcp(S), mats );
         derS := List( actS, x -> e*x - e );

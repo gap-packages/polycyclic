@@ -561,7 +561,7 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
 
     # catch some trivial cases
     if U = W then
-        return rec( norm := NormalizerIntegralAction(G, linG, U),
+        return rec( stab := NormalizerIntegralAction(G, linG, U),
                     prei := One( G ) );
     fi;
     if Length(U)<>Length(W) or ForAll( linG, x -> x = x^0 ) then
@@ -608,7 +608,7 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
 
     # determine block orbit and stabilizer
     Info( InfoIntNorm, 1, "constructing block orbit-stabilizer");
-    os := ExtendOrbitStabilizer( U, K, linK, S, linS, orbf, OnRight );
+    os := ExtendOrbitStabilizer( U, K, linK, S, linS, orbf, OnLatticeBases );
 
     # get orbit element and preimage
     j := FindPosition( os.orbit, L, K, linK, orbf );
