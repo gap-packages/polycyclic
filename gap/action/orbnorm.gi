@@ -477,14 +477,13 @@ end );
 #F NormalizerIntegralAction( G, linG, U ) . . . . . . . . . . . . . . .N_G(U)
 ##
 BindGlobal( "NormalizerIntegralAction", function( G, linG, U )
-    local gensU, d, e, F, t, I, S, linS, K, linK, ser, T, orbf, N;
+    local d, e, F, t, I, S, linS, K, linK, ser, T, orbf, N;
 
     # catch a trivial case
     if ForAll( linG, x -> x = x^0 ) then return G; fi;
 
-    # do a check
-    gensU := LatticeBasis( U );
-    if gensU <> U then Error("function needs lattice basis as input"); fi;
+    # normalise the basis
+    U := LatticeBasis( U );
 
     # get generators and check for trivial case
     if Length( U ) = 0 then return G; fi;
@@ -554,10 +553,9 @@ end );
 BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     local F, t, I, J, os, j, g, L, S, linS, K, linK, ser, orbf, h, T;
 
-    # do a check
-    if U <> LatticeBasis(U) or W <> LatticeBasis(W) then
-        Error("function needs lattice bases as input");
-    fi;
+    # normalise the bases
+    U := LatticeBasis( U );
+    W := LatticeBasis( W );
 
     # catch some trivial cases
     if U = W then
