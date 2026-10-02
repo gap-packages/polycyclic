@@ -42,6 +42,9 @@ This file describes changes in the GAP package 'polycyclic'.
 - Optimise `NormalIntersection`
 - Speed up `AddToIgs` and `AddToIgsParallel`, in particular for many
   generators and for large groups
+- Avoid needlessly large powers when norming and sifting elements at a depth
+  of finite relative order; this also changes which power `NormedPcpElement`
+  returns
 - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
   and `Image` dispatchers to improve speed and memory usage
 - Implement a method for sorting pcp-subgroups, which prevents hangs when creating

@@ -28,10 +28,11 @@ end );
 ## Apply GcdPcp( g, h ), and apply the same operations on i and j.
 ##
 BindGlobal( "GcdPcpPara", function(g, h, i, j)
-    local x, y, a, b, q, r, t, z, w, u;
+    local x, y, a, b, q, r, t, z, w, u, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -52,6 +53,8 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
+        q := SmallestResidue(q, rel);
 
         t := x * y ^ -q;
         x := y;
@@ -61,7 +64,6 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
         z := w;
         w := u;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -230,7 +232,7 @@ function( pcs, gens, ppcs, pgens )
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcpPara would leave h and hh unchanged
-                    q  := a/b;
+                    q  := SmallestResidue(a/b, rels[d]);
                     g  := g  * IgsNegativePower(ind,  pows,  d, q);
                     gg := gg * IgsNegativePower(indd, ppows, d, q);
                 else
