@@ -18,6 +18,13 @@ InstallGlobalFunction( AbelianPcpGroup, function( arg )
     elif Length(arg) = 2 then
       n:= arg[1];
       r:= arg[2];
+    fi;
+
+    if not IsDenseList(r) then
+      Error( "<rels> must be a dense list" );
+    fi;
+
+    if Length(arg) = 2 then
       if n < Length(r) then
         r:= r{[1..n]};
       elif Length(r) < n then
