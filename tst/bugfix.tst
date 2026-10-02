@@ -808,6 +808,21 @@ gap> Normalizer(G, H);
 Pcp-group with orders [ 0, 0, 0, 0 ]
 
 #
+# Fix a bug in OrbitIntegralAction and StabilizerIntegralAction
+# We don't support division by zero
+#
+gap> G := AbelianPcpGroup( 1 );;
+gap> mats := [[[-1]]];;
+gap> StabilizerIntegralAction( G, mats, [0] ) = G;
+true
+gap> OrbitIntegralAction( G, mats, [0], [0] ) = rec( stab := G, prei := One(G) );
+true
+gap> OrbitIntegralAction( G, mats, [0], [1] );
+false
+gap> OrbitIntegralAction( G, mats, [1], [0] );
+false
+
+#
 # Fix a bug in MatrixRepresentation
 # <https://github.com/gap-packages/polycyclic/issues/176>
 #
