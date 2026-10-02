@@ -26,18 +26,18 @@ DeclareProperty( "IsWeightedCollector", IsPolycyclicCollector );
 
 #############################################################################
 ##
-#P  The following property is set if a collector presents a nilpotent group
+#F  The following filter is set if a collector presents a nilpotent group
 ##  and has Hall polynomials (computed by Deep Thought)
 ##
-DeclareProperty( "IsPolynomialCollector", IsFromTheLeftCollectorRep );
+DeclareFilter( "IsPolynomialCollector" );
 
 #############################################################################
 ##
-#P  The following property is used to dispatch between a GAP level collector
-##  and the kernel collector.  By default the property is false.  Its main
+#F  The following filter is used to dispatch between a GAP level collector
+##  and the kernel collector.  By default it is not set.  Its main
 ##  use is for debugging purposes.
 ##
-DeclareProperty( "UseLibraryCollector", IsFromTheLeftCollectorRep  );
+DeclareFilter( "UseLibraryCollector" );
 
 #############################################################################
 ##
