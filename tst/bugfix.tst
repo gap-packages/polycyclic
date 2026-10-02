@@ -808,4 +808,15 @@ gap> Normalizer(G, H);
 Pcp-group with orders [ 0, 0, 0, 0 ]
 
 #
+# Check power relations even in a torsion-free nilpotent group.
+gap> coll := FromTheLeftCollector( 2 );;
+gap> SetRelativeOrder( coll, 1, 2 );
+gap> SetPower( coll, 1, [2,1] );
+gap> G := PcpGroupByCollector( coll );;
+gap> M := [[1,1],[0,1]];;
+gap> L := [M^0,M];;
+gap> IsMatrixRepresentation( G, L );
+false
+
+#
 gap> STOP_TEST( "bugfix.tst" );
