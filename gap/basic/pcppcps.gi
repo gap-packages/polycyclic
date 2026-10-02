@@ -184,13 +184,15 @@ IGSValFun := IGSValFun4;
 ##
 ## For two non-trivial PcpElements g and h with the same depth, apply the
 ## Euclidean algorithm to the leading exponents, and do the same operations
-## on the elements themselves.
+## on the elements themselves. At a depth of finite relative order the
+## quotients are taken modulo that order.
 ##
 BindGlobal( "GcdPcp", function(g, h)
-    local x, y, a, b, q, r, t;
+    local x, y, a, b, q, r, t, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -206,12 +208,12 @@ BindGlobal( "GcdPcp", function(g, h)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
 
-        t := x * y ^ -q;
+        t := x * y ^ -SmallestResidue(q, rel);
         x := y;
         y := t;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -227,6 +229,7 @@ end );
 ##
 BindGlobal( "IgsNegativePower", function( ind, pows, d, q )
     local p;
+    if q < 0 then return ind[d]^-q; fi;
     p := pows[d];
     if not IsBound(p[1]) then p[1] := ind[d]^-1; fi;
     # caching large q would make p a large sparse list
@@ -248,7 +251,7 @@ end );
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
     local coll, rels, n, inf, bnd, c, ind, pows, queue, qpos, todo, val,
-          added, g, d, f, h, a, b, pair, oldc, chg, i, j, k, t;
+          added, g, d, f, h, a, b, q, pair, oldc, chg, i, j, k, t;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -311,7 +314,8 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcp would leave h unchanged
-                    g := g * IgsNegativePower(ind, pows, d, a/b);
+                    q := SmallestResidue(a/b, rels[d]);
+                    g := g * IgsNegativePower(ind, pows, d, q);
                 else
                     pair := GcdPcp(g, h);
                     h := pair[1];
