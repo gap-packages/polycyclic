@@ -211,7 +211,7 @@ BindGlobal( "FCCentrePcpGroup", function( G )
 
         # get pcp
         pcp := Pcp( C );
-        if Length( pcp ) = 0 then return C; fi;
+        if Length( pcp ) = 0 then return N; fi;
 
         # compute action by g on pcp
         mat := LinearActionOnPcp( [g], pcp )[1];
