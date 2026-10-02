@@ -5,15 +5,27 @@
 
 InstallGlobalFunction( "IsMatrixRepresentation",
 function( G, matrices )
-    local   coll,  conjugates,  d,  I,  i,  j,  conj,  rhs,  k;
+    local   coll,  conjugates,  powers,  d,  I,  i,  j,  conj,  rhs,  k;
 
     coll := Collector( G );
     conjugates := coll![PC_CONJUGATES];
+    powers := coll![PC_POWERS];
 
     d := NumberOfGenerators( coll );
 
     I := matrices[1]^0;
     for i in [1..d] do
+        if IsBound( coll![PC_EXPONENTS][i] ) then
+            rhs := I;
+            if IsBound( powers[i] ) then
+                for k in [1,3..Length(powers[i])-1] do
+                    rhs := rhs * matrices[ powers[i][k] ] ^ powers[i][k+1];
+                od;
+            fi;
+            if matrices[i]^coll![PC_EXPONENTS][i] <> rhs then
+                return false;
+            fi;
+        fi;
         for j in [i+1..d] do
             conj := matrices[j]^matrices[i];
             if IsBound( conjugates[j] ) and IsBound( conjugates[j][i] ) then
@@ -27,7 +39,7 @@ function( G, matrices )
                 rhs := matrices[j];
             fi;
             if conj <> rhs then
-                Error( "relation ", [j,i], " not satisfied" );
+                return false;
             fi;
         od;
     od;
