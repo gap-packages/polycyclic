@@ -830,6 +830,8 @@ gap> os.prei;
 g1^-1
 gap> Igs( os.stab );
 [  ]
+gap> OrbitIntegralAction( G, [ A ], [-1,1,1], [-6,3,1] );
+false
 
 #
 gap> STOP_TEST( "bugfix.tst" );
