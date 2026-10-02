@@ -511,11 +511,11 @@ end );
 BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     local p, S, actS, K, actK, T, stab, ser, orbf;
     
-    # reduce e
-    e := e / Gcd( e );
-
     # catch the trivial case
     if ForAll( mats, x -> e*x = e ) then return G; fi;
+
+    # reduce e
+    e := e / Gcd( e );
 
     # compute modulo 3 first
     S := G;
@@ -580,15 +580,17 @@ end );
 BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     local c, F, t, os, j, g, S, actS, K, actK, ser, orbf, h, T, l;
 
-    # reduce e and f
-    c := Gcd(e); e := e/c; f := f/c;
-    if not ForAll( f, IsInt ) or AbsInt(Gcd(f)) <> 1 then return false; fi;
-
     # catch some trivial cases
     if e = f then
         return rec( stab := StabilizerIntegralAction(G, mats, e),
                     prei := One( G ) );
     fi;
+
+    # reduce e and f
+    c := Gcd(e);
+    if c = 0 then return false; fi;
+    e := e/c; f := f/c;
+    if not ForAll( f, IsInt ) or AbsInt(Gcd(f)) <> 1 then return false; fi;
 
     # This is a temporary fix, see bugfix.tst
     # if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
