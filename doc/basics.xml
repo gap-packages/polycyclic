@@ -539,7 +539,7 @@ homomorphisms are supported, in particular the following:
 	returns a  new pcp-group isomorphic to  the first subgroup  <M>G</M> of the
 	given  series <A>ser</A>  such  that  its defining  pcp  refines the  given
 	series.  The  series  must  be  subnormal and  <M>H!.bijection</M>  is  the
-	isomorphism  <M>G \to  H</M>.  If the  parameter <A>flag</A> is present
+	isomorphism  <M>H \to G</M>.  If the  parameter <A>flag</A> is present
 	and equals the string <Q>snf</Q>, the  series  must have
 	abelian  factors.  The  pcp of  the  group returned  corresponds to  a
 	decomposition of each  abelian factor into a direct  product of cyclic
