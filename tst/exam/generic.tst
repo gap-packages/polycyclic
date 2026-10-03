@@ -1,3 +1,9 @@
+# Reject missing entries in the list of orders, also when truncating.
+gap> AbelianPcpGroup( [0,,3] );
+Error, <rels> must be a dense list
+gap> AbelianPcpGroup( 3, [1,,3,5] );
+Error, <rels> must be a dense list
+
 #
 # UnitriangularPcpGroup
 #
