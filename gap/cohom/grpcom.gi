@@ -147,6 +147,13 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
     local cc, elms, supr, mats, oper, os, cent, comp, e, d, K, gens, w, g,
           c, S;
 
+    # if C has no group, then we want the split extension
+    if not IsBound( C.group ) then
+        C.group  := ExtensionCR( C, false );
+        C.factor := Pcp( C.group, C.group!.module );
+        C.normal := Pcp( C.group!.module, "snf" );
+    fi;
+
     # first catch a trivial case
     if Length(C.normal) = 0 then
         return [rec( repr := GroupOfPcp( C.factor ),
