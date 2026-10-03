@@ -150,6 +150,7 @@ BindGlobal( "ConjugacyHomogeneousAction", function( G, linG, baseU, baseW )
        return rec( norm := NormalizerHomogeneousAction( G, linG, baseU ),
                    conj := One(G) );
     fi;
+    if ForAll( linG, x -> x = x^0 ) then return false; fi;
 
     # get field - we need the maximal order in this case!
     K := FieldByMatricesNC( linG );
