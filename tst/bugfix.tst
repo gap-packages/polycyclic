@@ -866,6 +866,34 @@ gap> IsMatrixRepresentation( G, [M,TransposedMat(M)] );
 false
 
 #
+# Fix a bug in PcpOrbitStabilizer
+# <https://github.com/gap-packages/polycyclic/issues/179>
+#
+gap> G := AbelianPcpGroup( [2] );;
+gap> o := PcpOrbitStabilizer( 1, Igs(G), [(1,2)], OnPoints );;
+gap> o.stab;
+[ ]
+
+#
+# Fix a bug in ConjugacyIntegralAction
+# <https://github.com/gap-packages/polycyclic/issues/183>
+#
+gap> G := AbelianPcpGroup( 1 );;
+gap> mats := [[[1,1],[0,1]]];;
+gap> ConjugacyIntegralAction( G, mats, [[1,0]], [[2,0]] );
+false
+
+#
+# Fix a bug in ComplementClasses
+# <https://github.com/gap-packages/polycyclic/issues/190>
+#
+gap> G := AbelianPcpGroup( 2 );;
+gap> N := Subgroup( G, [ G.2 ] );;
+gap> ComplementClasses( G, N );
+infinitely many complements to lift
+fail
+
+#
 # Fix a bug in NormalizerIntegralAction and ConjugacyIntegralAction
 # <https://github.com/gap-packages/polycyclic/issues/181>
 #

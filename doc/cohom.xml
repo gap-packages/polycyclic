@@ -308,7 +308,7 @@ cohomology record.
 	The classes are computed by iteration over the <M>V</M>-invariant efa series
 	of <M>N</M> described by <A>pcps</A>. If at some stage in
 	this iteration infinitely many complements are discovered, then the function
-	raises an error. (Even though there might be only finitely many conjugacy
+	returns fail. (Even though there might be only finitely many conjugacy
 	classes of complements to <M>N</M> in <M>U</M>.)
 </Description>
 </ManSection>

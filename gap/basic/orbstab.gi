@@ -66,7 +66,7 @@ BindGlobal( "PcpOrbitStabilizer", function( e, pcp, act, op )
 
     # check relative orders
     if IsList( pcp ) then
-        rels := List( pcp, x -> 0 );
+        rels := List( pcp, RelativeOrderPcp );
     else
         rels := RelativeOrdersOfPcp( pcp );
     fi;

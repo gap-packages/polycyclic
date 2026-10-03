@@ -133,8 +133,8 @@ end );
 #F PcpGroupByPcps( <pcps> ). . . . . . . . . . . . .  pcps is a list of pcp's
 ##
 ## This function returns a new pcp group G. Its defining igs corresponds to
-## the given series. G!.bijection contains a bijection from the old group
-## to the new one.
+## the given series. G!.bijection contains a bijection from the new group
+## to the old one.
 ##
 BindGlobal( "PcpGroupByPcps", function( pcps )
     local gens, rels, n, coll, i, j, h, e, w, G, H;
@@ -183,8 +183,8 @@ end );
 #F PcpGroupByEfaPcps( <pcps> ) . . . . . . . . . . .  pcps is a list of pcp's
 ##
 ## This function returns a new pcp group G. Its defining igs corresponds to
-## the given series. G!.bijection contains a bijection from the old group
-## to the new one.
+## the given series. G!.bijection contains a bijection from the new group
+## to the old one.
 ##
 BindGlobal( "PcpGroupByEfaPcps", function( pcps )
     local gens, rels, indx, n, coll, i, j, h, e, w, G, H, l;
