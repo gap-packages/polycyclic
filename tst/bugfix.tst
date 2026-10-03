@@ -823,6 +823,11 @@ gap> IsPolynomialCollector( coll );
 false
 gap> UseLibraryCollector( coll );
 false
+gap> AddHallPolynomials( coll );
+gap> IsPolynomialCollector( coll );
+true
+gap> IsConfluent( coll );
+true
 
 #
 gap> STOP_TEST( "bugfix.tst" );
