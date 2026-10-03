@@ -171,11 +171,12 @@ BindGlobal( "CollectPolycyclicGap", function( pcp, ev, w )
 
             # reduce exponent if necessary
             if IsBound( exp[g] ) and ev[g] >= exp[g] then
-                ev[g] := ev[g] - exp[g];
+                m     := QuoInt( ev[g], exp[g] );
+                ev[g] := ev[g] mod exp[g];
                 if IsBound( pow[g] ) then
                     stp := stp+1;
                     wst[stp]  := pow[g];
-                    west[stp] := 1;
+                    west[stp] := m;
                     sst[stp]  := 1;
                     est[stp] := wst[stp][ 2 ];
                 fi;
@@ -196,6 +197,49 @@ end );
 
 #############################################################################
 ##
+#F  NormalizedGenExpList( <pcp>, <w> )
+##
+##  CollectPolycyclic and CollectPolycyclicGap assume that every exponent in
+##  <w> is non-zero and, for a negative exponent, conjugate with the tables
+##  PC_CONJUGATESINVERSE and PC_INVERSECONJUGATESINVERSE, which
+##  UpdatePolycyclicCollector fills only for generators of infinite relative
+##  order.  Drop zero exponents and rewrite g^e with e < 0 for a generator g
+##  of relative order m as g^r (g^-m)^q where r = e mod m and q = (r-e)/m.
+##
+BindGlobal( "NormalizedGenExpList", function( pcp, w )
+    local   exp,  pos,  i,  e,  ipow,  v,  g,  m,  r,  q;
+
+    # first syllable that needs rewriting
+    exp := pcp![ PC_EXPONENTS ];
+    pos := fail;
+    for i in [ 2, 4 .. Length( w ) ] do
+        e := w[i];
+        if e <= 0 and ( e = 0 or IsBound( exp[ w[i-1] ] ) ) then
+            pos := i;
+            break;
+        fi;
+    od;
+    if pos = fail then return w; fi;
+
+    ipow := pcp![ PC_INVERSEPOWERS ];
+    v := w{ [ 1 .. pos-2 ] };
+    for i in [ pos, pos+2 .. Length( w ) ] do
+        g := w[i-1];  e := w[i];
+        if e > 0 or ( e < 0 and not IsBound( exp[g] ) ) then
+            Append( v, [ g, e ] );
+        elif e < 0 then
+            m := exp[g];  r := e mod m;
+            if r > 0 then Append( v, [ g, r ] ); fi;
+            if IsBound( ipow[g] ) then
+                for q in [ 1 .. (r-e)/m ] do Append( v, ipow[g] ); od;
+            fi;
+        fi;
+    od;
+    return v;
+end );
+
+#############################################################################
+##
 #M  CollectWordOrFail . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 ##
 InstallMethod( CollectWordOrFail,
@@ -212,6 +256,12 @@ InstallMethod( CollectWordOrFail,
           IsList, IsList ],
 function( pcp, a, b )
 
+    # a word with only positive exponents, or without zero exponents in a
+    # torsion-free group, needs no rewriting
+    if not IsPositionsList( b ) and
+       ( Length( pcp![ PC_EXPONENTS ] ) > 0 or 0 in b ) then
+        b := NormalizedGenExpList( pcp, b );
+    fi;
     if USE_LIBRARY_COLLECTOR then
         return CollectPolycyclicGap( pcp, a, b );
     else
@@ -226,4 +276,10 @@ InstallMethod( CollectWordOrFail,
         [ IsFromTheLeftCollectorRep and IsUpToDatePolycyclicCollector and
           UseLibraryCollector,
           IsList, IsList ],
-        CollectPolycyclicGap );
+function( pcp, a, b )
+    if not IsPositionsList( b ) and
+       ( Length( pcp![ PC_EXPONENTS ] ) > 0 or 0 in b ) then
+        b := NormalizedGenExpList( pcp, b );
+    fi;
+    return CollectPolycyclicGap( pcp, a, b );
+end );

@@ -915,4 +915,53 @@ gap> ConjugacyIntegralAction( G, mats, B, [ [ 1, 1 ], [ 0, 1 ] ] ) = rec( stab :
 true
 
 #
+# CollectWordOrFail on a from-the-left collector mishandled syllables with
+# exponent 0 and negative exponents on generators of finite relative order
+#
+gap> G := UnitriangularPcpGroup( 4, 2 );;
+gap> c := Collector( G );;
+gap> ev := [ 0, 0, 0, 0, 1, 0 ];;  CollectWordOrFail( c, ev, [ 1, 0 ] );;  ev;
+[ 0, 0, 0, 0, 1, 0 ]
+gap> ev := [ 0, 0, 0, 0, 1, 0 ];;  CollectWordOrFail( c, ev, [ 1, -1 ] );;  ev;
+[ 1, 0, 0, 0, 1, 1 ]
+gap> check := function( G, v, g, e )
+>     local c, ev;
+>     c := Collector( G );
+>     ev := ShallowCopy( v );
+>     CollectWordOrFail( c, ev, [ g, e ] );
+>     return ev = Exponents( PcpElementByExponents( c, v )
+>                            * GeneratorsOfGroup( G )[g]^e );
+> end;;
+gap> sweep := function( G, vecs )
+>     local n;
+>     n := NumberOfGenerators( Collector( G ) );
+>     return ForAll( vecs, v -> ForAll( [ 1 .. n ], g ->
+>         ForAll( [ -4 .. 9 ], e -> check( G, v, g, e ) ) ) );
+> end;;
+gap> sweep( G, Tuples( [ 0, 1 ], 6 ) );
+true
+gap> SetUseLibraryCollector( c, true );
+gap> sweep( G, Tuples( [ 0, 1 ], 6 ) );
+true
+gap> ftl := FromTheLeftCollector( 2 );;
+gap> SetRelativeOrder( ftl, 1, 2 );;  SetPower( ftl, 1, [ 2, 1 ] );;
+gap> SetRelativeOrder( ftl, 2, 2 );;
+gap> UpdatePolycyclicCollector( ftl );
+gap> ev := [ 0, 0 ];;  CollectWordOrFail( ftl, ev, [ 1, -3, 2, 0, 1, -2 ] );;  ev;
+[ 1, 1 ]
+gap> K := PcpGroupByCollector( ftl );;
+gap> sweep( K, Tuples( [ 0, 1 ], 2 ) );
+true
+gap> SetUseLibraryCollector( ftl, true );
+gap> sweep( K, Tuples( [ 0, 1 ], 2 ) );
+true
+gap> M := ExamplesOfSomePcpGroups( 5 );;
+gap> vecs := Filtered( Tuples( [ -1, 0, 1 ], 4 ), v -> v[1] >= 0 );;
+gap> sweep( M, vecs );
+true
+gap> SetUseLibraryCollector( Collector( M ), true );
+gap> sweep( M, vecs );
+true
+
+#
 gap> STOP_TEST( "bugfix.tst" );
