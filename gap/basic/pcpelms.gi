@@ -219,6 +219,20 @@ end );
 
 #############################################################################
 ##
+#F SmallestResidue( q, r ) . . . . . . .  q mod r in (-r/2, r/2], q if r = 0
+##
+## Exponents at a depth of relative order r > 0 only matter modulo r, and
+## a power with a small exponent is much cheaper to compute.
+##
+BindGlobal( "SmallestResidue", function( q, r )
+    if r = 0 then return q; fi;
+    q := q mod r;
+    if 2*q > r then q := q - r; fi;
+    return q;
+end );
+
+#############################################################################
+##
 #F NormingExponent( g ) . . . . . . . . .returns f such that g^f is normed
 ##
 ## Note that g is normed, if the LeadingExponent of g is its RelativeIndex.
@@ -234,10 +248,10 @@ BindGlobal( "NormingExponent", function( g )
     elif r = 0 then
         return 1;
     elif IsPrime( r ) then
-        return l^-1 mod r;
+        return SmallestResidue( l^-1, r );
     else
         e := Gcdex( r, l );     # = RelativeIndex
-        return e.coeff2 mod r;  # l * c2 = e mod r
+        return SmallestResidue( e.coeff2, r );  # l * c2 = e mod r
     fi;
 end );
 

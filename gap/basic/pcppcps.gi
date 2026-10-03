@@ -15,19 +15,91 @@
 #F TailLimit
 ##
 BindGlobal( "TailLimit", function( ind, c )
-    local k, i;
-    k := List(ind, x -> not IsBool(x) and LeadingExponent(x)=1);
-    i := c-1; while i > 0 and k[i]=true do i := i-1; od; i := i+1;
-    return i;
+    local i;
+    i := c-1;
+    while i > 0 and not IsBool(ind[i]) and LeadingExponent(ind[i]) = 1 do
+        i := i-1;
+    od;
+    return i+1;
 end );
 
 #############################################################################
 ##
-#F ReduceExpo
+#F CommutatorDepthBounds( <coll> )
+##
+## Returns a table B such that Comm(x, y) has depth at least B[d][e] whenever
+## d < e, Depth(x) >= d and Depth(y) >= e. The table is cached in <coll>.
+##
+## Modulo the normal closure N of all [g_s, g_t] with s >= d and t >= e, the
+## subgroups G_d and G_e commute, so Comm(x, y) lies in N. If these [g_s, g_t]
+## lie in G_k, then N lies in the largest normal G_j with j <= k.
+##
+BindGlobal( "CommutatorDepthBounds", function( coll )
+    local n, conj, low, norm, prev, row, bnd, w, k, s, t;
+
+    if IsBound( coll![PC_COMMUTATOR_DEPTH_BOUNDS] ) then
+        return coll![PC_COMMUTATOR_DEPTH_BOUNDS];
+    fi;
+
+    n    := NumberOfGenerators( coll );
+    conj := coll![PC_CONJUGATES];
+
+    # low[t]: least depth of g_u^g_s over s < u, t <= u. Thus G_t is normal
+    # if and only if low[t] = t.
+    low := [1..n+1];
+    for t in [2..n] do
+        for s in [1..t-1] do
+            if IsBound( conj[t][s] ) and conj[t][s][1] < low[t] then
+                low[t] := conj[t][s][1];
+            fi;
+        od;
+    od;
+    for t in [n-1, n-2 .. 1] do low[t] := Minimum( low[t], low[t+1] ); od;
+
+    # norm[k]: the largest j <= k with G_j normal
+    norm := [];
+    for k in [1..n+1] do
+        t := k;
+        while low[t] < t do t := low[t]; od;
+        norm[k] := t;
+    od;
+
+    # row[t] for row s: least depth of [g_u, g_v] over s <= v < u, t <= u
+    bnd  := [];
+    prev := ListWithIdenticalEntries( n+1, n+1 );
+    for s in [n, n-1 .. 1] do
+        row := ListWithIdenticalEntries( n+1, n+1 );
+        for t in [n, n-1 .. s+1] do
+            k := n+1;
+            if IsBound( conj[t][s] ) then
+                w := conj[t][s];
+                if w[1] <> t or w[2] <> 1 then
+                    k := w[1];
+                elif Length( w ) > 2 then
+                    k := w[3];
+                fi;
+            fi;
+            row[t] := Minimum( k, prev[t], row[t+1] );
+        od;
+        prev := row;
+        bnd[s] := norm{ row };
+    od;
+
+    coll![PC_COMMUTATOR_DEPTH_BOUNDS] := bnd;
+    return bnd;
+end );
+
+#############################################################################
+##
+#F ReduceExpo( <ind>, <gen>, <rel> )
+##
+## Returns the positions changed in <ind> and in <gen>.
 ##
 BindGlobal( "ReduceExpo", function( ind, gen, rel )
-    local i, j, a, b, q, f, k;
+    local i, j, a, b, q, ci, cg;
 
+    ci := [];
+    cg := [];
     for i in [1..Length(ind)] do
         if not IsBool(ind[i]) and rel[i]=0 then
             b := LeadingExponent(ind[i]);
@@ -37,6 +109,7 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
                     q := QuoInt(a,b);
                     if q <> 0 then
                         ind[j] := ind[j]*ind[i]^-q;
+                        AddSet(ci, j);
                     fi;
                 fi;
             od;
@@ -45,10 +118,27 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
                 q := QuoInt(a,b);
                 if q <> 0 then
                     gen[j] := gen[j]*ind[i]^-q;
+                    AddSet(cg, j);
                 fi;
             od;
         fi;
     od;
+    return [ci, cg];
+end );
+
+#############################################################################
+##
+#F ReduceExpoElm( <ind>, <g>, <rel> ) . . . . . . ReduceExpo for one element
+##
+BindGlobal( "ReduceExpoElm", function( ind, g, rel )
+    local i, q;
+    for i in [Depth(g)..Length(ind)] do
+        if not IsBool(ind[i]) and rel[i]=0 then
+            q := QuoInt(Exponents(g)[i], LeadingExponent(ind[i]));
+            if q <> 0 then g := g*ind[i]^-q; fi;
+        fi;
+    od;
+    return g;
 end );
 
 #############################################################################
@@ -94,13 +184,15 @@ IGSValFun := IGSValFun4;
 ##
 ## For two non-trivial PcpElements g and h with the same depth, apply the
 ## Euclidean algorithm to the leading exponents, and do the same operations
-## on the elements themselves.
+## on the elements themselves. At a depth of finite relative order the
+## quotients are taken modulo that order.
 ##
 BindGlobal( "GcdPcp", function(g, h)
-    local x, y, a, b, q, r, t;
+    local x, y, a, b, q, r, t, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -116,12 +208,12 @@ BindGlobal( "GcdPcp", function(g, h)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
 
-        t := x * y ^ -q;
+        t := x * y ^ -SmallestResidue(q, rel);
         x := y;
         y := t;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -131,10 +223,35 @@ end );
 
 #############################################################################
 ##
+#F IgsNegativePower( <ind>, <pows>, <d>, <q> ) . . . . . . . . . . ind[d]^-q
+##
+## Caches the result in pows[d], which must be reset when ind[d] changes.
+##
+BindGlobal( "IgsNegativePower", function( ind, pows, d, q )
+    local p;
+    if q < 0 then return ind[d]^-q; fi;
+    p := pows[d];
+    if not IsBound(p[1]) then p[1] := ind[d]^-1; fi;
+    # caching large q would make p a large sparse list
+    if q > 16 then return p[1]^q; fi;
+    if not IsBound(p[q]) then p[q] := p[1]^q; fi;
+    return p[q];
+end );
+
+#############################################################################
+##
 #F AddToIgs( <igs>, <gens> )
 ##
+## Sifts the elements of <gens> into <igs> one at a time. After each, the
+## powers and commutators of the changed entries are sifted in until ind is
+## closed under them again. The entries from c on have leading exponent 1
+## and so generate the tail G_c of the pc series: elements of depth c or
+## more need no sifting, and the loop stops at c = 1, often long before
+## all of <gens> is used.
+##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, k, pair, t;
+    local coll, rels, n, inf, bnd, c, ind, pows, queue, qpos, todo, val,
+          added, g, d, f, h, a, b, q, pair, oldc, chg, i, j, k, t;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -142,21 +259,40 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     coll := Collector(gens[1]);
     rels := RelativeOrders(coll);
     n    := NumberOfGenerators(coll);
-    c    := n+1;
+    inf  := 0 in rels;
+    bnd  := fail;
 
-    # set up
+    # set up; pows[d] caches negative powers of ind[d]
     ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := g; od;
+    pows := List([1..n], i -> []);
+    c    := TailLimit(ind, n+1);
 
-    # do a reduction step
-    c := TailLimit(ind, c);
-    todo := Set(Filtered(gens, x -> Depth(x) < c));
-    val := List(todo, x -> IGSValFun(x));
+    # gens wait in queue; todo holds powers and commutators
+    queue := Set(Filtered(gens, x -> Depth(x) < c));
+    StableSortParallel(List(queue, IGSValFun), queue);
+    qpos  := 1;
+    todo  := [];
+    val   := [];
+    added := false;
 
-    # loop over to-do list until it is empty
-    while Length(todo) > 0 and c > 1 do
-        j := PositionMinimum(val);
-        g := Remove(todo, j);
+    while c > 1 do
+
+        # take the next element, from queue only once todo is empty
+        if Length(todo) > 0 then
+            j := PositionMinimum(val);
+            g := Remove(todo, j);
+            Remove(val, j);
+        else
+            while qpos <= Length(queue) and Depth(queue[qpos]) >= c do
+                qpos := qpos+1;
+            od;
+            if qpos > Length(queue) then break; fi;
+            g := queue[qpos];
+            qpos := qpos+1;
+            # sifting g unreduced can blow up its exponents
+            if inf then g := ReduceExpoElm(ind, g, rels); fi;
+        fi;
         d := Depth(g);
         f := [];
 
@@ -166,6 +302,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             h := ind[d];
             if IsBool(h) then
                 ind[d] := NormedPcpElement(g);
+                pows[d] := [];
                 AddSet(f, d);
                 h := ind[d];
             fi;
@@ -173,49 +310,80 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             if g = h then
                 g := g^0;
             else
-                pair := GcdPcp(g, h);
-                h := pair[1];
-                g := pair[2];
-                if h <> ind[d] then
-                    ind[d] := NormedPcpElement( h );
-                    AddSet(f, d);
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcp would leave h unchanged
+                    q := SmallestResidue(a/b, rels[d]);
+                    g := g * IgsNegativePower(ind, pows, d, q);
+                else
+                    pair := GcdPcp(g, h);
+                    h := pair[1];
+                    g := pair[2];
+                    if h <> ind[d] then
+                        ind[d] := NormedPcpElement( h );
+                        pows[d] := [];
+                        AddSet(f, d);
+                    fi;
                 fi;
             fi;
             d := Depth(g);
         od;
 
+        # adjusting is a no-op unless ind or todo changed
+        if Length(f) = 0 and not added then continue; fi;
+
         # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        ReduceExpo(ind, todo, rels);
+        chg := [];
+        if inf then
+            t := ReduceExpo(ind, todo, rels);
+            for i in t[1] do pows[i] := []; od;
+            chg := t[2];
+            for i in chg do
+                if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+            od;
+        fi;
 
         # add powers and commutators
+        added := false;
         for d in f do
             g := ind[d];
             # skip infinite factors and powers in the tail
             if d < c-1 and rels[d] > 0 then
                 k := g ^ RelativeOrderPcp(g);
-                if Depth(k) < c then Add(todo, k); fi;
+                if Depth(k) < c then
+                    Add(todo, k); Add(val, IGSValFun(k)); added := true;
+                fi;
             fi;
             for j in [1..n] do
                 # skip trivial commutators and those in the tail
-                if j = d or Minimum( d, j ) >= c-1 then
+                if j = d or Minimum( d, j ) >= c-1 or IsBool(ind[j]) then
                     continue;
                 fi;
-                if not IsBool(ind[j]) then
-                    k := Comm(g, ind[j]);
-                    if Depth(k) < c then Add(todo, k); fi;
-                    if rels[j] = 0 then
-                        k := Comm(g, ind[j]^-1);
-                        if Depth(k) < c then Add(todo, k); fi;
+                if bnd = fail then bnd := CommutatorDepthBounds(coll); fi;
+                if bnd[Minimum(d, j)][Maximum(d, j)] >= c then continue; fi;
+                k := Comm(g, ind[j]);
+                if Depth(k) < c then
+                    Add(todo, k); Add(val, IGSValFun(k)); added := true;
+                fi;
+                if rels[j] = 0 then
+                    k := Comm(g, ind[j]^-1);
+                    if Depth(k) < c then
+                        Add(todo, k); Add(val, IGSValFun(k)); added := true;
                     fi;
                 fi;
             od;
         od;
-        
+
         # reduce
-        todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, x -> IGSValFun(x));
-        Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
+        if c < oldc or Length(chg) > 0 then
+            t := Filtered([1..Length(todo)], i -> Depth(todo[i]) < c);
+            todo := todo{t};
+            val := val{t};
+        fi;
+        Info(InfoPcpGrp, 3, Length(todo), " versus ", ind);
     od;
 
     # return resulting list
