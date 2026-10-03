@@ -4,6 +4,7 @@ This file describes changes in the GAP package 'polycyclic'.
 
 - Fix bugs, where wrong results could be returned or errors could be thrown,
   in the following functions:
+  - `AbelianPcpGroup`
   - `AddToIgs` (and variants)
   - `CentralizerBySeries`
   - `CoefficientsByFactorLattice`
@@ -18,6 +19,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `NormalizerPcpGroup`
   - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
+  - `PcpOrbitStabilizer`
   - `StabilizerIntegralAction`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group
 - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
