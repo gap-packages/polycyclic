@@ -46,9 +46,9 @@ gap> V := U^P.2;;
 gap> Size(ClosureGroup(U, V));
 infinity
 gap> RepresentativeAction(U, U, V);
-Error, not yet installed
+fail
 gap> IsConjugate(P, U, V);
-Error, not yet installed
+true
 
 #
 gap> STOP_TEST( "conj.tst", 10000000);
