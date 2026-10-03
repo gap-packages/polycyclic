@@ -50,7 +50,12 @@ function( coll, l, genexp )
 
     i := 1;
     while i < Length(genexp) do
-        res := DTMultiply( res, [genexp[i], genexp[i+1]], coll );
+        # DTMultiply returns the other factor unreduced if one is empty
+        if Length( res ) = 0 then
+            res := DTPower( [genexp[i], genexp[i+1]], 1, coll );
+        else
+            res := DTMultiply( res, [genexp[i], genexp[i+1]], coll );
+        fi;
         i := i + 2;
     od;
 
