@@ -301,6 +301,7 @@ InstallGlobalFunction( ComplementClassesEfaPcps, function( G, U, pcps )
                 AddOperationCR( C );
                 AddInversesCR( C );
                 tmp :=  ComplementClassesCR( C );
+                if tmp = fail then return fail; fi;
                 Append( new, tmp );
             od;
             cls := ShallowCopy(new);
