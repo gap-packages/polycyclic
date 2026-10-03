@@ -498,6 +498,10 @@ InstallMethod( CollectWordOrFail,
 function( pcp, a, b )
     local   aa,  aaa;
 
+    if not USE_COMBINATORIAL_COLLECTOR then
+        TryNextMethod();
+    fi;
+
     if DEBUG_COMBINATORIAL_COLLECTOR then
         aa  := ShallowCopy(a);
         aaa := ShallowCopy(a);

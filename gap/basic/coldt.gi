@@ -22,7 +22,7 @@ BindGlobal( "AddHallPolynomials", function( coll )
         # reduce the coefficients of the deep thought polynomials
         ReduceCoefficientsOfRws(coll);
 
-        SetIsPolynomialCollector( coll, true );
+        SetFilterObj( coll, IsPolynomialCollector );
     fi;
 
 end );
