@@ -8,6 +8,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `AddToIgs` (and variants)
   - `CentralizerBySeries`
   - `CoefficientsByFactorLattice`
+  - `ComplementClasses`
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
