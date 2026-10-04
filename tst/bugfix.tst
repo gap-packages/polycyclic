@@ -915,4 +915,98 @@ gap> ConjugacyIntegralAction( G, mats, B, [ [ 1, 1 ], [ 0, 1 ] ] ) = rec( stab :
 true
 
 #
+# PcpElementByExponents and PcpElementByGenExpList returned wrong elements
+# for negative exponents on generators of finite relative order
+#
+gap> G := UnitriangularPcpGroup( 4, 2 );;
+gap> c := Collector( G );;
+gap> PcpElementByGenExpList( c, [ 5, 1, 1, 0 ] ) = G.5;
+true
+gap> PcpElementByGenExpList( c, [ 5, 1, 1, -1 ] ) = G.5 * G.1^-1;
+true
+gap> value := function( G, word )
+>     local gens;
+>     gens := GeneratorsOfGroup( G );
+>     return Product( [ 1, 3 .. Length( word ) - 1 ],
+>                     i -> gens[ word[i] ] ^ word[i+1] );
+> end;;
+gap> checkGenExp := function( G )
+>     local c, n;
+>     c := Collector( G );
+>     n := NumberOfGenerators( c );
+>     return ForAll( Tuples( [ 1 .. n ], 2 ), g ->
+>         ForAll( Tuples( [ -3 .. 4 ], 2 ), e ->
+>             PcpElementByGenExpList( c, [ g[1], e[1], g[2], e[2] ] )
+>             = value( G, [ g[1], e[1], g[2], e[2] ] ) ) );
+> end;;
+gap> checkExp := function( G, range )
+>     local c, n;
+>     c := Collector( G );
+>     n := NumberOfGenerators( c );
+>     return ForAll( Tuples( range, n ), v -> PcpElementByExponents( c, v )
+>         = value( G, Concatenation( List( [ 1 .. n ], i -> [ i, v[i] ] ) ) ) );
+> end;;
+gap> checkGenExp( G );  checkExp( G, [ -1 .. 2 ] );
+true
+true
+gap> SetFilterObj( c, UseLibraryCollector );
+gap> checkGenExp( G );  checkExp( G, [ -1 .. 2 ] );
+true
+true
+
+# D16 = < a, b > with pcgs a, b, a^2, a^4: the power relation of the first
+# generator skips the second one
+gap> ftl := FromTheLeftCollector( 4 );;
+gap> for i in [ 1 .. 4 ] do SetRelativeOrder( ftl, i, 2 ); od;
+gap> SetPower( ftl, 1, [ 3, 1 ] );  SetPower( ftl, 3, [ 4, 1 ] );
+gap> SetConjugate( ftl, 2, 1, [ 2, 1, 3, 1 ] );
+gap> SetConjugate( ftl, 3, 2, [ 3, 1, 4, 1 ] );
+gap> D := PcpGroupByCollector( ftl );;
+gap> Exponents( PcpElementByExponents( ftl, [ 2, -1, 0, 0 ] ) );
+[ 0, 1, 1, 1 ]
+gap> checkGenExp( D );  checkExp( D, [ -5 .. 6 ] );
+true
+true
+gap> SetFilterObj( ftl, UseLibraryCollector );
+gap> checkGenExp( D );  checkExp( D, [ -5 .. 6 ] );
+true
+true
+
+# generators of finite and of infinite relative order
+gap> M := ExamplesOfSomePcpGroups( 5 );;
+gap> checkGenExp( M );  checkExp( M, [ -2 .. 2 ] );
+true
+true
+gap> SetFilterObj( Collector( M ), UseLibraryCollector );
+gap> checkGenExp( M );  checkExp( M, [ -2 .. 2 ] );
+true
+true
+
+#
+# CollectWordOrFail requires non-zero exponents, positive on generators of
+# finite relative order
+#
+gap> ev := [ 0, 0, 0, 0, 1, 0 ];;
+gap> CollectWordOrFail( Collector( UnitriangularPcpGroup( 4, 2 ) ), ev, [ 1, -1 ] );
+Error, Assertion failure
+gap> CollectWordOrFail( Collector( UnitriangularPcpGroup( 4, 2 ) ), ev, [ 1, 0 ] );
+Error, Assertion failure
+gap> CollectWordOrFail( c, ev, [ 1, -1 ] );
+Error, Assertion failure
+
+#
+# PcpGroupFpGroupPcPres rejected a consistent presentation with a redundant
+# relator containing an inverse of a generator of finite relative order
+#
+gap> F := FreeGroup( 4 );;
+gap> f := GeneratorsOfGroup( F );;
+gap> rels := [ f[1]^2 / f[3], f[2]^2, f[3]^2 / f[4], f[4]^2,
+>              f[2]^f[1] / ( f[2] * f[3] ), f[3]^f[1] / f[3], f[4]^f[1] / f[4],
+>              f[3]^f[2] / ( f[3] * f[4] ), f[4]^f[2] / f[4], f[4]^f[3] / f[4],
+>              f[2]^f[1] / f[2] / ( f[3] * f[4] ) ];;
+gap> Q := PcpGroupFpGroupPcPres( F / rels );;
+gap> Size( Q );
+16
+
+#
 gap> STOP_TEST( "bugfix.tst" );

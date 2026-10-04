@@ -17,6 +17,45 @@ end );
 
 #############################################################################
 ##
+#F  CollectableGenExpList( <coll>, <word> )
+##
+##  returns a generator exponent list for the same element as <word> that
+##  satisfies IsCollectableGenExpList: zero exponents are dropped, and g^e
+##  with e < 0 for a generator g of relative order m becomes g^r (g^-m)^q
+##  where r = e mod m and q = (r-e)/m.  Hall polynomials evaluate any word,
+##  so <word> is returned unchanged if <coll> has them.
+##
+BindGlobal( "CollectableGenExpList", function( coll, word )
+    local   exp,  ipow,  res,  i,  g,  e,  r;
+
+    if IsCollectableGenExpList( coll, word )
+       or ( IsBound( coll![ PC_DEEP_THOUGHT_POLS ] )
+            and coll![ PC_DEEP_THOUGHT_POLS ] <> [] ) then
+        return word;
+    fi;
+
+    exp  := coll![ PC_EXPONENTS ];
+    ipow := coll![ PC_INVERSEPOWERS ];
+    res  := [];
+    for i in [ 1, 3 .. Length( word ) - 1 ] do
+        g := word[i];  e := word[i+1];
+        if e > 0 or ( e < 0 and not IsBound( exp[g] ) ) then
+            Append( res, [ g, e ] );
+        elif e < 0 then
+            r := e mod exp[g];
+            if r > 0 then Append( res, [ g, r ] ); fi;
+            if IsBound( ipow[g] ) then
+                Append( res, GenExpList(
+                    PcpElementByGenExpListNC( coll, ipow[g] )
+                    ^ ( ( r - e ) / exp[g] ) ) );
+            fi;
+        fi;
+    od;
+    return res;
+end );
+
+#############################################################################
+##
 ## Functions to create pcp elements by exponent vectors or words.
 ## In the NC versions we assume that elements are in normal form.
 ## In the other versions we collect before we return an element.
@@ -36,6 +75,9 @@ InstallGlobalFunction( PcpElementByExponents, function( coll, list )
     fi;
 
     h := ObjByExponents( coll, list );
+    if not IsPositionsList( h ) then
+        h := CollectableGenExpList( coll, h );
+    fi;
     k := list * 0;
     while CollectWordOrFail( coll, k, h ) = fail do od;
     return PcpElementByExponentsNC( coll, k );
@@ -51,6 +93,9 @@ end );
 
 InstallGlobalFunction( PcpElementByGenExpList, function( coll, word )
     local k;
+    if not IsPositionsList( word ) then
+        word := CollectableGenExpList( coll, word );
+    fi;
     k := [1..coll![PC_NUMBER_OF_GENERATORS]] * 0;
     while CollectWordOrFail( coll, k, word ) = fail do od;
     return PcpElementByExponentsNC( coll, k );

@@ -1,3 +1,31 @@
+#############################################################################
+##
+#F  IsCollectableGenExpList( <pcp>, <w> )
+##
+##  returns whether CollectPolycyclic and CollectPolycyclicGap can collect
+##  <w>: every exponent must be non-zero, and positive if its generator has
+##  finite relative order.  Both expect a non-zero exponent on top of their
+##  exponent stack, and they conjugate by an inverse with the tables
+##  PC_CONJUGATESINVERSE and PC_INVERSECONJUGATESINVERSE, which
+##  UpdatePolycyclicCollector fills only for generators of infinite relative
+##  order.
+##
+BindGlobal( "IsCollectableGenExpList", function( pcp, w )
+    local   exp,  i;
+
+    if IsPositionsList( w ) then return true; fi;
+
+    exp := pcp![ PC_EXPONENTS ];
+    if Length( exp ) = 0 then return not 0 in w; fi;
+
+    for i in [ 2, 4 .. Length( w ) ] do
+        if w[i] = 0 or ( w[i] < 0 and IsBound( exp[ w[i-1] ] ) ) then
+            return false;
+        fi;
+    od;
+    return true;
+end );
+
 BindGlobal( "CollectPolycyclicGap", function( pcp, ev, w )
 
     local   ngens,  pow,  exp,  com,  wst,  west,  sst,  est,  bottom,
@@ -5,6 +33,7 @@ BindGlobal( "CollectPolycyclicGap", function( pcp, ev, w )
             icnj,  hh;
 
     if Length( w ) = 0 then return true; fi;
+    Assert( 1, IsCollectableGenExpList( pcp, w ) );
 
 
     ngens := pcp![PC_NUMBER_OF_GENERATORS];
@@ -171,11 +200,12 @@ BindGlobal( "CollectPolycyclicGap", function( pcp, ev, w )
 
             # reduce exponent if necessary
             if IsBound( exp[g] ) and ev[g] >= exp[g] then
-                ev[g] := ev[g] - exp[g];
+                m     := QuoInt( ev[g], exp[g] );
+                ev[g] := ev[g] mod exp[g];
                 if IsBound( pow[g] ) then
                     stp := stp+1;
                     wst[stp]  := pow[g];
-                    west[stp] := 1;
+                    west[stp] := m;
                     sst[stp]  := 1;
                     est[stp] := wst[stp][ 2 ];
                 fi;
@@ -215,6 +245,7 @@ function( pcp, a, b )
     if USE_LIBRARY_COLLECTOR then
         return CollectPolycyclicGap( pcp, a, b );
     else
+        Assert( 1, IsCollectableGenExpList( pcp, b ) );
     	# CollectPolycyclic is implemented by the GAP C kernel, in file src/objcftl.c
         CollectPolycyclic( pcp, a, b );
         return true;

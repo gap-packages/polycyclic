@@ -334,6 +334,37 @@ gap> ExponentsByObj( coll, last );
 </Description>
 </ManSection>
 
+<ManSection>
+<Oper Name="CollectWordOrFail" Arg="coll, expvec, genexp"/>
+<Description>
+	multiplies the element with exponent vector <A>expvec</A> from the right
+	by the word given by the generator exponent list <A>genexp</A>, stores
+	the exponent vector of the product in <A>expvec</A> and returns
+	<K>true</K>.  The exponent vector <A>expvec</A> must be mutable and in
+	normal form.
+	<P/>
+
+	Every exponent in <A>genexp</A> must be non-zero, and positive if its
+	generator has finite relative order; it may exceed the relative order.
+	For other input the result may be wrong.  This is checked only if the
+	assertion level is at least 1.  Use
+	<Ref Func="PcpElementByGenExpList"/> to collect an arbitrary generator
+	exponent list.
+
+<Example><![CDATA[
+gap> G := DihedralPcpGroup( 0 );;
+gap> coll := Collector( G );;
+gap> RelativeOrders( coll );
+[ 2, 0 ]
+gap> expvec := [ 1, 5 ];;
+gap> CollectWordOrFail( coll, expvec, [ 1, 3, 2, -3 ] );
+true
+gap> expvec;
+[ 0, -8 ]
+]]></Example>
+</Description>
+</ManSection>
+
 
 </Section>
 

@@ -14,11 +14,14 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ConjugacyIntegralAction`
   - `FCCentre`
   - `IsMatrixRepresentation`
+  - `IsomorphismPcpGroupFromFpGroupWithPcPres`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`
   - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
+  - `PcpElementByExponents`
+  - `PcpElementByGenExpList`
   - `PcpOrbitStabilizer`
   - `StabilizerIntegralAction`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group
