@@ -43,9 +43,12 @@ InstallGlobalFunction( EvalConsistency, function( coll, sys )
             CollectWordOrFail( coll, a, [j,1] );
             ps[i][j] := a;
 
-            a := ShallowCopy(gn[i]);
-            CollectWordOrFail( coll, a, [j,-1] );
-            ps[i][i+j] := a;
+            # (i -j) is used, and collectable, only for j of infinite order
+            if e[j] = 0 then
+                a := ShallowCopy(gn[i]);
+                CollectWordOrFail( coll, a, [j,-1] );
+                ps[i][i+j] := a;
+            fi;
         od;
     od;
 

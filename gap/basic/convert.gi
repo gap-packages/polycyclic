@@ -414,19 +414,15 @@ BindGlobal( "FromTheLeftCollectorByRelations", function( gens, rels )
 end );
 
 BindGlobal( "PcpGroupFpGroupPcPres", function( G )
-    local   gens,  rels,  ftl,  ev,  rel;
+    local   gens,  rels,  ftl,  rel;
 
     gens := GeneratorsOfGroup( FreeGroupOfFpGroup( G ) );
     rels := ClassifyRelationsOfFpGroup( G );
     ftl  := FromTheLeftCollectorByRelations( gens, rels );
     UpdatePolycyclicCollector( ftl );
 
-    ev := List( gens, g->0 );
     for rel in rels.conflicts do
-        while CollectWordOrFail( ftl, ev, ExtRepOfObj( rel ) ) = fail do
-        od;
-
-        if ev <> ev * 0 then
+        if not IsOne( PcpElementByGenExpList( ftl, ExtRepOfObj( rel ) ) ) then
             Error( "finitely presented group is not a pcp group" );
         fi;
     od;
