@@ -135,6 +135,7 @@ end );
 BindGlobal( "UpperCentralSeriesNilpotentPcpGroup", function( G )
     local ser, gens, C, upp;
 
+    if IsTrivial(G) then return [G]; fi;
     ser  := LowerCentralSeriesOfGroup(G);
     gens := GeneratorsOfPcp( Pcp( ser[1], ser[2] ) );
     C    := TrivialSubgroup( G );
