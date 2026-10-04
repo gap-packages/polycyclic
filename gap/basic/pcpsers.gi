@@ -303,7 +303,7 @@ end );
 InstallGlobalFunction( TorsionByPolyEFSeries, function( G )
     local ref, U, D, pcp, gens, rels, n, fini, tmp;
 
-    ref := [];
+    ref := [G];
     U   := ShallowCopy( G );
     while Size(U) = infinity  do
 
