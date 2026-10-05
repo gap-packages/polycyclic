@@ -600,10 +600,8 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     e := e/c; f := f/c;
     if not ForAll( f, IsInt ) or AbsInt(Gcd(f)) <> 1 then return false; fi;
 
-    # This is a temporary fix, see tst/bugfix/gh-00097.tst
-    # if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
-    #     return false;
-    # fi;
+    # the orbit of a fixed point is trivial
+    if ForAll( mats, x -> e*x = e ) then return false; fi;
 
     # compute modulo 3 first
     Info( InfoIntStab, 1, "reducing by orbit-stabilizer mod 3");
