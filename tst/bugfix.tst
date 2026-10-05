@@ -915,6 +915,14 @@ gap> ConjugacyIntegralAction( G, mats, B, [ [ 1, 1 ], [ 0, 1 ] ] ) = rec( stab :
 true
 
 #
+# Fix a bug in TorsionByPolyEFSeries
+# <https://github.com/gap-packages/polycyclic/issues/193>
+#
+gap> G := ExamplesOfSomePcpGroups( 1 );;
+gap> TorsionByPolyEFSeries( G )[ 1 ] = G;
+true
+
+#
 # IsWeightedCollector depended on USE_COMBINATORIAL_COLLECTOR, and
 # IsPolynomialCollector and UseLibraryCollector raised an error on a plain
 # collector
