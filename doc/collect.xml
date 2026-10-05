@@ -353,8 +353,6 @@ use of the special structure of the given pc-presentation.
 	all  generators <M>x</M>, <M>y</M>  and all  generators <M>g</M>  in (the  normal of)
 	<M>[x,y]</M>.  If  such a function does  not exist, false  is returned.  If
 	such a  function exists, it is  computed and stored in  the collector.
-	In addition, the default collection strategy for this collector is set
-	to combinatorial collection.
 </Description>
 </ManSection>
 
@@ -394,11 +392,11 @@ use of the special structure of the given pc-presentation.
 </ManSection>
 
 <ManSection>
-<Var Name="UseLibraryCollector"/>
+<Filt Name="UseLibraryCollector" Arg="coll"/>
 <Description>
-	this property can  be set to <K>true</K> for a collector  to force a simple
-	from-the-left collection  strategy implemented in  the &GAP; language
-	to  be  used.   Its main  purpose  is  to  help debug  the  collection
+	this filter can be set for a collector with <C>SetFilterObj</C> to force
+	a simple from-the-left collection strategy implemented in the &GAP;
+	language to be used.   Its main  purpose  is  to  help debug  the  collection
 	routines.
 </Description>
 </ManSection>
@@ -426,8 +424,8 @@ use of the special structure of the given pc-presentation.
 <ManSection>
 <Var Name="USE_COMBINATORIAL_COLLECTOR"/>
 <Description>
-	this global  variable can be  set to <K>false</K>  in order to  prevent the
-	combinatorial collector to be used.
+	this global variable must be set to <K>true</K> before the combinatorial
+	collector is used; by default it is <K>false</K>.
 </Description>
 </ManSection>
 

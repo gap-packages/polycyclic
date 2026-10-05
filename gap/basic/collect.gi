@@ -820,11 +820,7 @@ InstallMethod( IsWeightedCollector,
 
 function( coll )
 
-    if FromTheLeftCollector_SetWeights( coll ) <> fail then
-    	# FIXME: properties should never depend on external state!
-        return USE_COMBINATORIAL_COLLECTOR;
-    fi;
-    return false;
+    return FromTheLeftCollector_SetWeights( coll ) <> fail;
 end );
 
 ############################################################################
