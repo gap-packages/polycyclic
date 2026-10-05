@@ -10,19 +10,19 @@
 ##
 ## Introduce various global variables to steer the behavior of polycyclic
 ##
-if not IsBound( CHECK_CENT@ ) then CHECK_CENT@ := false; fi;
-if not IsBound( CHECK_IGS@ ) then CHECK_IGS@ := false; fi;
-if not IsBound( CHECK_INTNORM@ ) then CHECK_INTNORM@ := false; fi;
-if not IsBound( CHECK_INTSTAB@ ) then CHECK_INTSTAB@ := false; fi;
-if not IsBound( CHECK_NORM@ ) then CHECK_NORM@ := false; fi;
-if not IsBound( CHECK_SCHUR_PCP@ ) then CHECK_SCHUR_PCP@ := false; fi;
-if not IsBound( CODEONLY@ ) then CODEONLY@ := false; fi;
-if not IsBound( USE_ALNUTH@ ) then USE_ALNUTH@ := true; fi;
-if not IsBound( USE_CANONICAL_PCS@ ) then USE_CANONICAL_PCS@ := true; fi;
-if not IsBound( USE_NFMI@ ) then USE_NFMI@ := false; fi;
-if not IsBound( USE_NORMED_PCS@ ) then USE_NORMED_PCS@ := false; fi;
-if not IsBound( USED_PRIMES@ ) then USED_PRIMES@ := [3]; fi;
-if not IsBound( VERIFY@ ) then VERIFY@ := true; fi;
+if not IsBound( POLYCYCLIC_CHECK_CENT ) then POLYCYCLIC_CHECK_CENT := false; fi;
+if not IsBound( POLYCYCLIC_CHECK_IGS ) then POLYCYCLIC_CHECK_IGS := false; fi;
+if not IsBound( POLYCYCLIC_CHECK_INTNORM ) then POLYCYCLIC_CHECK_INTNORM := false; fi;
+if not IsBound( POLYCYCLIC_CHECK_INTSTAB ) then POLYCYCLIC_CHECK_INTSTAB := false; fi;
+if not IsBound( POLYCYCLIC_CHECK_NORM ) then POLYCYCLIC_CHECK_NORM := false; fi;
+if not IsBound( POLYCYCLIC_CHECK_SCHUR_PCP ) then POLYCYCLIC_CHECK_SCHUR_PCP := false; fi;
+if not IsBound( POLYCYCLIC_CODEONLY ) then POLYCYCLIC_CODEONLY := false; fi;
+if not IsBound( POLYCYCLIC_USE_ALNUTH ) then POLYCYCLIC_USE_ALNUTH := true; fi;
+if not IsBound( POLYCYCLIC_USE_CANONICAL_PCS ) then POLYCYCLIC_USE_CANONICAL_PCS := true; fi;
+if not IsBound( POLYCYCLIC_USE_NFMI ) then POLYCYCLIC_USE_NFMI := false; fi;
+if not IsBound( POLYCYCLIC_USE_NORMED_PCS ) then POLYCYCLIC_USE_NORMED_PCS := false; fi;
+if not IsBound( POLYCYCLIC_USED_PRIMES ) then POLYCYCLIC_USED_PRIMES := [3]; fi;
+if not IsBound( POLYCYCLIC_VERIFY ) then POLYCYCLIC_VERIFY := true; fi;
 
 ##
 ## matrix -- basics about matrices, rational spaces, lattices and modules

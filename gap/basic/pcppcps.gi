@@ -220,7 +220,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
 
     # return resulting list
     ind := Filtered(ind, x -> not IsBool(x));
-    if CHECK_IGS@ then
+    if POLYCYCLIC_CHECK_IGS then
         Info(InfoPcpGrp, 1, "checking igs ");
         t := CheckIgs(ind, gens);
         if t <> true then Error("igs is incorrect at ",t); fi;
@@ -346,7 +346,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
         val := List(todo, x -> IGSValFun(x));
     od;
     ind := Filtered( ind, x -> not IsBool( x ) );
-    if CHECK_IGS@ then
+    if POLYCYCLIC_CHECK_IGS then
         Info(InfoPcpGrp, 1, "checking igs ");
         t := CheckIgs(ind, Concatenation(AsList(pcs1),AsList(pcs2)));
         if t <> true then Error("igs is incorrect at ",t); fi;
@@ -535,10 +535,10 @@ InstallGlobalFunction( Pcp, function( arg )
     fi;
 
     # do we want to norm the pcs or make it canonical?
-    if USE_CANONICAL_PCS@ then
+    if POLYCYCLIC_USE_CANONICAL_PCS then
         numer := Cgs( U );
         denom := Cgs( denom );
-    elif USE_NORMED_PCS@ then
+    elif POLYCYCLIC_USE_NORMED_PCS then
         numer := Ngs( U );
         denom := Ngs( denom );
     else
@@ -680,7 +680,7 @@ InstallMethod( ViewObj, [ IsPcp ], SUM_FLAGS, PrintObj );
 ##
 #F  small helper
 ##
-BindGlobal( "WordByExps@", function( exp )
+BindGlobal( "POLYCYCLIC_WordByExps", function( exp )
     local w, i;
     w := [];
     for i in [1..Length(exp)] do
@@ -698,7 +698,7 @@ end );
 ##
 BindGlobal( "PrintWord", function(gen,exp)
     local w, i, g;
-    w := WordByExps@(exp);
+    w := POLYCYCLIC_WordByExps(exp);
     if Length(w) = 0 then
         Print("id ");
     else
@@ -788,7 +788,7 @@ BindGlobal( "GapInputPcpGroup", function( file, pcp )
     PrintTo(file, "coll := FromTheLeftCollector( ", Length(gens)," );\n");
     for i in [1..Length(rels)] do
         if rels[i] > 0 then
-            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^rels[i] ));
+            obj := POLYCYCLIC_WordByExps(ExponentsByPcp( pcp, gens[i]^rels[i] ));
             AppendTo(file, "SetRelativeOrder( coll, ",i,", ",rels[i]," );\n");
             AppendTo(file, "SetPower( coll, ",i,", ",obj," );\n");
         fi;
@@ -796,13 +796,13 @@ BindGlobal( "GapInputPcpGroup", function( file, pcp )
 
     for i in [1..Length(rels)] do
         for j in [1..i-1] do
-            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^gens[j] ));
+            obj := POLYCYCLIC_WordByExps(ExponentsByPcp( pcp, gens[i]^gens[j] ));
             if obj <> [ i, 1 ] then
                 AppendTo(file,
                         "SetConjugate( coll, ",i,", ",j,", ",obj," );\n");
             fi;
 
-            obj := WordByExps@(ExponentsByPcp( pcp, gens[i]^(gens[j]^-1) ));
+            obj := POLYCYCLIC_WordByExps(ExponentsByPcp( pcp, gens[i]^(gens[j]^-1) ));
             if obj <> [ i, 1 ] then
                 AppendTo(file,
                         "SetConjugate( coll, ",i,", ",-j,", ",obj," );\n");

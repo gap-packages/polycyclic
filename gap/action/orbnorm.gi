@@ -533,7 +533,7 @@ BindGlobal( "NormalizerIntegralAction", function( G, linG, U )
     N := SubgroupByIgs( G, N );
 
     # do a temporary check
-    if CHECK_INTNORM@ then
+    if POLYCYCLIC_CHECK_INTNORM then
         Info( InfoIntNorm, 1, "checking results");
         if not CheckNormalizer(G, N, linG, U) then
             Error("wrong norm in integral action");
@@ -623,7 +623,7 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     T := SubgroupByIgs( T, t );
 
     # do a temporary check
-    if CHECK_INTNORM@ then
+    if POLYCYCLIC_CHECK_INTNORM then
         Info( InfoIntNorm, 1, "checking results");
         if not CheckNormalizer( G, T, linG, U) then
             Error("wrong norm in integral action");

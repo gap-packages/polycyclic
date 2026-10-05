@@ -373,7 +373,7 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
 
     od;
 
-    if CHECK_SCHUR_PCP@ then
+    if POLYCYCLIC_CHECK_SCHUR_PCP then
         S := PcpGroupByCollector(c);
     else
         UpdatePolycyclicCollector(c);

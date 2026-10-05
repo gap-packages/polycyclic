@@ -287,7 +287,7 @@ BindGlobal( "NormalizerBySeries", function( G, U, efa )
         C := NormalizerOfComplement( C, H, N, I );
 
         # add checking if required
-        if CHECK_NORM@ then
+        if POLYCYCLIC_CHECK_NORM then
             Info( InfoPcpGrp, 1, "  check result ");
             H := ImagesSet( hom, U );
             if ForAny( Igs(C), x -> H^x <> H ) then
