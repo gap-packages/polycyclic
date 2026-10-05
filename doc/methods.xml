@@ -334,9 +334,8 @@ gap> mats := [ [[-1,0],[0,1]], [[1,1],[0,1]] ];;
 gap> pcp := Pcp(G);
 Pcp [ g1, g2 ] with orders [ 2, 0 ]
 gap> PcpOrbitStabilizer( [0,1], pcp, mats, OnRight );
-rec( orbit := [ [ 0, 1 ] ],
-     stab := [ g1, g2 ],
-     word := [ [ [ 1, 1 ] ], [ [ 2, 1 ] ] ] )
+rec( orbit := [ [ 0, 1 ] ], stab := [ g1, g2 ], trans := [  ],
+  trels := [  ], word := [ [ [ 1, 1 ] ], [ [ 2, 1 ] ] ] )
 ]]></Example>
 	If the considered orbits are infinite, then it may not always be possible
 	to determine a description of the orbits and their stabilizers. However,
@@ -401,7 +400,7 @@ gap> Igs(last);
 
 # check orbits with some other vectors
 gap> OrbitIntegralAction(G,mats, [2,3,4],[3,1,5]);
-rec( stab := Pcp-group with orders [ 0, 0, 0, 0 ], prei := g2 )
+rec( prei := g2, stab := Pcp-group with orders [ 0, 0, 0, 0 ] )
 
 gap> OrbitIntegralAction(G,mats, [2,3,4], [4,6,8]);
 false
@@ -769,13 +768,11 @@ gap> pcp := Pcp(G);
 Pcp [ g1, g2 ] with orders [ 2, 0 ]
 
 gap> RandomPcpOrbitStabilizer( [1,0], pcp, mats, OnRight ).stab;
-#I  Orbit longer than limit: exiting.
 [  ]
 
 gap> g := Igs(G)[1];
 g1
 gap> RandomCentralizerPcpGroup( G, g );
-#I  Stabilizer not increasing: exiting.
 Pcp-group with orders [ 2 ]
 gap> Igs(last);
 [ g1 ]
@@ -828,7 +825,8 @@ true
 	of the source.  See also the function <C>SchurCover</C>.
 
 <Example><![CDATA[
-gap> gl23 := Range( IsomorphismPcpGroup( GL(2,3) ) );
+gap> gl23 := Range( IsomorphismPcGroup( GL(2,3) ) );;
+gap> gl23 := Range( IsomorphismPcpGroup( gl23 ) );
 Pcp-group with orders [ 2, 3, 2, 2, 2 ]
 gap> epi := SchurExtensionEpimorphism( gl23 );
 [ g1, g2, g3, g4, g5, g6, g7, g8, g9, g10 ] -> [ g1, g2, g3, g4, g5,
