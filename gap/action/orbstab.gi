@@ -600,7 +600,7 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     e := e/c; f := f/c;
     if not ForAll( f, IsInt ) or AbsInt(Gcd(f)) <> 1 then return false; fi;
 
-    # This is a temporary fix, see bugfix.tst
+    # This is a temporary fix, see tst/bugfix/gh-00097.tst
     # if RankMat( [e,f] ) = 1 or ForAll( mats, x -> e*x = e) then
     #     return false;
     # fi;
