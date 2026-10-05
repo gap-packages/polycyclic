@@ -19,6 +19,26 @@ the algorithms of a number of the available series.
 <Func Name="PcpSeries" Arg="U"/>
 <Description>
 	returns the polycyclic series of <A>U</A> defined by an igs of <A>U</A>.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(5);
+Pcp-group with orders [ 2, 0, 0, 0 ]
+gap> Igs(G);
+[ g1, g2, g3, g4 ]
+gap> ser := PcpSeries(G);
+[ Pcp-group with orders [ 2, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( ser, Igs );
+[ [ g1, g2, g3, g4 ], [ g2, g3, g4 ], [ g3, g4 ], [ g4 ], [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -26,6 +46,20 @@ the algorithms of a number of the available series.
 <Attr Name="EfaSeries" Arg="U"/>
 <Description>
 	returns a normal series of <A>U</A> with elementary or free abelian factors.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> ser := EfaSeries(G);
+[ Pcp-group with orders [ 0, 0, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0, 0, 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -34,6 +68,22 @@ the algorithms of a number of the available series.
 <Description>
 	returns an efa series of <A>U</A> such that every factor in the series is
 	semisimple as a module for <A>U</A> over a finite field or over the rationals.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> ser := SemiSimpleEfaSeries(G);
+[ Pcp-group with orders [ 0, 0, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -41,6 +91,22 @@ the algorithms of a number of the available series.
 <Meth Name="DerivedSeriesOfGroup" Arg="U"/>
 <Description>
 	the derived series of <A>U</A>.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(5);
+Pcp-group with orders [ 2, 0, 0, 0 ]
+gap> ser := DerivedSeriesOfGroup(G);
+[ Pcp-group with orders [ 2, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 2, 2, 2, 2 ],
+  Pcp-group with orders [ 0, 0, 4 ],
+  Pcp-group with orders [ 0 ] ]
+gap> List( last, AbelianInvariants );
+[ [ 2, 2, 4 ], [ 0, 0, 4 ], [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -50,6 +116,26 @@ the algorithms of a number of the available series.
 	the  derived series of <A>U</A> refined  to an efa series such that
 	in each abelian factor of the  derived series the free abelian
 	factor is at the top.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(5);
+Pcp-group with orders [ 2, 0, 0, 0 ]
+gap> ser := RefinedDerivedSeries(G);
+[ Pcp-group with orders [ 2, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 2, 2, 2 ],
+  Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -59,6 +145,26 @@ the algorithms of a number of the available series.
 	the  derived series of <A>U</A> refined  to an efa series such that
 	in each abelian factor of  the derived series the free abelian
 	factor is at the bottom.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(5);
+Pcp-group with orders [ 2, 0, 0, 0 ]
+gap> ser := RefinedDerivedSeriesDown(G);
+[ Pcp-group with orders [ 2, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 2, 2, 2 ],
+  Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 2, 2, 2 ],
+  Pcp-group with orders [ 2, 2, 2 ],
+  Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -68,6 +174,20 @@ the algorithms of a number of the available series.
 	the lower  central  series of <A>U</A>.  If  <A>U</A>  does not   have a
 	largest  nilpotent quotient group, then  this function may not
 	terminate.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(11);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> ser := LowerCentralSeriesOfGroup(G);
+[ Pcp-group with orders [ 0, 0, 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0, 0 ],
+  Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0, 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -76,6 +196,18 @@ the algorithms of a number of the available series.
 <Description>
 	the upper central series of <A>U</A>. This function always terminates,
 	but it may terminate at a proper subgroup of <A>U</A>.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> ser := UpperCentralSeriesOfGroup(G);
+[ Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 0 ],
+  Pcp-group with orders [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 0 ],
+  Pcp-group with orders [ 0 ] ]
+]]></Example>
 </Description>
 </ManSection>
 
@@ -88,20 +220,21 @@ the algorithms of a number of the available series.
 	the function returns fail.
 
 <Example><![CDATA[
-gap> G := ExamplesOfSomePcpGroups(5);
-Pcp-group with orders [ 2, 0, 0, 0 ]
-gap> Igs(G);
-[ g1, g2, g3, g4 ]
-
-gap> PcpSeries(G);
-[ Pcp-group with orders [ 2, 0, 0, 0 ],
-  Pcp-group with orders [ 0, 0, 0 ],
-  Pcp-group with orders [ 0, 0 ],
-  Pcp-group with orders [ 0 ],
+gap> H := HeisenbergPcpGroup(1);
+Pcp-group with orders [ 0, 0, 0 ]
+gap> G := H / Subgroup( H, [ H.3^6 ] );
+Pcp-group with orders [ 0, 0, 6 ]
+gap> ser := TorsionByPolyEFSeries(G);
+[ Pcp-group with orders [ 0, 0, 6 ],
+  Pcp-group with orders [ 6 ],
+  Pcp-group with orders [ 3 ],
   Pcp-group with orders [  ] ]
-
-gap> List( PcpSeries(G), Igs );
-[ [ g1, g2, g3, g4 ], [ g2, g3, g4 ], [ g3, g4 ], [ g4 ], [  ] ]
+gap> List( [1..Length(ser)-1], i -> ser[i]/ser[i+1] );
+[ Pcp-group with orders [ 0, 0 ],
+  Pcp-group with orders [ 2 ],
+  Pcp-group with orders [ 3 ] ]
+gap> TorsionByPolyEFSeries( DihedralPcpGroup(0) );
+fail
 ]]></Example>
 </Description>
 </ManSection>
@@ -117,13 +250,6 @@ more useful than the actual factors. Hence we provide the following.
 	the parameter <A>flag</A> is present and equals the string <Q>snf</Q>,
 	then each pcp corresponds to a decomposition  of  the  abelian  groups
 	into direct factors.
-</Description>
-</ManSection>
-
-<ManSection>
-<Attr Name="PcpsOfEfaSeries" Arg="U"/>
-<Description>
-	returns a list of pcps corresponding to an efa series of <A>U</A>.
 
 <Example><![CDATA[
 gap> G := ExamplesOfSomePcpGroups(5);
@@ -131,7 +257,7 @@ Pcp-group with orders [ 2, 0, 0, 0 ]
 
 gap> PcpsBySeries( DerivedSeriesOfGroup(G));
 [ Pcp [ g1, g2, g3, g4 ] with orders [ 2, 2, 2, 2 ],
-  Pcp [ g2^-2, g3^-2, g4^2 ] with orders [ 0, 0, 4 ],
+  Pcp [ g2^2, g3^2, g4^2 ] with orders [ 0, 0, 4 ],
   Pcp [ g4^8 ] with orders [ 0 ] ]
 gap> PcpsBySeries( RefinedDerivedSeries(G));
 [ Pcp [ g1, g2, g3 ] with orders [ 2, 2, 2 ],
@@ -143,18 +269,28 @@ gap> PcpsBySeries( RefinedDerivedSeries(G));
 
 gap> PcpsBySeries( DerivedSeriesOfGroup(G), "snf" );
 [ Pcp [ g2, g3, g1 ] with orders [ 2, 2, 4 ],
-  Pcp [ g4^2, g3^-2, g2^2*g4^2 ] with orders [ 4, 0, 0 ],
+  Pcp [ g4^2, g3^2, g2^-2*g4^2 ] with orders [ 4, 0, 0 ],
   Pcp [ g4^8 ] with orders [ 0 ] ]
 gap> G.1^4 in DerivedSubgroup( G );
 true
 gap> G.1^2 = G.4;
 true
+]]></Example>
+</Description>
+</ManSection>
 
-gap>  PcpsOfEfaSeries( G );
-[ Pcp [ g1 ] with orders [ 2 ],
+<ManSection>
+<Attr Name="PcpsOfEfaSeries" Arg="U"/>
+<Description>
+	returns a list of pcps corresponding to an efa series of <A>U</A>.
+
+<Example><![CDATA[
+gap> G := ExamplesOfSomePcpGroups(8);
+Pcp-group with orders [ 0, 0, 0, 0, 0 ]
+gap> PcpsOfEfaSeries(G);
+[ Pcp [ g1 ] with orders [ 0 ],
   Pcp [ g2 ] with orders [ 0 ],
-  Pcp [ g3 ] with orders [ 0 ],
-  Pcp [ g4 ] with orders [ 0 ] ]
+  Pcp [ g3, g4, g5 ] with orders [ 0, 0, 0 ] ]
 ]]></Example>
 </Description>
 </ManSection>
