@@ -230,6 +230,12 @@ end );
 BindGlobal( "LowIndexSubgroupsBySeries", function( G, n, pcps )
     local grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
+    if n = 1 then
+        return [rec( repr := G, norm := G, open := 1 )];
+    elif IsTrivial(G) then
+        return [];
+    fi;
+
     # set up
     all := Pcp( G );
 
