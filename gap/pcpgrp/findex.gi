@@ -9,32 +9,40 @@
 ##
 #F SubgroupsFirstLayerByIndex( G, pcp, n )
 ##
-## All subgroup of index dividing n.
+## Enumerates N <= H <= G with [G:H] | n, where pcp describes the layer G/N.
+## Assumes G/N is either free abelian or elementary abelian.
 ##
 BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
-    local m, p, l, d, idm, exp, i, t, j, f, c, denom, dep, ind, base, k, e;
+    local m, p, l, d, idm, exp, i, t, j, f, c, denom, dep, val, ind, base, k,
+          e;
 
-    # set up
+    # A := G/N is Z^l or C_p^l (first case implemented as p=0)
     p := RelativeOrdersOfPcp( pcp )[1];
     l := Length( pcp );
 
-    # reset n, if the layer is finite, and compute divisors
-    if p > 0 then
-        m := Gcd( n, p^l );
-    else
+    # construct finite group C_m^lto work in
+    if p = 0 then
+        # nA <= H/N <= A, so it suffices to search inside A/nA = C_n^l
         m := n;
+    else
+        # first layer is C_p^l, can contain proper subgroups with index | n
+        m := GcdInt( n, p );
     fi;
-    d := Filtered( DivisorsInt( m ), x -> x <> m );
-    if Length( d ) = 0 then
+
+    if m = 1 then
+        # no proper subgroup with index | n possible in this layer
         return [rec( repr := G, norm := G, open := n )];
     fi;
 
-    # create all normed bases in m^l
+    # pivots are divisors of m, omit those equal to m (which is 0 in C_m)
+    d := Filtered( DivisorsInt( m ), x -> x <> m );
+
+    # construct lists of subgroup generator exponent vectors
     idm := IdentityMat( l );
     exp := [[]];
     for i in [1..l] do
 
-        # create subspaces of same dimension
+        # every possible way to fill i-th column mod m
         t := [];
         for e in exp do
             for j in [1..m^Length(e)-1] do
@@ -48,7 +56,7 @@ BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
         od;
         Append( exp, t );
 
-        # add higher dimension
+        # add subgroup generators with new pivot in i-th column
         t := [];
         for e in exp do
             for j in d do
@@ -63,28 +71,34 @@ BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
 
     od;
 
-    # convert each basis to a pcs
+    # lift all subgroups to G
     denom := DenominatorOfPcp( pcp );
     for i in [1..Length(exp)] do
         e   := exp[i];
+        # dep contains pivot positions, val contains pivot values
         dep := List( e, PositionNonZero );
-        ind := List( [1..Length(e)], x -> e[x][dep[x]] );
-        ind := Product( ind ) * m^(l - Length(e));
-        if ind <= m then
+        val := List( [1..Length(e)], x -> e[x][dep[x]] );
+        # index = product of pivots, including m for each omitted pivot
+        ind := Product( val ) * m^(l - Length(e));
+        # only keep indices that divide n
+        if n mod ind = 0 then
             base := [];
             for k in [1..l] do
                 j := Position( dep, k );
                 if not IsBool( j ) then
                     Add( base, MappedVector( e[j], pcp ) );
                 elif p = 0 then
+                    # restore rows that were trivial mod m
                     Add( base, MappedVector( m * idm[k], pcp ) );
                 fi;
             od;
+            # get Igs of H by lifting H/N to H
             exp[i] := AddIgsToIgs( base, denom );
+            # H is normal since G/N is abelian, so its normaliser is all of G
+            # open is the remaining index factor
             exp[i] := rec( repr := SubgroupByIgs( G, exp[i] ),
                            norm := G,
                            open := n / ind );
-            if not IsInt( exp[i].open ) then Error(); fi;
         else
             exp[i] := false;
         fi;
