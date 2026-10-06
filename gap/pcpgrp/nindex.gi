@@ -114,6 +114,12 @@ end );
 BindGlobal( "LowIndexNormalsBySeries", function( G, n, pcps )
     local U, grps, all, i, pcp, p, A, mats, new, adj, cl, l, d, act, tmp;
 
+    if n = 1 then
+        return [G];
+    elif IsTrivial(G) then
+        return [];
+    fi;
+
     # set up
     all := Pcp( G );
 
