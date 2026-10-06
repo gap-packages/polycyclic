@@ -138,7 +138,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
     od;
 
     # add checking if required
-    if CHECK_CENT@ then
+    if POLYCYCLIC_CHECK_CENT then
         Info( InfoPcpGrp, 1, "check result");
         for g in elms do
             if ForAny( Igs(C), x -> Comm(g,x) <> One(G) ) then
@@ -324,7 +324,7 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
     od;
 
     # add checking if required
-    if CHECK_CENT@ then
+    if POLYCYCLIC_CHECK_CENT then
         Info( InfoPcpGrp, 1, "check result");
         if g^k <> h then Error("conjugating element is incorrect"); fi;
     fi;

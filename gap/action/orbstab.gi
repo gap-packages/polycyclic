@@ -528,7 +528,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     # compute modulo 3 first
     S := G;
     actS := mats;
-    for p in USED_PRIMES@ do
+    for p in POLYCYCLIC_USED_PRIMES do
         Info( InfoIntStab, 1, "reducing by stabilizer mod ",p);
         T := StabilizerModPrime( S, actS, e, p );
         Info( InfoIntStab, 1, "  obtained reduction by ",IndexNC(S,T));
@@ -567,7 +567,7 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     stab := SubgroupByIgs( G, stab );
 
     # do a temporary check
-    if CHECK_INTSTAB@ then
+    if POLYCYCLIC_CHECK_INTSTAB then
         Info( InfoIntStab, 1, "checking results");
         if not CheckStabilizer(G, stab, mats, e) then
             Error("wrong stab in integral action");
@@ -657,7 +657,7 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     T := SubgroupByIgs( T, t );
 
     # do a temporary check
-    if CHECK_INTSTAB@ then
+    if POLYCYCLIC_CHECK_INTSTAB then
         Info( InfoIntStab, 1, "checking results");
         if not CheckStabilizer(G, T, mats, e) then
             Error("wrong stab in integral action");

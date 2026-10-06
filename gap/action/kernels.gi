@@ -230,7 +230,7 @@ BindGlobal( "KernelOfCongruenceMatrixActionGAP", function( G, mats )
     until IndexNC( G, U ) = 1 or IndexNC( U, K ) = 1;
 
     # verify if desired
-    if IndexNC( G, U ) > 1 and VERIFY@ then
+    if IndexNC( G, U ) > 1 and POLYCYCLIC_VERIFY then
         gens := Pcp( G, U );
         acts := InducedByPcp( pcp, gens, mats );
         if not VerifyIndependence( acts ) then
@@ -308,7 +308,7 @@ end );
 ##
 BindGlobal( "KernelOfCongruenceMatrixAction", function( G, mats )
     if ForAll( mats, x -> x = x^0 ) then return G; fi;
-    if USE_ALNUTH@ then
+    if POLYCYCLIC_USE_ALNUTH then
         return KernelOfCongruenceMatrixActionALNUTH( G, mats );
     else
         return KernelOfCongruenceMatrixActionGAP( G, mats );

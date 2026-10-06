@@ -46,13 +46,13 @@ jobs:
       - run: |
           mkdir -p "$HOME/.gap"
           cat > "$HOME/.gap/gap.ini" <<'EOF'
-          CHECK_CENT@Polycyclic := true;
-          CHECK_IGS@Polycyclic := true;
-          CHECK_INTNORM@Polycyclic := true;
-          CHECK_INTSTAB@Polycyclic := true;
-          CHECK_NORM@Polycyclic := true;
-          CHECK_SCHUR_PCP@Polycyclic := true;
-          VERIFY@Polycyclic := true;
+          POLYCYCLIC_CHECK_CENT := true;
+          POLYCYCLIC_CHECK_IGS := true;
+          POLYCYCLIC_CHECK_INTNORM := true;
+          POLYCYCLIC_CHECK_INTSTAB := true;
+          POLYCYCLIC_CHECK_NORM := true;
+          POLYCYCLIC_CHECK_SCHUR_PCP := true;
+          POLYCYCLIC_VERIFY := true;
           EOF
       - uses: gap-actions/run-pkg-tests@v4
       - uses: gap-actions/run-pkg-tests@v4
