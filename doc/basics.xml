@@ -520,6 +520,28 @@ homomorphisms are supported, in particular the following:
 
 
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<Section Label="Products of pcp-groups">
+<Heading>Products of pcp-groups</Heading>
+
+<ManSection>
+<Func Name="DirectProduct" Arg="G[, H, ...]" Label="for pcp groups"/>
+<Description>
+	returns the direct product of the given pcp-groups as a pcp-group.
+</Description>
+</ManSection>
+
+<ManSection>
+<Oper Name="SemidirectProduct" Arg="G, alpha, N" Label="for pcp groups"/>
+<Description>
+	returns the semidirect product of the pcp-groups <A>G</A> and <A>N</A>,
+	where <A>G</A> acts on <A>N</A> via <A>alpha</A>, as a pcp-group.
+</Description>
+</ManSection>
+
+</Section>
+
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 <Section Label="Changing the defining pc-presentation">
 <Heading>Changing the defining pc-presentation</Heading>
 
