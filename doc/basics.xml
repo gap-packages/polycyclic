@@ -527,6 +527,11 @@ homomorphisms are supported, in particular the following:
 <Func Name="DirectProduct" Arg="G[, H, ...]" Label="for pcp groups"/>
 <Description>
 	returns the direct product of the given pcp-groups as a pcp-group.
+
+<Example><![CDATA[
+gap> DirectProduct( DihedralPcpGroup( 0 ), AbelianPcpGroup( 1 ) );
+Pcp-group with orders [ 2, 0, 0 ]
+]]></Example>
 </Description>
 </ManSection>
 
