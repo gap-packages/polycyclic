@@ -96,7 +96,7 @@ term of the lower central series modulo the <M>(k+1)</M>-th term is <M>n-k</M>.
 	<P/>
 	The function <C>SiftUpperUnitriMatGroup</C> illustrates the use of
 	<C>SiftUpperUnitriMat</C>.
-<Example><![CDATA[
+<Listing><![CDATA[
 InstallGlobalFunction( "SiftUpperUnitriMatGroup", function( G )
     local   firstlevel,  g;
 
@@ -106,7 +106,7 @@ InstallGlobalFunction( "SiftUpperUnitriMatGroup", function( G )
     od;
     return firstlevel;
 end );
-]]></Example>
+]]></Listing>
 </Description>
 </ManSection>
 

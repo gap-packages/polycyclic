@@ -138,22 +138,15 @@ end );
 
 #############################################################################
 ##
-#F TwoCocyclesCR( A )
+#F AddTwoCocycleEquationsCR( A, sys )
 ##
-InstallGlobalFunction( TwoCocyclesCR, function( A )
-    local C, n, e, id, l, gn, gp, gi, eq, pairs, i, j, k, w1, w2, d, sys, h;
+## Add consistency equations to a system or a list of systems.
+##
+BindGlobal( "AddTwoCocycleEquationsCR", function( A, sys )
+    local n, e, id, l, gn, gi, pairs, i, j, k, w1, w2, h;
 
-    # set up system of length d
     n := Length( A.mats );
     e := RelativeOrdersOfPcp( A.factor );
-    l := Length( A.enumrels );
-
-    if IsBound(A.endosys) then
-        sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
-        for i in [1..Length(sys)] do sys[i].full := true; od;
-    else
-        sys := CRSystem( A.dim, l, A.char );
-    fi;
 
     # set up for equations
     id := IdentityMat(n);
@@ -293,6 +286,27 @@ InstallGlobalFunction( TwoCocyclesCR, function( A )
             fi;
         od;
     od;
+
+end );
+
+#############################################################################
+##
+#F TwoCocyclesCR( A )
+##
+InstallGlobalFunction( TwoCocyclesCR, function( A )
+    local l, sys, i;
+
+    # set up system of length d
+    l := Length( A.enumrels );
+
+    if IsBound(A.endosys) then
+        sys := List( A.endosys, x -> CRSystem( x[2], l, 0 ) );
+        for i in [1..Length(sys)] do sys[i].full := true; od;
+    else
+        sys := CRSystem( A.dim, l, A.char );
+    fi;
+
+    AddTwoCocycleEquationsCR( A, sys );
 
     # and return solution
     return KernelCR( A, sys );
