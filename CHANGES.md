@@ -8,12 +8,14 @@ This file describes changes in the GAP package 'polycyclic'.
   - `AddToIgs` (and variants)
   - `CentralizerBySeries`
   - `CoefficientsByFactorLattice`
+  - `CoKernelOfMultiplicativeGeneralMapping`
   - `ComplementClasses`
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
   - `FCCentre`
   - `IsMatrixRepresentation`
+  - `IsSingleValued`
   - `LowIndexNormalSubgroups`
   - `LowIndexSubgroupClasses`
   - `NormalIntersection`
@@ -24,6 +26,8 @@ This file describes changes in the GAP package 'polycyclic'.
   - `PcpOrbitStabilizer`
   - `StabilizerIntegralAction`
   - `TorsionByPolyEFSeries`
+  - `TwoCohomologyCR`
+  - `TwoCohomologyModCR`
   - `UpperCentralSeriesNilpotentPcpGroup`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group
 - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating
