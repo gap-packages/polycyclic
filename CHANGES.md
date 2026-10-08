@@ -8,12 +8,14 @@ This file describes changes in the GAP package 'polycyclic'.
   - `AddToIgs` (and variants)
   - `CentralizerBySeries`
   - `CoefficientsByFactorLattice`
+  - `CoKernelOfMultiplicativeGeneralMapping`
   - `ComplementClasses`
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
   - `FCCentre`
   - `IsMatrixRepresentation`
+  - `IsSingleValued`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`

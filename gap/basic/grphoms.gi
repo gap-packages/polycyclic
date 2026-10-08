@@ -159,7 +159,8 @@ function( hom )
     imgs := hom!.igs_gens_to_imgs[2];
 
     if Length(gens) = 0 then
-        return true;
+        # original gens are trivial, still need to check their imgs are too
+        return ForAll(MappingGeneratorsImages(hom)[2], IsOne);
     fi;
 
     # check relators
@@ -209,7 +210,7 @@ InstallMethod( CoKernelOfMultiplicativeGeneralMapping,
                "for IsFromPcpGHBI",
                [ IsFromPcpGHBI ],
 function( hom )
-	local C, gens, imgs, i, j, a, b, mapi;
+	local C, gens, fimg, imgs, i, j, a, b, mapi;
 
 	if IsTrivial(Range(hom)) then
 		return Range(hom);
@@ -219,9 +220,10 @@ function( hom )
     imgs := hom!.igs_gens_to_imgs[2];
 
     C := TrivialSubgroup(Range(hom)); # the cokernel
+    fimg := ImagesSource(hom);
 
     if Length(gens) = 0 then
-        return C;
+        return fimg;
     fi;
 
     # check relators
@@ -259,7 +261,7 @@ function( hom )
 		C := ClosureSubgroupNC(C, a/b);
 	od;
 
-	C := NormalClosure(ImagesSource(hom),C);
+	C := NormalClosure(fimg,C);
 	return C;
 end );
 
