@@ -387,7 +387,7 @@ gap>  NumeratorOfPcp(pcp);
 gap>  GroupOfPcp(pcp);
 Pcp-group with orders [ 2, 0 ]
 gap> OneOfPcp(pcp);
-identity
+id
 ]]></Example>
 
 <Example><![CDATA[
@@ -398,7 +398,7 @@ Pcp-group with orders [ 0, 0, 0 ]
 gap>  GeneratorsOfGroup( G );
 [ g1, g2, g3, g4 ]
 gap>  GeneratorsOfGroup( D );
-[ g2^-2, g3^-2, g4^2 ]
+[ g2^2, g3^2, g4^2 ]
 
 # an ordinary pcp for G / D
 gap> pcp1 := Pcp( G, D );
@@ -408,7 +408,7 @@ Pcp [ g1, g2, g3, g4 ] with orders [ 2, 2, 2, 2 ]
 gap>  pcp2 := Pcp( G, D, "snf" );
 Pcp [ g2, g3, g1 ] with orders [ 2, 2, 4 ]
 
-gap>  g := Random( G );
+gap>  g := G.1 * G.2^-4 * G.3 * G.4^2;
 g1*g2^-4*g3*g4^2
 
 # compute the exponent vector of g in G/D with respect to pcp1
