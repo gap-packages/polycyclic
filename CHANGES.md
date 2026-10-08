@@ -6,6 +6,7 @@ This file describes changes in the GAP package 'polycyclic'.
   in the following functions:
   - `AbelianPcpGroup`
   - `AddToIgs` (and variants)
+  - `AllSubgroupsAbelian`
   - `CentralizerBySeries`
   - `CoefficientsByFactorLattice`
   - `ComplementClasses`

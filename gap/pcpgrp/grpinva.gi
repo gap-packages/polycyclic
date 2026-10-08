@@ -157,12 +157,14 @@ end );
 ##
 #F AllSubgroupsAbelian( dim, l )
 ##
-## The subgroups of the free abelian group of rank dim up to index l given
-## as exponent vectors.
+## The proper subgroups B of the free abelian group A of rank dim up to index
+## l, and with l*A <= B <= A, given as exponent vectors.
 ##
 BindGlobal( "AllSubgroupsAbelian", function( dim, l )
     local A, gens, fac, sub, i, p, r, sp, j, q, B, pcps, tmp, L, pcpL,
           pcpsS, C, grps, U, V, pcpS, new;
+
+    if l = 1 then return []; fi;
 
     # create the abelian group
     A := AbelianPcpGroup( dim, List( [1..dim], x -> l ) );
@@ -213,13 +215,15 @@ BindGlobal( "AllSubgroupsAbelian", function( dim, l )
         tmp := [];
         for U in grps do
             for V in sub[i] do
-                new := AbelianIntersection( U, V );
-                Append( tmp, new );
+                new := BaseIntersectionIntMats( U, V );
+                Add( tmp, new );
             od;
         od;
         grps := ShallowCopy( tmp );
     od;
     grps := List( grps, x -> InsertZeros( dim, x, l ) );
+    grps := Filtered( grps,
+        x -> Product( [1..dim], i -> x[i][i] ) <= l );
     return grps{[2..Length(grps)]};
 end );
 
