@@ -272,17 +272,16 @@ BindGlobal( "AddTwoCocycleEquationsCR", function( A, sys )
         od;
     od;
 
-    # add a check ((j ^ i) ^-i ) = j
+    # consistency 8: (i ^ (j^-1)) j = j i
     for i in [1..n] do
         for j in [1..i-1] do
-            w1 := CollectedTwoCR( A, gi[j], pairs[i][j] );
-            w1 := CollectedTwoCR( A, gn[j], w1 );
-            w1 := CollectedTwoCR( A, w1, gi[j] );
-            if w1.word <> id[i] then
-                Error("in rel check ");
-            elif not IsZeroTail( w2.tail ) then
-               # Error("relations bug");
-                AddEquationsCR( sys, w1.tail, [], true );
+            w2 := CollectedTwoCR( A, gn[j], gn[i] );
+            h := CollectedTwoCR( A, w2, gi[j] );
+            w1 := CollectedTwoCR( A, h, gn[j] );
+            if w1.word <> w2.word then
+                Error( "(i ^ (j^-1)) j <> j i" );
+            else
+                AddEquationsCR( sys, w1.tail, w2.tail, true );
             fi;
         od;
     od;
