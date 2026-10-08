@@ -540,6 +540,17 @@ Pcp-group with orders [ 2, 0, 0 ]
 <Description>
 	returns the semidirect product of the pcp-groups <A>G</A> and <A>N</A>,
 	where <A>G</A> acts on <A>N</A> via <A>alpha</A>, as a pcp-group.
+
+<Example><![CDATA[
+gap> G := AbelianPcpGroup( 1 );;
+gap> N := AbelianPcpGroup( 1 );;
+gap> inv := GroupHomomorphismByImages( N, N, [ N.1 ], [ N.1^-1 ] );;
+gap> alpha := GroupHomomorphismByImages( G, Group( inv ), [ G.1 ], [ inv ] );;
+gap> K := SemidirectProduct( G, alpha, N );
+Pcp-group with orders [ 0, 0 ]
+gap> K.2 ^ K.1 = K.2^-1;
+true
+]]></Example>
 </Description>
 </ManSection>
 
