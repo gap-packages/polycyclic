@@ -201,6 +201,20 @@ function( H, U )
     fi;
 end );
 
+# The GAP library method for two groups with known Size divides the sizes,
+# and infinity / n has no method for n > 1. It is ranked above the method
+# for pcp groups, so this one takes the same rank offset to stay ahead of it.
+InstallMethod( IndexNC, "for pcp groups with known Size value",
+               IsIdenticalObj,
+               [IsPcpGroup and HasSize, IsPcpGroup and HasSize and IsFinite],
+               {} -> 2 * RankFilter( IsHandledByNiceMonomorphism ),
+function( H, U )
+    if Size( H ) = infinity then
+        return infinity;
+    fi;
+    return Size( H ) / Size( U );
+end );
+
 InstallMethod( IndexOp, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
 function( H, U )
