@@ -13,6 +13,8 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
   - `FCCentre`
+  - `Index`
+  - `IndexNC`
   - `IsMatrixRepresentation`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
