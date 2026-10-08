@@ -16,6 +16,8 @@ This file describes changes in the GAP package 'polycyclic'.
   - `FCCentre`
   - `IsMatrixRepresentation`
   - `IsSingleValued`
+  - `LowIndexNormalSubgroups`
+  - `LowIndexSubgroupClasses`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`
