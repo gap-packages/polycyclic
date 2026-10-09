@@ -46,7 +46,7 @@ InstallMethod( SchurExtensionEpimorphism, "for pcp groups", [IsPcpGroup], functi
 
     if n = 1 then
         ext := AbelianPcpGroup(1, [0]); # the infinite cyclic group
-        return GroupHomomorphismByImagesNC( ext, G, GeneratorsOfGroup(ext), GeneratorsOfGroup(G) );;
+        return GroupHomomorphismByImagesNC( ext, G, GeneratorsOfGroup(ext), g );;
     fi;
 
     # get collector for extension
