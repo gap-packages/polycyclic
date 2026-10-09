@@ -14,6 +14,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
   - `FCCentre`
+  - `IsElementaryAbelian`
   - `IsMatrixRepresentation`
   - `IsSingleValued`
   - `NormalIntersection`

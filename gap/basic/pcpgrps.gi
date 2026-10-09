@@ -364,6 +364,7 @@ function( G )
     local rel, p;
     if not IsFinite(G) or not IsAbelian(G) then return false; fi;
     rel := List( Igs(G), RelativeOrderPcp );
+    if IsEmpty(rel) then return true; fi;
     if Length(Set(rel)) > 1 then return false; fi;
     if ForAny( rel, x -> not IsPrime(x) ) then return false; fi;
     p := rel[1];
