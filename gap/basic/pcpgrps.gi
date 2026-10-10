@@ -330,6 +330,7 @@ function( G )
         # take next term of lc series
         U!.isNormal := true;
         V := CommutatorSubgroup( G, U );
+        Unbind( U!.isNormal );
 
         # if we arrive at the trivial group
         if Size( V ) = 1 then return true; fi;
