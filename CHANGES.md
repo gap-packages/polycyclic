@@ -24,6 +24,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `NormalizerPcpGroup`
   - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
+  - `PcpElementByGenExpList`
   - `PcpOrbitStabilizer`
   - `SchurExtensionEpimorphism`
   - `StabilizerIntegralAction`
