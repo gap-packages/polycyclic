@@ -18,6 +18,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `IsMatrixRepresentation`
   - `IsNilpotentGroup`
   - `IsSingleValued`
+  - `NonAbelianExteriorSquarePlusEmbedding`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`
