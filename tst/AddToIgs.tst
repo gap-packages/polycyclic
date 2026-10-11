@@ -112,9 +112,7 @@ gap> U := Subgroup(g,gen);
 Pcp-group with orders [ 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
   0, 0, 0, 0, 0, 0, 0, 0 ]
 gap> Cgs(gen);
-[ g2^3*g3^3*g4^3*g5^4*g7^2*g8^2*g9^2*g10^2*g13*g14*g15*g16^-1*g18^-1*
-  g19^-1*g20^-1*g22*g23*g24, g1*g2^2*g3^2*g4*g6^2*g7*g8*g9*g10*g12^-1*
-  g13^-1*g17^3*g18^3*g19^2*g21^-1*g22^-2*g23^-2*g24^-2*g25^-1*g26^3 ]
+[ g5*g6^2*g7*g25^-1*g26^2, g1*g4^4*g5^3*g10^2*g11*g16^-1*g24 ]
 
 #
 # Fix a bug in AddToIgs
@@ -212,6 +210,34 @@ gap> u := S.1^-1;;
 gap> v := S.2 * S.1^-2 * S.3 * S.2^2;;
 gap> Index(S, Subgroup(S, [u, v]));
 1
+
+#
+# Many generators, most of them redundant
+#
+gap> Reset(GlobalMersenneTwister, 1);;
+gap> G := UnitriangularPcpGroup(10, 5);;
+gap> gens := List([1..200], i -> Random(G));;
+gap> igs := AddToIgs([], gens);;
+gap> Cgs(igs) = Cgs(G);
+true
+gap> res := AddToIgsParallel([], gens, [], List(gens, g -> g^G.1));;
+gap> Cgs(res[1]) = Cgs(G);
+true
+gap> res[2] = List(res[1], g -> g^G.1);
+true
+gap> G := UnitriangularPcpGroup(5, 0);;
+gap> gens := List([1..50], i -> Random(G));;
+gap> igs := AddToIgs([], gens);;
+gap> Cgs(igs) = Cgs(G);
+true
+gap> CheckIgs(igs, gens);
+true
+gap> gens := [G.1^2*G.5, G.2^3*G.4^-1, G.3^2*G.1];;
+gap> igs := AddToIgs([], gens);;
+gap> CheckIgs(igs, gens);
+true
+gap> Index(G, SubgroupByIgs(G, igs));
+infinity
 
 #
 gap> STOP_TEST( "AddToIgs.tst", 1);
