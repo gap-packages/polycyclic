@@ -40,6 +40,8 @@ This file describes changes in the GAP package 'polycyclic'.
 - Optimise `NormalIntersection`
 - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
   and `Image` dispatchers to improve speed and memory usage
+- Implement a method for sorting pcp-subgroups, which prevents hangs when creating
+  sets or dictionary of pcp-subgroups
 - Various janitorial changes
 
 ## 2.18 (2026-04-09)
