@@ -113,7 +113,7 @@ end );
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
     local coll, rels, n, todo, tododo, ind, indd, g, gg, d, h, hh, k,
-          c, i, r, sub, val, j, f, nrmd, pairs;
+          c, i, r, sub, val, j, f, nrmd, pairs, added;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -132,6 +132,9 @@ function( pcs, gens, ppcs, pgens )
         indd[d] := ppcs[i];
     od;
 
+    # initial gens still need to be reduced
+    added := true;
+
     # do a reduction step
     c      := TailLimit(ind, c);
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
@@ -145,6 +148,7 @@ function( pcs, gens, ppcs, pgens )
         j := PositionMinimum(val);
         g  := Remove(todo, j);
         gg := Remove(tododo, j);
+        Remove(val, j);
         d  := Depth( g );
         f := [];
 
@@ -182,11 +186,15 @@ function( pcs, gens, ppcs, pgens )
             d := Depth(g);
         od;
 
+        # only adjust if needed
+        if Length(f) = 0 and not added then continue; fi;
+
         # adjust
         c := TailLimit(ind, c);
         ReduceExpoPara(ind, todo, indd, tododo, rels);
 
         # add powers and commutators
+        added := false;
         for d in f do
             g :=  ind[d];
             gg := indd[d];
@@ -196,6 +204,7 @@ function( pcs, gens, ppcs, pgens )
                 if Depth(k) < c then
                     Add(todo,   k);
                     Add(tododo, gg^r);
+                    added := true;
                 fi;
             fi;
             for j in [1..n] do
@@ -207,12 +216,14 @@ function( pcs, gens, ppcs, pgens )
                     if Depth(k) < c then
                         Add(todo, k);
                         Add(tododo, Comm(gg, indd[j]));
+                        added := true;
                     fi;
                     if rels[j] = 0 then
                         k := Comm(g, ind[j]^-1);
                         if Depth(k) < c then
                             Add(todo, k);
                             Add(tododo, Comm(gg, indd[j]^-1));
+                            added := true;
                         fi;
                     fi;
                 fi;
