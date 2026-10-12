@@ -112,8 +112,8 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, todo, tododo, ind, indd, g, gg, d, h, hh, k,
-          c, i, r, sub, val, j, f, nrmd, pairs;
+    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, k,
+          c, i, r, sub, keep, val, j, f, nrmd, pairs;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -121,6 +121,7 @@ function( pcs, gens, ppcs, pgens )
     coll := Collector( gens[1] );
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
+    inf  := 0 in rels;
     c    := n+1;
 
     # set up
@@ -135,10 +136,14 @@ function( pcs, gens, ppcs, pgens )
     # do a reduction step
     c      := TailLimit(ind, c);
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
-    sub    := Filtered(sub, i -> not gens[i] in gens{[1..i-1]});
+    # Keep the first occurrence of each generator, in input order.
+    todo   := gens{sub};
+    StableSortParallel(todo, sub);
+    keep   := Filtered([1..Length(sub)], i -> i = 1 or todo[i] <> todo[i-1]);
+    sub    := Set(sub{keep});
     todo   := gens{sub};
     tododo := pgens{sub};
-    val    := List(todo, x -> IGSValFun(x));
+    val    := List(todo, IGSValFun);
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
@@ -184,7 +189,7 @@ function( pcs, gens, ppcs, pgens )
 
         # adjust
         c := TailLimit(ind, c);
-        ReduceExpoPara(ind, todo, indd, tododo, rels);
+        if inf then ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
 
         # add powers and commutators
         for d in f do
@@ -223,7 +228,7 @@ function( pcs, gens, ppcs, pgens )
         sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
         todo   := todo{sub};
         tododo := tododo{sub};
-        val    := List(todo, x -> IGSValFun(x));
+        val    := List(todo, IGSValFun);
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
