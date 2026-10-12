@@ -134,7 +134,7 @@ end );
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, k, pair, t;
+    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, a, b, k, pair, t;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -173,12 +173,19 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             if g = h then
                 g := g^0;
             else
-                pair := GcdPcp(g, h);
-                h := pair[1];
-                g := pair[2];
-                if h <> ind[d] then
-                    ind[d] := NormedPcpElement( h );
-                    AddSet(f, d);
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcp would leave h unchanged.
+                    g := g * h^(-a/b);
+                else
+                    pair := GcdPcp(g, h);
+                    h := pair[1];
+                    g := pair[2];
+                    if h <> ind[d] then
+                        ind[d] := NormedPcpElement( h );
+                        AddSet(f, d);
+                    fi;
                 fi;
             fi;
             d := Depth(g);
