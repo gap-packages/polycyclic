@@ -338,6 +338,7 @@ function( G, alpha, N )
     iso := IsomorphismPcGroup( G );
     img := Range( iso );
     iso := iso * IsomorphismPcpGroup( img );
+    SetIsBijective( iso, true ); # avoid unrelated bug in GAP < 4.13
     img := Range( iso );
     inv := InverseGeneralMapping( iso );
     S := SemidirectProduct( img, inv * alpha, N );
