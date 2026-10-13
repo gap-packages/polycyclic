@@ -404,8 +404,8 @@ BindGlobal( "FromTheLeftCollectorByRelations", function( gens, rels )
                 #Print( "conjnp", [j,i], ": ", rels.conjnp[j][i]^-1, "\n" );
                 Unbind( rels.conjnp[j][i] );
             elif IsBound( rels.commnp[j][i] )  then
-                SetConjugate( ftl, j, i, (gens[j] * rels.commnp[j][i])^-1 );
-                #Print( "commnp", [j,i], ": ", (gens[j] * rels.commnp[j][i])^-1, "\n" );
+                SetConjugate( ftl, j, i, (gens[j]^-1 * rels.commnp[j][i])^-1 );
+                #Print( "commnp", [j,i], ": ", (gens[j]^-1 * rels.commnp[j][i])^-1, "\n" );
                 Unbind( rels.commnp[j][i] );
             fi;
         od;
