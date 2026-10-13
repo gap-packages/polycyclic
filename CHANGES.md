@@ -14,16 +14,20 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
   - `FCCentre`
+  - `IsElementaryAbelian`
   - `IsMatrixRepresentation`
+  - `IsNilpotentGroup`
   - `IsSingleValued`
   - `LowIndexNormalSubgroups`
   - `LowIndexSubgroupClasses`
+  - `NonAbelianExteriorSquarePlusEmbedding`
   - `NormalIntersection`
   - `NormalizerIntegralAction`
   - `NormalizerPcpGroup`
   - `OrbitCongruenceAction`
   - `OrbitIntegralAction`
   - `PcpOrbitStabilizer`
+  - `SchurExtensionEpimorphism`
   - `StabilizerIntegralAction`
   - `TorsionByPolyEFSeries`
   - `TwoCohomologyCR`

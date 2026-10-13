@@ -46,7 +46,7 @@ InstallMethod( SchurExtensionEpimorphism, "for pcp groups", [IsPcpGroup], functi
 
     if n = 1 then
         ext := AbelianPcpGroup(1, [0]); # the infinite cyclic group
-        return GroupHomomorphismByImagesNC( ext, G, GeneratorsOfGroup(ext), GeneratorsOfGroup(G) );;
+        return GroupHomomorphismByImagesNC( ext, G, GeneratorsOfGroup(ext), g );;
     fi;
 
     # get collector for extension
@@ -225,7 +225,7 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
     local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,
             e,  j,  gens,  imgs,  k,  alpha,  S,  embed;
 
-    if Size(G) = 1 then return G; fi;
+    if Size(G) = 1 then return IdentityMapping( G ); fi;
 
     # set up
     g := Igs(G);
