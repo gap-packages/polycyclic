@@ -6,7 +6,7 @@ gap> START_TEST( "gh-00230.tst" );
 #
 gap> G := TrivialGroup( IsPcpGroup );;
 gap> NonAbelianExteriorSquarePlusEmbedding( G );
-IdentityMapping( Pcp-group with orders [  ] )
+[  ] -> [  ]
 
 #
 gap> STOP_TEST( "gh-00230.tst" );

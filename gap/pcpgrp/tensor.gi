@@ -439,7 +439,14 @@ end );
 BindGlobal( "NonAbelianTensorSquarePlusEpimorphism", function(G)
     local   n,  embed,  S,  coll,  y,  sys,  T,  lift;
 
-    if Size(G) = 1 then return IdentityMapping( G ); fi;
+    if Size(G) = 1 then
+        embed := NonAbelianExteriorSquarePlusEmbedding(G);
+        S := Range(embed);
+        S!.embedding := embed;
+        lift := GroupHomomorphismByImagesNC(G, S, [], []);
+        SetIsSurjective(lift, true);
+        return lift;
+    fi;
 
     # some info
     n := Length(Igs(G));
@@ -491,7 +498,12 @@ BindGlobal( "NonAbelianTensorSquareEpimorphism", function( G )
     local   n,  epi,  T,  U,  t,  r,  c,  i,  j,  GoG,  gens,  embed,
             imgs,  alpha;
 
-    if Size(G) = 1 then return IdentityMapping(G); fi;
+    if Size(G) = 1 then
+        alpha := GroupHomomorphismByImagesNC(
+            G, NonAbelianExteriorSquare(G), [], [] );
+        SetIsSurjective(alpha, true);
+        return alpha;
+    fi;
 
     # set up
     n := Length(Pcp(G));
