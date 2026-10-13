@@ -13,6 +13,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
+  - `CyclicGroup`
   - `FCCentre`
   - `IsElementaryAbelian`
   - `IsMatrixRepresentation`

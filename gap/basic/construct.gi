@@ -119,14 +119,15 @@ function( filter, n )
     local coll, grp;
 
     # construct group
-    coll := FromTheLeftCollector( 1 );
-    SetRelativeOrderNC( coll, 1, n );
-    UpdatePolycyclicCollector(coll);
-    grp := PcpGroupByCollectorNC( coll );
-
     if n > 1 then
+        coll := FromTheLeftCollector( 1 );
+        SetRelativeOrderNC( coll, 1, n );
+        UpdatePolycyclicCollector(coll);
+        grp := PcpGroupByCollectorNC( coll );
         SetMinimalGeneratingSet(grp, [grp.1]);
     else
+        grp := PcpGroupByCollectorNC( FromTheLeftCollector( 0 ) );
+        grp := GroupWithGenerators( [One(grp)] );
         SetMinimalGeneratingSet(grp, []);
     fi;
     return grp;
