@@ -8,6 +8,10 @@ function( G, matrices )
     local   coll,  conjugates,  powers,  d,  I,  i,  j,  conj,  rhs,  k;
 
     coll := Collector( G );
+    if GeneratorsOfGroup(G) <>
+       GeneratorsOfGroup(PcpGroupByCollectorNC(coll)) then
+        return GroupHomomorphismByImages( G, matrices ) <> fail;
+    fi;
     conjugates := coll![PC_CONJUGATES];
     powers := coll![PC_POWERS];
 
