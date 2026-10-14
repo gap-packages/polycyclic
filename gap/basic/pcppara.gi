@@ -250,7 +250,7 @@ end );
 InstallGlobalFunction( CgsParallel, function( gens, pre )
     local   can,  cann,  i,  f,  e,  j,  l,  d,  r, s;
 
-    if Length( gens ) = 0 then return []; fi;
+    if Length( gens ) = 0 then return [[], []]; fi;
 
     can  := IgsParallel( gens, pre );
     cann := can[2];
