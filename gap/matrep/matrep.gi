@@ -7,6 +7,8 @@ InstallGlobalFunction( "IsMatrixRepresentation",
 function( G, matrices )
     local   coll,  conjugates,  powers,  d,  I,  i,  j,  conj,  rhs,  k;
 
+    if IsEmpty(matrices) then return IsEmpty(GeneratorsOfGroup(G)); fi;
+
     coll := Collector( G );
     conjugates := coll![PC_CONJUGATES];
     powers := coll![PC_POWERS];
@@ -58,7 +60,7 @@ function( hom )
     View( mapi[1] );
     Print( " -> " );
 
-    d := Length(mapi[2][1]);
+    d := DimensionOfMatrixGroup( Range(hom) );
     Print( "<", Length(mapi[2]), " ", d, "x", d, "-matrices>" );
     return;
 end );
@@ -665,10 +667,13 @@ function( tgroup )
     fi;
 
     pcp := Pcp( tgroup );
-    coll := Collector( PcpGroupByPcp(pcp) );
-    mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
-
-    mgroup := Group( mats, mats[1]^0 );
+    if Length(pcp) = 0 then
+        mgroup := Group( [], IdentityMat(1) );
+    else
+        coll := Collector( PcpGroupByPcp(pcp) );
+        mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
+        mgroup := Group( mats, mats[1]^0 );
+    fi;
     UseIsomorphismRelation( tgroup, mgroup );
 
     phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
