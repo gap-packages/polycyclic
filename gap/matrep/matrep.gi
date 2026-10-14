@@ -655,7 +655,7 @@ InstallMethod( UnitriangularMatrixRepresentation,
         [ IsPcpGroup and IsNilpotentGroup ],
         0,
 function( tgroup )
-    local  coll,  mats,  mgroup,  phi;
+    local  pcp,  coll,  mats,  mgroup,  phi;
 
     ## Does the group have power relations?
     if not IsTorsionFree( tgroup ) then
@@ -664,14 +664,15 @@ function( tgroup )
         ## isomorphism to a group defined along the upper central series.
     fi;
 
-    coll := Collector( tgroup );
+    pcp := Pcp( tgroup );
+    coll := Collector( PcpGroupByPcp(pcp) );
     mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
 
     mgroup := Group( mats, mats[1]^0 );
     UseIsomorphismRelation( tgroup, mgroup );
 
     phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
-                   GeneratorsOfGroup(tgroup),
+                   GeneratorsOfPcp(pcp),
                    GeneratorsOfGroup(mgroup) );
     SetIsBijective( phi, true );
     SetIsHomomorphismIntoMatrixGroup( phi, true );
