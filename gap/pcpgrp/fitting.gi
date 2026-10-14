@@ -205,12 +205,12 @@ BindGlobal( "FCCentrePcpGroup", function( G )
     if Size(C) = 1 then return N; fi;
 
     # find iterated centralizer under action of K_p(G)
-    K := KernelOfFiniteAction( H, Pcp(C) );
+    K := KernelOfFiniteAction( H, Pcp(C, "snf") );
     gens := Pcp( K, F );
     for g in AsList( gens ) do
 
         # get pcp
-        pcp := Pcp( C );
+        pcp := Pcp( C, "snf" );
         if Length( pcp ) = 0 then return N; fi;
 
         # compute action by g on pcp
