@@ -7,6 +7,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `AbelianPcpGroup`
   - `AddToIgs` (and variants)
   - `CentralizerBySeries`
+  - `CgsParallel`
   - `CoefficientsByFactorLattice`
   - `CoKernelOfMultiplicativeGeneralMapping`
   - `ComplementClasses`
