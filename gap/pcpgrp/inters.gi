@@ -275,94 +275,101 @@ end );
 ## Based on Section 8.4 of "Algorithms for Polycyclic Groups" by B. Eick.
 ##
 BindGlobal( "IntersectionPcpGroups", function( U, H )
-    local G, ser, A, p, UA_A, HA_A, UA_HA_A, gensU, imgsU, iU, U_HA, homH, K,
-          A_H, q, Q, gensH, imgsH, T, delta, r, F, rq, basis, lifts, pcp, mats,
-          e, act, oper, stab;
+    local G, ser, A, p, G_A, gensU, imgsU, paraU, UA_A, gensH, imgsH, paraH,
+          HA_A, UA_HA_A, prei, U_HA, A_H, delta, K, pcpA, ords, free, tors,
+          lifts, pcpK, mats, e, q, Q, act, oper, stab;
 
-    # Create parent group and abelian normal subgroup
+    # create parent group and abelian normal subgroup
     G := ClosureGroup( U, H );
     ser := EfaSeries( G );
     A := ser[ Length( ser ) - 1 ];
-
-    # Calculate UA/A, HA/A, and their intersection (by induction)
     p := NaturalHomomorphismByNormalSubgroupNC( G, A );
-    UA_A := ImagesSet( p, U );
-    HA_A := ImagesSet( p, H );
-    UA_HA_A := Intersection( UA_A, HA_A );
+    G_A := ImagesSource( p );
 
-    # Calculate U ∩ HA as preimage of (UA ∩ HA)/A
+    # calculate UA/A
     gensU := Igs( U );
     imgsU := List( gensU, x -> ImagesRepresentative( p, x ) );
-    iU := GroupHomomorphismByImagesNC( U, UA_A, gensU, imgsU );
-    SetKernelOfMultiplicativeGeneralMapping(
-        iU, NormalIntersection( A, U )
+    paraU := IgsParallel( imgsU, gensU );
+    UA_A := SubgroupByIgs( G_A, paraU[1] );
+
+    # calculate HA/A
+    gensH := Igs( H );
+    imgsH := List( gensH, x -> ImagesRepresentative( p, x ) );
+    paraH := IgsParallel( imgsH, gensH );
+    HA_A := SubgroupByIgs( G_A, paraH[1] );
+
+    # calculate UA/A ∩ HA/A = (UA ∩ HA)/A (by induction)
+    UA_HA_A := Intersection( UA_A, HA_A );
+
+    # calculate U ∩ HA
+    prei := List(
+        Igs( UA_HA_A ),
+        x -> MappedVector( ExponentsByIgs( paraU[1], x ), paraU[2] )
     );
-    U_HA := PreImagesSetNC( iU, UA_HA_A );
-    # TODO: verify we hit this early exit?
+    U_HA := SubgroupByIgs( U, Igs( NormalIntersection( A, U ) ), prei );
+
     if IsTrivial( U_HA ) then
         return U_HA;
     fi;
 
     A_H := NormalIntersection( A, H );
-    # TODO: verify we hit this early exit?
     if A_H = A then
         return U_HA;
     fi;
+
+    # create derivation (minus projection to A/(A ∩ H))
+    # code adapted from PreImagesRepresentativeNC for ToPcpGHBI
+    delta := function( x )
+        local exp, h;
+        exp := ExponentsByIgs( paraH[1], ImagesRepresentative( p, x ) );
+        if IsEmpty( exp ) then return x; fi;
+        h := MappedVector( exp, paraH[2] );
+        return h ^ -1 * x;
+    end;
+
+    # work inside A/(A ∩ H)
+    K := U_HA;
+    # avoid constructing A/(A ∩ H) explictily for now
+    # use SNF (based on code by Max Mayer)
+    if HirschLength( A ) > HirschLength( A_H ) then
+        pcpA := Pcp( A, A_H, "snf" );
+        ords := RelativeOrdersOfPcp( pcpA );
+        free := Filtered( [ 1 .. Length( ords ) ], i -> ords[i] = 0 );
+        tors := Filtered( [ 1 .. Length( ords ) ], i -> ords[i] <> 0 );
+        lifts := pcpA{ free };
+        pcpK := Pcp( K );
+        # create matrices corresponding to affine action
+        mats := List( pcpK, g -> Concatenation(
+            List( lifts, a -> Concatenation(
+                ExponentsByPcp( pcpA, a ^ g ){ free} , [0]
+            ) ),
+            [ Concatenation(
+                ExponentsByPcp( pcpA, delta( g ) ){ free },
+                [1]
+            ) ]
+        ) );
+        e := Concatenation(
+            ListWithIdenticalEntries( Length( free ), 0 ),
+            [1]
+        );
+        # calculate stabiliser of affine action, replace K
+        K := StabilizerIntegralAction( K, mats, e );
+        if IsEmpty( tors ) or IsTrivial( K ) then
+            return K;
+        fi;
+    fi;
+    # construct Q := A/(A ∩ H)
     q := NaturalHomomorphismByNormalSubgroupNC( A, A_H );
     Q := ImagesSource( q );
 
-    # Create derivation
-    gensH := Igs( H );
-    imgsH := List( gensH, x -> ImagesRepresentative( p, x ) );
-    homH := GroupHomomorphismByImagesNC( H, HA_A, gensH, imgsH );
-    delta := function( x )
-        local h;
-        h := PreImagesRepresentativeNC( homH, ImagesRepresentative( p, x ) );
-        return ImagesRepresentative( q, h ^ -1 * x );
-    end;
-
-    # Work inside A/(A ∩ H) (= Q)
-    T := TorsionSubgroup( Q );
-    K := U_HA;
-    if not IsFinite( Q ) then
-        r := NaturalHomomorphismByNormalSubgroupNC( Q, T );
-        F := ImagesSource(r);
-        rq := q * r;
-        basis := IndependentGeneratorsOfAbelianGroup( F );
-        lifts := List( basis, x -> PreImagesRepresentativeNC( rq, x ) );
-        pcp := Pcp( K );
-        # Create matrices corresponding to affine action
-        mats := List( pcp, g -> Concatenation(
-            List( lifts, a -> Concatenation(
-                IndependentGeneratorExponents(
-                    F, ImagesRepresentative( rq, a^g )
-                ),
-                [0]
-            ) ),
-            [ Concatenation( IndependentGeneratorExponents(
-                F, ImagesRepresentative( r, delta( g ) )
-            ), [1] ) ]
-        ) );
-        # Calculate stabiliser of affine action, replace K
-        e := Concatenation(
-            ListWithIdenticalEntries( Length( basis ), 0 ),
-            [1]
-        );
-        K := StabilizerIntegralAction( K, mats, e );
-    fi;
-
-    if IsTrivial( T ) or IsTrivial( K ) then
-        return K;
-    fi;
-
-    pcp := Pcp( K );
-    act := List( pcp, g -> [ g, delta( g ) ] );
+    pcpK := Pcp( K );
+    act := List( pcpK, g -> [ g, ImagesRepresentative( q, delta( g ) ) ] );
     oper := function( pnt, g )
         return ImagesRepresentative( q,
             PreImagesRepresentativeNC( q, pnt ) ^ g[1]
         ) * g[2];
     end;
-    stab := PcpOrbitStabilizer( One( Q ), pcp, act, oper );
+    stab := PcpOrbitStabilizer( One( Q ), pcpK, act, oper );
     return SubgroupByIgs( K, stab.stab );
 end );
 
