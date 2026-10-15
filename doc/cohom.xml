@@ -16,7 +16,8 @@ our cohomology computations.
 <Heading>Cohomology records</Heading>
 
 Cohomology records provide the necessary technical setup for the
-cohomology computations for polycyclic groups.
+cohomology computations for polycyclic groups. The underlying abelian
+group of the module must be non-trivial.
 
 <ManSection>
 <Func Name="CRRecordByMats" Arg="U, mats"/>
