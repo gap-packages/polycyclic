@@ -112,7 +112,7 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, k,
+    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b, q, k,
           c, i, r, sub, keep, val, j, f, nrmd, pairs;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
@@ -172,16 +172,25 @@ function( pcs, gens, ppcs, pgens )
                 g  := g^0;
                 gg := gg^0;
             else
-                pairs := GcdPcpPara(g, h, gg, hh);
-                h := pairs[1];
-                g := pairs[2];
-                hh := pairs[3];
-                gg := pairs[4];
-                if h <> ind[d] then
-                    nrmd := NormedPcpElementPara( h, hh );
-                    ind[d]  := nrmd[1];
-                    indd[d] := nrmd[2];
-                    AddSet(f, d);
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcpPara would leave h and hh unchanged.
+                    q  := a/b;
+                    g  := g  * h^-q;
+                    gg := gg * hh^-q;
+                else
+                    pairs := GcdPcpPara(g, h, gg, hh);
+                    h := pairs[1];
+                    g := pairs[2];
+                    hh := pairs[3];
+                    gg := pairs[4];
+                    if h <> ind[d] then
+                        nrmd := NormedPcpElementPara( h, hh );
+                        ind[d]  := nrmd[1];
+                        indd[d] := nrmd[2];
+                        AddSet(f, d);
+                    fi;
                 fi;
             fi;
             d := Depth(g);
