@@ -297,7 +297,7 @@ end );
 
 #############################################################################
 ##
-#M  SemiDirectProduct( G, alpha, N ) . . . . . . . . . . . . . for pcp groups
+#M  SemidirectProduct( G, alpha, N ) . . . . . . . . . . . . . for pcp groups
 ##
 InstallMethod( SemidirectProduct, "for pcp groups",
                [ IsPcpGroup, IsGroupHomomorphism, IsPcpGroup ],
@@ -322,6 +322,111 @@ function( G, alpha, N )
         SetSize( S, Product( List( groups, Size ) ) );
     fi;
 
+    return S;
+end );
+
+InstallMethod( SemidirectProduct,
+               "for a finite polycyclic group and a pcp group",
+               [ IsGroup, IsGroupHomomorphism, IsPcpGroup ],
+function( G, alpha, N )
+    local iso, img, inv, S, info, proj;
+
+    if not ( IsFinite( G ) and IsPolycyclicGroup( G ) ) then
+        TryNextMethod();
+    fi;
+
+    iso := IsomorphismPcGroup( G );
+    img := Range( iso );
+    iso := iso * IsomorphismPcpGroup( img );
+    SetIsBijective( iso, true ); # avoid unrelated bug in GAP < 4.13
+    img := Range( iso );
+    inv := InverseGeneralMapping( iso );
+    S := SemidirectProduct( img, inv * alpha, N );
+
+    # modify the info
+    info := SemidirectProductInfo( S );
+    info.embeddings[1] := iso * Embedding( S, 1 );
+    SetIsInjective( info.embeddings[1], true );
+    proj := Projection( S );
+    info.projections := proj * inv;
+    SetIsSurjective( info.projections, true );
+    SetKernelOfMultiplicativeGeneralMapping(
+        info.projections, KernelOfMultiplicativeGeneralMapping( proj )
+    );
+    info.groups[1] := G;
+    return S;
+end );
+
+InstallMethod( SemidirectProduct,
+               "for a pcp group and a finite polycyclic group",
+               [ IsPcpGroup, IsGroupHomomorphism, IsGroup ],
+function( G, alpha, N )
+    local iso, img, gens, auts, A, action, S, info;
+
+    if not ( IsFinite( N ) and IsPolycyclicGroup( N ) ) then
+        TryNextMethod();
+    fi;
+
+    iso := IsomorphismPcGroup( N );
+    iso := iso * IsomorphismPcpGroup( Range( iso ) );
+    img := Range( iso );
+    gens := Igs( G );
+    auts := List( gens,
+        g -> InducedAutomorphism( iso, ImagesRepresentative( alpha, g ) ) );
+    A := Group( auts, IdentityMapping( img ) );
+    action := GroupHomomorphismByImagesNC( G, A, gens, auts );
+    S := SemidirectProduct( G, action, img );
+
+    # modify the info
+    info := SemidirectProductInfo( S );
+    info.embeddings[2] := iso * Embedding( S, 2 );
+    SetIsInjective( info.embeddings[2], true );
+    info.groups[2] := N;
+    return S;
+end );
+
+InstallOtherMethod( SemidirectProduct,
+                    "for a finite automorphism group and a pcp group",
+                    [ IsGroup, IsPcpGroup ],
+function( G, N )
+    local gens, elms, iso, img, inv, S, info, proj;
+
+    if not IsGroupOfAutomorphisms( G ) or AutomorphismDomain( G ) <> N or
+       ( HasIsFinite( G ) and not IsFinite( G ) ) then
+        TryNextMethod();
+    fi;
+    if IsFinite( N ) then
+        return SemidirectProduct( G, IdentityMapping( G ), N );
+    fi;
+
+    # workaround because GAP likes finite groups a bit too much sometimes
+    # setting nice monomorphism makes the embedding actually usable
+    gens := Igs( N );
+    elms := Union( List( gens, g -> Orbit( G, g ) ) );
+    iso := NiceMonomorphismAutomGroup( G, elms, gens );
+    if not HasNiceMonomorphism( G ) then
+        SetNiceMonomorphism( G, iso );
+    fi;
+    SetIsHandledByNiceMonomorphism( G, true );
+    img := ImagesSource( iso );
+    SetSize( G, Size( img ) );
+    if not IsPolycyclicGroup( img ) then
+        TryNextMethod();
+    fi;
+    inv := InverseGeneralMapping( iso );
+    S := SemidirectProduct( img, inv, N );
+
+    # modify the info
+    info := SemidirectProductInfo( S );
+    info.embeddings[1] := iso * Embedding( S, 1 );
+    SetIsInjective( info.embeddings[1], true );
+    proj := Projection( S );
+    info.projections := proj * inv;
+    SetIsSurjective( info.projections, true );
+    SetKernelOfMultiplicativeGeneralMapping(
+        info.projections, KernelOfMultiplicativeGeneralMapping( proj )
+    );
+    info.groups[1] := G;
     return S;
 end );
 

@@ -38,6 +38,7 @@ This file describes changes in the GAP package 'polycyclic'.
 - Implement a method for `RepresentativeAction`
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
+- Extend `SemidirectProduct` to mixed pcp and finite polycyclic groups
 - Optimise `NormalIntersection`
 - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
   and `Image` dispatchers to improve speed and memory usage
