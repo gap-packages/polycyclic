@@ -343,7 +343,8 @@ function( G, g, h, act )
     local P, c;
     if act <> OnPoints then TryNextMethod(); fi;
 
-    P := PcpGroupByCollectorNC( Collector( G ) );
+    if g = h then return One(G); fi;
+    P := ClosureGroup( G, [ g, h ] );
     c := ConjugacyElementsBySeries( G, g, h, PcpsOfEfaSeries( P ) );
     if c = false then return fail; fi;
     return c;
