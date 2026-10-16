@@ -94,8 +94,8 @@ end );
 #M  EfaSeries( G )
 ##
 ##  Computes a normal series of G whose factors are elementary or free
-##  abelian (efa). The normal series will also be normal under action
-##  of the parent of G
+##  abelian (efa). The normal series will also be normal under the action
+##  of the normaliser of G in its parent.
 ##
 InstallGlobalFunction( IsEfaFactorPcp, function( pcp )
     local gens, denm, i, j, c, cycl, rels, p;
@@ -142,12 +142,19 @@ InstallGlobalFunction( IsEfaFactorPcp, function( pcp )
 end );
 
 InstallGlobalFunction( EfaSeriesParent, function( G )
-    local ser, new, i, U, V, pcp,  nat, ref;
+    local P, ser, new, i, U, V, pcp, nat, ref;
 
-    # take the normal subgroups in the defining pc series
-    ser := Filtered( PcpSeries(G), x -> IsNormal(G,x) );
+    # take subgroups in the defining pc series that are normal in the parent
+    P := Parent(G);
+    while not IsIdenticalObj(P, Parent(P)) do P := Parent(P); od;
+    ser := PcpSeries(G);
+    ser := Concatenation(
+        ser{[1]},
+        Filtered(ser{[2..Length(ser)]}, x -> IsNormal(P,x))
+    );
 
     # check the factors
+    Unbind(G!.efapcp);
     new := [G];
     for i in [1..Length(ser)-1] do
         U := ser[i];
@@ -174,11 +181,13 @@ end );
 
 InstallMethod( EfaSeries, [IsPcpGroup],
 function( G )
-    local efa, new, L, A, B;
+    local P, efa, new, L, A, B;
 
-    # use the series of the parent which has a defining pcs
-    if G = Parent( G ) then return EfaSeriesParent(G); fi;
-    efa := EfaSeries( Parent( G ) );
+    P := Parent( G );
+    if IsIdenticalObj( G, P ) or not HasEfaSeries( P ) then
+        return EfaSeriesParent( G );
+    fi;
+    efa := EfaSeries( P );
 
     # intersect each subgroup into G
     new := [G];
