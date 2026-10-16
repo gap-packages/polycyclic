@@ -48,7 +48,7 @@ BindGlobal( "MaximalSubgroupsByLayer", function( G, pcp, p )
     # if it is a trivial factor
     if Length( pcp ) = 1 then
         AddInversesCR( C );
-        t := ComplementClassesCR( C );
+        return ComplementClassesCR( C );
     fi;
 
     # get maximal subgroups
