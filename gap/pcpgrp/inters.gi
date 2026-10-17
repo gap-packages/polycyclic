@@ -280,7 +280,7 @@ BindGlobal( "IntersectionPcpGroups", function( U, H )
           lifts, pcpK, mats, e, q, Q, act, oper, stab;
 
     # create parent group and abelian normal subgroup
-    G := ClosureGroup( U, H );
+    G := ClosureGroup( U, Igs( H ) );
     ser := EfaSeries( G );
     A := ser[ Length( ser ) - 1 ];
     p := NaturalHomomorphismByNormalSubgroupNC( G, A );
