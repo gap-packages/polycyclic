@@ -39,7 +39,7 @@ This file describes changes in the GAP package 'polycyclic'.
 - Implement a method for `RepresentativeAction`
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
-- Optimise `NormalIntersection`
+- Optimise `NormalIntersection` and `EfaSeries`
 - Make more use of `NC` versions of functions, and avoid the use of generic `PreImage`
   and `Image` dispatchers to improve speed and memory usage
 - Implement a method for sorting pcp-subgroups, which prevents hangs when creating
