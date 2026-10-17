@@ -20,7 +20,7 @@ BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
     p := RelativeOrdersOfPcp( pcp )[1];
     l := Length( pcp );
 
-    # construct finite group C_m^lto work in
+    # construct finite group C_m^l to work in
     if p = 0 then
         # nA <= H/N <= A, so it suffices to search inside A/nA = C_n^l
         m := n;
