@@ -112,8 +112,8 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, todo, tododo, ind, indd, g, gg, d, h, hh, k,
-          c, i, r, sub, val, j, f, nrmd, pairs, added;
+    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b,
+          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -121,6 +121,7 @@ function( pcs, gens, ppcs, pgens )
     coll := Collector( gens[1] );
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
+    inf  := 0 in rels;
     c    := n+1;
 
     # set up
@@ -138,10 +139,14 @@ function( pcs, gens, ppcs, pgens )
     # do a reduction step
     c      := TailLimit(ind, c);
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
-    sub    := Filtered(sub, i -> not gens[i] in gens{[1..i-1]});
+    # Keep the first occurrence of each generator, in input order.
+    todo   := gens{sub};
+    StableSortParallel(todo, sub);
+    keep   := Filtered([1..Length(sub)], i -> i = 1 or todo[i] <> todo[i-1]);
+    sub    := Set(sub{keep});
     todo   := gens{sub};
     tododo := pgens{sub};
-    val    := List(todo, x -> IGSValFun(x));
+    val    := List(todo, IGSValFun);
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
@@ -171,16 +176,25 @@ function( pcs, gens, ppcs, pgens )
                 g  := g^0;
                 gg := gg^0;
             else
-                pairs := GcdPcpPara(g, h, gg, hh);
-                h := pairs[1];
-                g := pairs[2];
-                hh := pairs[3];
-                gg := pairs[4];
-                if h <> ind[d] then
-                    nrmd := NormedPcpElementPara( h, hh );
-                    ind[d]  := nrmd[1];
-                    indd[d] := nrmd[2];
-                    AddSet(f, d);
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcpPara would leave h and hh unchanged.
+                    q  := a/b;
+                    g  := g  * h^-q;
+                    gg := gg * hh^-q;
+                else
+                    pairs := GcdPcpPara(g, h, gg, hh);
+                    h := pairs[1];
+                    g := pairs[2];
+                    hh := pairs[3];
+                    gg := pairs[4];
+                    if h <> ind[d] then
+                        nrmd := NormedPcpElementPara( h, hh );
+                        ind[d]  := nrmd[1];
+                        indd[d] := nrmd[2];
+                        AddSet(f, d);
+                    fi;
                 fi;
             fi;
             d := Depth(g);
@@ -192,7 +206,7 @@ function( pcs, gens, ppcs, pgens )
 
         # adjust
         c := TailLimit(ind, c);
-        ReduceExpoPara(ind, todo, indd, tododo, rels);
+        if inf then ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
 
         # add powers and commutators
         added := false;
@@ -235,7 +249,7 @@ function( pcs, gens, ppcs, pgens )
         sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
         todo   := todo{sub};
         tododo := tododo{sub};
-        val    := List(todo, x -> IGSValFun(x));
+        val    := List(todo, IGSValFun);
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
@@ -262,7 +276,7 @@ end );
 InstallGlobalFunction( CgsParallel, function( gens, pre )
     local   can,  cann,  i,  f,  e,  j,  l,  d,  r, s;
 
-    if Length( gens ) = 0 then return []; fi;
+    if Length( gens ) = 0 then return [[], []]; fi;
 
     can  := IgsParallel( gens, pre );
     cann := can[2];

@@ -15,10 +15,12 @@
 #F TailLimit
 ##
 BindGlobal( "TailLimit", function( ind, c )
-    local k, i;
-    k := List(ind, x -> not IsBool(x) and LeadingExponent(x)=1);
-    i := c-1; while i > 0 and k[i]=true do i := i-1; od; i := i+1;
-    return i;
+    local i;
+    i := c-1;
+    while i > 0 and not IsBool(ind[i]) and LeadingExponent(ind[i]) = 1 do
+        i := i-1;
+    od;
+    return i+1;
 end );
 
 #############################################################################
@@ -134,8 +136,8 @@ end );
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, c, ind, g, d, todo, val, j, f, h, k, pair, t,
-          added;
+    local coll, rels, n, inf, c, ind, g, d, todo, val, j, f, h, a, b, k,
+          pair, t, added;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -143,6 +145,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     coll := Collector(gens[1]);
     rels := RelativeOrders(coll);
     n    := NumberOfGenerators(coll);
+    inf  := 0 in rels;
     c    := n+1;
 
     # set up
@@ -155,7 +158,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     # do a reduction step
     c := TailLimit(ind, c);
     todo := Set(Filtered(gens, x -> Depth(x) < c));
-    val := List(todo, x -> IGSValFun(x));
+    val := List(todo, IGSValFun);
 
     # loop over to-do list until it is empty
     while Length(todo) > 0 and c > 1 do
@@ -178,12 +181,19 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             if g = h then
                 g := g^0;
             else
-                pair := GcdPcp(g, h);
-                h := pair[1];
-                g := pair[2];
-                if h <> ind[d] then
-                    ind[d] := NormedPcpElement( h );
-                    AddSet(f, d);
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcp would leave h unchanged.
+                    g := g * h^(-a/b);
+                else
+                    pair := GcdPcp(g, h);
+                    h := pair[1];
+                    g := pair[2];
+                    if h <> ind[d] then
+                        ind[d] := NormedPcpElement( h );
+                        AddSet(f, d);
+                    fi;
                 fi;
             fi;
             d := Depth(g);
@@ -195,7 +205,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
 
         # adjust
         c := TailLimit(ind, c);
-        ReduceExpo(ind, todo, rels);
+        if inf then ReduceExpo(ind, todo, rels); fi;
 
         # add powers and commutators
         added := false;
@@ -233,7 +243,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         
         # reduce
         todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, x -> IGSValFun(x));
+        val := List(todo, IGSValFun);
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
@@ -307,7 +317,7 @@ end );
 ## denominator of this pcp.
 ##
 BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
-    local coll, rels, n, ind, todo, g, c, h, d, pair, t, val, j;
+    local coll, rels, n, inf, ind, todo, g, c, h, d, pair, t, val, j;
 
     if Length( pcs1 ) = 0 then
         return AsList( pcs2 );
@@ -323,6 +333,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     coll := Collector( pcs1[1] );
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
+    inf  := 0 in rels;
     ind  := List( [1..n], x -> false );
     todo := [];
     for g in pcs2 do ind[Depth(g)] := g; od;
@@ -337,7 +348,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     # set counter
     c := TailLimit(ind, n+1);
     todo := Filtered( todo, x -> Depth( x ) < c );
-    val := List(todo, x -> IGSValFun(x));
+    val := List(todo, IGSValFun);
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
@@ -360,9 +371,9 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
             d := Depth( g );
         od;
         c := TailLimit(ind, c);
-        ReduceExpo(ind, todo, rels);
+        if inf then ReduceExpo(ind, todo, rels); fi;
         todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, x -> IGSValFun(x));
+        val := List(todo, IGSValFun);
     od;
     ind := Filtered( ind, x -> not IsBool( x ) );
     if POLYCYCLIC_CHECK_IGS then
