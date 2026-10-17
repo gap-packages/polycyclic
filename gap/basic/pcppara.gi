@@ -112,8 +112,8 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b, q, k,
-          c, i, r, sub, keep, val, j, f, nrmd, pairs;
+    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b,
+          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -133,6 +133,9 @@ function( pcs, gens, ppcs, pgens )
         indd[d] := ppcs[i];
     od;
 
+    # initial gens still need to be reduced
+    added := true;
+
     # do a reduction step
     c      := TailLimit(ind, c);
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
@@ -150,6 +153,7 @@ function( pcs, gens, ppcs, pgens )
         j := PositionMinimum(val);
         g  := Remove(todo, j);
         gg := Remove(tododo, j);
+        Remove(val, j);
         d  := Depth( g );
         f := [];
 
@@ -196,11 +200,16 @@ function( pcs, gens, ppcs, pgens )
             d := Depth(g);
         od;
 
+        # ind unchanged and every todo entry already reduced, so ReduceExpo,
+        # TailLimit and the filter would be no-ops
+        if Length(f) = 0 and not added then continue; fi;
+
         # adjust
         c := TailLimit(ind, c);
         if inf then ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
 
         # add powers and commutators
+        added := false;
         for d in f do
             g :=  ind[d];
             gg := indd[d];
@@ -210,6 +219,7 @@ function( pcs, gens, ppcs, pgens )
                 if Depth(k) < c then
                     Add(todo,   k);
                     Add(tododo, gg^r);
+                    added := true;
                 fi;
             fi;
             for j in [1..n] do
@@ -221,12 +231,14 @@ function( pcs, gens, ppcs, pgens )
                     if Depth(k) < c then
                         Add(todo, k);
                         Add(tododo, Comm(gg, indd[j]));
+                        added := true;
                     fi;
                     if rels[j] = 0 then
                         k := Comm(g, ind[j]^-1);
                         if Depth(k) < c then
                             Add(todo, k);
                             Add(tododo, Comm(gg, indd[j]^-1));
+                            added := true;
                         fi;
                     fi;
                 fi;
