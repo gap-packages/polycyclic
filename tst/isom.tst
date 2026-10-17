@@ -121,6 +121,10 @@ true
 gap> iso := IsomorphismPcpGroupByIgs( [] );;
 gap> IsTrivial( Source( iso ) ) and IsTrivial( Image( iso ) );
 true
+gap> iso := IsomorphismPcpGroupByIgs( [] );
+[  ] -> [  ]
+gap> IsomorphismPcpGroupByIgs( [ G.12 ] );
+Error, <igs> must be an induced generating sequence
 
 #
 gap> STOP_TEST( "isom.tst", 10000000);
