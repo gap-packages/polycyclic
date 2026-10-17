@@ -222,6 +222,16 @@ end);
 
 #############################################################################
 ##
+#M <pcpgrp> < <pcpgrp>
+##
+InstallMethod( \<, "for pcp groups",
+               IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+function( G, H )
+    return Cgs( G ) < Cgs( H );
+end );
+
+#############################################################################
+##
 #M ClosureGroup( <pcpgrp>, <pcpgrp> )
 ##
 InstallMethod( ClosureGroup, "for pcp groups",
