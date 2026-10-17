@@ -329,8 +329,7 @@ function( G, U )
     fi;
 
      # find a common overgroup of G and U and compute the normalizer in there
-     H := PcpGroupByCollectorNC( Collector( G ) );
-     H := SubgroupByIgs( H, Igs(G), Igs(U) );
+     H := ClosureGroup( G, Igs( U ) );
      return Intersection( G, NormalizerPcpGroup( H, U ) );
 end );
 
