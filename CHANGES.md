@@ -32,6 +32,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `TorsionByPolyEFSeries`
   - `TwoCohomologyCR`
   - `TwoCohomologyModCR`
+  - `UnitriangularMatrixRepresentation`
   - `UpperCentralSeriesNilpotentPcpGroup`
 - Implement `Intersection` for arbitrary subgroups of a pcp-group
 - `ConjugacyElementsBySeries` now works for elements not contained in the conjugating

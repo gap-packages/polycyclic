@@ -7,6 +7,8 @@ InstallGlobalFunction( "IsMatrixRepresentation",
 function( G, matrices )
     local   coll,  conjugates,  powers,  d,  I,  i,  j,  conj,  rhs,  k;
 
+    if IsEmpty(matrices) then return IsEmpty(GeneratorsOfGroup(G)); fi;
+
     coll := Collector( G );
     conjugates := coll![PC_CONJUGATES];
     powers := coll![PC_POWERS];
@@ -58,7 +60,7 @@ function( hom )
     View( mapi[1] );
     Print( " -> " );
 
-    d := Length(mapi[2][1]);
+    d := DimensionOfMatrixGroup( Range(hom) );
     Print( "<", Length(mapi[2]), " ", d, "x", d, "-matrices>" );
     return;
 end );
@@ -655,7 +657,7 @@ InstallMethod( UnitriangularMatrixRepresentation,
         [ IsPcpGroup and IsNilpotentGroup ],
         0,
 function( tgroup )
-    local  coll,  mats,  mgroup,  phi;
+    local  pcp,  coll,  mats,  mgroup,  phi;
 
     ## Does the group have power relations?
     if not IsTorsionFree( tgroup ) then
@@ -664,14 +666,18 @@ function( tgroup )
         ## isomorphism to a group defined along the upper central series.
     fi;
 
-    coll := Collector( tgroup );
-    mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
-
-    mgroup := Group( mats, mats[1]^0 );
+    pcp := Pcp( tgroup );
+    if Length(pcp) = 0 then
+        mgroup := Group( [], IdentityMat(1) );
+    else
+        coll := Collector( PcpGroupByPcp(pcp) );
+        mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
+        mgroup := Group( mats, mats[1]^0 );
+    fi;
     UseIsomorphismRelation( tgroup, mgroup );
 
     phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
-                   GeneratorsOfGroup(tgroup),
+                   GeneratorsOfPcp(pcp),
                    GeneratorsOfGroup(mgroup) );
     SetIsBijective( phi, true );
     SetIsHomomorphismIntoMatrixGroup( phi, true );
