@@ -186,7 +186,8 @@ function( pcs, gens, ppcs, pgens )
             d := Depth(g);
         od;
 
-        # only adjust if needed
+        # ind unchanged and every todo entry already reduced, so ReduceExpo,
+        # TailLimit and the filter would be no-ops
         if Length(f) = 0 and not added then continue; fi;
 
         # adjust
