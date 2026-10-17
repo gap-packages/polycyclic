@@ -940,6 +940,7 @@ function( coll )
     fi;
 
     FromTheLeftCollector_SetCommute( coll );
+    Unbind( coll![PC_COMMUTATOR_DEPTH_BOUNDS] );
 
     ## We have to declare the collector up to date now because the following
     ## functions need to collect and are careful enough.
