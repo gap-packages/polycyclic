@@ -101,13 +101,15 @@ IGSValFun := IGSValFun4;
 ##
 ## For two non-trivial PcpElements g and h with the same depth, apply the
 ## Euclidean algorithm to the leading exponents, and do the same operations
-## on the elements themselves.
+## on the elements themselves. At a depth of finite relative order the
+## quotients are taken modulo that order.
 ##
 BindGlobal( "GcdPcp", function(g, h)
-    local x, y, a, b, q, r, t;
+    local x, y, a, b, q, r, t, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -123,12 +125,12 @@ BindGlobal( "GcdPcp", function(g, h)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
 
-        t := x * y ^ -q;
+        t := x * y ^ -SmallestResidue(q, rel);
         x := y;
         y := t;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -190,7 +192,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcp would leave h unchanged.
-                    g := g * h^(-a/b);
+                    g := g * h^-SmallestResidue(a/b, rels[d]);
                 else
                     pair := GcdPcp(g, h);
                     h := pair[1];
