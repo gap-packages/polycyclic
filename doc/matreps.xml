@@ -13,8 +13,7 @@ nilpotent groups.
 <Oper Name="UnitriangularMatrixRepresentation" Arg="G"/>
 <Description>
 	computes a faithful representation of a torsion-free nilpotent group
-	<A>G</A> as unipotent lower triangular matrices over the integers.  The
-	pc-presentation for <A>G</A> must not contain any power relations.  The
+	<A>G</A> as unipotent lower triangular matrices over the integers. The
 	algorithm is described in <Cite Key="dGN02"/>.
 </Description>
 </ManSection>
