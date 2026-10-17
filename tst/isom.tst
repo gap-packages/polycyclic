@@ -105,5 +105,27 @@ gap> AbelianInvariants( Q );
 [ 0 ]
 
 #
-gap> STOP_TEST( "homs.tst", 10000000);
+# Test IsomorphismPcpGroupByIgs
+#
+gap> G := ExamplesOfSomePcpGroups( 15 );;
+gap> H := Subgroup( G, [ G.1, G.2 ^ 3 * G.3, G.4 ] );;
+gap> igs := Igs( H );;
+gap> iso := IsomorphismPcpGroupByIgs( igs );;
+gap> K := Image( iso );;
+gap> imgs := GeneratorsOfPcp( Pcp( K ) );;
+gap> List( igs, g -> ImagesRepresentative( iso, g ) ) = imgs;
+true
+gap> hom := GroupHomomorphismByImages( H, K, igs, imgs );;
+gap> hom <> fail and IsBijective( hom );
+true
+gap> iso := IsomorphismPcpGroupByIgs( [] );;
+gap> IsTrivial( Source( iso ) ) and IsTrivial( Image( iso ) );
+true
+gap> iso := IsomorphismPcpGroupByIgs( [] );
+[  ] -> [  ]
+gap> IsomorphismPcpGroupByIgs( [ G.12 ] );
+Error, <igs> must be an induced generating sequence
+
+#
+gap> STOP_TEST( "isom.tst", 10000000);
 
