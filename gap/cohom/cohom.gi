@@ -307,6 +307,13 @@ end );
 BindGlobal( "CRRecordByPcp", function( G, pcp )
     local A;
 
+    # compute snf if needed
+    if not IsSNFPcp( pcp ) and
+       Length( Set( RelativeOrdersOfPcp( pcp ) ) ) > 1 then
+        pcp := Pcp( GroupOfPcp( pcp ),
+                    SubgroupByIgs( G, DenominatorOfPcp( pcp ) ), "snf" );
+    fi;
+
     # set up record
     A := rec( group  := G,
               factor := Pcp( G, GroupOfPcp( pcp ) ),

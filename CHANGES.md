@@ -14,6 +14,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `ComplementClassesCR`
   - `ConjugacyElementsBySeries`
   - `ConjugacyIntegralAction`
+  - `CRRecordByPcp`
   - `CyclicGroup`
   - `FCCentre`
   - `IsElementaryAbelian`
