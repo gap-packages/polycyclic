@@ -124,6 +124,9 @@ InstallGlobalFunction( SubgroupUnitriangularPcpGroup, function( mats )
     n := Length( mats[1] );
     p := Characteristic( mats[1][1][1] );
     G := UnitriangularPcpGroup( n, p );
+    if n = 1 then
+        return G;
+    fi;
 
     # compute corresponding generators
     g := [];
