@@ -1020,8 +1020,8 @@ gap> DirectFactorsOfGroup( last );
 [ Group([ f1, f2, f3 ]), Group([ f4 ]) ]
 gap> List( last, Size );
 [ 8, 3 ]
-gap> IdGroup( last2[1] ); # the quaternion group of Order 8
-[ 8, 4 ]
+gap> StructureDescription( last2[1] ); # the quaternion group of Order 8
+"Q8"
 
 gap> G := DihedralPcpGroup( 0 );
 Pcp-group with orders [ 2, 0 ]
