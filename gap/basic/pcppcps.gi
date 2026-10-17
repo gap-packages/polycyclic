@@ -27,9 +27,12 @@ end );
 ##
 #F ReduceExpo
 ##
+## Returns the positions changed in <gen>.
+##
 BindGlobal( "ReduceExpo", function( ind, gen, rel )
-    local i, j, a, b, q, f, k;
+    local i, j, a, b, q, cg;
 
+    cg := [];
     for i in [1..Length(ind)] do
         if not IsBool(ind[i]) and rel[i]=0 then
             b := LeadingExponent(ind[i]);
@@ -47,10 +50,12 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
                 q := QuoInt(a,b);
                 if q <> 0 then
                     gen[j] := gen[j]*ind[i]^-q;
+                    AddSet(cg, j);
                 fi;
             od;
         fi;
     od;
+    return cg;
 end );
 
 #############################################################################
@@ -137,7 +142,7 @@ end );
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
     local coll, rels, n, inf, c, ind, g, d, todo, val, j, f, h, a, b, k,
-          pair, t, added;
+          pair, t, added, oldc, chg, i;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -204,8 +209,13 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         if Length(f) = 0 and not added then continue; fi;
 
         # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        if inf then ReduceExpo(ind, todo, rels); fi;
+        chg := [];
+        if inf then chg := ReduceExpo(ind, todo, rels); fi;
+        for i in chg do
+            if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+        od;
 
         # add powers and commutators
         added := false;
@@ -216,6 +226,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 k := g ^ RelativeOrderPcp(g);
                 if Depth(k) < c then
                     Add(todo, k);
+                    Add(val, IGSValFun(k));
                     added := true;
                 fi;
             fi;
@@ -228,12 +239,14 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                     k := Comm(g, ind[j]);
                     if Depth(k) < c then
                         Add(todo, k);
+                        Add(val, IGSValFun(k));
                         added := true;
                     fi;
                     if rels[j] = 0 then
                         k := Comm(g, ind[j]^-1);
                         if Depth(k) < c then
                             Add(todo, k);
+                            Add(val, IGSValFun(k));
                             added := true;
                         fi;
                     fi;
@@ -242,8 +255,11 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         od;
         
         # reduce
-        todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, IGSValFun);
+        if c < oldc or Length(chg) > 0 then
+            t := Filtered([1..Length(todo)], i -> Depth(todo[i]) < c);
+            todo := todo{t};
+            val := val{t};
+        fi;
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 

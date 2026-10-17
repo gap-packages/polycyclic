@@ -74,9 +74,11 @@ end );
 #F ReduceExpoPara( ind, gen, indd, pgen, rel )
 ##
 ## Parallel version of  ReduceExpo.
+## Returns the positions changed in <gen>.
 ##
 BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
-    local i, j, a, b, q, f, k;
+    local i, j, a, b, q, cg;
+    cg := [];
     for i in [ 1 .. Length( ind ) ] do
         if not IsBool( ind[i] ) and rel[i] = 0 then
             b := LeadingExponent( ind[i] );
@@ -96,11 +98,12 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                 if q <> 0 then
                     gen[j] := gen[j] * ind[i] ^ (- q);
                     pgen[j] := pgen[j] * indd[i] ^ (- q);
+                    AddSet( cg, j );
                 fi;
             od;
         fi;
     od;
-    return;
+    return cg;
 end );
 
 #############################################################################
@@ -113,7 +116,7 @@ end );
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
     local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b,
-          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added;
+          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added, oldc, chg;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -205,8 +208,13 @@ function( pcs, gens, ppcs, pgens )
         if Length(f) = 0 and not added then continue; fi;
 
         # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        if inf then ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
+        chg := [];
+        if inf then chg := ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
+        for i in chg do
+            if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+        od;
 
         # add powers and commutators
         added := false;
@@ -219,6 +227,7 @@ function( pcs, gens, ppcs, pgens )
                 if Depth(k) < c then
                     Add(todo,   k);
                     Add(tododo, gg^r);
+                    Add(val, IGSValFun(k));
                     added := true;
                 fi;
             fi;
@@ -231,6 +240,7 @@ function( pcs, gens, ppcs, pgens )
                     if Depth(k) < c then
                         Add(todo, k);
                         Add(tododo, Comm(gg, indd[j]));
+                        Add(val, IGSValFun(k));
                         added := true;
                     fi;
                     if rels[j] = 0 then
@@ -238,6 +248,7 @@ function( pcs, gens, ppcs, pgens )
                         if Depth(k) < c then
                             Add(todo, k);
                             Add(tododo, Comm(gg, indd[j]^-1));
+                            Add(val, IGSValFun(k));
                             added := true;
                         fi;
                     fi;
@@ -246,10 +257,12 @@ function( pcs, gens, ppcs, pgens )
         od;
 
         # reduce
-        sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
-        todo   := todo{sub};
-        tododo := tododo{sub};
-        val    := List(todo, IGSValFun);
+        if c < oldc or Length(chg) > 0 then
+            sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
+            todo   := todo{sub};
+            tododo := tododo{sub};
+            val    := val{sub};
+        fi;
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
