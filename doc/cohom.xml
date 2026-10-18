@@ -16,12 +16,13 @@ our cohomology computations.
 <Heading>Cohomology records</Heading>
 
 Cohomology records provide the necessary technical setup for the
-cohomology computations for polycyclic groups.
+cohomology computations for polycyclic groups. The underlying abelian
+group of the module must be non-trivial.
 
 <ManSection>
 <Func Name="CRRecordByMats" Arg="U, mats"/>
 <Description>
-	creates an external module. Let <A>U</A> be a pcp group which acts via the
+	creates an external module. Let <A>U</A> be a non-trivial pcp group which acts via the
 	list of matrices <A>mats</A> on a vector space of the form <M>&ZZ;^n</M> or <M>\mathbb{F}_p^n</M>.
 	Then this function creates a record which can be used as input for the
 	cohomology computations.

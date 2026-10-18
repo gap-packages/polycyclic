@@ -239,6 +239,10 @@ end );
 ##
 BindGlobal( "AddFieldCR", function( A )
     local ro;
+
+    if Length( A.normal ) = 0 then
+        Error("module must be non-trivial");
+    fi;
     ro := Set( RelativeOrdersOfPcp( A.normal ) );
 
     # Verify that A.normal is free or elementary abelian.
@@ -264,8 +268,14 @@ end );
 InstallGlobalFunction( CRRecordByMats, function( G, mats )
     local p, cr;
 
+    if IsTrivial( G ) then
+        Error("acting group must be non-trivial");
+    fi;
     if Length( mats ) <> Length(Pcp(G)) then
-        Error("wrong input in CRRecord");
+        Error("number of matrices must equal the length of Pcp(G)");
+    fi;
+    if Length( mats[1] ) = 0 then
+        Error("module must be non-trivial");
     fi;
     if IsInt(mats[1][1][1]) then p := 0;
     else p := Characteristic( Field( mats[1][1][1] ) );
