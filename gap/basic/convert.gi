@@ -155,6 +155,48 @@ InstallMethod( IsomorphismPcpGroup,
     SUM_FLAGS,
     IdentityMapping );
 
+#############################################################################
+##
+#F IsomorphismPcpGroupByIgs( igs )
+#F IsomorphismPcpGroupByIgsNC( igs )
+##
+InstallGlobalFunction( IsomorphismPcpGroupByIgs, function( igs )
+    local t;
+
+    t := CheckIgs( igs, [] );
+    if t <> true then
+        Error( t );
+    fi;
+    return IsomorphismPcpGroupByIgsNC( igs );
+end );
+
+InstallGlobalFunction( IsomorphismPcpGroupByIgsNC, function( igs )
+    local G, pcp, H, hom;
+
+    if IsEmpty( igs ) then
+        G := TrivialGroup( IsPcpGroup );
+    else
+        G := Group( igs );
+        SetIgs( G, igs );
+    fi;
+
+    # Don't use Pcp( ... ) to avoid converting to Ngs or Cgs
+    pcp := rec( gens  := igs,
+                rels  := List( igs, RelativeOrderPcp ),
+                denom := [],
+                numer := igs,
+                one   := One( G ),
+                group := G
+    );
+    pcp := Objectify( PcpType, pcp );
+    AddTailInfo( pcp );
+
+    H := PcpGroupByPcp( pcp );
+    hom := GroupHomomorphismByImagesNC( G, H, igs, Igs( H ) );
+    SetIsBijective( hom, true );
+    return hom;
+end );
+
 
 #############################################################################
 ##
