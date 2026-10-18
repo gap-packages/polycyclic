@@ -181,7 +181,14 @@ end );
 BindGlobal( "NonAbelianExteriorSquareEpimorphism", function( G )
     local   lift,  D,  gens,  imgs,  epi,  lambda;
 
-    if Size(G) = 1 then return IdentityMapping( G ); fi;
+    if Size(G) = 1 then
+        D := TrivialSubgroup(G);
+        epi := GroupHomomorphismByImagesNC(D, G, [], []);
+        SetIsSurjective(epi, true);
+        D!.epimorphism := epi;
+        D!.crossedPairing := function(g, h) return One(D); end;
+        return epi;
+    fi;
 
     lift := SchurExtensionEpimorphism(G);
     D    := DerivedSubgroup( Source(lift) );
@@ -225,7 +232,14 @@ BindGlobal( "NonAbelianExteriorSquarePlusEmbedding", function(G)
     local   g,  n,  r,  w,  extlift,  F,  f,  D,  d,  m,  s,  c,  i,
             e,  j,  gens,  imgs,  k,  alpha,  S,  embed;
 
-    if Size(G) = 1 then return IdentityMapping( G ); fi;
+    if Size(G) = 1 then
+        D := NonAbelianExteriorSquare(G);
+        S := TrivialSubgroup(D);
+        S!.group := G;
+        embed := GroupHomomorphismByImagesNC(D, S, [], []);
+        SetIsSurjective(embed, true);
+        return embed;
+    fi;
 
     # set up
     g := Igs(G);

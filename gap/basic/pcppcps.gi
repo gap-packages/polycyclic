@@ -27,9 +27,12 @@ end );
 ##
 #F ReduceExpo
 ##
+## Returns the positions changed in <gen>.
+##
 BindGlobal( "ReduceExpo", function( ind, gen, rel )
-    local i, j, a, b, q, f, k;
+    local i, j, a, b, q, cg;
 
+    cg := [];
     for i in [1..Length(ind)] do
         if not IsBool(ind[i]) and rel[i]=0 then
             b := LeadingExponent(ind[i]);
@@ -47,10 +50,12 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
                 q := QuoInt(a,b);
                 if q <> 0 then
                     gen[j] := gen[j]*ind[i]^-q;
+                    AddSet(cg, j);
                 fi;
             od;
         fi;
     od;
+    return cg;
 end );
 
 #############################################################################
@@ -96,13 +101,15 @@ IGSValFun := IGSValFun4;
 ##
 ## For two non-trivial PcpElements g and h with the same depth, apply the
 ## Euclidean algorithm to the leading exponents, and do the same operations
-## on the elements themselves.
+## on the elements themselves. At a depth of finite relative order the
+## quotients are taken modulo that order.
 ##
 BindGlobal( "GcdPcp", function(g, h)
-    local x, y, a, b, q, r, t;
+    local x, y, a, b, q, r, t, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -118,12 +125,12 @@ BindGlobal( "GcdPcp", function(g, h)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
 
-        t := x * y ^ -q;
+        t := x * y ^ -SmallestResidue(q, rel);
         x := y;
         y := t;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -136,7 +143,8 @@ end );
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, inf, c, ind, g, d, todo, val, j, f, h, a, b, k, pair, t;
+    local coll, rels, n, inf, c, ind, g, d, todo, val, j, f, h, a, b, k,
+          pair, t, added, oldc, chg, i;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -151,6 +159,9 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := g; od;
 
+    # initial gens still need to be reduced
+    added := true;
+
     # do a reduction step
     c := TailLimit(ind, c);
     todo := Set(Filtered(gens, x -> Depth(x) < c));
@@ -160,6 +171,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     while Length(todo) > 0 and c > 1 do
         j := PositionMinimum(val);
         g := Remove(todo, j);
+        Remove(val, j);
         d := Depth(g);
         f := [];
 
@@ -180,7 +192,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcp would leave h unchanged.
-                    g := g * h^(-a/b);
+                    g := g * h^-SmallestResidue(a/b, rels[d]);
                 else
                     pair := GcdPcp(g, h);
                     h := pair[1];
@@ -194,17 +206,31 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             d := Depth(g);
         od;
 
+        # ind unchanged and every todo entry already reduced, so ReduceExpo,
+        # TailLimit and the filter would be no-ops
+        if Length(f) = 0 and not added then continue; fi;
+
         # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        if inf then ReduceExpo(ind, todo, rels); fi;
+        chg := [];
+        if inf then chg := ReduceExpo(ind, todo, rels); fi;
+        for i in chg do
+            if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+        od;
 
         # add powers and commutators
+        added := false;
         for d in f do
             g := ind[d];
             # skip infinite factors and powers in the tail
             if d < c-1 and rels[d] > 0 then
                 k := g ^ RelativeOrderPcp(g);
-                if Depth(k) < c then Add(todo, k); fi;
+                if Depth(k) < c then
+                    Add(todo, k);
+                    Add(val, IGSValFun(k));
+                    added := true;
+                fi;
             fi;
             for j in [1..n] do
                 # skip trivial commutators and those in the tail
@@ -213,18 +239,29 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 fi;
                 if not IsBool(ind[j]) then
                     k := Comm(g, ind[j]);
-                    if Depth(k) < c then Add(todo, k); fi;
+                    if Depth(k) < c then
+                        Add(todo, k);
+                        Add(val, IGSValFun(k));
+                        added := true;
+                    fi;
                     if rels[j] = 0 then
                         k := Comm(g, ind[j]^-1);
-                        if Depth(k) < c then Add(todo, k); fi;
+                        if Depth(k) < c then
+                            Add(todo, k);
+                            Add(val, IGSValFun(k));
+                            added := true;
+                        fi;
                     fi;
                 fi;
             od;
         od;
         
         # reduce
-        todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, IGSValFun);
+        if c < oldc or Length(chg) > 0 then
+            t := Filtered([1..Length(todo)], i -> Depth(todo[i]) < c);
+            todo := todo{t};
+            val := val{t};
+        fi;
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 

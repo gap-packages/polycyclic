@@ -819,8 +819,9 @@ true
 	returns the  projection from the  Schur extension <M>G^{*}</M> of  <A>G</A> onto
 	<A>G</A>.   See   the  function  <C>SchurExtension</C>.   The   kernel  of  this
 	epimorphism is  the direct product  of the Schur multiplicator  of <A>G</A>
-	and a direct product of <M>n</M> copies  of <M>&ZZ;</M> where <M>n</M> is the number of
-	generators  in  the  polycyclic   presentation  for  <A>G</A>.   The  Schur
+	and a direct product of <M>n-r</M> copies of <M>&ZZ;</M> where <M>n</M> is the number of
+	generators in the polycyclic presentation for <A>G</A> and <M>r</M> is the
+	Hirsch length of <M>G/G'</M>. The Schur
 	multiplicator is the intersection of  the kernel and the derived group
 	of the source.  See also the function <C>SchurCover</C>.
 

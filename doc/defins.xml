@@ -247,8 +247,11 @@ its relative index. For  each pcp-element <M>g</M>  there exists an integer
 <ManSection>
 <Func Name="NormingExponent" Arg="g"/>
 <Description>
-	returns an integer <M>e</M>, either positive or <M>-1</M>, such that the pcp-element
-	<A>g</A> raised to the power of <M>e</M> is normed.
+	returns an integer <M>e</M> such that the pcp-element <A>g</A> raised to the
+	power of <M>e</M> is normed.
+	For non-trivial <A>g</A> with factor order <M>r</M>, we have
+	<M>-r/2 &lt; e \leq r/2</M> if <M>r &gt; 0</M>, and
+	<M>e \in \{-1,1\}</M> if <M>r = 0</M>.
 </Description>
 </ManSection>
 

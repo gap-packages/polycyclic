@@ -28,10 +28,11 @@ end );
 ## Apply GcdPcp( g, h ), and apply the same operations on i and j.
 ##
 BindGlobal( "GcdPcpPara", function(g, h, i, j)
-    local x, y, a, b, q, r, t, z, w, u;
+    local x, y, a, b, q, r, t, z, w, u, rel;
 
     x := g;
     y := h;
+    rel := FactorOrder(g);
 
     a := LeadingExponent(x);
     b := LeadingExponent(y);
@@ -52,6 +53,8 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
 
     while b <> 0 do
         q := QuoInt(a, b);
+        r := a - q * b;
+        q := SmallestResidue(q, rel);
 
         t := x * y ^ -q;
         x := y;
@@ -61,7 +64,6 @@ BindGlobal( "GcdPcpPara", function(g, h, i, j)
         z := w;
         w := u;
 
-        r := a - q * b;
         a := b;
         b := r;
     od;
@@ -74,9 +76,11 @@ end );
 #F ReduceExpoPara( ind, gen, indd, pgen, rel )
 ##
 ## Parallel version of  ReduceExpo.
+## Returns the positions changed in <gen>.
 ##
 BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
-    local i, j, a, b, q, f, k;
+    local i, j, a, b, q, cg;
+    cg := [];
     for i in [ 1 .. Length( ind ) ] do
         if not IsBool( ind[i] ) and rel[i] = 0 then
             b := LeadingExponent( ind[i] );
@@ -96,11 +100,12 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                 if q <> 0 then
                     gen[j] := gen[j] * ind[i] ^ (- q);
                     pgen[j] := pgen[j] * indd[i] ^ (- q);
+                    AddSet( cg, j );
                 fi;
             od;
         fi;
     od;
-    return;
+    return cg;
 end );
 
 #############################################################################
@@ -112,8 +117,8 @@ end );
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b, q, k,
-          c, i, r, sub, keep, val, j, f, nrmd, pairs;
+    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b,
+          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added, oldc, chg;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -133,6 +138,9 @@ function( pcs, gens, ppcs, pgens )
         indd[d] := ppcs[i];
     od;
 
+    # initial gens still need to be reduced
+    added := true;
+
     # do a reduction step
     c      := TailLimit(ind, c);
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
@@ -150,6 +158,7 @@ function( pcs, gens, ppcs, pgens )
         j := PositionMinimum(val);
         g  := Remove(todo, j);
         gg := Remove(tododo, j);
+        Remove(val, j);
         d  := Depth( g );
         f := [];
 
@@ -176,7 +185,7 @@ function( pcs, gens, ppcs, pgens )
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcpPara would leave h and hh unchanged.
-                    q  := a/b;
+                    q  := SmallestResidue(a/b, rels[d]);
                     g  := g  * h^-q;
                     gg := gg * hh^-q;
                 else
@@ -196,11 +205,21 @@ function( pcs, gens, ppcs, pgens )
             d := Depth(g);
         od;
 
+        # ind unchanged and every todo entry already reduced, so ReduceExpo,
+        # TailLimit and the filter would be no-ops
+        if Length(f) = 0 and not added then continue; fi;
+
         # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        if inf then ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
+        chg := [];
+        if inf then chg := ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
+        for i in chg do
+            if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+        od;
 
         # add powers and commutators
+        added := false;
         for d in f do
             g :=  ind[d];
             gg := indd[d];
@@ -210,6 +229,8 @@ function( pcs, gens, ppcs, pgens )
                 if Depth(k) < c then
                     Add(todo,   k);
                     Add(tododo, gg^r);
+                    Add(val, IGSValFun(k));
+                    added := true;
                 fi;
             fi;
             for j in [1..n] do
@@ -221,12 +242,16 @@ function( pcs, gens, ppcs, pgens )
                     if Depth(k) < c then
                         Add(todo, k);
                         Add(tododo, Comm(gg, indd[j]));
+                        Add(val, IGSValFun(k));
+                        added := true;
                     fi;
                     if rels[j] = 0 then
                         k := Comm(g, ind[j]^-1);
                         if Depth(k) < c then
                             Add(todo, k);
                             Add(tododo, Comm(gg, indd[j]^-1));
+                            Add(val, IGSValFun(k));
+                            added := true;
                         fi;
                     fi;
                 fi;
@@ -234,10 +259,12 @@ function( pcs, gens, ppcs, pgens )
         od;
 
         # reduce
-        sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
-        todo   := todo{sub};
-        tododo := tododo{sub};
-        val    := List(todo, IGSValFun);
+        if c < oldc or Length(chg) > 0 then
+            sub    := Filtered([1..Length(todo)], i -> Depth(todo[i])<c);
+            todo   := todo{sub};
+            tododo := tododo{sub};
+            val    := val{sub};
+        fi;
         Info(InfoPcpGrp, 3, Length(val)," versus ", ind);
     od;
 
