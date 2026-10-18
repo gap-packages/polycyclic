@@ -20,6 +20,8 @@ This file describes changes in the GAP package 'polycyclic'.
   - `IsMatrixRepresentation`
   - `IsNilpotentGroup`
   - `IsSingleValued`
+  - `LowIndexNormalSubgroups`
+  - `LowIndexSubgroupClasses`
   - `NilpotentByAbelianNormalSubgroup`
   - `NonAbelianExteriorSquarePlusEmbedding`
   - `NormalIntersection`
