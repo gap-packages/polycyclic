@@ -188,8 +188,11 @@ InstallTrueMethod( CanComputeSizeAnySubgroup, IsPcpGroup );
 ##
 #M IndexNC/Index( <pcpgrp>, <pcpgrp> )
 ##
+# match the rank adjustment of the generic Size(H)/Size(U) method in GAP,
+# which fails for infinite H
 InstallMethod( IndexNC, "for pcp groups",
                IsIdenticalObj, [IsPcpGroup, IsPcpGroup],
+               {} -> 2 * RankFilter( IsHandledByNiceMonomorphism ),
 function( H, U )
     local pcp, rel;
     pcp := Pcp( H, U );
