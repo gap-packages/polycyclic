@@ -72,11 +72,14 @@ end );
 InstallMethod( Ngs, [ IsPcpGroup ],
 function( G )
     if HasCgs( G ) then return Cgs(G); fi;
+    if HasIgs( G ) then return Ngs( Igs(G) ); fi;
     return Ngs( Igs( GeneratorsOfGroup(G) ) );
 end );
 
 InstallMethod( Cgs, [ IsPcpGroup ],
 function( G )
+    if HasNgs( G ) then return Cgs( Ngs(G) ); fi;
+    if HasIgs( G ) then return Cgs( Igs(G) ); fi;
     return Cgs( Igs( GeneratorsOfGroup(G) ) );
 end );
 
