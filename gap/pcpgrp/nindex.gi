@@ -194,7 +194,7 @@ end );
 ## We only use this function as alternative for special cases.
 ##
 InstallGlobalFunction( NilpotentByAbelianNormalSubgroup, function( G )
-    local sub, i, j, f, N, low, L;
+    local sub, i, j, p, N, low, L;
 
     if IsNilpotent( DerivedSubgroup( G ) ) then return G; fi;
     sub := [[G]];
@@ -202,17 +202,18 @@ InstallGlobalFunction( NilpotentByAbelianNormalSubgroup, function( G )
         i := Length( sub ) + 1;
         sub[i] := [];
         Info( InfoPcpGrp, 1, "test normal subgroups of index ", i );
-        f := Factors( i );
-        j := i / f[1];
-        for N in sub[j] do
-            low := LowIndexNormalSubgroups( N, f[1] );
-            for L in low do
-                if IsNilpotent( DerivedSubgroup( L ) ) and
-                   IsNormal( G, L ) then
-                    return L;
-                else
-                    AddSet( sub[i], L );
-                fi;
+        for p in PrimeDivisors( i ) do
+            j := i / p;
+            for N in sub[j] do
+                low := LowIndexNormalSubgroups( N, p );
+                for L in low do
+                    if IsNilpotent( DerivedSubgroup( L ) ) and
+                       IsNormal( G, L ) then
+                        return L;
+                    else
+                        AddSet( sub[i], L );
+                    fi;
+                od;
             od;
         od;
     od;
