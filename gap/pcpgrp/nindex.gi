@@ -207,7 +207,8 @@ InstallGlobalFunction( NilpotentByAbelianNormalSubgroup, function( G )
         for N in sub[j] do
             low := LowIndexNormalSubgroups( N, f[1] );
             for L in low do
-                if IsNilpotent( DerivedSubgroup( L ) ) then
+                if IsNilpotent( DerivedSubgroup( L ) ) and
+                   IsNormal( G, L ) then
                     return L;
                 else
                     AddSet( sub[i], L );
