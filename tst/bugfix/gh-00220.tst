@@ -5,14 +5,16 @@ gap> START_TEST( "gh-00220.tst" );
 # <https://github.com/gap-packages/polycyclic/issues/220>
 #
 gap> coll := Collector( HeisenbergPcpGroup( 2 ) );;
+gap> PcpElementByGenExpList( coll, [ 1, 1, 2 ] );
+Error, generator exponent list has odd length
 gap> PcpElementByGenExpList( coll, "macaroni" );
-Error, invalid generator exponent list
+Error, generator exponent list is invalid
 gap> PcpElementByGenExpList( coll, [ 6, 1 ] );
-Error, invalid generator exponent list
+Error, generator exponent list is invalid
 gap> PcpElementByGenExpList( coll, [ 0, 1 ] );
-Error, invalid generator exponent list
+Error, generator exponent list is invalid
 gap> PcpElementByGenExpList( coll, [ 1, 1/2 ] );
-Error, invalid generator exponent list
+Error, generator exponent list is invalid
 
 #
 gap> STOP_TEST( "gh-00220.tst" );

@@ -51,10 +51,13 @@ end );
 
 InstallGlobalFunction( PcpElementByGenExpList, function( coll, word )
     local k, n, i;
+    if IsOddInt( Length( word ) ) then
+        Error( "generator exponent list has odd length" );
+    fi;
     n := coll![PC_NUMBER_OF_GENERATORS];
     for i in [1,3..Length(word)-1] do
         if not word[i] in [1..n] or not IsInt( word[i+1] ) then
-            Error( "invalid generator exponent list" );
+            Error( "generator exponent list is invalid" );
         fi;
     od;
     k := ListWithIdenticalEntries( n, 0 );
