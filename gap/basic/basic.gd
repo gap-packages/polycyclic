@@ -45,6 +45,8 @@ DeclareAttribute( "PcpsOfEfaSeries", IsPcpGroup );
 #F Isomorphisms and natural homomorphisms
 ##
 DeclareAttribute( "IsomorphismPcpGroup", IsGroup );
+DeclareGlobalFunction( "IsomorphismPcpGroupByIgs" );
+DeclareGlobalFunction( "IsomorphismPcpGroupByIgsNC" );
 DeclareAttribute( "PcpGroupByEfaSeries", IsGroup );
 DeclareGlobalFunction( "NaturalHomomorphismByPcp" );
 
