@@ -655,24 +655,30 @@ InstallMethod( UnitriangularMatrixRepresentation,
         [ IsPcpGroup and IsNilpotentGroup ],
         0,
 function( tgroup )
-    local  coll,  mats,  mgroup,  phi;
+    local  pcp,  pgroup,  gens,  coll,  mats,  mgroup,  phi;
 
-    ## Does the group have power relations?
     if not IsTorsionFree( tgroup ) then
-        Error("there are power relations in the collector of the pcp-group");
-        ## Here we could compute the upper central series and construct an
-        ## isomorphism to a group defined along the upper central series.
+        Error("the pcp-group must be torsion-free");
     fi;
 
-    coll := Collector( tgroup );
+    pcp := Pcp( tgroup );
+    if ForAny( RelativeOrdersOfPcp( pcp ), r -> r <> 0 ) then
+        pgroup := PcpGroupBySeries(UpperCentralSeriesOfGroup(tgroup), "snf");
+        coll := Collector( pgroup );
+        gens := List(
+            GeneratorsOfPcp( Pcp( pgroup ) ),
+            g -> ImagesRepresentative( pgroup!.bijection, g )
+        );
+    else
+        coll := Collector( PcpGroupByPcp(pcp) );
+        gens := GeneratorsOfPcp( pcp );
+    fi;
     mats := LowerUnitriangularForm( RepresentationForPcpCollector( coll ) );
 
     mgroup := Group( mats, mats[1]^0 );
     UseIsomorphismRelation( tgroup, mgroup );
 
-    phi := GroupHomomorphismByImagesNC( tgroup, mgroup,
-                   GeneratorsOfGroup(tgroup),
-                   GeneratorsOfGroup(mgroup) );
+    phi := GroupHomomorphismByImagesNC( tgroup, mgroup, gens, mats );
     SetIsBijective( phi, true );
     SetIsHomomorphismIntoMatrixGroup( phi, true );
     # FIXME: IsHomomorphismIntoMatrixGroup should perhaps be
