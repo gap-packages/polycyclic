@@ -60,23 +60,46 @@ end );
 
 #############################################################################
 ##
-#F CheckIgs
+#F CheckIgs( <igs>[, <gens>] )
 ##
-BindGlobal( "CheckIgs", function( igs, gen )
-    local i, g, e, j;
+BindGlobal( "CheckIgs", function( igs, arg... )
+    local i, g, e, j, gens;
+
+    gens := [];
+    if Length(arg) = 1 then gens := arg[1]; fi;
+
+    if ForAny(igs, IsOne) then
+        return "igs contains the identity";
+    fi;
+
+    if not IsSet(List(igs, Depth)) then
+        return "igs depths must be strictly increasing";
+    fi;
+
     for i in [1..Length(igs)] do
         g := igs[i]^RelativeOrderPcp(igs[i]);
         e := ExponentsByIgs(igs, g);
-        if e = fail then return i; fi;
+        if e = fail then
+            return Concatenation(
+                "power of igs[", String(i), "] does not sift"
+            );
+        fi;
         for j in [1..i-1] do
             g := Comm(igs[i], igs[j]);
             e := ExponentsByIgs(igs,g);
-            if e = fail then return [i,j]; fi;
+            if e = fail then
+                return Concatenation(
+                    "commutator of igs[", String(i), "] and igs[", String(j),
+                    "] does not sift"
+                );
+            fi;
         od;
     od;
-    for i in [1..Length(gen)] do
-        e := ExponentsByIgs(igs, gen[i]);
-        if e = fail then return [i]; fi;
+    for i in [1..Length(gens)] do
+        e := ExponentsByIgs(igs, gens[i]);
+        if e = fail then
+            return Concatenation( "gens[", String(i), "] does not sift" );
+        fi;
     od;
     return true;
 end );
@@ -270,7 +293,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     if POLYCYCLIC_CHECK_IGS then
         Info(InfoPcpGrp, 1, "checking igs ");
         t := CheckIgs(ind, gens);
-        if t <> true then Error("igs is incorrect at ",t); fi;
+        if t <> true then Error(t); fi;
     fi;
     return ind;
 end);
@@ -397,7 +420,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
     if POLYCYCLIC_CHECK_IGS then
         Info(InfoPcpGrp, 1, "checking igs ");
         t := CheckIgs(ind, Concatenation(AsList(pcs1),AsList(pcs2)));
-        if t <> true then Error("igs is incorrect at ",t); fi;
+        if t <> true then Error(t); fi;
     fi;
     return ind;
 end );
