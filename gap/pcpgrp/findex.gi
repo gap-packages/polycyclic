@@ -93,7 +93,8 @@ BindGlobal( "SubgroupsFirstLayerByIndex", function( G, pcp, n )
                 fi;
             od;
             # get Igs of H by lifting H/N to H
-            exp[i] := AddIgsToIgs( base, denom );
+            # do not use AddIgsToIgs: lifts may not be an igs
+            exp[i] := AddToIgs( denom, base );
             # H is normal since G/N is abelian, so its normaliser is all of G
             # open is the remaining index factor
             exp[i] := rec( repr := SubgroupByIgs( G, exp[i] ),

@@ -211,7 +211,8 @@ InstallGlobalFunction( ComplementClassesCR, function( C )
         K := ComplementCR( C, d );
 
         # add centralizer to complement
-        gens := AddIgsToIgs( cent, Igs( K ) );
+        # do not use AddIgsToIgs: cent may not be an igs
+        gens := AddToIgs( Igs( K ), cent );
 
         # add normalizer to centralizer and complement
         for w in e.word do

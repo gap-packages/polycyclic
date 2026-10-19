@@ -21,7 +21,8 @@ BindGlobal( "MaximalSubgroupsByLayer", function( G, pcp, p )
     if q <> 0 and q <> p then return []; fi;
     if q = 0 then
         new := List( pcp, x -> x ^ p );
-        new := AddIgsToIgs( new, DenominatorOfPcp( pcp ) );
+        # do not use AddIgsToIgs: powers may not be an igs
+        new := AddToIgs( DenominatorOfPcp( pcp ), new );
         new := SubgroupByIgs( G, new );
         new := Pcp( GroupOfPcp( pcp ), new );
     else

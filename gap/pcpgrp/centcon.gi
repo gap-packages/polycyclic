@@ -101,8 +101,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
             N := SubgroupByIgs( G, DenominatorOfPcp(pcp) );
             gen := Pcp(C, N);
             stb := CentralizerByCentralLayer( elms, AsList(gen), pcp );
-            stb := AddIgsToIgs( Igs(stb), Igs(N) );
-            C := SubgroupByIgs( G, stb );
+            C := SubgroupByIgsAndIgs( G, Igs(stb), Igs(N) );
 
         # if it is a non-central finite layer
         elif p > 0 then
@@ -114,8 +113,7 @@ BindGlobal( "CentralizerBySeries", function( G, elms, pcps )
                 act := AffineActionByElement( fac, pcp, g );
                 act := InducedByField( act, F );
                 stb := PcpOrbitStabilizer( e*One(F), fac, act, OnRight );
-                stb := AddIgsToIgs( stb.stab, Igs(M) );
-                C := SubgroupByIgs( G, stb );
+                C := SubgroupByIgsAndIgs( G, stb.stab, Igs(M) );
             od;
 
         # if it is infinite and not-central
@@ -283,7 +281,8 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             # extract results
             if IsBool(stb) then return false; fi;
             k := k * stb.prei;
-            stb := AddIgsToIgs( stb.stab, Igs(N) );
+            # do not use AddIgsToIgs: stb.stab may not be an igs
+            stb := AddToIgs( Igs(N), stb.stab );
             C := SubgroupByIgs( G, stb );
 
         # if it is a non-central finite layer
@@ -302,7 +301,8 @@ BindGlobal( "ConjugacyElementsBySeries", function( G, g, h, pcps )
             if IsBool(j) then return false; fi;
             t := TransversalElement( j, stb, One(G) );
             stb := List( stb.stab, x -> x^t );
-            stb := AddIgsToIgs( stb, Igs(N) );
+            # do not use AddIgsToIgs: stb may not be an igs
+            stb := AddToIgs( Igs(N), stb );
             C := SubgroupByIgs( G, stb );
             k := k * t;
 

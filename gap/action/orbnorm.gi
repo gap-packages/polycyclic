@@ -529,7 +529,8 @@ BindGlobal( "NormalizerIntegralAction", function( G, linG, U )
     # add remaining stabilizer
     Info( InfoIntNorm, 1, "constructing block orbit-stabilizer");
     N := ExtendOrbitStabilizer( U, K, linK, S, linS, orbf, OnLatticeBases );
-    N := AddIgsToIgs( N.stab, Igs(T) );
+    # do not use AddIgsToIgs: N.stab may not be an igs
+    N := AddToIgs( Igs(T), N.stab );
     N := SubgroupByIgs( G, N );
 
     # do a temporary check
@@ -619,7 +620,8 @@ BindGlobal( "ConjugacyIntegralAction", function( G, linG, U, W )
     # get Stab_K(e) and thus Stab_G(e)
     Info( InfoIntNorm, 1, "adding stabilizer for congruence subgroup");
     T := NormalizerCongruenceAction( K, linK, U, ser );
-    t := AddIgsToIgs( os.stab, Igs(T) );
+    # do not use AddIgsToIgs: os.stab may not be an igs
+    t := AddToIgs( Igs(T), os.stab );
     T := SubgroupByIgs( T, t );
 
     # do a temporary check
