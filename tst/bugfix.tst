@@ -168,4 +168,16 @@ gap> TorsionSubgroup(AbelianPcpGroup([4,3]));
 Pcp-group with orders [ 4, 3 ]
 
 #
+# IndexNC and Index for an infinite group of known size used to pick the
+# generic Size(G)/Size(H) method and fail on infinity/2
+#
+gap> G := DihedralPcpGroup(0);;
+gap> U := Subgroup(G, [G.1]);;
+gap> Size(G);; Size(U);;
+gap> IndexNC(G, U);
+infinity
+gap> Index(G, U);
+infinity
+
+#
 gap> STOP_TEST( "bugfix.tst" );
