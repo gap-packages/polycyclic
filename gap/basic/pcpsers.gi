@@ -454,10 +454,12 @@ InstallGlobalFunction( ModuloSeriesPcps, function( arg )
     fi;
 
     G   := GroupOfPcp( pcps[1] );
-    A   := SubgroupByIgs( G, AddIgsToIgs(gens, NumeratorOfPcp( pcps[1] )));
+    # do not use AddIgsToIgs: gens may not be an igs
+    A   := SubgroupByIgs( G, AddToIgs(NumeratorOfPcp( pcps[1] ), gens));
     new := [];
     for pcp in pcps do
-        B := SubgroupByIgs( G, AddIgsToIgs(gens,DenominatorOfPcp(pcp)));
+        # do not use AddIgsToIgs: gens may not be an igs
+        B := SubgroupByIgs( G, AddToIgs(DenominatorOfPcp(pcp), gens));
         if IndexNC( A, B ) <> 1 and Length( arg ) = 2 then
             Add( new, Pcp( A, B ) );
             A := ShallowCopy( B );
@@ -527,7 +529,8 @@ BindGlobal( "PcpsOfPowerSeries", function( pcp, n )
     for f in facs do
         p := p * f;
         A := ShallowCopy( B );
-        B := AddIgsToIgs(List( gens, x -> x^p ), DenominatorOfPcp(pcp));
+        # do not use AddIgsToIgs: powers may not be an igs
+        B := AddToIgs(DenominatorOfPcp(pcp), List( gens, x -> x^p ));
         B := SubgroupByIgs( A, B );
         new := Pcp(A, B);
         new!.power := p;

@@ -38,7 +38,8 @@ function(G)
         # refine pcp by subs
         for j in [2..Length(subs)] do
             gens := List( subs[j], x -> MappedVector(x, pcps[i]) );
-            gens := AddIgsToIgs( gens, DenominatorOfPcp( pcps[i] ) );
+            # do not use AddIgsToIgs: lifts may not be an igs
+            gens := AddToIgs( DenominatorOfPcp( pcps[i] ), gens );
             U := SubgroupByIgs( G, gens );
             Add( refs, U );
         od;

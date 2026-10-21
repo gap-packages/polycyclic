@@ -128,7 +128,8 @@ BindGlobal( "StabilizerIrreducibleAction", function( G, K, linG, derG )
         gens[i] := gens[i] * k^-1;
     od;
     Info( InfoIntStab, 3, "  determined complement ");
-    gens := AddIgsToIgs( gens, stabK.stabl );
+    # do not use AddIgsToIgs: lifts may not be an igs
+    gens := AddToIgs( Igs(stabK.stabl), gens );
     return SubgroupByIgs( G, gens );
 end );
 
@@ -240,7 +241,8 @@ BindGlobal( "OrbitIrreducibleAction", function( G, K, linG, derG, v )
         k := MappedVector( e, stabK.trans );
         gens[i] := gens[i] * k^-1;
     od;
-    gens := AddToIgs( stabK.stabl, gens );
+    # stabK.stabl may not be an igs
+    gens := AddToIgs( Igs(stabK.stabl), gens );
     return rec( stab := SubgroupByIgs( G, gens ), prei := g);
 end );
 
@@ -563,7 +565,8 @@ BindGlobal( "StabilizerIntegralAction", function( G, mats, e )
     Info( InfoIntStab, 1, "constructing block orbit-stabilizer");
     stab := ExtendOrbitStabilizer( e, K, actK, S, actS, orbf, OnRight );
     Info( InfoIntStab, 1, "  obtained ",Length(stab.orbit)," blocks");
-    stab := AddIgsToIgs( stab.stab, Igs(T) );
+    # do not use AddIgsToIgs: stab.stab may not be an igs
+    stab := AddToIgs( Igs(T), stab.stab );
     stab := SubgroupByIgs( G, stab );
 
     # do a temporary check
@@ -651,7 +654,8 @@ BindGlobal( "OrbitIntegralAction", function( G, mats, e, f )
     # get Stab_K(e) and thus Stab_G(e)
     Info( InfoIntStab, 1, "adding stabilizer for congruence subgroup");
     T := StabilizerCongruenceAction( K, actK, e, ser );
-    t := AddIgsToIgs( os.stab, Igs(T) );
+    # do not use AddIgsToIgs: os.stab may not be an igs
+    t := AddToIgs( Igs(T), os.stab );
     T := SubgroupByIgs( T, t );
 
     # do a temporary check

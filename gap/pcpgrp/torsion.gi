@@ -72,7 +72,7 @@ BindGlobal( "TorsionSubgroupPcpGroup", function( G )
             H := SubgroupByIgs( G, DenominatorOfPcp( efa[i] ) );
             for g in gens do
                 N := ShallowCopy( H );
-                H := SubgroupByIgs( G, AddIgsToIgs( [g], Igs( N ) ) );
+                H := SubgroupByIgsAndIgs( G, [g], Igs( N ) );
 
                 # compute complement to N in H mod T
                 new := ExtendedSeriesPcps( sub, N );
@@ -151,7 +151,7 @@ BindGlobal( "NormalTorsionSubgroupPcpGroup", function( G )
             H := SubgroupByIgs( G, DenominatorOfPcp( efa[i] ) );
             for g in gens do
                 N := ShallowCopy( H );
-                H := SubgroupByIgs( G, AddIgsToIgs( [g], Igs(N) ));
+                H := SubgroupByIgsAndIgs( G, [g], Igs(N) );
 
                 # compute complement to N in H mod T
                 new := ExtendedSeriesPcps( sub, N );
@@ -282,8 +282,8 @@ end );
 BindGlobal( "SubgroupBySubspace", function( pcp, exp )
     local gens;
     gens := List( exp, x -> MappedVector( IntVector( x ), pcp ) );
-    gens := AddIgsToIgs( gens, DenominatorOfPcp( pcp ) );
-    return SubgroupByIgs( GroupOfPcp( pcp ), gens );
+    return SubgroupByIgsAndIgs( GroupOfPcp( pcp ), gens,
+                                DenominatorOfPcp( pcp ) );
 end );
 
 #############################################################################

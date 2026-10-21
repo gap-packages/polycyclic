@@ -54,7 +54,8 @@ BindGlobal( "LiftBlockToPointNormalizer", function( CR, cc, C, H, HN, c )
     # set up b and t
     b := AddIgsToIgs( Igs(H), DenominatorOfPcp( CR.normal ) );
     r := List( cc.rls, x -> MappedVector( x, CR.normal ) );
-    b := AddIgsToIgs( r, b );
+    # do not use AddIgsToIgs: r may not be an igs
+    b := AddToIgs( b, r );
     t := ShallowCopy( AsList( Pcp( C, HN ) ) );
 
     # catch a special case
@@ -67,7 +68,8 @@ BindGlobal( "LiftBlockToPointNormalizer", function( CR, cc, C, H, HN, c )
         d := cc.CocToCBElement( cc, d-c ) * cc.trf;
         t[i] := t[i] * MappedVector( d, CR.normal );
     od;
-    return SubgroupByIgsAndIgs( C, t, b );
+    # do not use AddIgsToIgs: t may not be an igs
+    return SubgroupByIgs( C, b, t );
 end );
 
 #############################################################################
@@ -95,8 +97,7 @@ BindGlobal( "NormalizerOfIntersection", function( C, N, I )
         act := InducedByField( act, F );
         int := VectorspaceBasis( int*One(F) );
         stb := PcpOrbitStabilizer( int, fac, act, OnSubspacesByCanonicalBasis );
-        stb := AddIgsToIgs( stb.stab, AsList(pcp) );
-        return SubgroupByIgs( C, stb );
+        return SubgroupByIgsAndIgs( C, stb.stab, AsList(pcp) );
 
     # the infinite case
     else
@@ -181,7 +182,8 @@ BindGlobal( "PcpsOfAbelianFactor", function( N, I )
     tor := pcp{Filtered([1..Length(rel)], x -> rel[x] > 0 )};
 
     # the factor mod torsion
-    T := SubgroupByIgsAndIgs( N, tor, sub );
+    # do not use AddIgsToIgs: lifts may not be an igs
+    T := SubgroupByIgs( N, sub, tor );
     if IndexNC(N,T) > 1 then
         Add( ser, Pcp(N,T,"snf") );
         pcp := Pcp(T, I);
@@ -193,7 +195,8 @@ BindGlobal( "PcpsOfAbelianFactor", function( N, I )
         p := Factors(rel[1])[1];
         gen := List( pcp, x -> x^p );
         gen := Filtered( gen, x -> x <> One(N) );
-        M := SubgroupByIgsAndIgs( N, gen, sub );
+        # do not use AddIgsToIgs: powers may not be an igs
+        M := SubgroupByIgs( N, sub, gen );
         Add( ser, Pcp(T,M,"snf") );
         T := M;
         pcp := Pcp(T, I);
