@@ -47,7 +47,7 @@ This file describes changes in the GAP package 'polycyclic'.
   pcp-group whose pcp corresponds to the given igs
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
-- Optimise `NormalIntersection`
+- Optimise `NormalIntersection` and `EfaSeries`
 - Avoid needlessly large powers when norming and sifting elements at a depth
   of finite relative order; this also changes which power `NormedPcpElement`
   returns

@@ -91,6 +91,9 @@ BindGlobal( "LowIndexNormalsFaLayer", function( G, U, adj, l, act )
         news := [];
         for i in [1..pr[2]] do
            use := adj[pr[1]][i];
+           # layers may have a different basis
+           act := rec( pcp := act.pcp,
+                       mats := LinearActionOnPcp( act.pcp, use ) );
            for L in todo do
                 d   := Valuation( L!.open, pr[1] );
                 tmp := LowIndexNormalsEaLayer( G, L, use, d, act );

@@ -194,6 +194,10 @@ BindGlobal( "LowIndexSubgroupsFaLayer", function( clG, adj, l, act )
         news := [];
         for i in [1..pr[2]] do
             use := adj[pr[1]][i];
+            # layers may have a different basis
+            act := rec( pcp := act.pcp,
+                        mats := LinearActionOnPcp( act.pcp, use ) );
+            act.central := ForAll( act.mats, x -> x = x^0 );
             for cl in todo do
                 d   := Valuation( cl.open, pr[1] );
                 tmp := LowIndexSubgroupsEaLayer( cl, use, d, act );
