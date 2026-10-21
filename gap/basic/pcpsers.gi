@@ -94,8 +94,8 @@ end );
 #M  EfaSeries( G )
 ##
 ##  Computes a normal series of G whose factors are elementary or free
-##  abelian (efa). The normal series will also be normal under action
-##  of the parent of G
+##  abelian (efa). The normal series will also be normal under the action
+##  of the normaliser of G in its parent.
 ##
 InstallGlobalFunction( IsEfaFactorPcp, function( pcp )
     local gens, denm, i, j, c, cycl, rels, p;
@@ -142,10 +142,26 @@ InstallGlobalFunction( IsEfaFactorPcp, function( pcp )
 end );
 
 InstallGlobalFunction( EfaSeriesParent, function( G )
-    local ser, new, i, U, V, pcp,  nat, ref;
+    local ser, new, i, U, V, pcp, nat, ref, igs, todo, d, g;
+
+    if IsTrivial( G ) then return [G]; fi;
+
+    igs := Igs( G );
+    todo := [1];
+    d := NumberOfGenerators( Collector( G ) ) + 1;
 
     # take the normal subgroups in the defining pc series
-    ser := Filtered( PcpSeries(G), x -> IsNormal(G,x) );
+    # check normality in G by going down the igs and checking depth
+    for i in Reversed( [ 2 .. Length( igs ) ] ) do
+        for g in GeneratorsOfGroup( G ) do
+            d := Minimum( d, Depth( igs[i] ^ g ) );
+        od;
+        if d >= Depth( igs[i] ) then Add( todo, i, 2 ); fi;
+    od;
+    ser := List( todo, i -> SubgroupByIgs(
+        G, igs{ [ i .. Length( igs ) ] }
+    ) );
+    Add( ser, TrivialSubgroup( G ) );
 
     # check the factors
     new := [G];
