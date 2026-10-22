@@ -25,6 +25,72 @@ end );
 
 #############################################################################
 ##
+#F CommutatorDepthBounds( <coll> )
+##
+## Returns a table B such that Comm(x, y) has depth at least B[d][e] whenever
+## d < e, Depth(x) >= d and Depth(y) >= e. The table is cached in <coll>.
+##
+## Modulo the normal closure N of all [g_s, g_t] with s >= d and t >= e, the
+## subgroups G_d and G_e commute, so Comm(x, y) lies in N. If these [g_s, g_t]
+## lie in G_k, then N lies in the largest normal G_j with j <= k.
+##
+BindGlobal( "CommutatorDepthBounds", function( coll )
+    local n, conj, low, norm, prev, row, bnd, w, k, s, t;
+
+    if IsBound( coll![PC_COMMUTATOR_DEPTH_BOUNDS] ) then
+        return coll![PC_COMMUTATOR_DEPTH_BOUNDS];
+    fi;
+
+    n    := NumberOfGenerators( coll );
+    conj := coll![PC_CONJUGATES];
+
+    # low[t]: least depth of g_u^g_s over s < u, t <= u. Thus G_t is normal
+    # if and only if low[t] = t.
+    low := [1..n+1];
+    for t in [2..n] do
+        for s in [1..t-1] do
+            if IsBound( conj[t][s] ) and conj[t][s][1] < low[t] then
+                low[t] := conj[t][s][1];
+            fi;
+        od;
+    od;
+    for t in [n-1, n-2 .. 1] do low[t] := Minimum( low[t], low[t+1] ); od;
+
+    # norm[k]: the largest j <= k with G_j normal
+    norm := [];
+    for k in [1..n+1] do
+        t := k;
+        while low[t] < t do t := low[t]; od;
+        norm[k] := t;
+    od;
+
+    # row[t] for row s: least depth of [g_u, g_v] over s <= v < u, t <= u
+    bnd  := [];
+    prev := ListWithIdenticalEntries( n+1, n+1 );
+    for s in [n, n-1 .. 1] do
+        row := ListWithIdenticalEntries( n+1, n+1 );
+        for t in [n, n-1 .. s+1] do
+            k := n+1;
+            if IsBound( conj[t][s] ) then
+                w := conj[t][s];
+                if w[1] <> t or w[2] <> 1 then
+                    k := w[1];
+                elif Length( w ) > 2 then
+                    k := w[3];
+                fi;
+            fi;
+            row[t] := Minimum( k, prev[t], row[t+1] );
+        od;
+        prev := row;
+        bnd[s] := norm{ row };
+    od;
+
+    coll![PC_COMMUTATOR_DEPTH_BOUNDS] := bnd;
+    return bnd;
+end );
+
+#############################################################################
+##
 #F CheckIgs( <igs>[, <gens>] )
 ##
 BindGlobal( "CheckIgs", function( igs, arg... )
@@ -204,11 +270,33 @@ end );
 
 #############################################################################
 ##
+#F ReduceExpoElm( <ind>, <g>, <rel>, <pows> ) . . . ReduceExpo for one element
+##
+BindGlobal( "ReduceExpoElm", function( ind, g, rel, pows )
+    local i, q;
+    for i in [Depth(g)..Length(ind)] do
+        if not IsBool(ind[i]) and rel[i]=0 then
+            q := QuoInt(Exponents(g)[i], LeadingExponent(ind[i]));
+            if q <> 0 then g := g*IgsNegativePower(ind, pows, i, q); fi;
+        fi;
+    od;
+    return g;
+end );
+
+#############################################################################
+##
 #F AddToIgs( <igs>, <gens> )
 ##
+## Sifts the elements of <gens> into <igs> one at a time. After each, the
+## powers and commutators of the changed entries are sifted in until ind is
+## closed under them again. The entries from c on have leading exponent 1
+## and so generate the tail G_c of the pc series: elements of depth c or
+## more need no sifting, and the loop stops at c = 1, often long before
+## all of <gens> is used.
+##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, inf, c, ind, pows, g, d, todo, val, i, j, f, h,
-          a, b, q, k, pair, t, added, oldc, chg;
+    local coll, rels, n, inf, bnd, c, ind, pows, queue, qpos, g, d, todo,
+          val, i, j, f, h, a, b, q, k, pair, t, added, oldc, chg;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -217,26 +305,39 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     rels := RelativeOrders(coll);
     n    := NumberOfGenerators(coll);
     inf  := 0 in rels;
-    c    := n+1;
+    bnd  := fail;
 
     # set up; pows[d] caches negative powers of ind[d]
     ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := g; od;
     pows := [];
+    c    := TailLimit(ind, n+1);
 
-    # initial gens still need to be reduced
-    added := true;
+    # gens wait in queue; todo holds powers and commutators
+    queue := Set(Filtered(gens, x -> Depth(x) < c));
+    StableSortParallel(List(queue, IGSValFun), queue);
+    qpos  := 1;
+    todo  := [];
+    val   := [];
+    added := false;
 
-    # do a reduction step
-    c := TailLimit(ind, c);
-    todo := Set(Filtered(gens, x -> Depth(x) < c));
-    val := List(todo, IGSValFun);
+    while c > 1 do
 
-    # loop over to-do list until it is empty
-    while Length(todo) > 0 and c > 1 do
-        j := PositionMinimum(val);
-        g := Remove(todo, j);
-        Remove(val, j);
+        # take the next element, from queue only once todo is empty
+        if Length(todo) > 0 then
+            j := PositionMinimum(val);
+            g := Remove(todo, j);
+            Remove(val, j);
+        else
+            while qpos <= Length(queue) and Depth(queue[qpos]) >= c do
+                qpos := qpos+1;
+            od;
+            if qpos > Length(queue) then break; fi;
+            g := queue[qpos];
+            qpos := qpos+1;
+            # sifting g unreduced can blow up its exponents
+            if inf then g := ReduceExpoElm(ind, g, rels, pows); fi;
+        fi;
         d := Depth(g);
         f := [];
 
@@ -306,23 +407,23 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             fi;
             for j in [1..n] do
                 # skip trivial commutators and those in the tail
-                if j = d or Minimum( d, j ) >= c-1 then
+                if j = d or Minimum( d, j ) >= c-1 or IsBool(ind[j]) then
                     continue;
                 fi;
-                if not IsBool(ind[j]) then
-                    k := Comm(g, ind[j]);
+                if bnd = fail then bnd := CommutatorDepthBounds(coll); fi;
+                if bnd[Minimum(d, j)][Maximum(d, j)] >= c then continue; fi;
+                k := Comm(g, ind[j]);
+                if Depth(k) < c then
+                    Add(todo, k);
+                    Add(val, IGSValFun(k));
+                    added := true;
+                fi;
+                if rels[j] = 0 then
+                    k := Comm(g, IgsNegativePower(ind, pows, j, 1));
                     if Depth(k) < c then
                         Add(todo, k);
                         Add(val, IGSValFun(k));
                         added := true;
-                    fi;
-                    if rels[j] = 0 then
-                        k := Comm(g, IgsNegativePower(ind, pows, j, 1));
-                        if Depth(k) < c then
-                            Add(todo, k);
-                            Add(val, IGSValFun(k));
-                            added := true;
-                        fi;
                     fi;
                 fi;
             od;
