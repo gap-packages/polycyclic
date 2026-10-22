@@ -27,11 +27,12 @@ end );
 ##
 #F ReduceExpo
 ##
-## Returns the positions changed in <gen>.
+## Returns the positions changed in <ind> and in <gen>.
 ##
 BindGlobal( "ReduceExpo", function( ind, gen, rel )
-    local i, j, a, b, q, cg;
+    local i, j, a, b, q, ci, cg;
 
+    ci := [];
     cg := [];
     for i in [1..Length(ind)] do
         if not IsBool(ind[i]) and rel[i]=0 then
@@ -42,6 +43,7 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
                     q := QuoInt(a,b);
                     if q <> 0 then
                         ind[j] := ind[j]*ind[i]^-q;
+                        AddSet(ci, j);
                     fi;
                 fi;
             od;
@@ -55,7 +57,7 @@ BindGlobal( "ReduceExpo", function( ind, gen, rel )
             od;
         fi;
     od;
-    return cg;
+    return [ci, cg];
 end );
 
 #############################################################################
@@ -163,11 +165,50 @@ end );
 
 #############################################################################
 ##
+#F IgsNegativePower( <ind>, <pows>, <d>, <q> ) . . . . . . . . . . ind[d]^-q
+##
+## Caches the result in pows[d], which must be reset when ind[d] changes.
+##
+BindGlobal( "IgsNegativePower", function( ind, pows, d, q )
+    local b, p, r, s, value;
+
+    # cache bound, avoids making cache consist of large sparse lists
+    b := 16;
+
+    # for positive powers we do nothing special
+    if q < 0 then return ind[d]^-q; fi;
+    if not IsBound(pows[d]) then pows[d] := []; fi;
+    p := pows[d];
+
+    # store the inverse of ind[d]
+    if not IsBound(p[1]) then p[1] := ind[d]^-1; fi;
+
+    # attempt to retrieve from cache
+    if q <= b and IsBound(p[q]) then return p[q]; fi;
+
+    # reuse a cached power whose exponent divides q
+    r := Minimum(Length(p), QuoInt(q, 2));
+    s := q;
+    while r > 1 do
+        if IsBound(p[r]) and q mod r = 0 then
+            s := QuoInt(q, r);
+            break;
+        fi;
+        r := r - 1;
+    od;
+
+    value := p[r]^s;
+    if q <= b then p[q] := value; fi;
+    return value;
+end );
+
+#############################################################################
+##
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
-    local coll, rels, n, inf, c, ind, g, d, todo, val, j, f, h, a, b, k,
-          pair, t, added, oldc, chg, i;
+    local coll, rels, n, inf, c, ind, pows, g, d, todo, val, i, j, f, h,
+          a, b, q, k, pair, t, added, oldc, chg;
 
     if Length(gens) = 0 then return igs; fi;
 
@@ -178,9 +219,10 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
     inf  := 0 in rels;
     c    := n+1;
 
-    # set up
+    # set up; pows[d] caches negative powers of ind[d]
     ind  := ListWithIdenticalEntries(n, false);
     for g in igs do ind[Depth(g)] := g; od;
+    pows := [];
 
     # initial gens still need to be reduced
     added := true;
@@ -204,6 +246,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
             h := ind[d];
             if IsBool(h) then
                 ind[d] := NormedPcpElement(g);
+                Unbind(pows[d]);
                 AddSet(f, d);
                 h := ind[d];
             fi;
@@ -215,13 +258,15 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                 b := LeadingExponent(h);
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcp would leave h unchanged.
-                    g := g * h^-SmallestResidue(a/b, rels[d]);
+                    q := SmallestResidue(a/b, rels[d]);
+                    g := g * IgsNegativePower(ind, pows, d, q);
                 else
                     pair := GcdPcp(g, h);
                     h := pair[1];
                     g := pair[2];
                     if h <> ind[d] then
                         ind[d] := NormedPcpElement( h );
+                        Unbind(pows[d]);
                         AddSet(f, d);
                     fi;
                 fi;
@@ -237,7 +282,11 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         oldc := c;
         c := TailLimit(ind, c);
         chg := [];
-        if inf then chg := ReduceExpo(ind, todo, rels); fi;
+        if inf then
+            t := ReduceExpo(ind, todo, rels);
+            for i in t[1] do Unbind(pows[i]); od;
+            chg := t[2];
+        fi;
         for i in chg do
             if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
         od;
