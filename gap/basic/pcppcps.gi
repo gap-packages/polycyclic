@@ -25,43 +25,6 @@ end );
 
 #############################################################################
 ##
-#F ReduceExpo
-##
-## Returns the positions changed in <ind> and in <gen>.
-##
-BindGlobal( "ReduceExpo", function( ind, gen, rel )
-    local i, j, a, b, q, ci, cg;
-
-    ci := [];
-    cg := [];
-    for i in [1..Length(ind)] do
-        if not IsBool(ind[i]) and rel[i]=0 then
-            b := LeadingExponent(ind[i]);
-            for j in [1..i-1] do
-                if not IsBool( ind[j] ) then
-                    a := Exponents(ind[j])[i];
-                    q := QuoInt(a,b);
-                    if q <> 0 then
-                        ind[j] := ind[j]*ind[i]^-q;
-                        AddSet(ci, j);
-                    fi;
-                fi;
-            od;
-            for j in [1..Length(gen)] do
-                a := Exponents(gen[j])[i];
-                q := QuoInt(a,b);
-                if q <> 0 then
-                    gen[j] := gen[j]*ind[i]^-q;
-                    AddSet(cg, j);
-                fi;
-            od;
-        fi;
-    od;
-    return [ci, cg];
-end );
-
-#############################################################################
-##
 #F CheckIgs( <igs>[, <gens>] )
 ##
 BindGlobal( "CheckIgs", function( igs, arg... )
@@ -204,6 +167,43 @@ end );
 
 #############################################################################
 ##
+#F ReduceExpo( <ind>, <gen>, <rel>, <pows> )
+##
+## Returns the positions changed in <ind> and in <gen>.
+##
+BindGlobal( "ReduceExpo", function( ind, gen, rel, pows )
+    local i, j, a, b, q, ci, cg;
+
+    ci := [];
+    cg := [];
+    for i in [1..Length(ind)] do
+        if not IsBool(ind[i]) and rel[i]=0 then
+            b := LeadingExponent(ind[i]);
+            for j in [1..i-1] do
+                if not IsBool( ind[j] ) then
+                    a := Exponents(ind[j])[i];
+                    q := QuoInt(a,b);
+                    if q <> 0 then
+                        ind[j] := ind[j]*IgsNegativePower(ind, pows, i, q);
+                        AddSet(ci, j);
+                    fi;
+                fi;
+            od;
+            for j in [1..Length(gen)] do
+                a := Exponents(gen[j])[i];
+                q := QuoInt(a,b);
+                if q <> 0 then
+                    gen[j] := gen[j]*IgsNegativePower(ind, pows, i, q);
+                    AddSet(cg, j);
+                fi;
+            od;
+        fi;
+    od;
+    return [ci, cg];
+end );
+
+#############################################################################
+##
 #F AddToIgs( <igs>, <gens> )
 ##
 InstallGlobalFunction(AddToIgs, function(igs, gens)
@@ -283,7 +283,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
         c := TailLimit(ind, c);
         chg := [];
         if inf then
-            t := ReduceExpo(ind, todo, rels);
+            t := ReduceExpo(ind, todo, rels, pows);
             for i in t[1] do Unbind(pows[i]); od;
             chg := t[2];
         fi;
@@ -317,7 +317,7 @@ InstallGlobalFunction(AddToIgs, function(igs, gens)
                         added := true;
                     fi;
                     if rels[j] = 0 then
-                        k := Comm(g, ind[j]^-1);
+                        k := Comm(g, IgsNegativePower(ind, pows, j, 1));
                         if Depth(k) < c then
                             Add(todo, k);
                             Add(val, IGSValFun(k));
@@ -461,7 +461,7 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
             d := Depth( g );
         od;
         c := TailLimit(ind, c);
-        if inf then ReduceExpo(ind, todo, rels); fi;
+        if inf then ReduceExpo(ind, todo, rels, []); fi;
         todo := Filtered(todo, x -> Depth(x)<c);
         val := List(todo, IGSValFun);
     od;

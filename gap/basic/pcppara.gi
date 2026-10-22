@@ -73,12 +73,13 @@ end );
 
 #############################################################################
 ##
-#F ReduceExpoPara( ind, gen, indd, pgen, rel )
+#F ReduceExpoPara( ind, gen, indd, pgen, rel, pows, ppows )
 ##
 ## Parallel version of  ReduceExpo.
 ## Returns the positions changed in <ind> and in <gen>.
 ##
-BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
+BindGlobal( "ReduceExpoPara",
+function ( ind, gen, indd, pgen, rel, pows, ppows )
     local i, j, a, b, q, ci, cg;
     ci := [];
     cg := [];
@@ -90,8 +91,9 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                     a := Exponents( ind[j] )[i];
                     q := QuoInt( a, b );
                     if q <> 0 then
-                        ind[j] := ind[j] * ind[i] ^ (- q);
-                        indd[j] := indd[j] * indd[i] ^ (- q);
+                        ind[j] := ind[j] * IgsNegativePower(ind, pows, i, q);
+                        indd[j] := indd[j] *
+                            IgsNegativePower(indd, ppows, i, q);
                         AddSet( ci, j );
                     fi;
                 fi;
@@ -100,8 +102,9 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                 a := Exponents( gen[j] )[i];
                 q := QuoInt( a, b );
                 if q <> 0 then
-                    gen[j] := gen[j] * ind[i] ^ (- q);
-                    pgen[j] := pgen[j] * indd[i] ^ (- q);
+                    gen[j] := gen[j] * IgsNegativePower(ind, pows, i, q);
+                    pgen[j] := pgen[j] *
+                        IgsNegativePower(indd, ppows, i, q);
                     AddSet( cg, j );
                 fi;
             od;
@@ -223,7 +226,7 @@ function( pcs, gens, ppcs, pgens )
         c := TailLimit(ind, c);
         chg := [];
         if inf then
-            t := ReduceExpoPara(ind, todo, indd, tododo, rels);
+            t := ReduceExpoPara(ind, todo, indd, tododo, rels, pows, ppows);
             for i in t[1] do
                 Unbind(pows[i]);
                 Unbind(ppows[i]);
@@ -235,6 +238,7 @@ function( pcs, gens, ppcs, pgens )
         od;
 
         # add powers and commutators
+        # no need to clean up pows/ppows here
         added := false;
         for d in f do
             g :=  ind[d];
@@ -262,10 +266,11 @@ function( pcs, gens, ppcs, pgens )
                         added := true;
                     fi;
                     if rels[j] = 0 then
-                        k := Comm(g, ind[j]^-1);
+                        k := Comm(g, IgsNegativePower(ind, pows, j, 1));
                         if Depth(k) < c then
                             Add(todo, k);
-                            Add(tododo, Comm(gg, indd[j]^-1));
+                            Add(tododo, Comm(gg,
+                                IgsNegativePower(indd, ppows, j, 1)));
                             Add(val, IGSValFun(k));
                             added := true;
                         fi;
