@@ -407,7 +407,8 @@ end );
 ## denominator of this pcp.
 ##
 BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
-    local coll, rels, n, inf, ind, todo, g, c, h, d, pair, t, val, j;
+    local coll, rels, n, inf, ind, todo, g, c, h, d, pair, t, val, j,
+          a, b, changed, reduced, oldc, chg, i, pows, q;
 
     if Length( pcs1 ) = 0 then
         return AsList( pcs2 );
@@ -419,13 +420,18 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
         return Concatenation( AsList( pcs2 ), AsList( pcs1 ) );
     fi;
 
-    # merge the two pcs'
+    # get information
     coll := Collector( pcs1[1] );
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
     inf  := 0 in rels;
-    ind  := List( [1..n], x -> false );
+
+    # set up; pows[d] caches negative powers of ind[d]
+    ind  := ListWithIdenticalEntries(n, false);
+    pows := [];
     todo := [];
+
+    # merge the two pcs'
     for g in pcs2 do ind[Depth(g)] := g; od;
     for g in pcs1 do
         if IsBool( ind[Depth(g)] ) then
@@ -435,36 +441,79 @@ BindGlobal( "AddIgsToIgs", function( pcs1, pcs2 )
         fi;
     od;
 
-    # set counter
+    # do a reduction step
     c := TailLimit(ind, n+1);
     todo := Filtered( todo, x -> Depth( x ) < c );
     val := List(todo, IGSValFun);
+
+    # initial todo entries still need to be reduced
+    reduced := false;
 
     # loop over to-do list until it is empty
     while Length( todo ) > 0 and c > 1 do
         j := PositionMinimum(val);
         g := Remove(todo, j);
+        Remove(val, j);
         d := Depth( g );
+        changed := false;
 
         # shift g into ind
         while d < c do
             h := ind[d];
             if not IsBool( h ) then
-                # adjust g and ind[d] by gcd
-                pair := GcdPcp( ind[d], g );
-                ind[d] := pair[1];
-                g      := pair[2];
+                a := LeadingExponent(g);
+                b := LeadingExponent(h);
+                if g = h and b > 0 then
+                    g := g^0;
+                elif a > 0 and b > 0 and a mod b = 0 then
+                    # GcdPcp is not needed since b divides a.
+                    q := SmallestResidue(a/b, rels[d]);
+                    g := g * IgsNegativePower(ind, pows, d, q);
+                else
+                    pair := GcdPcp(h, g);
+                    if pair[1] <> h then
+                        ind[d] := pair[1];
+                        Unbind(pows[d]);
+                        changed := true;
+                    fi;
+                    g := pair[2];
+                fi;
             else
                 ind[d] := g;
+                Unbind(pows[d]);
                 g      := g^0;
+                changed := true;
             fi;
             d := Depth( g );
         od;
+
+        # ind unchanged and every todo entry already reduced, so ReduceExpo,
+        # TailLimit and the filter would be no-ops
+        if not changed and reduced then continue; fi;
+
+        # adjust
+        oldc := c;
         c := TailLimit(ind, c);
-        if inf then ReduceExpo(ind, todo, rels, []); fi;
-        todo := Filtered(todo, x -> Depth(x)<c);
-        val := List(todo, IGSValFun);
+        chg := [];
+        if inf then
+            t := ReduceExpo(ind, todo, rels, pows);
+            for i in t[1] do Unbind(pows[i]); od;
+            chg := t[2];
+        fi;
+        reduced := true;
+        for i in chg do
+            if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
+        od;
+
+        # reduce
+        if c < oldc or Length(chg) > 0 then
+            t := Filtered([1..Length(todo)], i -> Depth(todo[i]) < c);
+            todo := todo{t};
+            val := val{t};
+        fi;
     od;
+
+    # return resulting list
     ind := Filtered( ind, x -> not IsBool( x ) );
     if POLYCYCLIC_CHECK_IGS then
         Info(InfoPcpGrp, 1, "checking igs ");
