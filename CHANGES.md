@@ -47,7 +47,8 @@ This file describes changes in the GAP package 'polycyclic'.
   pcp-group whose pcp corresponds to the given igs
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
-- Extend `SemidirectProduct` to mixed pcp and finite polycyclic groups
+- Extend `SemidirectProduct` to mixed pcp and finite polycyclic groups (note that
+  this may now produce a PcpGroup where it previously gave a PcGroup)
 - Optimise `NormalIntersection` and `EfaSeries`
 - Avoid needlessly large powers when norming and sifting elements at a depth
   of finite relative order; this also changes which power `NormedPcpElement`
