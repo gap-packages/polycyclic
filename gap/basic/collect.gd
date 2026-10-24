@@ -128,3 +128,5 @@ BindGlobal( "PC_INVERSECOMMUTATORSINVERSE", 27 );
 BindGlobal( "PC_NILPOTENT_COMMUTE", 28 );
 BindGlobal( "PC_WEIGHTS",           29 );
 BindGlobal( "PC_ABELIAN_START",     30 );
+
+BindGlobal( "PC_COMMUTATOR_DEPTH_BOUNDS", 31 );

@@ -73,13 +73,15 @@ end );
 
 #############################################################################
 ##
-#F ReduceExpoPara( ind, gen, indd, pgen, rel )
+#F ReduceExpoPara( ind, gen, indd, pgen, rel, pows, ppows )
 ##
 ## Parallel version of  ReduceExpo.
-## Returns the positions changed in <gen>.
+## Returns the positions changed in <ind> and in <gen>.
 ##
-BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
-    local i, j, a, b, q, cg;
+BindGlobal( "ReduceExpoPara",
+function ( ind, gen, indd, pgen, rel, pows, ppows )
+    local i, j, a, b, q, ci, cg;
+    ci := [];
     cg := [];
     for i in [ 1 .. Length( ind ) ] do
         if not IsBool( ind[i] ) and rel[i] = 0 then
@@ -89,8 +91,10 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                     a := Exponents( ind[j] )[i];
                     q := QuoInt( a, b );
                     if q <> 0 then
-                        ind[j] := ind[j] * ind[i] ^ (- q);
-                        indd[j] := indd[j] * indd[i] ^ (- q);
+                        ind[j] := ind[j] * IgsNegativePower(ind, pows, i, q);
+                        indd[j] := indd[j] *
+                            IgsNegativePower(indd, ppows, i, q);
+                        AddSet( ci, j );
                     fi;
                 fi;
             od;
@@ -98,14 +102,36 @@ BindGlobal( "ReduceExpoPara", function ( ind, gen, indd, pgen, rel )
                 a := Exponents( gen[j] )[i];
                 q := QuoInt( a, b );
                 if q <> 0 then
-                    gen[j] := gen[j] * ind[i] ^ (- q);
-                    pgen[j] := pgen[j] * indd[i] ^ (- q);
+                    gen[j] := gen[j] * IgsNegativePower(ind, pows, i, q);
+                    pgen[j] := pgen[j] *
+                        IgsNegativePower(indd, ppows, i, q);
                     AddSet( cg, j );
                 fi;
             od;
         fi;
     od;
-    return cg;
+    return [ci, cg];
+end );
+
+#############################################################################
+##
+#F ReduceExpoElmPara( ind, g, indd, gg, rel, pows, ppows )
+##
+## Parallel version of  ReduceExpoElm.
+##
+BindGlobal( "ReduceExpoElmPara",
+function ( ind, g, indd, gg, rel, pows, ppows )
+    local i, q;
+    for i in [ Depth( g ) .. Length( ind ) ] do
+        if not IsBool( ind[i] ) and rel[i] = 0 then
+            q := QuoInt( Exponents( g )[i], LeadingExponent( ind[i] ) );
+            if q <> 0 then
+                g  := g  * IgsNegativePower(ind,  pows,  i, q);
+                gg := gg * IgsNegativePower(indd, ppows, i, q);
+            fi;
+        fi;
+    od;
+    return [ g, gg ];
 end );
 
 #############################################################################
@@ -114,11 +140,13 @@ end );
 ##
 ## This function adds the elements in <gens> to the induced pcs <pcs>.
 ## It acts simultaneously on <pcs> and <ppcs> as well as <gens> and <pgens>.
+## See AddToIgs for the algorithm.
 ##
 InstallGlobalFunction( AddToIgsParallel,
 function( pcs, gens, ppcs, pgens )
-    local coll, rels, n, inf, todo, tododo, ind, indd, g, gg, d, h, hh, a, b,
-          q, k, c, i, r, sub, keep, val, j, f, nrmd, pairs, added, oldc, chg;
+    local coll, rels, n, inf, bnd, todo, tododo, ind, indd, pows, ppows, g,
+          gg, d, h, hh, a, b, q, k, c, i, r, sub, keep, idx, queue, pqueue,
+          qpos, val, j, f, nrmd, pairs, added, oldc, chg, t;
 
     if Length( gens ) = 0 then return [pcs, ppcs]; fi;
 
@@ -127,9 +155,9 @@ function( pcs, gens, ppcs, pgens )
     rels := RelativeOrders( coll );
     n    := NumberOfGenerators( coll );
     inf  := 0 in rels;
-    c    := n+1;
+    bnd  := fail;
 
-    # set up
+    # set up; pows[d] and ppows[d] cache negative powers of ind[d], indd[d]
     ind  := ListWithIdenticalEntries(n, false);
     indd := ListWithIdenticalEntries(n, false);
     for i in [1..Length(pcs)] do
@@ -137,29 +165,53 @@ function( pcs, gens, ppcs, pgens )
         ind[d]  := pcs[i];
         indd[d] := ppcs[i];
     od;
+    pows  := [];
+    ppows := [];
+    c     := TailLimit(ind, n+1);
 
-    # initial gens still need to be reduced
-    added := true;
-
-    # do a reduction step
-    c      := TailLimit(ind, c);
+    # gens wait in queue, keeping the first of equal elements and sorted by
+    # IGSValFun; todo holds powers and commutators
     sub    := Filtered([1..Length(gens)], i -> Depth(gens[i]) < c);
-    # Keep the first occurrence of each generator, in input order.
-    todo   := gens{sub};
-    StableSortParallel(todo, sub);
-    keep   := Filtered([1..Length(sub)], i -> i = 1 or todo[i] <> todo[i-1]);
+    queue  := gens{sub};
+    StableSortParallel(queue, sub);
+    keep   := Filtered([1..Length(sub)], i -> i = 1 or queue[i] <> queue[i-1]);
     sub    := Set(sub{keep});
-    todo   := gens{sub};
-    tododo := pgens{sub};
-    val    := List(todo, IGSValFun);
+    queue  := gens{sub};
+    pqueue := pgens{sub};
+    idx    := [1..Length(sub)];
+    StableSortParallel(List(queue, IGSValFun), idx);
+    queue  := queue{idx};
+    pqueue := pqueue{idx};
+    qpos   := 1;
+    todo   := [];
+    tododo := [];
+    val    := [];
+    added  := false;
 
-    # loop over to-do list until it is empty
-    while Length( todo ) > 0 and c > 1 do
-        j := PositionMinimum(val);
-        g  := Remove(todo, j);
-        gg := Remove(tododo, j);
-        Remove(val, j);
-        d  := Depth( g );
+    while c > 1 do
+
+        # take the next element, from queue only once todo is empty
+        if Length( todo ) > 0 then
+            j  := PositionMinimum(val);
+            g  := Remove(todo, j);
+            gg := Remove(tododo, j);
+            Remove(val, j);
+        else
+            while qpos <= Length(queue) and Depth(queue[qpos]) >= c do
+                qpos := qpos+1;
+            od;
+            if qpos > Length(queue) then break; fi;
+            g  := queue[qpos];
+            gg := pqueue[qpos];
+            qpos := qpos+1;
+            # sifting g unreduced can blow up its exponents
+            if inf then
+                pairs := ReduceExpoElmPara(ind, g, indd, gg, rels, pows, ppows);
+                g  := pairs[1];
+                gg := pairs[2];
+            fi;
+        fi;
+        d := Depth( g );
         f := [];
 
         # shift g into ind
@@ -173,6 +225,8 @@ function( pcs, gens, ppcs, pgens )
                 nrmd := NormedPcpElementPara( g, gg );
                 ind[d]  := nrmd[1];
                 indd[d] := nrmd[2];
+                Unbind(pows[d]);
+                Unbind(ppows[d]);
                 AddSet(f,d);
                 h  := ind[d];
                 hh := indd[d];
@@ -186,8 +240,8 @@ function( pcs, gens, ppcs, pgens )
                 if a > 0 and b > 0 and a mod b = 0 then
                     # GcdPcpPara would leave h and hh unchanged.
                     q  := SmallestResidue(a/b, rels[d]);
-                    g  := g  * h^-q;
-                    gg := gg * hh^-q;
+                    g  := g  * IgsNegativePower(ind,  pows,  d, q);
+                    gg := gg * IgsNegativePower(indd, ppows, d, q);
                 else
                     pairs := GcdPcpPara(g, h, gg, hh);
                     h := pairs[1];
@@ -198,6 +252,8 @@ function( pcs, gens, ppcs, pgens )
                         nrmd := NormedPcpElementPara( h, hh );
                         ind[d]  := nrmd[1];
                         indd[d] := nrmd[2];
+                        Unbind(pows[d]);
+                        Unbind(ppows[d]);
                         AddSet(f, d);
                     fi;
                 fi;
@@ -213,12 +269,20 @@ function( pcs, gens, ppcs, pgens )
         oldc := c;
         c := TailLimit(ind, c);
         chg := [];
-        if inf then chg := ReduceExpoPara(ind, todo, indd, tododo, rels); fi;
+        if inf then
+            t := ReduceExpoPara(ind, todo, indd, tododo, rels, pows, ppows);
+            for i in t[1] do
+                Unbind(pows[i]);
+                Unbind(ppows[i]);
+            od;
+            chg := t[2];
+        fi;
         for i in chg do
             if Depth(todo[i]) < c then val[i] := IGSValFun(todo[i]); fi;
         od;
 
         # add powers and commutators
+        # no need to clean up pows/ppows here
         added := false;
         for d in f do
             g :=  ind[d];
@@ -234,25 +298,27 @@ function( pcs, gens, ppcs, pgens )
                 fi;
             fi;
             for j in [1..n] do
-                if j = d or Minimum( d, j ) >= c-1 then
+                # skip trivial commutators and those in the tail
+                if j = d or Minimum( d, j ) >= c-1 or IsBool(ind[j]) then
                     continue;
                 fi;
-                if not IsBool(ind[j]) then
-                    k := Comm(g, ind[j]);
+                if bnd = fail then bnd := CommutatorDepthBounds(coll); fi;
+                if bnd[Minimum(d, j)][Maximum(d, j)] >= c then continue; fi;
+                k := Comm(g, ind[j]);
+                if Depth(k) < c then
+                    Add(todo, k);
+                    Add(tododo, Comm(gg, indd[j]));
+                    Add(val, IGSValFun(k));
+                    added := true;
+                fi;
+                if rels[j] = 0 then
+                    k := Comm(g, IgsNegativePower(ind, pows, j, 1));
                     if Depth(k) < c then
                         Add(todo, k);
-                        Add(tododo, Comm(gg, indd[j]));
+                        Add(tododo, Comm(gg,
+                            IgsNegativePower(indd, ppows, j, 1)));
                         Add(val, IGSValFun(k));
                         added := true;
-                    fi;
-                    if rels[j] = 0 then
-                        k := Comm(g, ind[j]^-1);
-                        if Depth(k) < c then
-                            Add(todo, k);
-                            Add(tododo, Comm(gg, indd[j]^-1));
-                            Add(val, IGSValFun(k));
-                            added := true;
-                        fi;
                     fi;
                 fi;
             od;

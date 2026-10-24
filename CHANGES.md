@@ -48,6 +48,8 @@ This file describes changes in the GAP package 'polycyclic'.
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
 - Optimise `NormalIntersection` and `EfaSeries`
+- Speed up `AddToIgs` and `AddToIgsParallel`, in particular for many
+  generators and for large groups
 - Avoid needlessly large powers when norming and sifting elements at a depth
   of finite relative order; this also changes which power `NormedPcpElement`
   returns
