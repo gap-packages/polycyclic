@@ -19,10 +19,13 @@ nilpotent groups.
 </ManSection>
 
 <ManSection>
-<Func Name="IsMatrixRepresentation" Arg="G, matrices"/>
+<Func Name="IsMatrixRepresentation" Arg="G[, gens], matrices"/>
 <Description>
-	checks if the map defined by mapping the <M>i</M>-th generator of the
-	pcp-group <A>G</A> to the <M>i</M>-th matrix of <A>matrices</A> defines a homomorphism.
+	checks if the map defined by mapping the <M>i</M>-th generator of
+	<A>gens</A> to the <M>i</M>-th matrix of <A>matrices</A> defines a
+	homomorphism from the pcp-group <A>G</A>.
+	If omitted, <A>gens</A> defaults to <C>GeneratorsOfGroup(G)</C>. If
+	provided, it must generate <A>G</A>.
 </Description>
 </ManSection>
 
