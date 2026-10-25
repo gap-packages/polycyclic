@@ -432,7 +432,9 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
 
         # reset action for next step
         g := g * s.conj;
-        W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
+        if Length(W) > 0 then
+            W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
+        fi;
         if IndexNC(S,s.norm)<>1 then
             indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
         fi;
@@ -451,7 +453,9 @@ BindGlobal( "ConjugacyCongruenceAction", function( G, linG, baseU, baseW, ser )
 
             # again, reset action
             g := g * s.conj;
-            W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
+            if Length(W) > 0 then
+                W := LatticeBasis( W * InducedByPcp( Pcp(G), s.conj, indG )^-1 );
+            fi;
             if IndexNC(S,s.norm)<>1 then
                 indS := InducedByPcp(Pcp(G),Pcp(s.norm),indG);
             fi;
