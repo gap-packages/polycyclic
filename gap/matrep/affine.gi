@@ -20,8 +20,9 @@ end );
 NextStepRepresentation := function( G, i, mats )
     local pcp, N, hom, F, C, cc, rc, co, j, coc, news, d, z;
 
-    Print("starting level ",i,"\n");
     pcp := Pcp(G);
+    if i > Length(pcp) then return mats; fi;
+    Print("starting level ",i,"\n");
     N := SubgroupByIgs( G, pcp{[i+1..Length(pcp)]} );
     hom := NaturalHomomorphismByNormalSubgroupNC( G, N );
     F := ImagesSource( hom );
@@ -46,7 +47,7 @@ NextStepRepresentation := function( G, i, mats )
             coc := co + cc.factor.prei[j];
         fi;
         news := ExtendAffine( mats, coc );
-        if not IsMatrixRepresentation( F, news ) then
+        if not IsMatrixRepresentation( F, GeneratorsOfPcp(Pcp(F)), news ) then
             Error("no mat rep");
         fi;
         news := NextStepRepresentation( G, i+1, news );
@@ -58,10 +59,11 @@ MakeReadOnlyGlobal( "NextStepRepresentation" );
 
 BindGlobal( "AffineRepresentation", function( G )
     local mats, news;
+    if IsTrivial(G) then return []; fi;
     mats := [[[1,0],[1,1]]];
     news := NextStepRepresentation( G, 2, mats );
     if IsBool( news ) then return fail; fi;
-    if not IsMatrixRepresentation( G, news ) then
+    if not IsMatrixRepresentation( G, GeneratorsOfPcp(Pcp(G)), news ) then
         Error("no representation ");
     fi;
     return news;
