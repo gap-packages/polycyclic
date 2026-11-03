@@ -45,6 +45,8 @@ This file describes changes in the GAP package 'polycyclic'.
 - Implement a method for `RepresentativeAction`
 - Add `IsomorphismPcpGroupByIgs` and its `NC` variant to construct an isomorphic
   pcp-group whose pcp corresponds to the given igs
+- Add `IsAbelianByFinite`, `IsCrystallographic`, `IsBieberbachGroup`,
+  `IsAlmostCrystallographic`, `IsAlmostBieberbachGroup`, and `IsNilpotentByAbelian`
 - Allow a finite group fallback for `RepresentativeAction` and `IsConjugate` for
   subgroups
 - Optimise `NormalIntersection` and `EfaSeries`
