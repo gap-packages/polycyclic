@@ -140,7 +140,13 @@ BindGlobal( "StabilizerOfCocycle", function( CR, cc, C, elm )
     # set up action for D
     if IndexNC(C,D) > 1 then
         act := Pcp( D, CR.group );
-        aff := InducedByPcp( CR.super, act, aff );
+        # cannot use InducedByPcp here, group need not be efa
+        # recompute the action instead
+        CR := ShallowCopy( CR );
+        CR.super := act;
+        Unbind( CR.smats );
+        AddOperationCR( CR );
+        aff := AffineActionOnH1( CR, cc );
     else
         act := CR.super;
     fi;

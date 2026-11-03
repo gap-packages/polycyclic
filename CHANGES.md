@@ -33,6 +33,7 @@ This file describes changes in the GAP package 'polycyclic'.
   - `PcpOrbitStabilizer`
   - `SchurExtensionEpimorphism`
   - `StabilizerIntegralAction`
+  - `StabilizerOfCocycle`
   - `SubgroupUnitriangularPcpGroup`
   - `TorsionByPolyEFSeries`
   - `TwoCohomologyCR`
