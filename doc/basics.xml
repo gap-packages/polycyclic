@@ -155,6 +155,51 @@ and <M>v</M> in <A>V</A>.
 </Description>
 </ManSection>
 
+<ManSection>
+<Prop Name="IsAbelianByFinite" Arg="U"/>
+<Description>
+	checks whether <A>U</A> is abelian-by-finite.
+</Description>
+</ManSection>
+
+<ManSection>
+<Prop Name="IsCrystallographic" Arg="U"/>
+<Description>
+	checks whether <A>U</A> is abelian-by-finite and has no non-trivial finite
+	normal subgroup.
+</Description>
+</ManSection>
+
+<ManSection>
+<Prop Name="IsBieberbachGroup" Arg="U"/>
+<Description>
+	checks whether <A>U</A> is abelian-by-finite and torsion free.
+</Description>
+</ManSection>
+
+<ManSection>
+<Prop Name="IsAlmostCrystallographic" Arg="U"/>
+<Description>
+	checks whether <A>U</A> is nilpotent-by-finite and has no non-trivial
+	finite normal subgroup.
+</Description>
+</ManSection>
+
+<ManSection>
+<Prop Name="IsAlmostBieberbachGroup" Arg="U"/>
+<Description>
+	checks whether <A>U</A> is nilpotent-by-finite and torsion free.
+</Description>
+</ManSection>
+
+<ManSection>
+<Prop Name="IsNilpotentByAbelian" Arg="U"/>
+<Description>
+	checks whether <A>U</A> has a nilpotent normal subgroup with abelian
+	quotient.
+</Description>
+</ManSection>
+
 </Section>
 
 

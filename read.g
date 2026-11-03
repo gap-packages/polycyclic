@@ -99,6 +99,7 @@ ReadPackage( "polycyclic", "gap/pcpgrp/polyz.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/pcpattr.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/wreath.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/fitting.gi");
+ReadPackage( "polycyclic", "gap/pcpgrp/properties.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/centcon.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/normcon.gi");
 ReadPackage( "polycyclic", "gap/pcpgrp/schur.gi");

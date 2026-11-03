@@ -59,7 +59,7 @@ InstallMethod( FittingSubgroup,
                "for pcp groups", [IsPcpGroup],
 			   SUM_FLAGS, # Prevent generic GAP library method for finite groups being ranked higher
 function( G )
-    local efas, pcps, l, F, i;
+    local efas, pcps, l, F, i, ind;
 
     efas := SemiSimpleEfaSeries( G );
     pcps := PcpsBySeries( efas, "snf" );
@@ -78,7 +78,12 @@ function( G )
     od;
 
     SetIsNilpotentGroup( F, true );
-    if IndexNC( G, F ) = 1 then SetIsNilpotentGroup( G, true ); fi;
+    ind := IndexNC( G, F );
+    if ind = 1 then
+        SetIsNilpotentGroup( G, true );
+    else
+        SetIsNilpotentByFinite( G, ind <> infinity );
+    fi;
     return F;
 end );
 
@@ -253,5 +258,6 @@ InstallGlobalFunction( NilpotentByAbelianByFiniteSeries, function( G )
     L := FittingSubgroup( ImagesSource( nath ) );
     A := PreImagesSetNC( nath, Centre(L) );
     if IndexNC( G, A ) = infinity then Error("wrong subgroup"); fi;
+    SetIsNilpotentByAbelian( A, true );
     return [G, A, F, U];
 end );

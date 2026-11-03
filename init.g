@@ -38,6 +38,7 @@ ReadPackage( "polycyclic", "gap/matrep/unitri.gd");
 
 ReadPackage( "polycyclic", "gap/pcpgrp/pcpgrp.gd");
 ReadPackage( "polycyclic", "gap/pcpgrp/torsion.gd");
+ReadPackage( "polycyclic", "gap/pcpgrp/properties.gd");
 
 ReadPackage( "polycyclic", "gap/exam/exam.gd");
 
