@@ -214,6 +214,10 @@ function( groups, onegroup )
     fi;
 
     D := groups[1];
+    if Length(groups) = 1 then
+        # create separate group to avoid overwriting existing direct product info
+        D := SubgroupByIgs(D, Igs(D));
+    fi;
     f := [1,Length(Igs(D))+1];
     for i in [2..Length(groups)] do
         a := List(Igs(D), x -> IdentityMapping(groups[i]));
